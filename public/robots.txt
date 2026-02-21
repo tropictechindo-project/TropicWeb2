@@ -1,0 +1,26 @@
+# https://www.robotstxt.org/robotstxt.html
+# Allow all crawlers to access the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://testdomain.fun/sitemap.xml
+
+# Crawl-delay (optional, in seconds)
+Crawl-delay: 1
+
+# Specific rules for certain bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Disallow:
+
+# Disallow admin and API routes
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
