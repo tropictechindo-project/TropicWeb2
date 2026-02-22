@@ -5,9 +5,10 @@ import { generateInvoicePDF } from '@/lib/pdf/invoice'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authHeader = request.headers.get('authorization')
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -21,13 +22,13 @@ export async function GET(
     }
 
     const invoice = await db.invoice.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         order: {
           include: {
             rentalItems: {
               include: {
-                product: true,
+                variant: { include: { product: true } },
                 rentalPackage: true,
               }
             },
@@ -54,8 +55,8 @@ export async function GET(
       customerEmail: invoice.user?.email || '',
       customerWhatsApp: invoice.user?.whatsapp,
       items: (invoice.order?.rentalItems || []).map((item) => {
-        const name = item.product?.name || item.rentalPackage?.name || 'Item';
-        const price = Number(item.product?.monthlyPrice || item.rentalPackage?.price || 0);
+        const name = item.variant?.product?.name || item.rentalPackage?.name || 'Item';
+        const price = Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0);
         const quantity = item.quantity || 0;
         return {
           name,

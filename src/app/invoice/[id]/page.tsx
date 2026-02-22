@@ -13,7 +13,7 @@ export default async function PublicInvoicePage({ params }: { params: Promise<{ 
                 include: {
                     rentalItems: {
                         include: {
-                            product: true,
+                            variant: { include: { product: true } },
                             rentalPackage: true
                         }
                     }
@@ -37,9 +37,9 @@ export default async function PublicInvoicePage({ params }: { params: Promise<{ 
         startDate: invoice.order?.startDate?.toISOString() || invoice.createdAt?.toISOString(),
         endDate: invoice.order?.endDate?.toISOString() || invoice.createdAt?.toISOString(),
         items: invoice.order?.rentalItems.map(item => ({
-            name: item.product?.name || item.rentalPackage?.name || "Service Item",
+            name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
             quantity: item.quantity || 1,
-            unitPrice: Number(item.product?.monthlyPrice || item.rentalPackage?.price || invoice.total),
+            unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || invoice.total),
             totalPrice: Number(invoice.total)
         })) || [
                 {

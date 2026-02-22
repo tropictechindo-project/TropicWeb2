@@ -65,15 +65,13 @@ export default async function AdminReportsPage() {
         revenueByMonth.push({ name: monthName, total: monthlyTotal })
     }
 
-    // Real category split based on product units currently IN_USE
+    // Real category split based on product variants currently reserved
     const categories = await db.product.findMany({
         select: {
             category: true,
-            _count: {
+            variants: {
                 select: {
-                    productUnits: {
-                        where: { status: 'IN_USE' }
-                    }
+                    reservedQuantity: true
                 }
             }
         }
@@ -81,7 +79,10 @@ export default async function AdminReportsPage() {
 
     const categoryCounts: Record<string, number> = {}
     categories.forEach(p => {
-        categoryCounts[p.category] = (categoryCounts[p.category] || 0) + p._count.productUnits
+        const reservedSum = p.variants.reduce((acc, v) => acc + v.reservedQuantity, 0)
+        if (reservedSum > 0) {
+            categoryCounts[p.category] = (categoryCounts[p.category] || 0) + reservedSum
+        }
     })
 
     const categoryData = Object.entries(categoryCounts)

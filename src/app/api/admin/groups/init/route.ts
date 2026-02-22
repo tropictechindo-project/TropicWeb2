@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        const createdSupportGroups = []
+        const createdSupportGroups: any[] = []
         for (const regularUser of regularUsers) {
             // Check if user already has a support group
             const existingGroup = await (db as any).chatGroup.findFirst({

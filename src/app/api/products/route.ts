@@ -11,21 +11,18 @@ export async function GET(request: Request) {
     const products = await db.product.findMany({
       where: category ? { category } : undefined,
       include: {
-        _count: {
-          select: {
-            productUnits: {
-              where: { status: 'AVAILABLE' }
-            }
-          }
-        }
+        variants: true
       },
       orderBy: { createdAt: 'desc' },
     })
 
-    const formattedProducts = products.map(p => ({
-      ...p,
-      stock: p.stock || 0
-    }))
+    const formattedProducts = products.map(p => {
+      const stock = p.variants.reduce((total, v) => total + (v.stockQuantity - v.reservedQuantity), 0)
+      return {
+        ...p,
+        stock: Math.max(0, stock)
+      }
+    })
 
     return NextResponse.json({ products: formattedProducts })
   } catch (error) {

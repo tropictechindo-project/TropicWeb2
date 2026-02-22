@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
             include: {
                 rentalItems: {
                     include: {
-                        product: true,
+                        variant: { include: { product: true } },
                         rentalPackage: {
                             include: {
                                 rentalPackageItems: {

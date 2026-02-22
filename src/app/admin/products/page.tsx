@@ -8,12 +8,10 @@ export default async function AdminProductsPage() {
     const products = await db.product.findMany({
         orderBy: { createdAt: 'desc' },
         include: {
-            // Count references to allow/disallow delete
+            variants: true,
             _count: {
                 select: {
-                    rentalItems: true,
-                    rentalPackageItems: true,
-                    productUnits: true
+                    rentalPackageItems: true
                 }
             }
         }
@@ -25,14 +23,14 @@ export default async function AdminProductsPage() {
         description: p.description,
         category: p.category,
         monthlyPrice: Number(p.monthlyPrice),
-        stock: p.stock,
+        stock: p.variants.reduce((acc, v) => acc + (v.stockQuantity - v.reservedQuantity), 0),
         imageUrl: p.imageUrl,
         images: p.images,
         specs: p.specs,
         createdAt: p.createdAt?.toISOString(),
         _count: p._count,
         price: Number(p.monthlyPrice),
-        isDeletable: p._count.rentalItems === 0 && p._count.rentalPackageItems === 0 && p._count.productUnits === 0
+        isDeletable: p._count.rentalPackageItems === 0
     }))
 
     return (

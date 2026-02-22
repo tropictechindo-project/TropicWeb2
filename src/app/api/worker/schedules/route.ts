@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
                         },
                         rentalItems: {
                             include: {
-                                product: true,
+                                variant: { include: { product: true } },
                                 rentalPackage: true
                             }
                         }

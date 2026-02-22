@@ -12,7 +12,7 @@ export default async function AdminUsersPage() {
                 include: {
                     rentalItems: {
                         include: {
-                            product: true,
+                            variant: { include: { product: true } },
                             rentalPackage: true
                         }
                     }

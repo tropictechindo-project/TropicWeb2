@@ -7,11 +7,12 @@ import { db } from '@/lib/db'
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { token: string } }
+    { params }: { params: Promise<{ token: string }> }
 ) {
     try {
+        const { token } = await params;
         const invoice = await db.invoice.findUnique({
-            where: { shareableToken: params.token },
+            where: { shareableToken: token },
             include: {
                 user: {
                     select: {
@@ -25,7 +26,7 @@ export async function GET(
                     include: {
                         rentalItems: {
                             include: {
-                                product: true,
+                                variant: { include: { product: true } },
                                 rentalPackage: {
                                     include: {
                                         rentalPackageItems: {

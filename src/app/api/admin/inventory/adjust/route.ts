@@ -14,124 +14,28 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json()
-        const { productId, total, rented, broken } = body
+        const { variantId, total, reserved } = body
 
-        if (!productId) {
-            return NextResponse.json({ error: 'Missing productId' }, { status: 400 })
+        if (!variantId) {
+            return NextResponse.json({ error: 'Missing variantId' }, { status: 400 })
         }
 
-        const product = await db.product.findUnique({
-            where: { id: productId },
-            include: {
-                productUnits: true
-            }
+        const variant = await db.productVariant.findUnique({
+            where: { id: variantId },
+            include: { product: true }
         })
 
-        if (!product) {
-            return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+        if (!variant) {
+            return NextResponse.json({ error: 'Variant not found' }, { status: 404 })
         }
 
-        const currentUnits = product.productUnits
-        const currentTotal = currentUnits.length
-
         await db.$transaction(async (tx) => {
-            // 1. Adjust Total Units
-            if (total !== undefined && total !== currentTotal) {
-                if (total > currentTotal) {
-                    // Add units
-                    const countToAdd = total - currentTotal
-                    const prefix = product.name.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'ITM')
-                    const timestamp = Date.now().toString().substring(8)
-
-                    for (let i = 0; i < countToAdd; i++) {
-                        const code = `${prefix}-${timestamp}-${Math.floor(Math.random() * 10000)}`
-                        await tx.productUnit.create({
-                            data: {
-                                productId,
-                                unitCode: code,
-                                status: 'AVAILABLE',
-                                purchaseDate: new Date()
-                            }
-                        })
-                    }
-                } else {
-                    // Remove units (only AVAILABLE ones)
-                    const countToRemove = currentTotal - total
-                    const availableUnits = currentUnits.filter(u => u.status === 'AVAILABLE')
-                    const unitsToDelete = availableUnits.slice(0, countToRemove)
-
-                    await tx.productUnit.deleteMany({
-                        where: {
-                            id: { in: unitsToDelete.map(u => u.id) }
-                        }
-                    })
+            await tx.productVariant.update({
+                where: { id: variantId },
+                data: {
+                    stockQuantity: total !== undefined ? total : undefined,
+                    reservedQuantity: reserved !== undefined ? reserved : undefined
                 }
-            }
-
-            // Refetch or adjust local count for subsequent steps
-            let updatedUnits = await tx.productUnit.findMany({ where: { productId } })
-
-            // 2. Adjust Rented Status (IN_USE)
-            if (rented !== undefined) {
-                const rentedUnits = updatedUnits.filter(u => u.status === 'IN_USE')
-                if (rented > rentedUnits.length) {
-                    // Mark some AVAILABLE as IN_USE
-                    const needed = rented - rentedUnits.length
-                    const availableUnits = updatedUnits.filter(u => u.status === 'AVAILABLE')
-                    const toMarkRented = availableUnits.slice(0, needed)
-
-                    await tx.productUnit.updateMany({
-                        where: { id: { in: toMarkRented.map(u => u.id) } },
-                        data: { status: 'IN_USE' }
-                    })
-                } else if (rented < rentedUnits.length) {
-                    // Mark some IN_USE as AVAILABLE
-                    const excess = rentedUnits.length - rented
-                    const toMarkAvailable = rentedUnits.slice(0, excess)
-
-                    await tx.productUnit.updateMany({
-                        where: { id: { in: toMarkAvailable.map(u => u.id) } },
-                        data: { status: 'AVAILABLE' }
-                    })
-                }
-            }
-
-            // Refetch again for Broken adjustment
-            updatedUnits = await tx.productUnit.findMany({ where: { productId } })
-
-            // 3. Adjust Broken Status (DAMAGED)
-            if (broken !== undefined) {
-                const brokenUnits = updatedUnits.filter(u => u.status === 'DAMAGED')
-                if (broken > brokenUnits.length) {
-                    // Mark some AVAILABLE as DAMAGED
-                    const needed = broken - brokenUnits.length
-                    const availableUnits = updatedUnits.filter(u => u.status === 'AVAILABLE')
-                    const toMarkBroken = availableUnits.slice(0, needed)
-
-                    await tx.productUnit.updateMany({
-                        where: { id: { in: toMarkBroken.map(u => u.id) } },
-                        data: { status: 'DAMAGED' }
-                    })
-                } else if (broken < brokenUnits.length) {
-                    // Mark some DAMAGED as AVAILABLE
-                    const excess = brokenUnits.length - broken
-                    const toMarkAvailable = brokenUnits.slice(0, excess)
-
-                    await tx.productUnit.updateMany({
-                        where: { id: { in: toMarkAvailable.map(u => u.id) } },
-                        data: { status: 'AVAILABLE' }
-                    })
-                }
-            }
-
-            // Final Sync: Update the product's cache stock field (available count)
-            const finalAvailable = await tx.productUnit.count({
-                where: { productId, status: 'AVAILABLE' }
-            })
-
-            await tx.product.update({
-                where: { id: productId },
-                data: { stock: finalAvailable }
             })
         })
 
@@ -139,7 +43,7 @@ export async function POST(request: Request) {
             userId: adminId,
             action: 'RECONCILE_INVENTORY',
             entity: 'PRODUCT',
-            details: `Reconciled stock for ${product.name}. Total: ${total}, Rented: ${rented}, Broken: ${broken}`
+            details: `Reconciled variant stock for ${variant.product.name} (${variant.color}). Total: ${total}, Reserved: ${reserved}`
         })
 
         return NextResponse.json({ success: true })

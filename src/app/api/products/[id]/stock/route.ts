@@ -25,9 +25,15 @@ export async function POST(
       return NextResponse.json({ error: 'Invalid quantity' }, { status: 400 })
     }
 
-    const product = await db.product.update({
-      where: { id: params.id },
-      data: { stock: quantity },
+    const variant = await db.productVariant.findFirst({
+      where: { productId: params.id }
+    })
+
+    if (!variant) return NextResponse.json({ error: 'No variant found' }, { status: 404 })
+
+    const product = await db.productVariant.update({
+      where: { id: variant.id },
+      data: { stockQuantity: quantity },
     })
 
     return NextResponse.json({ product, message: 'Stock updated successfully' })

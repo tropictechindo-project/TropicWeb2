@@ -42,7 +42,7 @@ export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride
             user: true,
             rentalItems: {
                 include: {
-                    product: true,
+                    variant: { include: { product: true } },
                     rentalPackage: true
                 }
             }

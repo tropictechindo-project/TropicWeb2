@@ -31,7 +31,10 @@ export async function POST(
                 where: { id: transactionId },
                 include: {
                     order: {
-                        include: { invoice: true }
+                        include: {
+                            invoice: true,
+                            rentalItems: true
+                        }
                     }
                 }
             })
@@ -63,6 +66,19 @@ export async function POST(
                     status: 'PAID'
                 }
             })
+
+            // 3. Deduct Stock Offically & Release Hold
+            for (const item of transaction.order.rentalItems) {
+                if (item.variantId) {
+                    await tx.productVariant.update({
+                        where: { id: item.variantId },
+                        data: {
+                            stockQuantity: { decrement: item.quantity || 0 },
+                            reservedQuantity: { decrement: item.quantity || 0 }
+                        }
+                    })
+                }
+            }
 
             // 3. Update Invoice (Safety check: only if exists)
             if (transaction.order.invoice) {

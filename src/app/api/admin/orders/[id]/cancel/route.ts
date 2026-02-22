@@ -34,12 +34,12 @@ export async function POST(
             if (!order) throw new Error('Order not found')
             if (order.status === 'CANCELLED') throw new Error('Order is already cancelled')
 
-            // 1. Restore Stock
+            // 1. Restore Stock (Release Reservation)
             for (const item of order.rentalItems) {
-                if (item.productId) {
-                    await tx.product.update({
-                        where: { id: item.productId },
-                        data: { stock: { increment: item.quantity || 0 } }
+                if (item.variantId) {
+                    await tx.productVariant.update({
+                        where: { id: item.variantId },
+                        data: { reservedQuantity: { decrement: item.quantity || 0 } }
                     })
                 }
             }

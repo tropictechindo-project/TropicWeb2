@@ -28,7 +28,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 500000,
-        stock: 15,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 15 } },
       },
     })
 
@@ -39,7 +39,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 400000,
-        stock: 20,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
       },
     })
 
@@ -50,7 +50,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 300000,
-        stock: 25,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
       },
     })
 
@@ -64,7 +64,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 400000,
-        stock: 20,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
       },
     })
 
@@ -75,7 +75,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 250000,
-        stock: 30,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
       },
     })
 
@@ -86,7 +86,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 500000,
-        stock: 10,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 10 } },
       },
     })
 
@@ -100,7 +100,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 300000,
-        stock: 25,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
       },
     })
 
@@ -111,7 +111,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 250000,
-        stock: 30,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
       },
     })
 
@@ -122,7 +122,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 400000,
-        stock: 10,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 10 } },
       },
     })
 
@@ -136,7 +136,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 100000,
-        stock: 40,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 40 } },
       },
     })
 
@@ -147,7 +147,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 80000,
-        stock: 35,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 35 } },
       },
     })
 
@@ -158,7 +158,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 50000,
-        stock: 50,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 50 } },
       },
     })
 
@@ -172,7 +172,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 75000,
-        stock: 30,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
       },
     })
 
@@ -183,7 +183,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 100000,
-        stock: 25,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
       },
     })
 
@@ -194,7 +194,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 120000,
-        stock: 20,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
       },
     })
 
@@ -205,7 +205,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 50000,
-        stock: 35,
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 35 } },
       },
     })
 

@@ -52,6 +52,7 @@ async function getProducts() {
       orderBy: {
         monthlyPrice: 'asc', // Sort by price first
       },
+      include: { variants: true }
     })
 
     // Custom sort order: Desk -> Monitor -> Chair -> Others
@@ -65,11 +66,14 @@ async function getProducts() {
       return Number(a.monthlyPrice) - Number(b.monthlyPrice)
     })
 
-    return sortedProducts.map(p => ({
-      ...p,
-      stock: p.stock || 0,
-      monthlyPrice: Number(p.monthlyPrice), // Ensure decimal is number for JSON serialization
-    }))
+    return sortedProducts.map(p => {
+      const stock = p.variants.reduce((total, v) => total + (v.stockQuantity - v.reservedQuantity), 0)
+      return {
+        ...p,
+        stock: Math.max(0, stock),
+        monthlyPrice: Number(p.monthlyPrice), // Ensure decimal is number for JSON serialization
+      }
+    })
   } catch (error) {
     console.warn('Failed to fetch products:', error)
     return []

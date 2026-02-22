@@ -47,19 +47,20 @@ export async function POST(request: Request) {
         // 2. Atomic Transaction
         const result = await db.$transaction(async (tx) => {
             // A. Stock Validation & Lock
-            const product = await tx.product.findUnique({
-                where: { id: item.id }
+            // The cart currently passes the productId. We find the default variant.
+            const variant = await tx.productVariant.findFirst({
+                where: { productId: item.id }
             })
 
-            if (!product) throw new Error('Product not found')
-            if ((product.stock || 0) < 1) {
+            if (!variant) throw new Error('Product not found')
+            if (variant.stockQuantity - variant.reservedQuantity < 1) {
                 throw new Error('Insufficient stock')
             }
 
-            // B. Decrement Stock
-            await tx.product.update({
-                where: { id: item.id },
-                data: { stock: { decrement: 1 } }
+            // B. Reserve Stock (Hold it, do not decrement actual stock yet)
+            await tx.productVariant.update({
+                where: { id: variant.id },
+                data: { reservedQuantity: { increment: 1 } }
             })
 
             // C. Create Order
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
                     endDate,
                     duration: item.duration || 30,
                     userId: userId as string,
-                    rentalItems: { create: { productId: item.id, quantity: 1 } },
+                    rentalItems: { create: { variantId: variant.id, quantity: 1 } },
                 },
             })
 

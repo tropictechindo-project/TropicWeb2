@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { verifyToken } from '@/lib/auth/utils'
 import { createInvoiceForOrder, getInvoiceRecipients } from '@/lib/invoice-utils'
 import { sendInvoiceEmail } from '@/lib/email'
 import { logActivity } from '@/lib/logger'

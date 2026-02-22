@@ -13,7 +13,7 @@ export default async function AdminInvoicesPage() {
                 include: {
                     rentalItems: {
                         include: {
-                            product: true,
+                            variant: { include: { product: true } },
                             rentalPackage: true
                         }
                     }
@@ -40,9 +40,9 @@ export default async function AdminInvoicesPage() {
         endDate: inv.order?.endDate?.toISOString() || new Date().toISOString(),
         userId: inv.userId,
         items: inv.order?.rentalItems.map(item => ({
-            name: item.product?.name || item.rentalPackage?.name || "Service Item",
+            name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
             quantity: item.quantity || 1,
-            unitPrice: Number(item.product?.monthlyPrice || item.rentalPackage?.price || inv.total),
+            unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || inv.total),
             totalPrice: Number(inv.total)
         })) || [
                 {

@@ -7,16 +7,20 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const product = await db.product.findUnique({
+    const productRaw = await db.product.findUnique({
       where: { id },
+      include: { variants: true }
     })
 
-    if (!product) {
+    if (!productRaw) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }
       )
     }
+
+    const stock = productRaw.variants.reduce((acc, v) => acc + (v.stockQuantity - v.reservedQuantity), 0)
+    const product = { ...productRaw, stock: Math.max(0, stock) }
 
     return NextResponse.json({ product })
   } catch (error) {
@@ -43,7 +47,6 @@ export async function PUT(
         category: data.category,
         monthlyPrice: data.monthlyPrice,
         imageUrl: data.imageUrl,
-        stock: data.stock !== undefined ? data.stock : undefined,
       },
     })
     return NextResponse.json({ product })

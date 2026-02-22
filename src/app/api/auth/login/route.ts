@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
       username: user.username,
       email: user.email,
       role: user.role,
-      isVerified: user.isVerified,
     })
 
     return NextResponse.json({
@@ -54,7 +53,6 @@ export async function POST(request: NextRequest) {
         email: user.email,
         fullName: user.fullName,
         role: user.role,
-        isVerified: user.isVerified,
       },
     })
   } catch (error) {
