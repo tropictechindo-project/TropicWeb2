@@ -52,7 +52,35 @@ export async function GET(request: NextRequest) {
             }
         })
 
-        const uniqueSuggestions = Array.from(suggestionsMap.values()).slice(0, 6)
+        let uniqueSuggestions = Array.from(suggestionsMap.values()).slice(0, 6)
+
+        // Fallback: If no relations found (e.g., cart only contains packages), provide generic top suggestions
+        if (uniqueSuggestions.length === 0) {
+            const fallbackRelations = await (db as any).productRelation.findMany({
+                include: { relatedProduct: true },
+                orderBy: { priority: 'desc' },
+                take: 4
+            })
+
+            fallbackRelations.forEach((rel: any) => {
+                if (!productIds.includes(rel.relatedProductId) && !suggestionsMap.has(rel.relatedProductId)) {
+                    suggestionsMap.set(rel.relatedProductId, rel.relatedProduct)
+                }
+            })
+            uniqueSuggestions = Array.from(suggestionsMap.values()).slice(0, 4)
+        }
+
+        // Final Fallback: if database has ZERO relations, just grab some top products
+        if (uniqueSuggestions.length === 0) {
+            const randomProducts = await db.product.findMany({
+                where: {
+                    id: { notIn: productIds }
+                },
+                take: 4
+            })
+            uniqueSuggestions = randomProducts
+        }
+
 
         return NextResponse.json({
             suggestions: uniqueSuggestions,
