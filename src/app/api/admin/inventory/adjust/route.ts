@@ -14,10 +14,10 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json()
-        const { variantId, total, reserved } = body
+        const { variantId, numUnitsToAdd, condition } = body
 
-        if (!variantId) {
-            return NextResponse.json({ error: 'Missing variantId' }, { status: 400 })
+        if (!variantId || !numUnitsToAdd) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
         }
 
         const variant = await db.productVariant.findUnique({
@@ -29,21 +29,39 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Variant not found' }, { status: 404 })
         }
 
-        await db.$transaction(async (tx) => {
-            await tx.productVariant.update({
-                where: { id: variantId },
-                data: {
-                    stockQuantity: total !== undefined ? total : undefined,
-                    reservedQuantity: reserved !== undefined ? reserved : undefined
-                }
-            })
+        const newUnits = await db.$transaction(async (tx) => {
+            const units: any[] = []
+            for (let i = 0; i < numUnitsToAdd; i++) {
+                const serialNumber = `SN-${variant.sku}-${Date.now().toString().slice(-4)}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
+
+                const unit = await tx.productUnit.create({
+                    data: {
+                        variantId: variant.id,
+                        serialNumber,
+                        status: 'AVAILABLE',
+                        condition: condition || 'GOOD'
+                    }
+                })
+
+                await tx.unitHistory.create({
+                    data: {
+                        unitId: unit.id,
+                        newStatus: 'AVAILABLE',
+                        newCondition: condition || 'GOOD',
+                        details: 'Initial batch unit creation',
+                        userId: adminId
+                    }
+                })
+                units.push(unit)
+            }
+            return units
         })
 
         await logActivity({
             userId: adminId,
-            action: 'RECONCILE_INVENTORY',
+            action: 'CREATE_UNITS',
             entity: 'PRODUCT',
-            details: `Reconciled variant stock for ${variant.product.name} (${variant.color}). Total: ${total}, Reserved: ${reserved}`
+            details: `Added ${numUnitsToAdd} units for ${variant.product.name} (${variant.color})`
         })
 
         return NextResponse.json({ success: true })

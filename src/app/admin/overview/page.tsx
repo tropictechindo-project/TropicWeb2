@@ -20,7 +20,8 @@ async function getStats() {
         totalProducts,
         totalPackages,
         activeOrders,
-        unresolvedConflicts
+        unresolvedConflicts,
+        lastActivity
     ] = await Promise.all([
         db.user.count(),
         db.$queryRaw<{ count: bigint }[]>`SELECT count(*)::bigint as count FROM users WHERE is_verified = true`,
@@ -35,7 +36,11 @@ async function getStats() {
         db.product.count(),
         db.rentalPackage.count(),
         db.order.count({ where: { status: 'ACTIVE' } }),
-        db.inventorySyncLog.count({ where: { conflict: true, resolved: false } })
+        db.inventorySyncLog.count({ where: { conflict: true, resolved: false } }),
+        db.activityLog.findFirst({
+            orderBy: { createdAt: 'desc' },
+            select: { createdAt: true }
+        })
     ])
 
     const verifiedCount = Number((verifiedUsers as any)[0]?.count || 0)
@@ -49,7 +54,8 @@ async function getStats() {
             totalProducts,
             totalPackages,
             activeOrders,
-            unresolvedConflicts
+            unresolvedConflicts,
+            lastUpdate: lastActivity?.createdAt ? lastActivity.createdAt.toISOString() : new Date().toISOString()
         },
         notifications
     }

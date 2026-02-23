@@ -1,0 +1,701 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Invoice {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  invoiceNumber       String    @unique @map("invoice_number")
+  orderId             String?   @map("order_id") @db.Uuid
+  subtotal            Decimal   @db.Decimal(10, 2)
+  tax                 Decimal   @default(0) @db.Decimal(10, 2)
+  deliveryFee         Decimal   @default(100000) @map("delivery_fee") @db.Decimal(10, 2)
+  total               Decimal   @db.Decimal(10, 2)
+  currency            String?   @default("IDR")
+  createdAt           DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId              String?   @map("user_id") @db.Uuid
+  status              String    @default("PENDING")
+  guestEmail          String?   @map("guest_email")
+  guestName           String?   @map("guest_name")
+  guestWhatsapp       String?   @map("guest_whatsapp")
+  guestAddress        String?   @map("guest_address")
+  deliveryFeeOverride Decimal?  @map("delivery_fee_override") @db.Decimal(10, 2)
+  taxRate             Decimal?  @default(0.02) @map("tax_rate") @db.Decimal(5, 4)
+  discountPercentage  Int?      @default(0) @map("discount_percentage")
+  discountAmount      Decimal?  @default(0) @map("discount_amount") @db.Decimal(10, 2)
+  shareableToken      String?   @unique @map("shareable_token") @db.VarChar(255)
+  emailSent           Boolean?  @default(false) @map("email_sent")
+  emailSentAt         DateTime? @map("email_sent_at") @db.Timestamptz(6)
+  order               Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([emailSent], map: "idx_invoices_email_sent")
+  @@map("invoices")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Order {
+  id                                       String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderNumber                              String               @unique @map("order_number")
+  status                                   String               @default("AWAITING_PAYMENT")
+  startDate                                DateTime             @map("start_date") @db.Timestamptz(6)
+  endDate                                  DateTime             @map("end_date") @db.Timestamptz(6)
+  duration                                 Int
+  totalAmount                              Decimal              @map("total_amount") @db.Decimal(10, 2)
+  subtotal                                 Decimal              @db.Decimal(10, 2)
+  tax                                      Decimal              @default(0) @db.Decimal(10, 2)
+  deliveryFee                              Decimal              @default(100000) @map("delivery_fee") @db.Decimal(10, 2)
+  discountPercentage                       Int?                 @default(0) @map("discount_percentage")
+  discountAmount                           Decimal?             @default(0) @map("discount_amount") @db.Decimal(10, 2)
+  currency                                 String?              @default("IDR")
+  paymentMethod                            String?              @map("payment_method")
+  createdAt                                DateTime?            @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId                                   String               @map("user_id") @db.Uuid
+  paymentStatus                            String?              @default("PENDING") @map("payment_status") @db.VarChar(20)
+  paymentConfirmedBy                       String?              @map("payment_confirmed_by") @db.Uuid
+  paymentConfirmedAt                       DateTime?            @map("payment_confirmed_at") @db.Timestamptz(6)
+  deliveryStatus                           String?              @default("PENDING") @map("delivery_status") @db.VarChar(20)
+  deliveryAddress                          String?              @map("delivery_address")
+  invoices                                 Invoice[]
+  assignedUnits                            ProductUnit[]
+  users_orders_payment_confirmed_byTousers User?                @relation("orders_payment_confirmed_byTousers", fields: [paymentConfirmedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user                                     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rentalItems                              RentalItem[]
+  workerSchedules                          WorkerSchedule[]
+  paymentTransactions                      PaymentTransaction[]
+
+  @@index([deliveryStatus], map: "idx_orders_delivery_status")
+  @@index([paymentStatus], map: "idx_orders_payment_status")
+  @@map("orders")
+}
+
+model PaymentTransaction {
+  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId             String            @map("order_id") @db.Uuid
+  provider            PaymentProvider
+  amount              Decimal           @db.Decimal(10, 2)
+  currency            String            @default("IDR")
+  status              TransactionStatus @default(INITIATED)
+  externalReferenceId String?           @map("external_reference_id")
+  proofUrl            String?           @map("proof_url")
+  verifiedByAdminId   String?           @map("verified_by_admin_id") @db.Uuid
+  verifiedAt          DateTime?         @map("verified_at") @db.Timestamptz(6)
+  createdAt           DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  order      Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  verifiedBy User? @relation("VerifiedTransactions", fields: [verifiedByAdminId], references: [id])
+
+  @@index([orderId])
+  @@index([status])
+  @@index([provider])
+  @@map("payment_transactions")
+}
+
+model ProductRelation {
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId        String       @map("product_id") @db.Uuid
+  relatedProductId String       @map("related_product_id") @db.Uuid
+  relationType     RelationType @default(CROSS_SELL)
+  priority         Int          @default(1)
+  aiScore          Float?       @map("ai_score")
+  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  product        Product @relation("ProductToRelation", fields: [productId], references: [id], onDelete: Cascade)
+  relatedProduct Product @relation("RelatedProductToRelation", fields: [relatedProductId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, relatedProductId])
+  @@map("product_relations")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model RentalPackageItem {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rentalPackageId String        @map("package_id") @db.Uuid
+  productId       String        @map("product_id") @db.Uuid
+  quantity        Int?          @default(1)
+  createdAt       DateTime?     @default(now()) @map("created_at") @db.Timestamptz(6)
+  rentalPackage   RentalPackage @relation(fields: [rentalPackageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("package_items")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model RentalPackage {
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  description        String?
+  imageUrl           String?             @map("image_url")
+  price              Decimal             @db.Decimal(10, 2)
+  discountPercentage Int?                @default(0) @map("discount_percentage")
+  duration           Int
+  createdAt          DateTime?           @default(now()) @map("created_at") @db.Timestamptz(6)
+  images             String[]            @default([])
+  specs              Json?
+  rentalPackageItems RentalPackageItem[]
+  rentalItems        RentalItem[]
+
+  @@map("packages")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Product {
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  description        String?
+  category           String
+  monthlyPrice       Decimal             @map("monthly_price") @db.Decimal(10, 2)
+  discountPercentage Int?                @default(0) @map("discount_percentage")
+  imageUrl           String?             @map("image_url")
+  createdAt          DateTime?           @default(now()) @map("created_at") @db.Timestamptz(6)
+  images             String[]            @default([])
+  specs              Json?
+  inventorySyncLogs  InventorySyncLog[]
+  rentalPackageItems RentalPackageItem[]
+  productRelations   ProductRelation[]   @relation("ProductToRelation")
+  relatedTo          ProductRelation[]   @relation("RelatedProductToRelation")
+  variants           ProductVariant[]
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId    String   @map("product_id") @db.Uuid
+  color        String   @default("STANDARD")
+  sku          String   @unique
+  monthlyPrice Decimal? @map("monthly_price") @db.Decimal(10, 2)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  product     Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rentalItems RentalItem[]
+  units       ProductUnit[]
+
+  @@index([productId, color])
+  @@map("product_variants")
+}
+
+model ProductUnit {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  variantId       String        @map("variant_id") @db.Uuid
+  serialNumber    String        @unique @map("serial_number")
+  status          UnitStatus    @default(AVAILABLE)
+  condition       UnitCondition @default(GOOD)
+  assignedOrderId String?       @map("assigned_order_id") @db.Uuid
+  purchaseDate    DateTime?     @map("purchase_date") @db.Timestamptz(6)
+  lastServiceDate DateTime?     @map("last_service_date") @db.Timestamptz(6)
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  variant       ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  assignedOrder Order?         @relation(fields: [assignedOrderId], references: [id], onDelete: SetNull)
+  rentalItems   RentalItem[]
+  history       UnitHistory[]
+
+  @@index([variantId, status])
+  @@map("product_units")
+}
+
+model UnitHistory {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  unitId       String   @map("unit_id") @db.Uuid
+  oldStatus    String?  @map("old_status")
+  newStatus    String   @map("new_status")
+  oldCondition String?  @map("old_condition")
+  newCondition String?  @map("new_condition")
+  details      String?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId       String?  @map("user_id") @db.Uuid
+
+  unit ProductUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  user User?       @relation("AdminUnitActions", fields: [userId], references: [id])
+
+  @@map("unit_history")
+}
+
+model SystemNotification {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type        String
+  title       String
+  message     String
+  isRead      Boolean   @default(false) @map("is_read")
+  userId      String?   @map("user_id") @db.Uuid
+  entityId    String?   @map("entity_id") @db.Uuid
+  entityType  String?   @map("entity_type")
+  relatedType String?   @map("related_type")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_system_notifications_user")
+  @@map("system_notifications")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model RentalItem {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId       String          @map("order_id") @db.Uuid
+  variantId     String?         @map("variant_id") @db.Uuid
+  packageId     String?         @map("package_id") @db.Uuid
+  quantity      Int?            @default(1)
+  createdAt     DateTime?       @default(now()) @map("created_at") @db.Timestamptz(6)
+  order         Order           @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  rentalPackage RentalPackage?  @relation(fields: [packageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  variant       ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  unitId        String?         @map("unit_id") @db.Uuid
+  unit          ProductUnit?    @relation(fields: [unitId], references: [id])
+
+  @@map("rental_items")
+}
+
+model User {
+  id                                        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username                                  String               @unique
+  password                                  String
+  email                                     String               @unique
+  fullName                                  String               @map("full_name")
+  whatsapp                                  String
+  baliAddress                               String?              @map("bali_address")
+  mapsAddressLink                           String?              @map("maps_address_link")
+  role                                      String               @default("USER")
+  createdAt                                 DateTime?            @default(now()) @map("created_at") @db.Timestamptz(6)
+  isVerified                                Boolean              @default(false) @map("is_verified")
+  resetPasswordExpires                      DateTime?            @map("reset_password_expires") @db.Timestamptz(6)
+  resetPasswordToken                        String?              @map("reset_password_token")
+  isActive                                  Boolean              @default(true) @map("is_active")
+  profileImage                              String?              @map("profile_image")
+  identityFile                              String?              @map("identity_file")
+  identityType                              String?              @map("identity_type")
+  activityLogs                              ActivityLog[]
+  inventoryResolutions                      InventorySyncLog[]   @relation("InventoryResolutions")
+  inventoryUpdates                          InventorySyncLog[]   @relation("InventoryUpdates")
+  invoices                                  Invoice[]
+  orders_orders_payment_confirmed_byTousers Order[]              @relation("orders_payment_confirmed_byTousers")
+  orders                                    Order[]
+  workerAttendance                          WorkerAttendance[]
+  sentNotifications                         WorkerNotification[] @relation("SentNotifications")
+  receivedNotifications                     WorkerNotification[] @relation("ReceivedNotifications")
+  assignedSchedules                         WorkerSchedule[]     @relation("AssignedSchedules")
+  workerSchedules                           WorkerSchedule[]     @relation("WorkerSchedules")
+
+  // Message relations
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  // Group chat relations
+  chatGroupMemberships   ChatGroupMember[]
+  sentGroupMessages      GroupMessage[]
+  dailyReports           DailyReport[]
+  notificationDismissals NotificationDismissal[]
+  systemNotifications    SystemNotification[]
+  verifiedTransactions   PaymentTransaction[]    @relation("VerifiedTransactions")
+  unitActions            UnitHistory[]           @relation("AdminUnitActions")
+  aiActionApprovals      AiAction[]              @relation("AiActionApprovals")
+
+  @@map("users")
+}
+
+model ChatGroup {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  type      String // 'WORKER_GROUP', 'USER_SUPPORT', 'DIRECT'
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  members  ChatGroupMember[]
+  messages GroupMessage[]
+
+  @@map("chat_groups")
+}
+
+model ChatGroupMember {
+  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  groupId  String   @map("group_id") @db.Uuid
+  userId   String   @map("user_id") @db.Uuid
+  role     String   @default("MEMBER") // 'ADMIN', 'MEMBER'
+  joinedAt DateTime @default(now()) @map("joined_at") @db.Timestamptz(6)
+
+  group ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([userId], map: "idx_chat_group_members_user")
+  @@index([groupId], map: "idx_chat_group_members_group")
+  @@map("chat_group_members")
+}
+
+model GroupMessage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  groupId   String   @map("group_id") @db.Uuid
+  senderId  String   @map("sender_id") @db.Uuid
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  group  ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([groupId], map: "idx_group_messages_group")
+  @@index([createdAt(sort: Desc)], map: "idx_group_messages_created")
+  @@map("group_messages")
+}
+
+model SiteSetting {
+  key        String   @id
+  value      Json?
+  section    String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model ActivityLog {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action    String
+  entity    String
+  details   String?
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String?  @map("user_id") @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@map("activity_logs")
+}
+
+model WorkerSchedule {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workerId       String           @map("worker_id") @db.Uuid
+  orderId        String           @map("order_id") @db.Uuid
+  assignedBy     String           @map("assigned_by") @db.Uuid
+  assignedAt     DateTime?        @default(now()) @map("assigned_at") @db.Timestamptz(6)
+  status         schedule_status? @default(PENDING)
+  scheduledDate  DateTime         @map("scheduled_date") @db.Date
+  notes          String?
+  workerNotes    String?          @map("worker_notes")
+  createdAt      DateTime?        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime?        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  assignedByUser User             @relation("AssignedSchedules", fields: [assignedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  order          Order            @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  worker         User             @relation("WorkerSchedules", fields: [workerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  dailyReports   DailyReport[]
+
+  @@index([scheduledDate], map: "idx_worker_schedules_date")
+  @@index([orderId], map: "idx_worker_schedules_order")
+  @@index([status], map: "idx_worker_schedules_status")
+  @@index([workerId], map: "idx_worker_schedules_worker")
+  @@map("worker_schedules")
+}
+
+model WorkerAttendance {
+  id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workerId     String             @map("worker_id") @db.Uuid
+  date         DateTime           @db.Date
+  status       attendance_status? @default(PRESENT)
+  checkInTime  DateTime?          @map("check_in_time") @db.Timestamptz(6)
+  checkOutTime DateTime?          @map("check_out_time") @db.Timestamptz(6)
+  notes        String?
+  createdAt    DateTime?          @default(now()) @map("created_at") @db.Timestamptz(6)
+  worker       User               @relation(fields: [workerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([workerId, date])
+  @@index([date], map: "idx_worker_attendance_date")
+  @@index([workerId, date], map: "idx_worker_attendance_worker_date")
+  @@map("worker_attendance")
+}
+
+model InventorySyncLog {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId      String           @map("product_id") @db.Uuid
+  oldQuantity    Int              @map("old_quantity")
+  newQuantity    Int              @map("new_quantity")
+  updatedBy      String           @map("updated_by") @db.Uuid
+  source         inventory_source
+  conflict       Boolean?         @default(false)
+  resolved       Boolean?         @default(false)
+  resolvedBy     String?          @map("resolved_by") @db.Uuid
+  resolvedAt     DateTime?        @map("resolved_at") @db.Timestamptz(6)
+  createdAt      DateTime?        @default(now()) @map("created_at") @db.Timestamptz(6)
+  product        Product          @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  resolvedByUser User?            @relation("InventoryResolutions", fields: [resolvedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedByUser  User             @relation("InventoryUpdates", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([createdAt(sort: Desc)], map: "idx_inventory_sync_logs_created")
+  @@index([productId], map: "idx_inventory_sync_logs_product")
+  @@map("inventory_sync_logs")
+}
+
+model WorkerNotification {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workerId    String    @map("worker_id") @db.Uuid
+  fromAdminId String?   @map("from_admin_id") @db.Uuid
+  type        String    @db.VarChar(50)
+  title       String    @db.VarChar(255)
+  message     String
+  isRead      Boolean?  @default(false) @map("is_read")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  fromAdmin   User?     @relation("SentNotifications", fields: [fromAdminId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  worker      User      @relation("ReceivedNotifications", fields: [workerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([workerId], map: "idx_worker_notifications_worker")
+  @@map("worker_notifications")
+}
+
+model Message {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  senderId   String   @map("sender_id") @db.Uuid
+  receiverId String   @map("receiver_id") @db.Uuid
+  content    String
+  isRead     Boolean  @default(false) @map("is_read")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model DailyReport {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workerId       String   @map("worker_id") @db.Uuid
+  scheduleId     String?  @map("schedule_id") @db.Uuid
+  reportDate     DateTime @default(now()) @map("report_date") @db.Timestamptz(6)
+  jobSummary     String   @map("job_summary") @db.Text
+  deliveryStatus String   @map("delivery_status") // 'ONGOING', 'DELIVERED', 'CANCELLED', 'DELAYED'
+  notes          String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  worker        User                    @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  schedule      WorkerSchedule?         @relation(fields: [scheduleId], references: [id])
+  deliveryItems DeliveryChecklistItem[]
+
+  @@index([workerId], map: "idx_daily_reports_worker")
+  @@index([reportDate(sort: Desc)], map: "idx_daily_reports_date")
+  @@map("daily_reports")
+}
+
+model DeliveryChecklistItem {
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reportId     String  @map("report_id") @db.Uuid
+  rentalItemId String  @map("rental_item_id") @db.Uuid
+  itemName     String  @map("item_name")
+  quantity     Int
+  status       String // 'DELIVERED', 'DAMAGED', 'MISSING', 'RETURNED'
+  notes        String?
+
+  report DailyReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId], map: "idx_delivery_checklist_report")
+  @@map("delivery_checklist_items")
+}
+
+enum attendance_status {
+  PRESENT
+  ABSENT
+  LATE
+  LEAVE
+}
+
+enum inventory_source {
+  ADMIN
+  WORKER
+}
+
+enum schedule_status {
+  PENDING
+  ONGOING
+  FINISHED
+  DELAYED
+  CANCELLED
+}
+
+model NotificationDismissal {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  entityId   String   @map("entity_id") @db.Uuid
+  entityType String   @map("entity_type") // ORDER, MESSAGE, REPORT, SYSTEM
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, entityId, entityType])
+  @@map("notification_dismissals")
+}
+
+model SystemJobLog {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobName   String   @map("job_name") // CURRENCY_UPDATE, SMART_CHECK
+  status    String // SUCCESS, FAILED
+  message   String?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([jobName, createdAt(sort: Desc)], map: "idx_system_jobs_latest")
+  @@map("system_job_logs")
+}
+
+model IdempotencyKey {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key       String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  response  Json? // Store the successful response to return it for duplicate calls
+
+  @@map("idempotency_keys")
+}
+
+model JobQueue {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type        String    @db.VarChar(50) // EMAIL, NOTIFICATION, etc.
+  payload     Json
+  status      String    @default("PENDING") // PENDING, PROCESSING, DONE, FAILED
+  retryCount  Int       @default(0) @map("retry_count")
+  runAt       DateTime? @default(now()) @map("run_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  processedAt DateTime? @map("processed_at") @db.Timestamptz(6)
+  error       String?
+
+  @@index([status, runAt], map: "idx_job_queue_status_run")
+  @@map("job_queue")
+}
+
+model CronLock {
+  id       String   @id @default("CRON_LOCK")
+  lockedAt DateTime @default(now()) @map("locked_at") @db.Timestamptz(6)
+  lockedBy String?  @map("locked_by")
+
+  @@map("cron_locks")
+}
+
+enum OrderStatus {
+  DRAFT
+  AWAITING_PAYMENT
+  PAYMENT_PENDING_VERIFICATION
+  PAID
+  READY_FOR_FULFILLMENT
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum PaymentProvider {
+  STRIPE
+  WISE
+  PAYPAL
+  APPLE_PAY
+  CARD
+  CRYPTO
+  EDC
+  QRIS
+  BANK_TRANSFER
+  CASH
+}
+
+enum TransactionStatus {
+  INITIATED
+  PENDING_VERIFICATION
+  CONFIRMED
+  FAILED
+  EXPIRED
+}
+
+enum RelationType {
+  CROSS_SELL
+  UPSELL
+  ACCESSORY
+}
+
+enum UnitStatus {
+  AVAILABLE
+  RESERVED
+  RENTED
+  MAINTENANCE
+  LOST
+}
+
+enum UnitCondition {
+  GOOD
+  FAIR
+  DAMAGED
+  NEEDS_SERVICE
+}
+
+enum AiAgentSystemName {
+  SALES
+  WORKER
+  RISK
+  SELLER
+  MASTER
+}
+
+enum AiActionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXECUTED
+}
+
+model AiAgent {
+  id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  systemName    AiAgentSystemName @unique @map("system_name")
+  displayName   String            @map("display_name")
+  isActive      Boolean           @default(true) @map("is_active")
+  canMutateData Boolean           @default(false) @map("can_mutate_data")
+  createdAt     DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  permissions  AiPermission?
+  actions      AiAction[]
+  trainingData AiTrainingData[]
+
+  @@map("ai_agents")
+}
+
+model AiPermission {
+  id                        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  agentId                   String  @unique @map("agent_id") @db.Uuid
+  canModifyProducts         Boolean @default(false) @map("can_modify_products")
+  canModifyPackages         Boolean @default(false) @map("can_modify_packages")
+  canModifyOrders           Boolean @default(false) @map("can_modify_orders")
+  requiresAdminConfirmation Boolean @default(true) @map("requires_admin_confirmation")
+
+  agent AiAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("ai_permissions")
+}
+
+model AiAction {
+  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  agentId       String         @map("agent_id") @db.Uuid
+  actionType    String         @map("action_type")
+  payloadBefore Json?          @map("payload_before")
+  payloadAfter  Json           @map("payload_after")
+  status        AiActionStatus @default(PENDING)
+  approvedBy    String?        @map("approved_by") @db.Uuid
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  executedAt    DateTime?      @map("executed_at") @db.Timestamptz(6)
+
+  agent    AiAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  approver User?   @relation("AiActionApprovals", fields: [approvedBy], references: [id])
+
+  @@map("ai_actions")
+}
+
+model AiTrainingData {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  agentId       String   @map("agent_id") @db.Uuid
+  suggestion    String   @db.Text
+  adminDecision String   @map("admin_decision")
+  feedbackScore Int?     @map("feedback_score")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  agent AiAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("ai_training_data")
+}

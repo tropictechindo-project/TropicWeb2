@@ -71,7 +71,11 @@ export default async function AdminReportsPage() {
             category: true,
             variants: {
                 select: {
-                    reservedQuantity: true
+                    units: {
+                        where: {
+                            status: 'RESERVED'
+                        }
+                    }
                 }
             }
         }
@@ -79,7 +83,7 @@ export default async function AdminReportsPage() {
 
     const categoryCounts: Record<string, number> = {}
     categories.forEach(p => {
-        const reservedSum = p.variants.reduce((acc, v) => acc + v.reservedQuantity, 0)
+        const reservedSum = p.variants.reduce((acc, v) => acc + v.units.length, 0)
         if (reservedSum > 0) {
             categoryCounts[p.category] = (categoryCounts[p.category] || 0) + reservedSum
         }

@@ -30,8 +30,17 @@ export async function PATCH(
                 guestEmail,
                 guestWhatsapp,
                 guestAddress: address
-            }
+            },
+            include: { order: true }
         })
+
+        // Sync with order if status is PAID
+        if (status === 'PAID' && invoice.orderId) {
+            await db.order.update({
+                where: { id: invoice.orderId },
+                data: { status: 'CONFIRMED' }
+            })
+        }
 
         await logActivity({
             userId: adminId,

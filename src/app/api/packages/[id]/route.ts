@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { logActivity } from '@/lib/logger'
 
 export async function GET(
   request: NextRequest,
@@ -66,6 +67,7 @@ export async function PUT(
           price,
           duration,
           imageUrl,
+          discountPercentage: data.discountPercentage || 0,
           rentalPackageItems: {
             create: items.map((item: any) => ({
               productId: item.productId,
@@ -77,6 +79,12 @@ export async function PUT(
           rentalPackageItems: true,
         },
       })
+    })
+
+    await logActivity({
+      action: 'UPDATE_PACKAGE',
+      entity: 'RentalPackage',
+      details: `Updated package ${rentalPackage.name} (ID: ${id})`
     })
 
     const formattedPackage = {
@@ -105,6 +113,13 @@ export async function DELETE(
     await db.rentalPackage.delete({
       where: { id },
     })
+
+    await logActivity({
+      action: 'DELETE_PACKAGE',
+      entity: 'RentalPackage',
+      details: `Deleted package ID: ${id}`
+    })
+
     return NextResponse.json({ message: 'Package deleted' })
   } catch (error) {
     console.error('Error deleting package:', error)

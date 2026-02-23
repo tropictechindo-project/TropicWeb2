@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog"
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { Badge } from "@/components/ui/badge"
 
 interface Product {
     id: string
@@ -33,6 +34,8 @@ interface Product {
     description: string | null
     imageUrl: string | null
     stock: number | null
+    discountPercentage: number
+    variants: any[]
     isDeletable: boolean
 }
 
@@ -52,12 +55,16 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         category: "",
         price: "",
         description: "",
-        imageUrl: ""
+        imageUrl: "",
+        discountPercentage: "0",
+        variants: [] as any[]
     })
+    const [variantForm, setVariantForm] = useState({ color: "", stockQuantity: "0" })
 
     const resetForm = () => {
-        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "" })
+        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "", discountPercentage: "0", variants: [] })
         setEditingProduct(null)
+        setVariantForm({ color: "", stockQuantity: "0" })
     }
 
     const handleOpenChange = (open: boolean) => {
@@ -72,7 +79,9 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             category: product.category,
             price: product.price.toString(),
             description: product.description || "",
-            imageUrl: product.imageUrl || ""
+            imageUrl: product.imageUrl || "",
+            discountPercentage: product.discountPercentage?.toString() || "0",
+            variants: product.variants || []
         })
         setIsOpen(true)
     }
@@ -110,7 +119,9 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     category: formData.category,
                     monthlyPrice: parseFloat(formData.price),
                     description: formData.description,
-                    imageUrl: formData.imageUrl
+                    imageUrl: formData.imageUrl,
+                    discountPercentage: parseInt(formData.discountPercentage),
+                    variants: formData.variants
                 })
             })
 
@@ -223,6 +234,17 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                                 />
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="discount">Discount (%)</Label>
+                                <Input
+                                    id="discount"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={formData.discountPercentage}
+                                    onChange={(e) => setFormData({ ...formData, discountPercentage: e.target.value })}
+                                />
+                            </div>
                         </div>
 
                         {formData.imageUrl && (
@@ -239,6 +261,82 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                 rows={4}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             />
+                        </div>
+
+                        <div className="space-y-4 border-t pt-4">
+                            <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Variants & Stock (By Color)</Label>
+
+                            <div className="grid grid-cols-3 gap-2 items-end">
+                                <div className="space-y-1">
+                                    <Label htmlFor="color" className="text-[10px]">Color</Label>
+                                    <Input
+                                        id="color"
+                                        placeholder="e.g. Matte Black"
+                                        value={variantForm.color}
+                                        onChange={e => setVariantForm({ ...variantForm, color: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="vstock" className="text-[10px]">Stock</Label>
+                                    <Input
+                                        id="vstock"
+                                        type="number"
+                                        value={variantForm.stockQuantity}
+                                        onChange={e => setVariantForm({ ...variantForm, stockQuantity: e.target.value })}
+                                    />
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="font-bold border-primary/20 hover:bg-primary/5 h-10"
+                                    onClick={() => {
+                                        if (!variantForm.color) return;
+                                        const newVariant = {
+                                            color: variantForm.color,
+                                            stockQuantity: parseInt(variantForm.stockQuantity) || 0,
+                                            reservedQuantity: 0,
+                                            sku: `${formData.name.substring(0, 3).toUpperCase()}-${variantForm.color.substring(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`
+                                        };
+                                        setFormData({
+                                            ...formData,
+                                            variants: [...formData.variants, newVariant]
+                                        });
+                                        setVariantForm({ color: "", stockQuantity: "0" });
+                                    }}
+                                >
+                                    Add Color
+                                </Button>
+                            </div>
+
+                            <div className="space-y-2">
+                                {formData.variants.map((v, i) => (
+                                    <div key={i} className="flex items-center justify-between p-3 bg-primary/5 rounded-xl border border-primary/10 text-sm">
+                                        <div>
+                                            <span className="font-extrabold text-primary">{v.color}</span>
+                                            <span className="mx-2 text-zinc-300 opacity-20">|</span>
+                                            <span className="font-mono text-[10px] uppercase font-bold text-zinc-500 mr-2">{v.sku}</span>
+                                            <Badge variant="outline" className="font-bold text-[10px]">STOCK: {v.stockQuantity}</Badge>
+                                        </div>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-6 w-6 text-destructive hover:bg-destructive/10"
+                                            onClick={() => {
+                                                setFormData({
+                                                    ...formData,
+                                                    variants: formData.variants.filter((_, idx) => idx !== i)
+                                                });
+                                            }}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                ))}
+                                {formData.variants.length === 0 && (
+                                    <p className="text-xs text-muted-foreground italic text-center py-4 bg-muted/20 rounded-xl border border-dashed">No variants added yet. Add at least one for stock management.</p>
+                                )}
+                            </div>
                         </div>
 
                         <DialogFooter className="mt-6">

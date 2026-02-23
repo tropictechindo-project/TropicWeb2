@@ -34,6 +34,7 @@ export default async function AdminPackagesPage() {
         duration: pkg.duration,
         imageUrl: pkg.imageUrl,
         createdAt: pkg.createdAt?.toISOString() || null,
+        discountPercentage: pkg.discountPercentage || 0,
         items: pkg.rentalPackageItems.map(item => ({
             id: item.id,
             productId: item.productId,

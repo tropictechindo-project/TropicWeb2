@@ -1,97 +1,78 @@
+import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Header from '@/components/header/Header'
 import Hero from '@/components/landing/Hero'
 import LandingClient from '@/components/landing/LandingClient'
-
 import { db } from '@/lib/db'
 
-// Dynamically import below-the-fold components
-const Products = dynamic(() => import('@/components/landing/Products'))
-const Packages = dynamic(() => import('@/components/landing/Packages'))
-const Services = dynamic(() => import('@/components/landing/Services'))
-const FAQ = dynamic(() => import('@/components/landing/FAQ'))
-const AboutUs = dynamic(() => import('@/components/landing/AboutUs'))
-const Reviews = dynamic(() => import('@/components/landing/Reviews'))
+// ─── Critical above-fold: eager ────────────────────────────────────────────
+// Header + Hero are imported eagerly (no dynamic()) for best LCP
+
+// ─── Below-fold: lazy with Suspense skeletons ───────────────────────────────
+const Products = dynamic(() => import('@/components/landing/Products'), {
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const Packages = dynamic(() => import('@/components/landing/Packages'), {
+  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const Services = dynamic(() => import('@/components/landing/Services'), {
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const FAQ = dynamic(() => import('@/components/landing/FAQ'), {
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const AboutUs = dynamic(() => import('@/components/landing/AboutUs'), {
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const Reviews = dynamic(() => import('@/components/landing/Reviews'), {
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
 const Footer = dynamic(() => import('@/components/landing/Footer'))
+const SellerChatBubble = dynamic(() =>
+  import('@/components/ai/SellerChatBubble').then(m => ({ default: m.SellerChatBubble }))
+)
 
-export const revalidate = 60 // Revalidate every minute
+export const revalidate = 60
 
-
+// ─── Data fetching ──────────────────────────────────────────────────────────
 async function getHeroSettings() {
   try {
     const settings = await db.siteSetting.findMany({
       where: {
-        key: {
-          in: ['hero_title', 'hero_subtitle', 'hero_subtitle2', 'hero_image', 'hero_opacity_default', 'hero_show_slider']
-        }
+        key: { in: ['hero_title', 'hero_subtitle', 'hero_subtitle2', 'hero_image', 'hero_opacity_default', 'hero_show_slider'] }
       }
     })
-
-    const settingMap = settings.reduce((acc, curr) => {
-      acc[curr.key] = curr.value
-      return acc
-    }, {} as any)
-
-    return {
-      hero_title: settingMap.hero_title,
-      hero_subtitle: settingMap.hero_subtitle,
-      hero_subtitle2: settingMap.hero_subtitle2,
-      hero_image: settingMap.hero_image,
-      hero_opacity_default: settingMap.hero_opacity_default,
-      hero_show_slider: settingMap.hero_show_slider,
-    }
-  } catch (error) {
-    console.warn('Failed to fetch hero settings:', error)
-    return {}
-  }
+    return settings.reduce((acc, curr) => { acc[curr.key] = curr.value; return acc }, {} as any)
+  } catch { return {} }
 }
 
 async function getProducts() {
   try {
     const products = await db.product.findMany({
-      orderBy: {
-        monthlyPrice: 'asc', // Sort by price first
-      },
-      include: { variants: true }
+      orderBy: { monthlyPrice: 'asc' },
+      include: { variants: { include: { units: true } } }
     })
-
-    // Custom sort order: Desk -> Monitor -> Chair -> Others
-    const categoryOrder = { 'Desk': 1, 'Monitor': 2, 'Chair': 3 }
-
-    const sortedProducts = products.sort((a, b) => {
-      const orderA = categoryOrder[a.category as keyof typeof categoryOrder] || 4
-      const orderB = categoryOrder[b.category as keyof typeof categoryOrder] || 4
-
-      if (orderA !== orderB) return orderA - orderB
-      return Number(a.monthlyPrice) - Number(b.monthlyPrice)
-    })
-
-    return sortedProducts.map(p => {
-      const stock = p.variants.reduce((total, v) => total + (v.stockQuantity - v.reservedQuantity), 0)
-      return {
+    const categoryOrder: Record<string, number> = { 'Desk': 1, 'Monitor': 2, 'Chair': 3 }
+    return products
+      .sort((a, b) => {
+        const oa = categoryOrder[a.category] ?? 4
+        const ob = categoryOrder[b.category] ?? 4
+        return oa !== ob ? oa - ob : Number(a.monthlyPrice) - Number(b.monthlyPrice)
+      })
+      .map(p => ({
         ...p,
-        stock: Math.max(0, stock),
-        monthlyPrice: Number(p.monthlyPrice), // Ensure decimal is number for JSON serialization
-      }
-    })
-  } catch (error) {
-    console.warn('Failed to fetch products:', error)
-    return []
-  }
+        stock: Math.max(0, p.variants.reduce((t, v) => t + v.units.filter(u => u.status === 'AVAILABLE').length, 0)),
+        monthlyPrice: Number(p.monthlyPrice),
+      }))
+  } catch { return [] }
 }
 
 async function getPackages() {
   try {
     const packages = await db.rentalPackage.findMany({
-      orderBy: { price: 'desc' }, // Sort by price descending (expensive first)
-      take: 3, // Only showing 3 packages (excluding cheapest if sorted desc)
-      include: {
-        rentalPackageItems: {
-          include: {
-            product: true
-          }
-        }
-      }
+      orderBy: { price: 'desc' },
+      take: 3,
+      include: { rentalPackageItems: { include: { product: true } } }
     })
     return packages.map(pkg => ({
       id: pkg.id,
@@ -106,67 +87,71 @@ async function getPackages() {
         productId: item.productId,
         name: item.product.name,
         quantity: item.quantity || 0,
-        product: {
-          name: item.product.name
-        }
+        product: { name: item.product.name }
       }))
     }))
-  } catch (error) {
-    console.warn('Failed to fetch packages:', error)
-    return []
-  }
+  } catch { return [] }
 }
 
 async function getServiceSettings() {
   try {
     const settings = await db.siteSetting.findMany({
-      where: {
-        key: {
-          in: ['services_title', 'services_text', 'services_data']
-        }
-      }
+      where: { key: { in: ['services_title', 'services_text', 'services_data'] } }
     })
-    const settingMap = settings.reduce((acc, curr) => {
-      acc[curr.key] = curr.value
-      return acc
-    }, {} as any)
-    return settingMap
-  } catch (error) {
-    console.warn('Failed to fetch service settings:', error)
-    return {}
-  }
+    return settings.reduce((acc, curr) => { acc[curr.key] = curr.value; return acc }, {} as any)
+  } catch { return {} }
 }
 
+// ─── Page ───────────────────────────────────────────────────────────────────
 export default async function Home() {
   const [heroSettings, products, packages, serviceSettings] = await Promise.all([
-    getHeroSettings(),
-    getProducts(),
-    getPackages(),
-    getServiceSettings()
+    getHeroSettings(), getProducts(), getPackages(), getServiceSettings()
   ])
-
-  // Serialize to ensure no Decimal/Date objects are passed
   const serializedProducts = JSON.parse(JSON.stringify(products))
   const serializedPackages = JSON.parse(JSON.stringify(packages))
 
+  const SITE_URL = 'https://tropictech.online'
+
   return (
     <div className="min-h-screen flex flex-col">
+      {/* ── Critical: Header NOT lazy loaded per user requirement ── */}
       <Header />
-      <main className="flex-1">
-        <Hero initialSettings={heroSettings} />
-        <LandingClient>
-          <Products initialProducts={serializedProducts} />
-          <Packages initialPackages={serializedPackages} />
-        </LandingClient>
-        <Services initialSettings={serviceSettings} />
 
-        <FAQ />
-        <AboutUs />
-        <Reviews />
+      <main id="main-content" className="flex-1">
+        {/* ── LCP: Hero above fold, eager ── */}
+        <Hero initialSettings={heroSettings} />
+
+        {/* ── Below fold with Suspense boundaries ── */}
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+          <LandingClient>
+            <Products initialProducts={serializedProducts} />
+            <Packages initialPackages={serializedPackages} />
+          </LandingClient>
+        </Suspense>
+
+        <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+          <Services initialSettings={serviceSettings} />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <FAQ />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <AboutUs />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <Reviews />
+        </Suspense>
       </main>
+
       <Footer />
 
-      {/* Enhanced Structured Data for SEO Gold Status */}
+      {/* ── AI chat: client-only, non-blocking ── */}
+      <SellerChatBubble />
+
+      {/* ── Structured Data: RentalBusiness (SEO Gold) ── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -174,12 +159,12 @@ export default async function Home() {
             "@context": "https://schema.org",
             "@type": "RentalBusiness",
             "name": "Tropic Tech - #1 Workstation Rental Bali",
-            "description": "Premium workstation and office equipment rental in Bali. High-performance monitors, ergonomic chairs, and desks for digital nomads. 5+ years experience with fast island-wide delivery.",
-            "url": "https://testdomain.fun",
+            "description": "Premium workstation and office equipment rental in Bali. High-performance monitors, ergonomic chairs, and desks for digital nomads and remote workers. 5+ years experience with fast island-wide delivery.",
+            "url": SITE_URL,
             "telephone": "+6282266574860",
             "email": "tropictechindo@gmail.com",
-            "logo": "https://i.ibb.co.am/Pzbsg8mx/2.jpg",
-            "image": "https://i.ibb.co.am/Pzbsg8mx/2.jpg",
+            "logo": `${SITE_URL}/images/Logo.webp`,
+            "image": `${SITE_URL}/images/og-image.webp`,
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "Jl. Tunjungsari No.8",
@@ -208,40 +193,49 @@ export default async function Home() {
               }
             ],
             "priceRange": "Rp 50,000 - Rp 2,000,000",
+            "currenciesAccepted": "IDR",
+            "paymentAccepted": "Cash, Bank Transfer",
+            "areaServed": [
+              { "@type": "City", "name": "Canggu" },
+              { "@type": "City", "name": "Seminyak" },
+              { "@type": "City", "name": "Ubud" },
+              { "@type": "City", "name": "Denpasar" },
+              { "@type": "City", "name": "Kuta" }
+            ],
             "sameAs": [
               "https://www.instagram.com/tropictechs",
-              "https://wa.me/6282266574860"
+              "https://wa.me/6282266574860",
+              "https://tropictechbali.com"
             ],
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
-              "name": "Workstation & Office Rental Services",
+              "name": "Workstation & Office Equipment Rental",
               "itemListElement": [
                 {
                   "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Monitor Rental (Standard & Ultrawide)"
-                  }
+                  "name": "Monitor Rental Bali",
+                  "description": "Standard HD to 4K Ultrawide monitors for rent in Bali. Ideal for digital nomads and remote workers.",
+                  "itemOffered": { "@type": "Service", "name": "Monitor Rental (Standard & Ultrawide)" }
                 },
                 {
                   "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Ergonomic Office Chair Rental"
-                  }
+                  "name": "Ergonomic Chair Rental Bali",
+                  "description": "Premium ergonomic office chairs for rent. Perfect for long remote work sessions in Bali.",
+                  "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental" }
                 },
                 {
                   "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Standing Desk & Office Table Rental"
-                  }
+                  "name": "Standing Desk Rental Bali",
+                  "description": "Electric standing desks and office tables for rent. Available for daily, weekly, or monthly rental.",
+                  "itemOffered": { "@type": "Service", "name": "Standing Desk & Office Table Rental" }
                 }
               ]
             }
           })
         }}
       />
+
+      {/* ── Structured Data: FAQPage ── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -254,18 +248,55 @@ export default async function Home() {
                 "name": "How do I rent workstation equipment in Bali?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Browse our products on testdomain.fun, select your duration (daily/weekly/monthly), and place an order. We offer fast delivery across Bali including Canggu, Ubud, and Seminyak."
+                  "text": "Browse our products on tropictech.online, select your rental duration (daily, weekly, or monthly), and place an order. We offer fast delivery across Bali including Canggu, Ubud, Seminyak, and Denpasar."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Do you offer ergonomic chairs for rent?",
+                "name": "Do you offer ergonomic chairs for rent in Bali?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, we provide premium ergonomic office chairs from top brands like ErgoChair and Sihoo, specifically designed for long hours of remote work."
+                  "text": "Yes, we provide premium ergonomic office chairs specifically designed for long hours of remote work. Available for daily, weekly, or monthly rental with free delivery in Bali."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What areas in Bali do you deliver to?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We deliver workstation equipment across all of Bali, including Canggu, Seminyak, Ubud, Denpasar, Kuta, Legian, Sanur, and Jimbaran."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I rent a complete workstation setup in Bali?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes! We offer complete workstation packages that include a monitor, ergonomic chair, and standing desk. Packages are available for digital nomads, remote workers, and businesses needing temporary office setups in Bali."
                 }
               }
             ]
+          })
+        }}
+      />
+
+      {/* ── Structured Data: WebSite with SearchAction ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Tropic Tech",
+            "url": SITE_URL,
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": `${SITE_URL}/?s={search_term_string}`
+              },
+              "query-input": "required name=search_term_string"
+            }
           })
         }}
       />

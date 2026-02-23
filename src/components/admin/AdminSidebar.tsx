@@ -15,7 +15,8 @@ import {
     Sun,
     Moon,
     MessageSquare,
-    Globe
+    Globe,
+    Bot
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
@@ -95,6 +96,11 @@ const items = [
         title: "Website",
         url: "/admin/website",
         icon: Globe,
+    },
+    {
+        title: "AI Control",
+        url: "/admin/ai",
+        icon: Bot,
     },
     {
         title: "System Control",

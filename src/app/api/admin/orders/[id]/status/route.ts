@@ -20,11 +20,75 @@ export async function POST(
         const { status } = await request.json()
         const { id } = await params
 
-        const order = await db.order.update({
-            where: { id },
-            data: { status },
-            include: { user: true }
+        const result = await db.$transaction(async (tx) => {
+            const order = await tx.order.update({
+                where: { id },
+                data: { status },
+                include: {
+                    user: true,
+                    rentalItems: {
+                        include: { unit: true }
+                    }
+                }
+            })
+
+            // If COMPLETED, return units to AVAILABLE
+            if (status === 'COMPLETED') {
+                for (const item of order.rentalItems) {
+                    if (item.unitId) {
+                        const unit = item.unit
+                        await tx.productUnit.update({
+                            where: { id: item.unitId },
+                            data: {
+                                status: 'AVAILABLE',
+                                lastServiceDate: new Date(),
+                                assignedOrderId: null
+                            }
+                        })
+
+                        await tx.unitHistory.create({
+                            data: {
+                                unitId: item.unitId,
+                                oldStatus: unit?.status || 'RENTED',
+                                newStatus: 'AVAILABLE',
+                                details: `Order #${order.orderNumber} completed. Unit returned to stock.`,
+                                userId: payload.userId
+                            }
+                        })
+                    }
+                }
+            }
+
+            // Also handle CANCELLED if it happens through this generic route
+            if (status === 'CANCELLED') {
+                for (const item of order.rentalItems) {
+                    if (item.unitId) {
+                        const unit = item.unit
+                        await tx.productUnit.update({
+                            where: { id: item.unitId },
+                            data: {
+                                status: 'AVAILABLE',
+                                assignedOrderId: null
+                            }
+                        })
+
+                        await tx.unitHistory.create({
+                            data: {
+                                unitId: item.unitId,
+                                oldStatus: unit?.status || 'RESERVED',
+                                newStatus: 'AVAILABLE',
+                                details: `Order #${order.orderNumber} cancelled. Unit released.`,
+                                userId: payload.userId
+                            }
+                        })
+                    }
+                }
+            }
+
+            return order
         })
+
+        const order = result
 
         // Log activity
         await logActivity({

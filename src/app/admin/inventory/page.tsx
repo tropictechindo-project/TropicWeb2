@@ -6,7 +6,11 @@ export const dynamic = 'force-dynamic'
 export default async function AdminInventoryPage() {
     const products = await db.product.findMany({
         include: {
-            variants: true
+            variants: {
+                include: {
+                    units: true
+                }
+            }
         },
         orderBy: { name: 'asc' }
     })
@@ -17,11 +21,13 @@ export default async function AdminInventoryPage() {
             productId: p.id,
             name: `${p.name} (${v.color})`,
             category: p.category,
-            total: v.stockQuantity,
-            available: v.stockQuantity - v.reservedQuantity,
-            rented: v.reservedQuantity,
-            broken: 0, // Deprecated in variant model
-            status: (v.stockQuantity - v.reservedQuantity > 0) ? 'HEALTHY' : 'OUT_OF_STOCK'
+            total: v.units.length,
+            available: v.units.filter(u => u.status === 'AVAILABLE').length,
+            reserved: v.units.filter(u => u.status === 'RESERVED').length,
+            rented: v.units.filter(u => u.status === 'RENTED').length,
+            maintenance: v.units.filter(u => u.status === 'MAINTENANCE').length,
+            lost: v.units.filter(u => u.status === 'LOST').length,
+            status: (v.units.filter(u => u.status === 'AVAILABLE').length > 0) ? 'HEALTHY' : 'OUT_OF_STOCK'
         }))
     )
 

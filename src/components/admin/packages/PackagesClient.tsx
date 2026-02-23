@@ -47,6 +47,7 @@ interface Package {
     duration: number
     imageUrl: string | null
     items: PackageItem[]
+    discountPercentage: number
     isDeletable: boolean
 }
 
@@ -73,7 +74,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
         description: "",
         price: "",
         duration: "1", // Default 1 month
-        imageUrl: ""
+        imageUrl: "",
+        discountPercentage: "0"
     })
     const [selectedItems, setSelectedItems] = useState<PackageItem[]>([])
 
@@ -82,7 +84,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
     const [itemQuantity, setItemQuantity] = useState<string>("1")
 
     const resetForm = () => {
-        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "" })
+        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "", discountPercentage: "0" })
         setSelectedItems([])
         setEditingId(null)
         setSelectedProductId("")
@@ -101,7 +103,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
             description: pkg.description || "",
             price: pkg.price.toString(),
             duration: pkg.duration.toString(),
-            imageUrl: pkg.imageUrl || ""
+            imageUrl: pkg.imageUrl || "",
+            discountPercentage: pkg.discountPercentage?.toString() || "0"
         })
         setSelectedItems([...pkg.items])
         setIsOpen(true)
@@ -166,6 +169,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                     price: parseFloat(formData.price),
                     duration: parseInt(formData.duration),
                     imageUrl: formData.imageUrl,
+                    discountPercentage: parseInt(formData.discountPercentage),
                     items: selectedItems.map(i => ({
                         productId: i.productId,
                         quantity: i.quantity
@@ -258,25 +262,38 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                             <Label htmlFor="description">Description (Optional)</Label>
                             <Textarea id="description" value={formData.description} rows={3} onChange={e => setFormData({ ...formData, description: e.target.value })} />
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="imageUrl">Photo / Image Link</Label>
-                            <Input
-                                id="imageUrl"
-                                placeholder="https://example.com/image.jpg"
-                                value={formData.imageUrl}
-                                onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                            />
-                            {formData.imageUrl && (
-                                <div className="mt-2 relative h-32 w-full overflow-hidden rounded-xl border bg-muted">
-                                    <img
-                                        src={formData.imageUrl}
-                                        alt="Preview"
-                                        className="h-full w-full object-cover"
-                                        onError={(e) => (e.currentTarget.style.display = 'none')}
-                                    />
-                                </div>
-                            )}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="imageUrl">Photo / Image Link</Label>
+                                <Input
+                                    id="imageUrl"
+                                    placeholder="https://example.com/image.jpg"
+                                    value={formData.imageUrl}
+                                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="discount">Discount (%)</Label>
+                                <Input
+                                    id="discount"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={formData.discountPercentage}
+                                    onChange={(e) => setFormData({ ...formData, discountPercentage: e.target.value })}
+                                />
+                            </div>
                         </div>
+                        {formData.imageUrl && (
+                            <div className="mt-2 relative h-32 w-full overflow-hidden rounded-xl border bg-muted">
+                                <img
+                                    src={formData.imageUrl}
+                                    alt="Preview"
+                                    className="h-full w-full object-cover"
+                                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                            </div>
+                        )}
 
                         <div className="space-y-2 border-t pt-4">
                             <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Package Items</Label>

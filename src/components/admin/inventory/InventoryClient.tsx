@@ -22,7 +22,10 @@ interface ProductAsset {
     category: string
     total: number
     available: number
+    reserved: number
     rented: number
+    maintenance: number
+    lost: number
     status: string
 }
 
@@ -147,10 +150,13 @@ export function InventoryClient({ productAssets, products }: InventoryClientProp
                         <TableRow>
                             <TableHead className="text-[10px] uppercase font-black">Variant Name</TableHead>
                             <TableHead className="text-[10px] uppercase font-black">Type</TableHead>
-                            <TableHead className="text-[10px] uppercase font-black text-center">Available</TableHead>
-                            <TableHead className="text-[10px] uppercase font-black text-center text-orange-600">Reserved</TableHead>
-                            <TableHead className="text-[10px] uppercase font-black text-center">Total Stock</TableHead>
-                            <TableHead className="text-[10px] uppercase font-black text-center">Health Status</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center text-green-600">Available</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center text-blue-600">Reserved</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center text-orange-600">Rented</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center text-yellow-600">Maint.</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center text-red-600">Lost</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center">Total</TableHead>
+                            <TableHead className="text-[10px] uppercase font-black text-center">Health</TableHead>
                             <TableHead className="text-[10px] uppercase font-black text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -162,7 +168,10 @@ export function InventoryClient({ productAssets, products }: InventoryClientProp
                                     <Badge variant="outline" className="text-[10px] font-bold uppercase">{asset.category}</Badge>
                                 </TableCell>
                                 <TableCell className="text-center font-black text-green-600">{asset.available}</TableCell>
+                                <TableCell className="text-center font-black text-blue-600">{asset.reserved}</TableCell>
                                 <TableCell className="text-center font-black text-orange-600">{asset.rented}</TableCell>
+                                <TableCell className="text-center font-black text-yellow-600">{asset.maintenance}</TableCell>
+                                <TableCell className="text-center font-black text-red-600">{asset.lost}</TableCell>
                                 <TableCell className="text-center font-bold text-muted-foreground">{asset.total}</TableCell>
                                 <TableCell className="text-center">
                                     <Badge
@@ -174,12 +183,12 @@ export function InventoryClient({ productAssets, products }: InventoryClientProp
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-8 w-8 hover:bg-primary/10 hover:text-primary"
-                                        onClick={() => handleEditAsset(asset)}
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-[10px] font-black uppercase h-8 px-3 border-primary/20 hover:bg-primary/5"
+                                        onClick={() => toast.info("Unit management coming soon")}
                                     >
-                                        <Edit2 className="h-4 w-4" />
+                                        Manage
                                     </Button>
                                 </TableCell>
                             </TableRow>

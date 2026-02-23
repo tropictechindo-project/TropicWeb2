@@ -33,7 +33,11 @@ export async function POST(
                     order: {
                         include: {
                             invoice: true,
-                            rentalItems: true
+                            rentalItems: {
+                                include: {
+                                    unit: true
+                                }
+                            }
                         }
                     }
                 }
@@ -67,14 +71,21 @@ export async function POST(
                 }
             })
 
-            // 3. Deduct Stock Offically & Release Hold
+            // 3. Transition Units to RENTED
             for (const item of transaction.order.rentalItems) {
-                if (item.variantId) {
-                    await tx.productVariant.update({
-                        where: { id: item.variantId },
+                if (item.unitId) {
+                    await tx.productUnit.update({
+                        where: { id: item.unitId },
+                        data: { status: 'RENTED' }
+                    })
+
+                    await tx.unitHistory.create({
                         data: {
-                            stockQuantity: { decrement: item.quantity || 0 },
-                            reservedQuantity: { decrement: item.quantity || 0 }
+                            unitId: item.unitId,
+                            oldStatus: item.unit?.status || 'RESERVED',
+                            newStatus: 'RENTED',
+                            details: `Payment transaction ${transactionId} confirmed`,
+                            userId: payload.userId
                         }
                     })
                 }

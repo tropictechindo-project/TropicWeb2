@@ -49,7 +49,10 @@ export default function Hero({ initialSettings }: HeroProps) {
 
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
+      aria-label="Workstation Rental Bali — Hero Section"
+    >
       <div className="absolute inset-0">
         <Image
           src={heroImage}
@@ -75,7 +78,8 @@ export default function Hero({ initialSettings }: HeroProps) {
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        {/* h1 is the LCP element — no animation to ensure paint happens immediately */}
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
           {title}
         </h1>
         <p className="text-xl md:text-2xl mb-4 text-slate-700 dark:text-slate-300 font-medium animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-100">
@@ -137,7 +141,7 @@ export default function Hero({ initialSettings }: HeroProps) {
       )}
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce pointer-events-none">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce pointer-events-none" aria-hidden="true">
         <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2 animate-pulse" />
         </div>

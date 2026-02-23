@@ -31,6 +31,7 @@ interface PackageCardProps {
         name: string
       }
     }>
+    discountPercentage?: number
   }
 }
 
@@ -40,6 +41,8 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
   const { t } = useLanguage()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const discountPercentage = pkg.discountPercentage || 0
+  const discountedPrice = discountPercentage > 0 ? pkg.price * (1 - discountPercentage / 100) : pkg.price
   const displayImage = pkg.imageUrl || pkg.image_url || (pkg.images && pkg.images[0]) || '/MyAi.webp'
 
 
@@ -49,7 +52,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
       id: pkg.id,
       type: 'PACKAGE' as const,
       name: pkg.name,
-      price: pkg.price,
+      price: discountedPrice,
       duration: pkg.duration,
       image: displayImage,
       quantity: 1
@@ -66,6 +69,13 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
       >
         <CardHeader className="pb-3">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted">
+            {discountPercentage > 0 && (
+              <div className="absolute top-2 left-2 z-10">
+                <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-sm shadow-lg">
+                  SAVE {discountPercentage}%
+                </div>
+              </div>
+            )}
             <Image
               src={displayImage}
               alt={pkg.name}
@@ -99,9 +109,16 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
                 <span className="text-muted-foreground">{t('rentalDuration')}:</span>
                 <span className="font-semibold">{pkg.duration} days</span>
               </div>
-              <div className="flex justify-between font-semibold">
+              <div className="flex justify-between font-semibold items-end">
                 <span>{t('totalPrice')}:</span>
-                <span className="text-primary">Rp {pkg.price.toLocaleString('id-ID')}</span>
+                <div className="flex flex-col items-end leading-tight">
+                  {discountPercentage > 0 && (
+                    <span className="text-xs line-through text-muted-foreground mb-1">
+                      Rp {pkg.price.toLocaleString('id-ID')}
+                    </span>
+                  )}
+                  <span className="text-primary text-xl">Rp {discountedPrice.toLocaleString('id-ID')}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -116,7 +133,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
               id: pkg.id,
               type: 'PACKAGE',
               name: pkg.name,
-              price: pkg.price,
+              price: discountedPrice,
               duration: pkg.duration,
               image: displayImage,
               quantity: 1

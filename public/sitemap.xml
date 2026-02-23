@@ -3,67 +3,67 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <!-- Homepage -->
   <url>
-    <loc>https://testdomain.fun/</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Auth Pages -->
   <url>
-    <loc>https://testdomain.fun/auth/login</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/auth/login</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://testdomain.fun/auth/signup</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/auth/signup</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Dashboard Pages -->
   <url>
-    <loc>https://testdomain.fun/dashboard/user</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/dashboard/user</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://testdomain.fun/dashboard/worker</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/dashboard/worker</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://testdomain.fun/dashboard/admin</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/dashboard/admin</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- Policy Pages -->
   <url>
-    <loc>https://testdomain.fun/privacy-policy</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/privacy-policy</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://testdomain.fun/terms-conditions</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/terms-conditions</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://testdomain.fun/refund-policy</loc>
-    <lastmod>2024-12-30</lastmod>
+    <loc>https://tropictech.online/refund-policy</loc>
+    <lastmod>2025-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

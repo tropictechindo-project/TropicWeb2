@@ -76,6 +76,12 @@ export function SystemControl() {
                         </div>
                     ))}
                 </div>
+                <div className="mt-4 pt-4 border-t flex items-center justify-between text-[10px] font-black uppercase text-muted-foreground tracking-widest">
+                    <span>Last System Update</span>
+                    <span className="text-primary">
+                        {new Date().toLocaleString('id-ID')}
+                    </span>
+                </div>
             </CardContent>
         </Card>
     )

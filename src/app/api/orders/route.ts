@@ -46,24 +46,25 @@ export async function POST(request: Request) {
 
         // 2. Atomic Transaction
         const result = await db.$transaction(async (tx) => {
-            // A. Stock Validation & Lock
-            // The cart currently passes the productId. We find the default variant.
+            // A. Find & Lock Available Units
             const variant = await tx.productVariant.findFirst({
-                where: { productId: item.id }
+                where: { productId: item.id },
+                include: {
+                    units: {
+                        where: { status: 'AVAILABLE' },
+                        take: 1
+                    }
+                }
             })
 
             if (!variant) throw new Error('Product not found')
-            if (variant.stockQuantity - variant.reservedQuantity < 1) {
+            if (variant.units.length < 1) {
                 throw new Error('Insufficient stock')
             }
 
-            // B. Reserve Stock (Hold it, do not decrement actual stock yet)
-            await tx.productVariant.update({
-                where: { id: variant.id },
-                data: { reservedQuantity: { increment: 1 } }
-            })
+            const unit = variant.units[0]
 
-            // C. Create Order
+            // B. Create Order First (To get ID for unit assignment)
             const order = await tx.order.create({
                 data: {
                     orderNumber,
@@ -75,8 +76,37 @@ export async function POST(request: Request) {
                     endDate,
                     duration: item.duration || 30,
                     userId: userId as string,
-                    rentalItems: { create: { variantId: variant.id, quantity: 1 } },
                 },
+            })
+
+            // C. Update Unit Status & Assign Order
+            await tx.productUnit.update({
+                where: { id: unit.id },
+                data: {
+                    status: 'RESERVED',
+                    assignedOrderId: order.id
+                }
+            })
+
+            // D. Create Rental Item linked to Unit
+            await tx.rentalItem.create({
+                data: {
+                    orderId: order.id,
+                    variantId: variant.id,
+                    unitId: unit.id,
+                    quantity: 1
+                }
+            })
+
+            // E. Log Unit History
+            await tx.unitHistory.create({
+                data: {
+                    unitId: unit.id,
+                    oldStatus: 'AVAILABLE',
+                    newStatus: 'RESERVED',
+                    details: `System reservation for order ${orderNumber}`,
+                    userId: userId
+                }
             })
 
             // D. Create Invoice

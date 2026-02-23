@@ -25,26 +25,63 @@ export async function POST(
         }
 
         const adminId = payload.userId
-        const { paymentMethod, deliveryFeeOverride } = await request.json()
+        const { paymentMethod, deliveryFeeOverride, discountPercentage } = await request.json()
         const orderId = (await params).id
 
-        // Update order payment status
-        const order = await db.order.update({
-            where: { id: orderId },
-            data: {
-                paymentStatus: 'PAID',
-                paymentMethod,
-                paymentConfirmedBy: adminId,
-                paymentConfirmedAt: new Date(),
-                status: 'PAID'
-            },
-            include: {
-                user: true
+        // 1. Process as atomic transaction
+        const result = await db.$transaction(async (tx) => {
+            // A. Create/update invoice first to get final calculated totals
+            const invoice = await createInvoiceForOrder(orderId, deliveryFeeOverride, discountPercentage)
+
+            // B. Transition Units from RESERVED to RENTED
+            const rentalItems = await tx.rentalItem.findMany({
+                where: { orderId },
+                include: { unit: true }
+            })
+
+            for (const item of rentalItems) {
+                if (item.unitId) {
+                    await tx.productUnit.update({
+                        where: { id: item.unitId },
+                        data: { status: 'RENTED' }
+                    })
+
+                    await tx.unitHistory.create({
+                        data: {
+                            unitId: item.unitId,
+                            oldStatus: 'RESERVED',
+                            newStatus: 'RENTED',
+                            details: `Payment confirmed for order ${orderId}`,
+                            userId: adminId
+                        }
+                    })
+                }
             }
+
+            // C. Update order payment status and final totals
+            const order = await tx.order.update({
+                where: { id: orderId },
+                data: {
+                    paymentStatus: 'PAID',
+                    paymentMethod,
+                    paymentConfirmedBy: adminId,
+                    paymentConfirmedAt: new Date(),
+                    status: 'PAID',
+                    totalAmount: invoice.total,
+                    tax: invoice.tax,
+                    discountPercentage: invoice.discountPercentage,
+                    discountAmount: invoice.discountAmount,
+                    deliveryFee: invoice.deliveryFee
+                },
+                include: {
+                    user: true
+                }
+            })
+
+            return { order, invoice }
         })
 
-        // Create/update invoice
-        const invoice = await createInvoiceForOrder(orderId, deliveryFeeOverride)
+        const { order, invoice } = result
 
         // Get all recipients
         const recipients = await getInvoiceRecipients(invoice)

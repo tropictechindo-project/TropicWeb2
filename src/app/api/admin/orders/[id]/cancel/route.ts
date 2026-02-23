@@ -34,12 +34,31 @@ export async function POST(
             if (!order) throw new Error('Order not found')
             if (order.status === 'CANCELLED') throw new Error('Order is already cancelled')
 
-            // 1. Restore Stock (Release Reservation)
-            for (const item of order.rentalItems) {
-                if (item.variantId) {
-                    await tx.productVariant.update({
-                        where: { id: item.variantId },
-                        data: { reservedQuantity: { decrement: item.quantity || 0 } }
+            // 1. Restore Units (Release Reservation/Rent)
+            const rentalItems = await tx.rentalItem.findMany({
+                where: { orderId },
+                include: { unit: true }
+            })
+
+            for (const item of rentalItems) {
+                if (item.unitId) {
+                    const unit = item.unit
+                    await tx.productUnit.update({
+                        where: { id: item.unitId },
+                        data: {
+                            status: 'AVAILABLE',
+                            assignedOrderId: null
+                        }
+                    })
+
+                    await tx.unitHistory.create({
+                        data: {
+                            unitId: item.unitId,
+                            oldStatus: unit?.status || 'RESERVED',
+                            newStatus: 'AVAILABLE',
+                            details: `Order #${order.orderNumber} cancelled by admin. Unit released.`,
+                            userId: payload.userId
+                        }
                     })
                 }
             }
@@ -56,7 +75,7 @@ export async function POST(
                     userId: payload.userId,
                     action: 'CANCEL_ORDER',
                     entity: 'ORDER',
-                    details: `Order #${order.orderNumber} cancelled by admin. Stock restored for ${order.rentalItems.length} items.`
+                    details: `Order #${order.orderNumber} cancelled by admin. Units restored for ${rentalItems.length} items.`
                 }
             })
 

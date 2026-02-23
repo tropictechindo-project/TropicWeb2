@@ -22,15 +22,37 @@ export async function POST(request: Request) {
             const random = Math.floor(Math.random() * 1000)
             const sku = `${prefix}-${timestamp}-${random}-STD`
 
-            await tx.productVariant.create({
+            const variant = await tx.productVariant.create({
                 data: {
                     productId: newProduct.id,
                     color: 'STANDARD',
                     sku,
-                    stockQuantity: stock || 0,
-                    reservedQuantity: 0
                 }
             })
+
+            // Create units if initial stock is provided
+            if (stock && stock > 0) {
+                for (let i = 0; i < stock; i++) {
+                    const unitSerial = `SN-${sku}-${Date.now().toString().slice(-4)}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
+                    const unit = await tx.productUnit.create({
+                        data: {
+                            variantId: variant.id,
+                            serialNumber: unitSerial,
+                            status: 'AVAILABLE',
+                            condition: 'GOOD'
+                        }
+                    })
+
+                    await tx.unitHistory.create({
+                        data: {
+                            unitId: unit.id,
+                            newStatus: 'AVAILABLE',
+                            newCondition: 'GOOD',
+                            details: 'Initial stock creation during product setup'
+                        }
+                    })
+                }
+            }
 
             return newProduct
         })

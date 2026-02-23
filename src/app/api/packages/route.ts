@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { logActivity } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
         price,
         duration,
         imageUrl,
+        discountPercentage: data.discountPercentage || 0,
         rentalPackageItems: {
           create: items.map((item: any) => ({
             productId: item.productId,
@@ -55,6 +57,12 @@ export async function POST(request: NextRequest) {
       include: {
         rentalPackageItems: true,
       },
+    })
+
+    await logActivity({
+      action: 'CREATE_PACKAGE',
+      entity: 'RentalPackage',
+      details: `Created package ${rentalPackage.name} (ID: ${rentalPackage.id})`
     })
 
     const formattedPackage = {

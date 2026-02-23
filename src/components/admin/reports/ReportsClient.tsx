@@ -47,7 +47,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import autoTable from 'jspdf-autotable'
 
 interface ReportsClientProps {
     revenueByMonth: any[]
@@ -162,7 +162,8 @@ export function ReportsClient({
             doc.text(`Total Revenue: Rp ${currentRevenue.toLocaleString()}`, 20, 38)
         }
 
-        doc.autoTable({
+        const rowCount = body.length
+        autoTable(doc, {
             startY: 45,
             head: headers,
             body: body,

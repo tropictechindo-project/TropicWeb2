@@ -96,11 +96,21 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                                 <div className="space-y-1">
                                     <p className="text-sm flex md:justify-end gap-2">
                                         <span className="text-muted-foreground font-bold italic">Date:</span>
-                                        <span className="font-black">{new Date(invoice.date).toLocaleDateString()}</span>
+                                        <span className="font-black">
+                                            {(() => {
+                                                const d = new Date(invoice.date);
+                                                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+                                            })()}
+                                        </span>
                                     </p>
                                     <p className="text-sm flex md:justify-end gap-2">
                                         <span className="text-muted-foreground font-bold italic">Due:</span>
-                                        <span className="font-black">{new Date(invoice.date).toLocaleDateString()}</span>
+                                        <span className="font-black">
+                                            {(() => {
+                                                const d = new Date(invoice.date);
+                                                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+                                            })()}
+                                        </span>
                                     </p>
                                 </div>
                             </div>

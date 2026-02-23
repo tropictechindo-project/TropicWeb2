@@ -4,15 +4,19 @@ import { db } from '@/lib/db'
  * Calculate invoice totals with 2% tax (excluding delivery fee)
  * Tax applies to subtotal only, not delivery fee
  */
-export function calculateInvoiceTotals(subtotal: number, deliveryFee: number = 100000, deliveryFeeOverride?: number) {
+export function calculateInvoiceTotals(subtotal: number, deliveryFee: number = 100000, deliveryFeeOverride?: number, discountPercentage: number = 0) {
     const taxRate = 0.02 // 2%
     const finalDeliveryFee = deliveryFeeOverride !== undefined ? deliveryFeeOverride : deliveryFee
 
-    const tax = subtotal * taxRate
-    const total = subtotal + tax + finalDeliveryFee
+    const discountAmount = subtotal * (discountPercentage / 100)
+    const subtotalAfterDiscount = subtotal - discountAmount
+    const tax = subtotalAfterDiscount * taxRate
+    const total = subtotalAfterDiscount + tax + finalDeliveryFee
 
     return {
         subtotal,
+        discountPercentage,
+        discountAmount,
         tax,
         taxRate,
         deliveryFee: finalDeliveryFee,
@@ -35,7 +39,7 @@ export function generateShareableToken(): string {
 /**
  * Create or update invoice for an order
  */
-export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride?: number) {
+export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride?: number, discountPercentage: number = 0) {
     const order = await db.order.findUnique({
         where: { id: orderId },
         include: {
@@ -54,10 +58,11 @@ export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride
     }
 
     // Calculate totals
-    const { subtotal, tax, taxRate, deliveryFee, total } = calculateInvoiceTotals(
+    const { subtotal, tax, taxRate, deliveryFee, total, discountAmount, discountPercentage: finalDiscountPct } = calculateInvoiceTotals(
         parseFloat(order.subtotal.toString()),
         parseFloat(order.deliveryFee.toString()),
-        deliveryFeeOverride
+        deliveryFeeOverride,
+        discountPercentage
     )
 
     // Check if invoice already exists
@@ -71,6 +76,8 @@ export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride
             where: { id: existingInvoice.id },
             data: {
                 subtotal,
+                discountPercentage: finalDiscountPct,
+                discountAmount,
                 tax,
                 taxRate,
                 deliveryFee,
@@ -91,6 +98,8 @@ export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride
             orderId,
             userId: order.userId,
             subtotal,
+            discountPercentage: finalDiscountPct,
+            discountAmount,
             tax,
             taxRate,
             deliveryFee,

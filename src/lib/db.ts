@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@/generated/client'
 
 // Hardcode the Singapore pooler URL temporarily to bypass dev server env caching
 const dbUrl = "postgresql://postgres.uxukdfbqynnlkcykqozu:%40JasAdmin2026@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true";

@@ -34,6 +34,7 @@ interface ProductCardProps {
     imageUrl?: string | null
     images?: string[]
     specs?: any
+    discountPercentage?: number
   }
 }
 
@@ -45,7 +46,12 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const price = product.monthlyPrice || product.monthly_price || 0
-  const dailyPrice = Math.ceil(price / 30)
+  const discountPercentage = product.discountPercentage || 0
+  const discountedPrice = discountPercentage > 0 ? price * (1 - discountPercentage / 100) : price
+
+  const dailyPrice = Math.ceil(discountedPrice / 30)
+  const originalDailyPrice = Math.ceil(price / 30)
+
   const totalPrice = dailyPrice * duration
   const displayImage = product.imageUrl || product.image_url || (product.images && product.images[0]) || '/MyAi.webp'
 
@@ -74,6 +80,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       >
         <CardHeader className="pb-3">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted">
+            {discountPercentage > 0 && (
+              <div className="absolute top-2 left-2 z-10">
+                <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-sm shadow-lg">
+                  SAVE {discountPercentage}%
+                </div>
+              </div>
+            )}
             <Image
               src={displayImage}
               alt={product.name}
@@ -100,9 +113,16 @@ export default function ProductCard({ product }: ProductCardProps) {
 
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">{t('monthly')}:</span>
-              <span className="font-semibold">
-                Rp {price.toLocaleString('id-ID')}
-              </span>
+              <div className="flex flex-col items-end">
+                {discountPercentage > 0 && (
+                  <span className="text-[10px] line-through text-muted-foreground">
+                    Rp {price.toLocaleString('id-ID')}
+                  </span>
+                )}
+                <span className="font-semibold">
+                  Rp {discountedPrice.toLocaleString('id-ID')}
+                </span>
+              </div>
             </div>
 
             <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
