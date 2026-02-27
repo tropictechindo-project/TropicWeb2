@@ -138,3 +138,50 @@ export async function sendResetPasswordEmail(to: string, resetLink: string) {
     return false
   }
 }
+
+export async function sendVerificationEmail(to: string, verificationLink: string) {
+  const mailOptions = {
+    from: `"Tropic Tech Registration" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@tropictech.com'}>`,
+    to: to,
+    subject: `Verify your email address - Tropic Tech`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;">
+        <div style="background-color: #34D399; padding: 40px 20px; text-align: center; color: white;">
+          <h1 style="margin: 0; text-transform: uppercase; letter-spacing: 2px;">Welcome Aboard!</h1>
+          <p style="margin-top: 10px; opacity: 0.9;">Please verify your email address</p>
+        </div>
+        <div style="padding: 30px; color: #1E293B;">
+          <p>Hello,</p>
+          <p>Thank you for registering with Tropic Tech! To complete your registration and gain access to your account, please click the button below to verify your email address.</p>
+          
+          <div style="text-align: center; margin: 35px 0;">
+            <a href="${verificationLink}" style="background-color: #34D399; color: white; padding: 14px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">VERIFY EMAIL</a>
+          </div>
+
+          <p style="text-align: center; font-size: 12px; color: #64748B;">
+             Or copy this link: <br>
+             <a href="${verificationLink}" style="color: #34D399;">${verificationLink}</a>
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 30px 0;">
+          <p style="font-size: 12px; color: #94A3B8; margin: 0;">Tropic Tech International Team</p>
+        </div>
+      </div>
+    `,
+  }
+
+  try {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.log('--- DEVELOPMENT MOCK VERIFICATION EMAIL ---')
+      console.log(`To: ${to}`)
+      console.log(`Link: ${verificationLink}`)
+      console.log('-------------------------------------------')
+      return true
+    }
+    await transporter.sendMail(mailOptions)
+    return true
+  } catch (error) {
+    console.error('Error sending verification email:', error)
+    return false
+  }
+}

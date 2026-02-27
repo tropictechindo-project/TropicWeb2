@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { X, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ForgotPasswordPage() {
@@ -44,16 +44,19 @@ export default function ForgotPasswordPage() {
     if (isSubmitted) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
-                <Card className="w-full max-w-md text-center">
-                    <CardHeader className="pt-10">
-                        <CardTitle className="text-3xl font-bold text-primary">Tropic Tech</CardTitle>
-                        <CardDescription>Check Your Email</CardDescription>
+                <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-primary/10 text-center">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
+
+                    <CardHeader className="pt-10 relative z-10">
+                        <CardTitle className="text-3xl font-black text-primary tracking-tighter uppercase italic">Tropic <span className="text-foreground">Tech</span></CardTitle>
+                        <CardDescription className="text-sm font-semibold tracking-widest uppercase">Check Your Email</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <p className="text-muted-foreground">
-                            If an account exists with <strong>{email}</strong>, we've sent a instructions to reset your password.
+                    <CardContent className="space-y-6 relative z-10">
+                        <p className="text-muted-foreground text-sm">
+                            If an account exists with <strong className="text-foreground">{email}</strong>, we've sent instructions to reset your password.
                         </p>
-                        <Button onClick={() => router.push('/auth/login')} className="w-full">
+                        <Button onClick={() => router.push('/auth/login')} className="w-full h-12 text-sm font-bold">
                             Back to Login
                         </Button>
                     </CardContent>
@@ -64,21 +67,16 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
-            <Card className="w-full max-w-md relative">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-4 top-4 text-muted-foreground hover:text-foreground"
-                    onClick={() => router.push('/auth/login')}
-                >
-                    <X className="h-4 w-4" />
-                </Button>
-                <CardHeader className="text-center pt-10">
-                    <CardTitle className="text-3xl font-bold text-primary">Tropic Tech</CardTitle>
-                    <CardDescription>Reset Your Password</CardDescription>
+            <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-primary/10">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
+
+                <CardHeader className="text-center pt-10 relative z-10">
+                    <CardTitle className="text-3xl font-black text-primary tracking-tighter uppercase italic">Tropic <span className="text-foreground">Tech</span></CardTitle>
+                    <CardDescription className="text-sm font-semibold tracking-widest uppercase">Reset Your Password</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                <CardContent className="relative z-10">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email Address</Label>
                             <Input
@@ -89,14 +87,15 @@ export default function ForgotPasswordPage() {
                                 placeholder="Enter your email address"
                                 required
                                 disabled={isLoading}
+                                className="bg-background/50 border-primary/20 focus-visible:ring-primary/30"
                             />
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full h-12 text-sm font-bold" disabled={isLoading}>
                             {isLoading ? 'Sending...' : 'Send Reset Link'}
                         </Button>
                     </form>
-                    <div className="mt-4 text-center">
-                        <Link href="/auth/login" className="text-sm text-primary hover:underline flex items-center justify-center gap-1">
+                    <div className="mt-6 text-center">
+                        <Link href="/auth/login" className="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2">
                             <ArrowLeft className="h-3 w-3" /> Back to Login
                         </Link>
                     </div>
@@ -105,3 +104,4 @@ export default function ForgotPasswordPage() {
         </div>
     )
 }
+

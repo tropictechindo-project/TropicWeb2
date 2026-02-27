@@ -43,18 +43,28 @@ export async function GET(request: NextRequest) {
             return NextResponse.redirect(`${requestUrl.origin}/auth/complete-profile?email=${email}&name=${fullName}&provider=google`)
         }
 
+        // --- STRICT ADMIN LOGIN CHECK ---
+        const allowedAdminEmails = ['admin@tropictech.com', 'tropictechbali@gmail.com', 'damnbayu@gmail.com'];
+        let sessionRole = user.role;
+
+        if (sessionRole === 'ADMIN' && !allowedAdminEmails.includes(user.email)) {
+            // For security, if an unauthorized email somehow got ADMIN role, 
+            // we downgrade their session role to USER.
+            sessionRole = 'USER';
+        }
+
         // Existing user - generate app JWT
         const token = await generateToken({
             userId: user.id,
             username: user.username,
             email: user.email,
-            role: user.role,
+            role: sessionRole, // Use the verified session role
         })
 
         // Set cookie or redirect with token in a safe way
         // For this app, it seems we use localStorage for tokens, so we might need a bridge page or redirect with token in hash
 
-        const response = NextResponse.redirect(`${requestUrl.origin}/dashboard/${user.role === 'ADMIN' ? 'admin' : user.role === 'WORKER' ? 'worker' : 'user'}`)
+        const response = NextResponse.redirect(`${requestUrl.origin}/dashboard/${sessionRole === 'ADMIN' ? 'admin' : sessionRole === 'WORKER' ? 'worker' : 'user'}`)
 
         // We can't easily set localStorage from a redirect response
         // Using a "bridge" param to let the client know to save the token if we pass it in query (careful with security)

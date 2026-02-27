@@ -13,10 +13,35 @@ import Link from 'next/link'
 import { X, Eye, EyeOff } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 
+const COUNTRY_CODES = [
+  { code: '+62', country: 'ID' },
+  { code: '+1', country: 'US/CA' },
+  { code: '+44', country: 'UK' },
+  { code: '+61', country: 'AU' },
+  { code: '+65', country: 'SG' },
+  { code: '+60', country: 'MY' },
+  { code: '+66', country: 'TH' },
+  { code: '+63', country: 'PH' },
+  { code: '+84', country: 'VN' },
+  { code: '+91', country: 'IN' },
+  { code: '+86', country: 'CN' },
+  { code: '+81', country: 'JP' },
+  { code: '+82', country: 'KR' },
+  { code: '+33', country: 'FR' },
+  { code: '+49', country: 'DE' },
+  { code: '+39', country: 'IT' },
+  { code: '+34', country: 'ES' },
+  { code: '+31', country: 'NL' },
+  { code: '+7', country: 'RU/KZ' },
+  { code: '+971', country: 'AE' },
+  { code: '+966', country: 'SA' },
+]
+
 export default function SignupPage() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
-  const [whatsapp, setWhatsapp] = useState('')
+  const [countryCode, setCountryCode] = useState('+62')
+  const [whatsappNumber, setWhatsappNumber] = useState('')
   const [password, setPassword] = useState('')
   const [baliAddress, setBaliAddress] = useState('')
   const [mapsAddressLink, setMapsAddressLink] = useState('')
@@ -69,12 +94,16 @@ export default function SignupPage() {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, email, whatsapp, password, baliAddress, mapsAddressLink }),
+        body: JSON.stringify({ fullName, email, whatsapp: `${countryCode}${whatsappNumber}`, password, baliAddress, mapsAddressLink }),
       })
 
       if (response.ok) {
-        toast.success('Account created successfully! Please login.')
-        router.push('/auth/login')
+        const data = await response.json()
+        toast.success(data.message || 'Account created successfully! Please check your email to verify.')
+        // Don't auto-redirect immediately so they can read the message, or redirect with a slight delay
+        setTimeout(() => {
+          router.push('/auth/login')
+        }, 2000)
       } else {
         const error = await response.json()
         toast.error(error.error || 'Failed to create account')
@@ -160,15 +189,34 @@ export default function SignupPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="whatsapp">WhatsApp *</Label>
-              <Input
-                id="whatsapp"
-                type="tel"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder="+62..."
-                required
-                disabled={isLoading}
-              />
+              <div className="flex gap-2">
+                <div className="relative w-[110px]">
+                  <Input
+                    list="country-codes"
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    placeholder="+62"
+                    className="w-full bg-background/50 pr-6" // add some padding for a visual dropdown indicator if you wanted one
+                  />
+                  <datalist id="country-codes">
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.country}
+                      </option>
+                    ))}
+                  </datalist>
+                </div>
+                <Input
+                  id="whatsapp"
+                  type="tel"
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value.replace(/\D/g, ''))} // only allow digits
+                  placeholder="812345678"
+                  required
+                  disabled={isLoading}
+                  className="flex-1"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

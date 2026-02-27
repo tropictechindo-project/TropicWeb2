@@ -172,8 +172,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                             variant="ghost"
                                             size="icon"
                                             className="text-destructive hover:text-destructive/90"
-                                            disabled={!product.isDeletable}
-                                            title={!product.isDeletable ? "Cannot delete: Referenced by orders/packages/units" : "Delete"}
+                                            title="Delete Product (Cascades to related packages/orders)"
                                             onClick={() => handleDelete(product.id)}
                                         >
                                             <Trash2 className="h-4 w-4" />

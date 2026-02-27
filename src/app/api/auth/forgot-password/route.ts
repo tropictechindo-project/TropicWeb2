@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { generateResetToken } from '@/lib/auth/utils'
-import { sendResetPasswordEmail } from '@/lib/email'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY! || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,31 +18,30 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const user = await db.user.findUnique({
+        const user = await db.user.findFirst({
             where: { email },
         })
 
-        // For security, don't reveal if user exists or not
         if (!user) {
-            return NextResponse.json({ message: 'If an account exists with this email, a reset link has been sent.' })
+            // Return success even if bad email for security (prevents email enumeration)
+            return NextResponse.json({ message: 'If an account exists, a reset link has been sent.' })
         }
 
-        const token = generateResetToken()
-        const expires = new Date(Date.now() + 3600000) // 1 hour from now
+        const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password`
 
-        await db.user.update({
-            where: { id: user.id },
-            data: {
-                resetPasswordToken: token,
-                resetPasswordExpires: expires,
-            },
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: redirectTo,
         })
 
-        const resetLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password?token=${token}`
+        if (error) {
+            console.error('Supabase reset password error:', error)
+            return NextResponse.json(
+                { error: 'Failed to send reset instructions.' },
+                { status: 500 }
+            )
+        }
 
-        await sendResetPasswordEmail(email, resetLink)
-
-        return NextResponse.json({ message: 'If an account exists with this email, a reset link has been sent.' })
+        return NextResponse.json({ message: 'If an account exists, a reset link has been sent.' })
     } catch (error) {
         console.error('Forgot password error:', error)
         return NextResponse.json(
