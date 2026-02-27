@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'If an account exists, a reset link has been sent.' })
         }
 
-        const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password`
+        const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/callback?next=/auth/reset-password`
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: redirectTo,

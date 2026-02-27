@@ -97,9 +97,26 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params
-    await db.product.delete({
-      where: { id },
+    await db.$transaction(async (tx) => {
+      // 1. Manually nullify unitId on any RentalItems associated with this product's units
+      // to avoid Postgres Foreign Key violation when deleting the product cascade down to units
+      const unitsToNullify = await tx.productUnit.findMany({
+        where: { variant: { productId: id } },
+        select: { id: true }
+      })
+
+      if (unitsToNullify.length > 0) {
+        const unitIds = unitsToNullify.map(u => u.id)
+        await tx.rentalItem.updateMany({
+          where: { unitId: { in: unitIds } },
+          data: { unitId: null }
+        })
+      }
+
+      // 2. Safely delete the product (Prisma Cascades the rest like variants and units)
+      await tx.product.delete({
+        where: { id },
+      })
     })
 
     await logActivity({

@@ -13,11 +13,6 @@ export default async function AdminPackagesPage() {
                     include: {
                         product: true
                     }
-                },
-                _count: {
-                    select: {
-                        rentalItems: true // Check usage in orders
-                    }
                 }
             }
         }),
@@ -40,8 +35,7 @@ export default async function AdminPackagesPage() {
             productId: item.productId,
             name: item.product.name,
             quantity: item.quantity || 0
-        })),
-        isDeletable: pkg._count.rentalItems === 0
+        }))
     }))
 
     const formattedProducts = products.map(p => ({
@@ -49,13 +43,12 @@ export default async function AdminPackagesPage() {
         name: p.name,
         price: Number(p.monthlyPrice)
     }))
-
     return (
-        <div className="space-y-6">
+        <div className="space-y-6" >
             <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tight">Packages</h2>
             </div>
             <PackagesClient initialPackages={formattedPackages} availableProducts={formattedProducts} />
-        </div>
+        </div >
     )
 }

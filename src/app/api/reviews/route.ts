@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // We still want it to revalidate every hour natively
+
 const PLACES_API_BASE = 'https://maps.googleapis.com/maps/api/place'
 
 export interface GoogleReview {

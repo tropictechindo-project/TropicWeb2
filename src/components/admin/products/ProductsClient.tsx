@@ -36,7 +36,6 @@ interface Product {
     stock: number | null
     discountPercentage: number
     variants: any[]
-    isDeletable: boolean
 }
 
 interface ProductsClientProps {

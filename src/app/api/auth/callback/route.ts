@@ -1,16 +1,32 @@
-import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { db } from '@/lib/db'
 import { generateToken, generateUsername, hashPassword, generatePassword } from '@/lib/auth/utils'
 
 export async function GET(request: NextRequest) {
     const requestUrl = new URL(request.url)
     const code = requestUrl.searchParams.get('code')
+    const next = requestUrl.searchParams.get('next')
 
     if (code) {
-        const supabase = createClient(
+        const cookieStore = await cookies()
+        const supabase = createServerClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    get(name: string) {
+                        return cookieStore.get(name)?.value
+                    },
+                    set(name: string, value: string, options: CookieOptions) {
+                        cookieStore.set({ name, value, ...options })
+                    },
+                    remove(name: string, options: CookieOptions) {
+                        cookieStore.set({ name, value: '', ...options })
+                    },
+                },
+            }
         )
 
         const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code)
@@ -69,6 +85,10 @@ export async function GET(request: NextRequest) {
         // We can't easily set localStorage from a redirect response
         // Using a "bridge" param to let the client know to save the token if we pass it in query (careful with security)
         // Or just redirect to a page that saves it.
+
+        if (next) {
+            return NextResponse.redirect(`${requestUrl.origin}${next}?bridge_token=${token}`)
+        }
 
         return NextResponse.redirect(`${requestUrl.origin}/auth/login?bridge_token=${token}`)
     }

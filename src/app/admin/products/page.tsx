@@ -12,11 +12,6 @@ export default async function AdminProductsPage() {
                 include: {
                     units: true
                 }
-            },
-            _count: {
-                select: {
-                    rentalPackageItems: true
-                }
             }
         }
     })
@@ -42,9 +37,7 @@ export default async function AdminProductsPage() {
             reservedCount: v.units.filter(u => u.status === 'RESERVED').length,
             totalCount: v.units.length
         })),
-        _count: p._count,
-        price: Number(p.monthlyPrice),
-        isDeletable: p._count.rentalPackageItems === 0
+        price: Number(p.monthlyPrice)
     }))
 
     return (

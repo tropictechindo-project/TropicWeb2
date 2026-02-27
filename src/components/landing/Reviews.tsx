@@ -81,7 +81,9 @@ export default function Reviews() {
 
     async function fetchGoogleReviews() {
       try {
-        const res = await fetch('/api/reviews', { next: { revalidate: 3600 } } as any)
+        // Use cache: 'no-store' to ensure we always get fresh data from our API route
+        // (The API route itself handles caching the Google response for 1 hour)
+        const res = await fetch('/api/reviews', { cache: 'no-store' })
         if (!res.ok) return
 
         const data = await res.json()

@@ -48,7 +48,7 @@ interface Package {
     imageUrl: string | null
     items: PackageItem[]
     discountPercentage: number
-    isDeletable: boolean
+    discountPercentage: number
 }
 
 interface ProductOption {
@@ -224,7 +224,6 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                                             variant="ghost"
                                             size="icon"
                                             className="text-destructive"
-                                            disabled={!pkg.isDeletable}
                                             onClick={() => handleDelete(pkg.id)}
                                         >
                                             <Trash2 className="h-4 w-4" />

@@ -112,15 +112,15 @@ export default function Header() {
   }
 
   const isAdminRoute = pathname?.startsWith('/admin')
-  const showLogo = !isAdminRoute || isScrolled
-  const showCTA = !isAdminRoute || isScrolled
+  const showLogo = !isAdminRoute || (mounted && isScrolled)
+  const showCTA = !isAdminRoute || (mounted && isScrolled)
 
   return (
     <>
       <header
         className={cn(
           "fixed top-0 z-50 w-full transition-all duration-300",
-          isScrolled
+          mounted && isScrolled
             ? "bg-background/25 backdrop-blur-md border-b border-border/10"
             : "bg-transparent border-transparent"
         )}
@@ -130,7 +130,7 @@ export default function Header() {
             {/* Logo */}
             <div className={cn(
               "flex items-center space-x-2 transition-all duration-500",
-              showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
+              mounted && showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
             )}>
               <Link href="/" className="text-2xl font-bold text-primary">
                 Tropic Tech
@@ -140,7 +140,7 @@ export default function Header() {
             {/* Desktop Navigation */}
             <nav className={cn(
               "hidden md:flex items-center space-x-6 transition-all duration-500",
-              showCTA ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+              mounted && showCTA ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
             )} aria-label="Main navigation">
 
               {/* Cart Button with Sheet - Visible to all */}
