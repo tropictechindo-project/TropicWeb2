@@ -148,7 +148,7 @@ export async function POST(request: Request) {
                 const recipients: string[] = []
                 const customerEmail = userId ? (await db.user.findUnique({ where: { id: userId } }))?.email : guestInfo?.email
                 if (customerEmail) recipients.push(customerEmail)
-                recipients.push('tropictechindo@gmail.com')
+                recipients.push('contact@tropictech.online')
 
                 // Get workers
                 const workers = await db.user.findMany({

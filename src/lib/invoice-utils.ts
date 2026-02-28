@@ -136,7 +136,7 @@ export async function getInvoiceRecipients(invoice: any) {
     recipients.push(...workers.map(w => w.email))
 
     // Add admin email
-    recipients.push('tropictechindo@gmail.com')
+    recipients.push('contact@tropictech.online')
 
     // Remove duplicates
     return Array.from(new Set(recipients))

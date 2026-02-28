@@ -16,7 +16,9 @@ import {
     Moon,
     MessageSquare,
     Globe,
-    Bot
+    Bot,
+    Truck,
+    Navigation
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
@@ -61,6 +63,16 @@ const items = [
         title: "Workers Panel",
         url: "/admin/workers",
         icon: Users,
+    },
+    {
+        title: "Deliveries Queue",
+        url: "/admin/deliveries",
+        icon: Navigation,
+    },
+    {
+        title: "Fleet & Vehicles",
+        url: "/admin/vehicles",
+        icon: Truck,
     },
     {
         title: "Products",

@@ -21,19 +21,19 @@ export async function GET(request: NextRequest) {
                 whatsapp: true,
                 isActive: true,
                 createdAt: true,
-                workerSchedules: {
+                claimedDeliveries: {
                     select: {
                         id: true,
                         status: true,
-                        scheduledDate: true,
-                        order: {
+                        eta: true,
+                        invoice: {
                             select: {
-                                orderNumber: true
+                                invoiceNumber: true
                             }
                         }
                     },
                     orderBy: {
-                        scheduledDate: 'desc'
+                        createdAt: 'desc'
                     },
                     take: 5
                 },
@@ -61,9 +61,9 @@ export async function GET(request: NextRequest) {
 
         // Calculate stats for each worker
         const workersWithStats = workers.map(worker => {
-            const totalJobs = worker.workerSchedules.length
-            const completedJobs = worker.workerSchedules.filter(s => s.status === 'FINISHED').length
-            const pendingJobs = worker.workerSchedules.filter(s => s.status === 'PENDING' || s.status === 'ONGOING').length
+            const totalJobs = worker.claimedDeliveries.length
+            const completedJobs = worker.claimedDeliveries.filter(s => s.status === 'COMPLETED').length
+            const pendingJobs = worker.claimedDeliveries.filter(s => s.status === 'CLAIMED' || s.status === 'OUT_FOR_DELIVERY' || s.status === 'PAUSED' || s.status === 'DELAYED').length
             const attendanceRate = calculateAttendanceRate(worker.workerAttendance)
 
             return {

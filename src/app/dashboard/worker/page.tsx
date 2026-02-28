@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   Calendar,
   MapPin,
@@ -36,8 +37,10 @@ export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
   const router = useRouter()
 
-  // State for schedules/jobs
-  const [schedules, setSchedules] = useState<any[]>([])
+  // State for deliveries
+  const [myDeliveries, setMyDeliveries] = useState<any[]>([])
+  const [poolDeliveries, setPoolDeliveries] = useState<any[]>([])
+  const [availableVehicles, setAvailableVehicles] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   // State for attendance
@@ -57,6 +60,23 @@ export default function WorkerDashboard() {
   const [selectedGroup, setSelectedGroup] = useState<{ id: string, name: string } | null>(null)
   const [workerGroups, setWorkerGroups] = useState<any[]>([])
 
+  // State for claiming delivery
+  const [claimDialogOpen, setClaimDialogOpen] = useState(false)
+  const [selectedPoolDelivery, setSelectedPoolDelivery] = useState<any>(null)
+  const [selectedVehicleId, setSelectedVehicleId] = useState('')
+
+  // State for completing delivery
+  const [completeDialogOpen, setCompleteDialogOpen] = useState(false)
+  const [selectedDeliveryToComplete, setSelectedDeliveryToComplete] = useState<any>(null)
+  const [completionNotes, setCompletionNotes] = useState('')
+  const [photoProof, setPhotoProof] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // State for editing recent logs (12h window)
+  const [editLogOpen, setEditLogOpen] = useState(false)
+  const [selectedLogToEdit, setSelectedLogToEdit] = useState<any>(null)
+  const [editLogNotes, setEditLogNotes] = useState('')
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push('/auth/login')
@@ -72,11 +92,12 @@ export default function WorkerDashboard() {
       const poller = new RealtimePoller({
         interval: 15000,
         onUpdate: (data) => {
-          if (data.schedules) setSchedules(data.schedules.schedules)
           if (data.notifications) {
             setNotifications(data.notifications.notifications)
             setUnreadCount(data.notifications.unreadCount)
           }
+          // Silent refetch for deliveries
+          fetchData(true)
         }
       })
 
@@ -109,32 +130,40 @@ export default function WorkerDashboard() {
     setIsGroupChatOpen(true)
   }
 
-  // Calculate stats
-  // We need to calculate these based on the state
-  const pendingJobs = schedules.filter(s => s.status === 'PENDING').length
-  const ongoingJobs = schedules.filter(s => s.status === 'ONGOING').length
-  const completedJobs = schedules.filter(s => s.status === 'FINISHED').length
+  const pendingJobs = myDeliveries.length + poolDeliveries.length
+  const ongoingJobs = myDeliveries.filter(s => s.status === 'OUT_FOR_DELIVERY' || s.status === 'CLAIMED').length
+  const completedJobs = myDeliveries.filter(s => s.status === 'COMPLETED').length
   const attendanceRate = attendanceHistory.length > 0
     ? Math.round((attendanceHistory.filter(a => a.status === 'PRESENT' || a.status === 'LATE').length / attendanceHistory.length) * 100)
     : 0
 
-  const fetchData = async () => {
+  const fetchData = async (silent = false) => {
     // Call fetchWorkerGroups here as well to ensure it's loaded
-    fetchWorkerGroups()
+    if (!silent) fetchWorkerGroups()
     const token = localStorage.getItem('token')
     if (!token) return
 
     try {
       // Fetch all data in parallel
-      const [schedulesRes, attendanceRes, notificationsRes] = await Promise.all([
-        fetch('/api/worker/schedules', { headers: { 'Authorization': `Bearer ${token}` } }),
+      const [myDelivRes, poolDelivRes, vehiclesRes, attendanceRes, notificationsRes] = await Promise.all([
+        fetch('/api/worker/deliveries?view=my_claims', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/worker/deliveries?view=pool', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/worker/vehicles', { headers: { 'Authorization': `Bearer ${token}` } }),
         fetch('/api/worker/attendance', { headers: { 'Authorization': `Bearer ${token}` } }),
         fetch('/api/worker/notifications', { headers: { 'Authorization': `Bearer ${token}` } })
       ])
 
-      if (schedulesRes.ok) {
-        const data = await schedulesRes.json()
-        setSchedules(data.schedules)
+      if (myDelivRes.ok) {
+        const data = await myDelivRes.json()
+        setMyDeliveries(data.deliveries)
+      }
+      if (poolDelivRes.ok) {
+        const data = await poolDelivRes.json()
+        setPoolDeliveries(data.deliveries)
+      }
+      if (vehiclesRes.ok) {
+        const data = await vehiclesRes.json()
+        setAvailableVehicles(data.vehicles)
       }
 
       if (attendanceRes.ok) {
@@ -156,9 +185,9 @@ export default function WorkerDashboard() {
       }
     } catch (error) {
       console.error('Failed to fetch worker data:', error)
-      toast.error('Failed to load dashboard data')
+      if (!silent) toast.error('Failed to load dashboard data')
     } finally {
-      setLoading(false)
+      if (!silent) setLoading(false)
     }
   }
 
@@ -191,26 +220,123 @@ export default function WorkerDashboard() {
     }
   }
 
-  const updateJobStatus = async (scheduleId: string, status: string, notes?: string) => {
+  const handleClaim = async () => {
+    if (!selectedPoolDelivery || !selectedVehicleId) return toast.error("Select a vehicle")
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch(`/api/worker/schedules/${scheduleId}`, {
+      const res = await fetch(`/api/worker/deliveries/${selectedPoolDelivery.id}/claim`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ vehicleId: selectedVehicleId })
+      })
+
+      if (res.ok) {
+        toast.success(`Claimed Successfully`)
+        setClaimDialogOpen(false)
+        setSelectedPoolDelivery(null)
+        fetchData(true)
+      } else {
+        const data = await res.json()
+        toast.error(data.error || 'Failed to claim delivery')
+      }
+    } catch (error) {
+      toast.error('Failed to claim delivery')
+    }
+  }
+
+  const updateDeliveryStatus = async (id: string, status: string, notes?: string) => {
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch(`/api/worker/deliveries/${id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status, workerNotes: notes })
+        body: JSON.stringify({ status, notes })
       })
 
       if (res.ok) {
-        toast.success(`Job status updated to ${status}`)
-        fetchData()
+        toast.success(`Delivery updated to ${status}`)
+        fetchData(true)
       } else {
-        toast.error('Failed to update job status')
+        toast.error('Failed to update status')
       }
     } catch (error) {
-      toast.error('Failed to update job status')
+      toast.error('Failed to update status')
+    }
+  }
+
+  const handleCompleteDelivery = async () => {
+    if (!selectedDeliveryToComplete) return
+
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch(`/api/worker/deliveries/${selectedDeliveryToComplete.id}/complete`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          notes: completionNotes || "Completed successfully",
+          photoProof: photoProof || null
+        })
+      })
+
+      if (res.ok) {
+        toast.success(`Delivery completed & recorded cleanly!`)
+        setCompleteDialogOpen(false)
+        setSelectedDeliveryToComplete(null)
+        setCompletionNotes('')
+        setPhotoProof('')
+        fetchData(true)
+      } else {
+        const data = await res.json()
+        toast.error(data.error || 'Failed to complete')
+      }
+    } catch (error) {
+      toast.error('Failed to complete')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleEditLog = async () => {
+    if (!selectedLogToEdit) return
+
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      // This assumes an endpoint exists or we use the delivery update endpoint with a specific action
+      const res = await fetch(`/api/worker/deliveries/${selectedLogToEdit.deliveryId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'EDIT_LOG',
+          logId: selectedLogToEdit.id,
+          notes: editLogNotes
+        })
+      })
+
+      if (res.ok) {
+        toast.success(`Log updated successfully`)
+        setEditLogOpen(false)
+        fetchData(true)
+      } else {
+        toast.error('Failed to edit log. Window might be closed.')
+      }
+    } catch (error) {
+      toast.error('Failed to edit log')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -252,6 +378,14 @@ export default function WorkerDashboard() {
                 {unreadCount > 0 && (
                   <Badge className="ml-1">{unreadCount}</Badge>
                 )}
+              </Button>
+              <Button
+                variant="destructive"
+                className="gap-2"
+                onClick={logout}
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
               </Button>
               <Button
                 variant="outline"
@@ -374,73 +508,170 @@ export default function WorkerDashboard() {
               </Card>
             </div>
 
-            {/* Right Column: Job Schedules (stays same but wider) */}
-            <div className="lg:col-span-2">
-              {/* Job Schedules Card... (keep existing code) */}
+            {/* Right Column: Deliveries */}
+            <div className="lg:col-span-2 space-y-8">
+
+              <Card className="border-blue-200">
+                <CardHeader className="bg-blue-50/50">
+                  <CardTitle className="flex items-center gap-2 text-blue-800">
+                    <MapPin className="w-5 h-5" />
+                    Available Pool
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  {poolDeliveries.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">No open deliveries in queue</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {poolDeliveries.map((delivery) => (
+                        <Card key={delivery.id} className="border-l-4 border-l-blue-500 shadow-sm">
+                          <CardContent className="pt-6">
+                            <div className="flex justify-between items-start mb-4">
+                              <div>
+                                <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
+                                <p className="text-sm text-muted-foreground">
+                                  Customer: {delivery.invoice?.order?.user?.fullName}
+                                </p>
+                                <p className="text-sm text-muted-foreground font-mono mt-1">
+                                  Items: {delivery.items?.length || 0}
+                                </p>
+                              </div>
+                              <Badge variant="outline" className="bg-blue-50">AVAILABLE</Badge>
+                            </div>
+
+                            <Dialog open={claimDialogOpen && selectedPoolDelivery?.id === delivery.id} onOpenChange={(open) => {
+                              setClaimDialogOpen(open)
+                              if (!open) setSelectedPoolDelivery(null)
+                            }}>
+                              <DialogTrigger asChild>
+                                <Button size="sm" className="w-full sm:w-auto" onClick={() => setSelectedPoolDelivery(delivery)}>
+                                  Claim Delivery
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Claim Delivery #{delivery.invoice?.invoiceNumber}</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4 py-4">
+                                  <div className="space-y-2">
+                                    <Label>Select Vehicle for this delivery</Label>
+                                    <Select value={selectedVehicleId} onValueChange={setSelectedVehicleId}>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Choose a vehicle..." />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {availableVehicles.map(v => (
+                                          <SelectItem key={v.id} value={v.id}>{v.name} ({v.type})</SelectItem>
+                                        ))}
+                                        {availableVehicles.length === 0 && (
+                                          <SelectItem value="none" disabled>No available vehicles</SelectItem>
+                                        )}
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                  <Button className="w-full" onClick={handleClaim} disabled={!selectedVehicleId || selectedVehicleId === 'none'}>
+                                    Confirm Claim & Lock Vehicle
+                                  </Button>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="w-5 h-5" />
-                    Job Schedules
+                    My Active Deliveries
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {schedules.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">No jobs assigned yet</p>
+                  {myDeliveries.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">You haven't claimed any deliveries</p>
                   ) : (
                     <div className="space-y-4">
-                      {schedules.map((schedule) => (
-                        <Card key={schedule.id} className="border-l-4 border-l-primary">
+                      {myDeliveries.map((delivery) => (
+                        <Card key={delivery.id} className={cn("border-l-4", delivery.status === 'COMPLETED' ? "border-l-green-500 opacity-70" : "border-l-primary shadow-md")}>
                           <CardContent className="pt-6">
                             <div className="flex justify-between items-start mb-4">
                               <div>
-                                <h3 className="font-bold text-lg">{schedule.order?.orderNumber}</h3>
+                                <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
                                 <p className="text-sm text-muted-foreground">
-                                  Customer: {schedule.order?.user?.fullName}
+                                  Customer: {delivery.invoice?.order?.user?.fullName}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                  <Calendar className="w-3 h-3 inline mr-1" />
-                                  Scheduled: {new Date(schedule.scheduledDate).toLocaleDateString()}
+                                  <Clock className="w-3 h-3 inline mr-1" />
+                                  Claimed: {new Date(delivery.updatedAt).toLocaleTimeString()}
                                 </p>
                               </div>
                               <Badge variant={
-                                schedule.status === 'FINISHED' ? 'default' :
-                                  schedule.status === 'ONGOING' ? 'secondary' :
+                                delivery.status === 'COMPLETED' ? 'default' :
+                                  delivery.status === 'OUT_FOR_DELIVERY' ? 'secondary' :
                                     'outline'
                               }>
-                                {schedule.status}
+                                {delivery.status}
                               </Badge>
                             </div>
 
-                            {schedule.notes && (
-                              <div className="bg-muted p-3 rounded-md mb-4">
-                                <p className="text-sm font-medium">Admin Notes:</p>
-                                <p className="text-sm">{schedule.notes}</p>
+                            {delivery.vehicle && (
+                              <div className="bg-muted p-2 rounded-md mb-4 text-xs font-mono">
+                                Using: {delivery.vehicle.name}
                               </div>
                             )}
 
-                            {schedule.status !== 'FINISHED' && schedule.status !== 'CANCELLED' && (
+                            {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
                               <div className="flex gap-2 flex-wrap">
-                                {schedule.status === 'PENDING' && (
-                                  <Button size="sm" onClick={() => updateJobStatus(schedule.id, 'ONGOING')}>
-                                    Start Job
+                                {delivery.status === 'CLAIMED' && (
+                                  <Button size="sm" onClick={() => updateDeliveryStatus(delivery.id, 'OUT_FOR_DELIVERY')}>
+                                    Start Route
                                   </Button>
                                 )}
-                                {schedule.status === 'ONGOING' && (
+                                {delivery.status === 'OUT_FOR_DELIVERY' && (
                                   <>
-                                    <Button size="sm" variant="default" onClick={() => updateJobStatus(schedule.id, 'FINISHED')}>
-                                      Mark Finished
+                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200" onClick={() => {
+                                      setSelectedDeliveryToComplete(delivery)
+                                      setCompleteDialogOpen(true)
+                                    }}>
+                                      Complete Delivery
                                     </Button>
-                                    <Button size="sm" variant="outline" onClick={() => updateJobStatus(schedule.id, 'DELAYED')}>
+                                    <Button size="sm" variant="outline" onClick={() => updateDeliveryStatus(delivery.id, 'DELAYED')}>
                                       Mark Delayed
                                     </Button>
                                   </>
                                 )}
-                                {(schedule.status === 'PENDING' || schedule.status === 'ONGOING') && (
-                                  <Button size="sm" variant="destructive" onClick={() => updateJobStatus(schedule.id, 'CANCELLED')}>
-                                    Cancel
-                                  </Button>
-                                )}
+                              </div>
+                            )}
+
+                            {/* Recent Logs / Edit Window */}
+                            {delivery.logs && delivery.logs.length > 0 && (
+                              <div className="mt-4 pt-4 border-t border-dashed">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">Recent Timeline</p>
+                                <div className="space-y-2">
+                                  {delivery.logs.slice(0, 2).map((log: any) => {
+                                    const canEdit = (new Date().getTime() - new Date(log.createdAt).getTime()) < 12 * 60 * 60 * 1000;
+                                    return (
+                                      <div key={log.id} className="flex justify-between items-center text-xs">
+                                        <span className="text-muted-foreground">
+                                          {log.eventType}: {log.newValue?.notes || 'No notes'}
+                                        </span>
+                                        {canEdit && log.createdByUserId === user?.id && (
+                                          <Button variant="ghost" size="sm" className="h-5 px-1 text-[10px] text-blue-600" onClick={() => {
+                                            setSelectedLogToEdit(log)
+                                            setEditLogNotes(log.newValue?.notes || '')
+                                            setEditLogOpen(true)
+                                          }}>
+                                            Edit
+                                          </Button>
+                                        )}
+                                      </div>
+                                    )
+                                  })}
+                                </div>
                               </div>
                             )}
                           </CardContent>
@@ -505,6 +736,68 @@ export default function WorkerDashboard() {
         open={showDMList}
         onOpenChange={setShowDMList}
       />
+
+      {/* Complete Delivery Dialog */}
+      <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Complete Delivery</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Notes / Delivery Proof Message</Label>
+              <Textarea
+                placeholder="e.g. Left with security, Handed to customer..."
+                value={completionNotes}
+                onChange={(e) => setCompletionNotes(e.target.value)}
+                className="min-h-[100px]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Photo URL (Optional)</Label>
+              <Input
+                placeholder="Upload URL or Link"
+                value={photoProof}
+                onChange={(e) => setPhotoProof(e.target.value)}
+              />
+              <p className="text-[10px] text-muted-foreground italic">Tip: Take a photo for evidence.</p>
+            </div>
+            <Button
+              className="w-full bg-green-600 hover:bg-green-700 h-12 text-lg font-bold"
+              onClick={handleCompleteDelivery}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Processing..." : "Finish Delivery"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Log Dialog */}
+      <Dialog open={editLogOpen} onOpenChange={setEditLogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Log Entry</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Notes</Label>
+              <Textarea
+                value={editLogNotes}
+                onChange={(e) => setEditLogNotes(e.target.value)}
+                className="min-h-[100px]"
+              />
+            </div>
+            <Button
+              className="w-full"
+              onClick={handleEditLog}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Updating..." : "Update Log"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

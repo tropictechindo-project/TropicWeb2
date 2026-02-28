@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
   // ── Primary ──────────────────────────────────────────────────────────────
   title: {
-    default: 'Tropic Tech – #1 Workstation Rental Bali | Monitors, Chairs, Desks',
+    default: 'Tropic Tech Bali – #1 Workstation Rental Bali | Monitors, Chairs, Desks',
     template: '%s | Tropic Tech Bali',
   },
   description: 'Rent premium monitors, ergonomic chairs & standing desks in Bali. Fast island-wide delivery to Canggu, Seminyak & Ubud. Daily, weekly & monthly plans. Trusted by 500+ digital nomads.',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   applicationName: 'Tropic Tech',
   category: 'Business Equipment Rental',
   authors: [{ name: 'PT Tropic Tech International', url: 'https://tropictech.online' }],
-  creator: 'Tropic Tech',
+  creator: 'Tropic Tech Bali',
   publisher: 'PT Tropic Tech International',
 
   // ── Robots ────────────────────────────────────────────────────────────────
@@ -66,10 +66,10 @@ export const metadata: Metadata = {
 
   // ── Open Graph ────────────────────────────────────────────────────────────
   openGraph: {
-    title: 'Tropic Tech – Workstation Rental Bali | Monitors, Chairs, Desks',
+    title: 'Tropic Tech Bali – Workstation Rental Bali | Monitors, Chairs, Desks',
     description: 'Premium workstation rentals in Bali. Serving digital nomads & remote workers since 2019. Delivery to Canggu, Seminyak, Ubud & beyond.',
     url: 'https://tropictech.online',
-    siteName: 'Tropic Tech',
+    siteName: 'Tropic Tech Bali',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
   // ── Twitter / X ──────────────────────────────────────────────────────────
   twitter: {
     card: 'summary_large_image',
-    title: 'Tropic Tech – #1 Workstation Rental Bali',
+    title: 'Tropic Tech Bali – #1 Workstation Rental Bali',
     description: 'Rent monitors, ergonomic chairs & desks in Bali. Fast delivery, flexible plans. Trusted by 500+ digital nomads.',
     images: ['/images/og-image.webp'],
     creator: '@tropictechs',

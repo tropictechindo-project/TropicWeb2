@@ -13,13 +13,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-primary">Tropic Tech</h3>
-            <p className="text-sm text-muted-foreground">
-```tsx
-<span className="text-xs block">Operated By</span>
-PT Tropic Tech International
-```
-            </p>
+            <h3 className="text-xl font-bold text-primary">Tropic Tech Bali</h3>
+
+            <div className="text-sm text-muted-foreground">
+              <span className="text-xs block">Operated By</span>
+              PT Tropic Tech International
+            </div>
+
             <p className="text-sm text-muted-foreground">
               5+ Years in Bali - Leading the Industry
             </p>
@@ -32,9 +32,9 @@ PT Tropic Tech International
           <div className="space-y-4">
             <h4 className="font-semibold">{t('getInTouch')}</h4>
             <div className="space-y-3">
-              <a href="mailto:tropictechindo@gmail.com" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Send us an email">
+              <a href="mailto:contact@tropictech.online" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Send us an email">
                 <Mail className="h-4 w-4" />
-                tropictechindo@gmail.com
+                contact@tropictech.online
               </a>
               <a href="https://wa.me/6282266574860" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Chat with us on WhatsApp">
                 <Phone className="h-4 w-4" />
@@ -96,12 +96,24 @@ PT Tropic Tech International
                 mybisnis.app
               </a>
             </div>
+
+            <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
+              <a href="mailto:contact@tropictech.online" className="hover:text-primary hover:underline transition-colors">
+                contact@tropictech.online
+              </a>
+              <a href="mailto:info@tropictech.online" className="hover:text-primary hover:underline transition-colors">
+                info@tropictech.online
+              </a>
+              <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors">
+                support@tropictech.online
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-&copy; 2026 PT Tropic Tech International<sup>TM</sup>. {t('allRightsReserved')}
+            &copy; 2026 PT Tropic Tech International<sup>TM</sup>. {t('allRightsReserved')}
           </p>
         </div>
       </div>

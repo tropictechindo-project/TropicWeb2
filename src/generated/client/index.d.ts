@@ -105,11 +105,6 @@ export type SiteSetting = $Result.DefaultSelection<Prisma.$SiteSettingPayload>
  */
 export type ActivityLog = $Result.DefaultSelection<Prisma.$ActivityLogPayload>
 /**
- * Model WorkerSchedule
- * 
- */
-export type WorkerSchedule = $Result.DefaultSelection<Prisma.$WorkerSchedulePayload>
-/**
  * Model WorkerAttendance
  * 
  */
@@ -129,16 +124,6 @@ export type WorkerNotification = $Result.DefaultSelection<Prisma.$WorkerNotifica
  * 
  */
 export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
-/**
- * Model DailyReport
- * 
- */
-export type DailyReport = $Result.DefaultSelection<Prisma.$DailyReportPayload>
-/**
- * Model DeliveryChecklistItem
- * 
- */
-export type DeliveryChecklistItem = $Result.DefaultSelection<Prisma.$DeliveryChecklistItemPayload>
 /**
  * Model NotificationDismissal
  * 
@@ -184,6 +169,31 @@ export type AiAction = $Result.DefaultSelection<Prisma.$AiActionPayload>
  * 
  */
 export type AiTrainingData = $Result.DefaultSelection<Prisma.$AiTrainingDataPayload>
+/**
+ * Model Vehicle
+ * 
+ */
+export type Vehicle = $Result.DefaultSelection<Prisma.$VehiclePayload>
+/**
+ * Model Delivery
+ * 
+ */
+export type Delivery = $Result.DefaultSelection<Prisma.$DeliveryPayload>
+/**
+ * Model DeliveryItem
+ * 
+ */
+export type DeliveryItem = $Result.DefaultSelection<Prisma.$DeliveryItemPayload>
+/**
+ * Model DeliveryLog
+ * 
+ */
+export type DeliveryLog = $Result.DefaultSelection<Prisma.$DeliveryLogPayload>
+/**
+ * Model DeliveryEditLog
+ * 
+ */
+export type DeliveryEditLog = $Result.DefaultSelection<Prisma.$DeliveryEditLogPayload>
 
 /**
  * Enums
@@ -205,17 +215,6 @@ export const inventory_source: {
 };
 
 export type inventory_source = (typeof inventory_source)[keyof typeof inventory_source]
-
-
-export const schedule_status: {
-  PENDING: 'PENDING',
-  ONGOING: 'ONGOING',
-  FINISHED: 'FINISHED',
-  DELAYED: 'DELAYED',
-  CANCELLED: 'CANCELLED'
-};
-
-export type schedule_status = (typeof schedule_status)[keyof typeof schedule_status]
 
 
 export const OrderStatus: {
@@ -310,6 +309,62 @@ export const AiActionStatus: {
 
 export type AiActionStatus = (typeof AiActionStatus)[keyof typeof AiActionStatus]
 
+
+export const VehicleType: {
+  VAN: 'VAN',
+  MOTORCYCLE: 'MOTORCYCLE'
+};
+
+export type VehicleType = (typeof VehicleType)[keyof typeof VehicleType]
+
+
+export const VehicleStatus: {
+  AVAILABLE: 'AVAILABLE',
+  IN_USE: 'IN_USE',
+  MAINTENANCE: 'MAINTENANCE'
+};
+
+export type VehicleStatus = (typeof VehicleStatus)[keyof typeof VehicleStatus]
+
+
+export const DeliveryMethod: {
+  INTERNAL: 'INTERNAL',
+  GOJEK: 'GOJEK'
+};
+
+export type DeliveryMethod = (typeof DeliveryMethod)[keyof typeof DeliveryMethod]
+
+
+export const DeliveryType: {
+  DROPOFF: 'DROPOFF',
+  PICKUP: 'PICKUP'
+};
+
+export type DeliveryType = (typeof DeliveryType)[keyof typeof DeliveryType]
+
+
+export const DeliveryStatus: {
+  QUEUED: 'QUEUED',
+  CLAIMED: 'CLAIMED',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  PAUSED: 'PAUSED',
+  DELAYED: 'DELAYED',
+  CANCEL_REQUESTED: 'CANCEL_REQUESTED',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED'
+};
+
+export type DeliveryStatus = (typeof DeliveryStatus)[keyof typeof DeliveryStatus]
+
+
+export const DeliveryRole: {
+  ADMIN: 'ADMIN',
+  WORKER: 'WORKER',
+  SYSTEM: 'SYSTEM'
+};
+
+export type DeliveryRole = (typeof DeliveryRole)[keyof typeof DeliveryRole]
+
 }
 
 export type attendance_status = $Enums.attendance_status
@@ -319,10 +374,6 @@ export const attendance_status: typeof $Enums.attendance_status
 export type inventory_source = $Enums.inventory_source
 
 export const inventory_source: typeof $Enums.inventory_source
-
-export type schedule_status = $Enums.schedule_status
-
-export const schedule_status: typeof $Enums.schedule_status
 
 export type OrderStatus = $Enums.OrderStatus
 
@@ -355,6 +406,30 @@ export const AiAgentSystemName: typeof $Enums.AiAgentSystemName
 export type AiActionStatus = $Enums.AiActionStatus
 
 export const AiActionStatus: typeof $Enums.AiActionStatus
+
+export type VehicleType = $Enums.VehicleType
+
+export const VehicleType: typeof $Enums.VehicleType
+
+export type VehicleStatus = $Enums.VehicleStatus
+
+export const VehicleStatus: typeof $Enums.VehicleStatus
+
+export type DeliveryMethod = $Enums.DeliveryMethod
+
+export const DeliveryMethod: typeof $Enums.DeliveryMethod
+
+export type DeliveryType = $Enums.DeliveryType
+
+export const DeliveryType: typeof $Enums.DeliveryType
+
+export type DeliveryStatus = $Enums.DeliveryStatus
+
+export const DeliveryStatus: typeof $Enums.DeliveryStatus
+
+export type DeliveryRole = $Enums.DeliveryRole
+
+export const DeliveryRole: typeof $Enums.DeliveryRole
 
 /**
  * ##  Prisma Client ʲˢ
@@ -655,16 +730,6 @@ export class PrismaClient<
   get activityLog(): Prisma.ActivityLogDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.workerSchedule`: Exposes CRUD operations for the **WorkerSchedule** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more WorkerSchedules
-    * const workerSchedules = await prisma.workerSchedule.findMany()
-    * ```
-    */
-  get workerSchedule(): Prisma.WorkerScheduleDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.workerAttendance`: Exposes CRUD operations for the **WorkerAttendance** model.
     * Example usage:
     * ```ts
@@ -703,26 +768,6 @@ export class PrismaClient<
     * ```
     */
   get message(): Prisma.MessageDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.dailyReport`: Exposes CRUD operations for the **DailyReport** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DailyReports
-    * const dailyReports = await prisma.dailyReport.findMany()
-    * ```
-    */
-  get dailyReport(): Prisma.DailyReportDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.deliveryChecklistItem`: Exposes CRUD operations for the **DeliveryChecklistItem** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more DeliveryChecklistItems
-    * const deliveryChecklistItems = await prisma.deliveryChecklistItem.findMany()
-    * ```
-    */
-  get deliveryChecklistItem(): Prisma.DeliveryChecklistItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.notificationDismissal`: Exposes CRUD operations for the **NotificationDismissal** model.
@@ -813,6 +858,56 @@ export class PrismaClient<
     * ```
     */
   get aiTrainingData(): Prisma.AiTrainingDataDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.vehicle`: Exposes CRUD operations for the **Vehicle** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Vehicles
+    * const vehicles = await prisma.vehicle.findMany()
+    * ```
+    */
+  get vehicle(): Prisma.VehicleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.delivery`: Exposes CRUD operations for the **Delivery** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Deliveries
+    * const deliveries = await prisma.delivery.findMany()
+    * ```
+    */
+  get delivery(): Prisma.DeliveryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deliveryItem`: Exposes CRUD operations for the **DeliveryItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DeliveryItems
+    * const deliveryItems = await prisma.deliveryItem.findMany()
+    * ```
+    */
+  get deliveryItem(): Prisma.DeliveryItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deliveryLog`: Exposes CRUD operations for the **DeliveryLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DeliveryLogs
+    * const deliveryLogs = await prisma.deliveryLog.findMany()
+    * ```
+    */
+  get deliveryLog(): Prisma.DeliveryLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deliveryEditLog`: Exposes CRUD operations for the **DeliveryEditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DeliveryEditLogs
+    * const deliveryEditLogs = await prisma.deliveryEditLog.findMany()
+    * ```
+    */
+  get deliveryEditLog(): Prisma.DeliveryEditLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1272,13 +1367,10 @@ export namespace Prisma {
     GroupMessage: 'GroupMessage',
     SiteSetting: 'SiteSetting',
     ActivityLog: 'ActivityLog',
-    WorkerSchedule: 'WorkerSchedule',
     WorkerAttendance: 'WorkerAttendance',
     InventorySyncLog: 'InventorySyncLog',
     WorkerNotification: 'WorkerNotification',
     Message: 'Message',
-    DailyReport: 'DailyReport',
-    DeliveryChecklistItem: 'DeliveryChecklistItem',
     NotificationDismissal: 'NotificationDismissal',
     SystemJobLog: 'SystemJobLog',
     IdempotencyKey: 'IdempotencyKey',
@@ -1287,7 +1379,12 @@ export namespace Prisma {
     AiAgent: 'AiAgent',
     AiPermission: 'AiPermission',
     AiAction: 'AiAction',
-    AiTrainingData: 'AiTrainingData'
+    AiTrainingData: 'AiTrainingData',
+    Vehicle: 'Vehicle',
+    Delivery: 'Delivery',
+    DeliveryItem: 'DeliveryItem',
+    DeliveryLog: 'DeliveryLog',
+    DeliveryEditLog: 'DeliveryEditLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1306,7 +1403,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerSchedule" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "dailyReport" | "deliveryChecklistItem" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2642,80 +2739,6 @@ export namespace Prisma {
           }
         }
       }
-      WorkerSchedule: {
-        payload: Prisma.$WorkerSchedulePayload<ExtArgs>
-        fields: Prisma.WorkerScheduleFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.WorkerScheduleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.WorkerScheduleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          findFirst: {
-            args: Prisma.WorkerScheduleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.WorkerScheduleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          findMany: {
-            args: Prisma.WorkerScheduleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>[]
-          }
-          create: {
-            args: Prisma.WorkerScheduleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          createMany: {
-            args: Prisma.WorkerScheduleCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.WorkerScheduleCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>[]
-          }
-          delete: {
-            args: Prisma.WorkerScheduleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          update: {
-            args: Prisma.WorkerScheduleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          deleteMany: {
-            args: Prisma.WorkerScheduleDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.WorkerScheduleUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.WorkerScheduleUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>[]
-          }
-          upsert: {
-            args: Prisma.WorkerScheduleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WorkerSchedulePayload>
-          }
-          aggregate: {
-            args: Prisma.WorkerScheduleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateWorkerSchedule>
-          }
-          groupBy: {
-            args: Prisma.WorkerScheduleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<WorkerScheduleGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.WorkerScheduleCountArgs<ExtArgs>
-            result: $Utils.Optional<WorkerScheduleCountAggregateOutputType> | number
-          }
-        }
-      }
       WorkerAttendance: {
         payload: Prisma.$WorkerAttendancePayload<ExtArgs>
         fields: Prisma.WorkerAttendanceFieldRefs
@@ -3009,154 +3032,6 @@ export namespace Prisma {
           count: {
             args: Prisma.MessageCountArgs<ExtArgs>
             result: $Utils.Optional<MessageCountAggregateOutputType> | number
-          }
-        }
-      }
-      DailyReport: {
-        payload: Prisma.$DailyReportPayload<ExtArgs>
-        fields: Prisma.DailyReportFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DailyReportFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DailyReportFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          findFirst: {
-            args: Prisma.DailyReportFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DailyReportFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          findMany: {
-            args: Prisma.DailyReportFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>[]
-          }
-          create: {
-            args: Prisma.DailyReportCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          createMany: {
-            args: Prisma.DailyReportCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.DailyReportCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>[]
-          }
-          delete: {
-            args: Prisma.DailyReportDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          update: {
-            args: Prisma.DailyReportUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          deleteMany: {
-            args: Prisma.DailyReportDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DailyReportUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.DailyReportUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>[]
-          }
-          upsert: {
-            args: Prisma.DailyReportUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DailyReportPayload>
-          }
-          aggregate: {
-            args: Prisma.DailyReportAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDailyReport>
-          }
-          groupBy: {
-            args: Prisma.DailyReportGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DailyReportGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DailyReportCountArgs<ExtArgs>
-            result: $Utils.Optional<DailyReportCountAggregateOutputType> | number
-          }
-        }
-      }
-      DeliveryChecklistItem: {
-        payload: Prisma.$DeliveryChecklistItemPayload<ExtArgs>
-        fields: Prisma.DeliveryChecklistItemFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.DeliveryChecklistItemFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.DeliveryChecklistItemFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          findFirst: {
-            args: Prisma.DeliveryChecklistItemFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.DeliveryChecklistItemFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          findMany: {
-            args: Prisma.DeliveryChecklistItemFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>[]
-          }
-          create: {
-            args: Prisma.DeliveryChecklistItemCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          createMany: {
-            args: Prisma.DeliveryChecklistItemCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.DeliveryChecklistItemCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>[]
-          }
-          delete: {
-            args: Prisma.DeliveryChecklistItemDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          update: {
-            args: Prisma.DeliveryChecklistItemUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          deleteMany: {
-            args: Prisma.DeliveryChecklistItemDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.DeliveryChecklistItemUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.DeliveryChecklistItemUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>[]
-          }
-          upsert: {
-            args: Prisma.DeliveryChecklistItemUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DeliveryChecklistItemPayload>
-          }
-          aggregate: {
-            args: Prisma.DeliveryChecklistItemAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDeliveryChecklistItem>
-          }
-          groupBy: {
-            args: Prisma.DeliveryChecklistItemGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DeliveryChecklistItemGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.DeliveryChecklistItemCountArgs<ExtArgs>
-            result: $Utils.Optional<DeliveryChecklistItemCountAggregateOutputType> | number
           }
         }
       }
@@ -3826,6 +3701,376 @@ export namespace Prisma {
           }
         }
       }
+      Vehicle: {
+        payload: Prisma.$VehiclePayload<ExtArgs>
+        fields: Prisma.VehicleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VehicleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VehicleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          findFirst: {
+            args: Prisma.VehicleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VehicleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          findMany: {
+            args: Prisma.VehicleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+          }
+          create: {
+            args: Prisma.VehicleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          createMany: {
+            args: Prisma.VehicleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VehicleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+          }
+          delete: {
+            args: Prisma.VehicleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          update: {
+            args: Prisma.VehicleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          deleteMany: {
+            args: Prisma.VehicleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VehicleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VehicleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>[]
+          }
+          upsert: {
+            args: Prisma.VehicleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VehiclePayload>
+          }
+          aggregate: {
+            args: Prisma.VehicleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVehicle>
+          }
+          groupBy: {
+            args: Prisma.VehicleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VehicleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VehicleCountArgs<ExtArgs>
+            result: $Utils.Optional<VehicleCountAggregateOutputType> | number
+          }
+        }
+      }
+      Delivery: {
+        payload: Prisma.$DeliveryPayload<ExtArgs>
+        fields: Prisma.DeliveryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeliveryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeliveryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          findFirst: {
+            args: Prisma.DeliveryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeliveryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          findMany: {
+            args: Prisma.DeliveryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>[]
+          }
+          create: {
+            args: Prisma.DeliveryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          createMany: {
+            args: Prisma.DeliveryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeliveryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>[]
+          }
+          delete: {
+            args: Prisma.DeliveryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          update: {
+            args: Prisma.DeliveryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeliveryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeliveryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeliveryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeliveryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryPayload>
+          }
+          aggregate: {
+            args: Prisma.DeliveryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDelivery>
+          }
+          groupBy: {
+            args: Prisma.DeliveryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeliveryCountArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryCountAggregateOutputType> | number
+          }
+        }
+      }
+      DeliveryItem: {
+        payload: Prisma.$DeliveryItemPayload<ExtArgs>
+        fields: Prisma.DeliveryItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeliveryItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeliveryItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          findFirst: {
+            args: Prisma.DeliveryItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeliveryItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          findMany: {
+            args: Prisma.DeliveryItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>[]
+          }
+          create: {
+            args: Prisma.DeliveryItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          createMany: {
+            args: Prisma.DeliveryItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeliveryItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>[]
+          }
+          delete: {
+            args: Prisma.DeliveryItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          update: {
+            args: Prisma.DeliveryItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeliveryItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeliveryItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeliveryItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeliveryItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryItemPayload>
+          }
+          aggregate: {
+            args: Prisma.DeliveryItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeliveryItem>
+          }
+          groupBy: {
+            args: Prisma.DeliveryItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeliveryItemCountArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      DeliveryLog: {
+        payload: Prisma.$DeliveryLogPayload<ExtArgs>
+        fields: Prisma.DeliveryLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeliveryLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeliveryLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          findFirst: {
+            args: Prisma.DeliveryLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeliveryLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          findMany: {
+            args: Prisma.DeliveryLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>[]
+          }
+          create: {
+            args: Prisma.DeliveryLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          createMany: {
+            args: Prisma.DeliveryLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeliveryLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>[]
+          }
+          delete: {
+            args: Prisma.DeliveryLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          update: {
+            args: Prisma.DeliveryLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeliveryLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeliveryLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeliveryLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeliveryLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryLogPayload>
+          }
+          aggregate: {
+            args: Prisma.DeliveryLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeliveryLog>
+          }
+          groupBy: {
+            args: Prisma.DeliveryLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeliveryLogCountArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      DeliveryEditLog: {
+        payload: Prisma.$DeliveryEditLogPayload<ExtArgs>
+        fields: Prisma.DeliveryEditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeliveryEditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeliveryEditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.DeliveryEditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeliveryEditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          findMany: {
+            args: Prisma.DeliveryEditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>[]
+          }
+          create: {
+            args: Prisma.DeliveryEditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          createMany: {
+            args: Prisma.DeliveryEditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeliveryEditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.DeliveryEditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          update: {
+            args: Prisma.DeliveryEditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeliveryEditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeliveryEditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeliveryEditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeliveryEditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeliveryEditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.DeliveryEditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeliveryEditLog>
+          }
+          groupBy: {
+            args: Prisma.DeliveryEditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryEditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeliveryEditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<DeliveryEditLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3940,13 +4185,10 @@ export namespace Prisma {
     groupMessage?: GroupMessageOmit
     siteSetting?: SiteSettingOmit
     activityLog?: ActivityLogOmit
-    workerSchedule?: WorkerScheduleOmit
     workerAttendance?: WorkerAttendanceOmit
     inventorySyncLog?: InventorySyncLogOmit
     workerNotification?: WorkerNotificationOmit
     message?: MessageOmit
-    dailyReport?: DailyReportOmit
-    deliveryChecklistItem?: DeliveryChecklistItemOmit
     notificationDismissal?: NotificationDismissalOmit
     systemJobLog?: SystemJobLogOmit
     idempotencyKey?: IdempotencyKeyOmit
@@ -3956,6 +4198,11 @@ export namespace Prisma {
     aiPermission?: AiPermissionOmit
     aiAction?: AiActionOmit
     aiTrainingData?: AiTrainingDataOmit
+    vehicle?: VehicleOmit
+    delivery?: DeliveryOmit
+    deliveryItem?: DeliveryItemOmit
+    deliveryLog?: DeliveryLogOmit
+    deliveryEditLog?: DeliveryEditLogOmit
   }
 
   /* Types for Logging */
@@ -4032,6 +4279,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type InvoiceCountOutputType
+   */
+
+  export type InvoiceCountOutputType = {
+    deliveries: number
+  }
+
+  export type InvoiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deliveries?: boolean | InvoiceCountOutputTypeCountDeliveriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InvoiceCountOutputType without action
+   */
+  export type InvoiceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InvoiceCountOutputType
+     */
+    select?: InvoiceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InvoiceCountOutputType without action
+   */
+  export type InvoiceCountOutputTypeCountDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryWhereInput
+  }
+
+
+  /**
    * Count Type OrderCountOutputType
    */
 
@@ -4039,7 +4317,6 @@ export namespace Prisma {
     invoices: number
     assignedUnits: number
     rentalItems: number
-    workerSchedules: number
     paymentTransactions: number
   }
 
@@ -4047,7 +4324,6 @@ export namespace Prisma {
     invoices?: boolean | OrderCountOutputTypeCountInvoicesArgs
     assignedUnits?: boolean | OrderCountOutputTypeCountAssignedUnitsArgs
     rentalItems?: boolean | OrderCountOutputTypeCountRentalItemsArgs
-    workerSchedules?: boolean | OrderCountOutputTypeCountWorkerSchedulesArgs
     paymentTransactions?: boolean | OrderCountOutputTypeCountPaymentTransactionsArgs
   }
 
@@ -4081,13 +4357,6 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountRentalItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RentalItemWhereInput
-  }
-
-  /**
-   * OrderCountOutputType without action
-   */
-  export type OrderCountOutputTypeCountWorkerSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WorkerScheduleWhereInput
   }
 
   /**
@@ -4286,6 +4555,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type RentalItemCountOutputType
+   */
+
+  export type RentalItemCountOutputType = {
+    deliveryItems: number
+  }
+
+  export type RentalItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deliveryItems?: boolean | RentalItemCountOutputTypeCountDeliveryItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RentalItemCountOutputType without action
+   */
+  export type RentalItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RentalItemCountOutputType
+     */
+    select?: RentalItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RentalItemCountOutputType without action
+   */
+  export type RentalItemCountOutputTypeCountDeliveryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryItemWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
@@ -4297,15 +4597,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers: number
     orders: number
     workerAttendance: number
+    claimedDeliveries: number
+    deliveryLogs: number
+    deliveryEditLogs: number
     sentNotifications: number
     receivedNotifications: number
-    assignedSchedules: number
-    workerSchedules: number
     sentMessages: number
     receivedMessages: number
     chatGroupMemberships: number
     sentGroupMessages: number
-    dailyReports: number
     notificationDismissals: number
     systemNotifications: number
     verifiedTransactions: number
@@ -4321,15 +4621,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: boolean | UserCountOutputTypeCountOrders_orders_payment_confirmed_byTousersArgs
     orders?: boolean | UserCountOutputTypeCountOrdersArgs
     workerAttendance?: boolean | UserCountOutputTypeCountWorkerAttendanceArgs
+    claimedDeliveries?: boolean | UserCountOutputTypeCountClaimedDeliveriesArgs
+    deliveryLogs?: boolean | UserCountOutputTypeCountDeliveryLogsArgs
+    deliveryEditLogs?: boolean | UserCountOutputTypeCountDeliveryEditLogsArgs
     sentNotifications?: boolean | UserCountOutputTypeCountSentNotificationsArgs
     receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
-    assignedSchedules?: boolean | UserCountOutputTypeCountAssignedSchedulesArgs
-    workerSchedules?: boolean | UserCountOutputTypeCountWorkerSchedulesArgs
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
     chatGroupMemberships?: boolean | UserCountOutputTypeCountChatGroupMembershipsArgs
     sentGroupMessages?: boolean | UserCountOutputTypeCountSentGroupMessagesArgs
-    dailyReports?: boolean | UserCountOutputTypeCountDailyReportsArgs
     notificationDismissals?: boolean | UserCountOutputTypeCountNotificationDismissalsArgs
     systemNotifications?: boolean | UserCountOutputTypeCountSystemNotificationsArgs
     verifiedTransactions?: boolean | UserCountOutputTypeCountVerifiedTransactionsArgs
@@ -4400,6 +4700,27 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountClaimedDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeliveryLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeliveryEditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryEditLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountSentNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkerNotificationWhereInput
   }
@@ -4409,20 +4730,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkerNotificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAssignedSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WorkerScheduleWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountWorkerSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WorkerScheduleWhereInput
   }
 
   /**
@@ -4451,13 +4758,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSentGroupMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GroupMessageWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDailyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DailyReportWhereInput
   }
 
   /**
@@ -4537,68 +4837,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type WorkerScheduleCountOutputType
-   */
-
-  export type WorkerScheduleCountOutputType = {
-    dailyReports: number
-  }
-
-  export type WorkerScheduleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    dailyReports?: boolean | WorkerScheduleCountOutputTypeCountDailyReportsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * WorkerScheduleCountOutputType without action
-   */
-  export type WorkerScheduleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerScheduleCountOutputType
-     */
-    select?: WorkerScheduleCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * WorkerScheduleCountOutputType without action
-   */
-  export type WorkerScheduleCountOutputTypeCountDailyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DailyReportWhereInput
-  }
-
-
-  /**
-   * Count Type DailyReportCountOutputType
-   */
-
-  export type DailyReportCountOutputType = {
-    deliveryItems: number
-  }
-
-  export type DailyReportCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    deliveryItems?: boolean | DailyReportCountOutputTypeCountDeliveryItemsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * DailyReportCountOutputType without action
-   */
-  export type DailyReportCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReportCountOutputType
-     */
-    select?: DailyReportCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * DailyReportCountOutputType without action
-   */
-  export type DailyReportCountOutputTypeCountDeliveryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DeliveryChecklistItemWhereInput
-  }
-
-
-  /**
    * Count Type AiAgentCountOutputType
    */
 
@@ -4635,6 +4873,86 @@ export namespace Prisma {
    */
   export type AiAgentCountOutputTypeCountTrainingDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AiTrainingDataWhereInput
+  }
+
+
+  /**
+   * Count Type VehicleCountOutputType
+   */
+
+  export type VehicleCountOutputType = {
+    deliveries: number
+  }
+
+  export type VehicleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deliveries?: boolean | VehicleCountOutputTypeCountDeliveriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VehicleCountOutputType without action
+   */
+  export type VehicleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VehicleCountOutputType
+     */
+    select?: VehicleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VehicleCountOutputType without action
+   */
+  export type VehicleCountOutputTypeCountDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryWhereInput
+  }
+
+
+  /**
+   * Count Type DeliveryCountOutputType
+   */
+
+  export type DeliveryCountOutputType = {
+    items: number
+    logs: number
+    editLogs: number
+  }
+
+  export type DeliveryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | DeliveryCountOutputTypeCountItemsArgs
+    logs?: boolean | DeliveryCountOutputTypeCountLogsArgs
+    editLogs?: boolean | DeliveryCountOutputTypeCountEditLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DeliveryCountOutputType without action
+   */
+  export type DeliveryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryCountOutputType
+     */
+    select?: DeliveryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryCountOutputType without action
+   */
+  export type DeliveryCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryItemWhereInput
+  }
+
+  /**
+   * DeliveryCountOutputType without action
+   */
+  export type DeliveryCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryLogWhereInput
+  }
+
+  /**
+   * DeliveryCountOutputType without action
+   */
+  export type DeliveryCountOutputTypeCountEditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryEditLogWhereInput
   }
 
 
@@ -5005,7 +5323,9 @@ export namespace Prisma {
     emailSent?: boolean
     emailSentAt?: boolean
     order?: boolean | Invoice$orderArgs<ExtArgs>
+    deliveries?: boolean | Invoice$deliveriesArgs<ExtArgs>
     user?: boolean | Invoice$userArgs<ExtArgs>
+    _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
 
   export type InvoiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5090,7 +5410,9 @@ export namespace Prisma {
   export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceNumber" | "orderId" | "subtotal" | "tax" | "deliveryFee" | "total" | "currency" | "createdAt" | "userId" | "status" | "guestEmail" | "guestName" | "guestWhatsapp" | "guestAddress" | "deliveryFeeOverride" | "taxRate" | "discountPercentage" | "discountAmount" | "shareableToken" | "emailSent" | "emailSentAt", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | Invoice$orderArgs<ExtArgs>
+    deliveries?: boolean | Invoice$deliveriesArgs<ExtArgs>
     user?: boolean | Invoice$userArgs<ExtArgs>
+    _count?: boolean | InvoiceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | Invoice$orderArgs<ExtArgs>
@@ -5105,6 +5427,7 @@ export namespace Prisma {
     name: "Invoice"
     objects: {
       order: Prisma.$OrderPayload<ExtArgs> | null
+      deliveries: Prisma.$DeliveryPayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5525,6 +5848,7 @@ export namespace Prisma {
   export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     order<T extends Invoice$orderArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$orderArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    deliveries<T extends Invoice$deliveriesArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends Invoice$userArgs<ExtArgs> = {}>(args?: Subset<T, Invoice$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5992,6 +6316,30 @@ export namespace Prisma {
   }
 
   /**
+   * Invoice.deliveries
+   */
+  export type Invoice$deliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    where?: DeliveryWhereInput
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    cursor?: DeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
    * Invoice.user
    */
   export type Invoice$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6081,7 +6429,6 @@ export namespace Prisma {
     paymentStatus: string | null
     paymentConfirmedBy: string | null
     paymentConfirmedAt: Date | null
-    deliveryStatus: string | null
     deliveryAddress: string | null
   }
 
@@ -6105,7 +6452,6 @@ export namespace Prisma {
     paymentStatus: string | null
     paymentConfirmedBy: string | null
     paymentConfirmedAt: Date | null
-    deliveryStatus: string | null
     deliveryAddress: string | null
   }
 
@@ -6129,7 +6475,6 @@ export namespace Prisma {
     paymentStatus: number
     paymentConfirmedBy: number
     paymentConfirmedAt: number
-    deliveryStatus: number
     deliveryAddress: number
     _all: number
   }
@@ -6175,7 +6520,6 @@ export namespace Prisma {
     paymentStatus?: true
     paymentConfirmedBy?: true
     paymentConfirmedAt?: true
-    deliveryStatus?: true
     deliveryAddress?: true
   }
 
@@ -6199,7 +6543,6 @@ export namespace Prisma {
     paymentStatus?: true
     paymentConfirmedBy?: true
     paymentConfirmedAt?: true
-    deliveryStatus?: true
     deliveryAddress?: true
   }
 
@@ -6223,7 +6566,6 @@ export namespace Prisma {
     paymentStatus?: true
     paymentConfirmedBy?: true
     paymentConfirmedAt?: true
-    deliveryStatus?: true
     deliveryAddress?: true
     _all?: true
   }
@@ -6334,7 +6676,6 @@ export namespace Prisma {
     paymentStatus: string | null
     paymentConfirmedBy: string | null
     paymentConfirmedAt: Date | null
-    deliveryStatus: string | null
     deliveryAddress: string | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
@@ -6377,14 +6718,12 @@ export namespace Prisma {
     paymentStatus?: boolean
     paymentConfirmedBy?: boolean
     paymentConfirmedAt?: boolean
-    deliveryStatus?: boolean
     deliveryAddress?: boolean
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
     assignedUnits?: boolean | Order$assignedUnitsArgs<ExtArgs>
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     rentalItems?: boolean | Order$rentalItemsArgs<ExtArgs>
-    workerSchedules?: boolean | Order$workerSchedulesArgs<ExtArgs>
     paymentTransactions?: boolean | Order$paymentTransactionsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
@@ -6409,7 +6748,6 @@ export namespace Prisma {
     paymentStatus?: boolean
     paymentConfirmedBy?: boolean
     paymentConfirmedAt?: boolean
-    deliveryStatus?: boolean
     deliveryAddress?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6435,7 +6773,6 @@ export namespace Prisma {
     paymentStatus?: boolean
     paymentConfirmedBy?: boolean
     paymentConfirmedAt?: boolean
-    deliveryStatus?: boolean
     deliveryAddress?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6461,18 +6798,16 @@ export namespace Prisma {
     paymentStatus?: boolean
     paymentConfirmedBy?: boolean
     paymentConfirmedAt?: boolean
-    deliveryStatus?: boolean
     deliveryAddress?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "discountPercentage" | "discountAmount" | "currency" | "paymentMethod" | "createdAt" | "userId" | "paymentStatus" | "paymentConfirmedBy" | "paymentConfirmedAt" | "deliveryStatus" | "deliveryAddress", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "discountPercentage" | "discountAmount" | "currency" | "paymentMethod" | "createdAt" | "userId" | "paymentStatus" | "paymentConfirmedBy" | "paymentConfirmedAt" | "deliveryAddress", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
     assignedUnits?: boolean | Order$assignedUnitsArgs<ExtArgs>
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     rentalItems?: boolean | Order$rentalItemsArgs<ExtArgs>
-    workerSchedules?: boolean | Order$workerSchedulesArgs<ExtArgs>
     paymentTransactions?: boolean | Order$paymentTransactionsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -6493,7 +6828,6 @@ export namespace Prisma {
       users_orders_payment_confirmed_byTousers: Prisma.$UserPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       rentalItems: Prisma.$RentalItemPayload<ExtArgs>[]
-      workerSchedules: Prisma.$WorkerSchedulePayload<ExtArgs>[]
       paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6516,7 +6850,6 @@ export namespace Prisma {
       paymentStatus: string | null
       paymentConfirmedBy: string | null
       paymentConfirmedAt: Date | null
-      deliveryStatus: string | null
       deliveryAddress: string | null
     }, ExtArgs["result"]["order"]>
     composites: {}
@@ -6917,7 +7250,6 @@ export namespace Prisma {
     users_orders_payment_confirmed_byTousers<T extends Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs> = {}>(args?: Subset<T, Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     rentalItems<T extends Order$rentalItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$rentalItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    workerSchedules<T extends Order$workerSchedulesArgs<ExtArgs> = {}>(args?: Subset<T, Order$workerSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     paymentTransactions<T extends Order$paymentTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, Order$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6967,7 +7299,6 @@ export namespace Prisma {
     readonly paymentStatus: FieldRef<"Order", 'String'>
     readonly paymentConfirmedBy: FieldRef<"Order", 'String'>
     readonly paymentConfirmedAt: FieldRef<"Order", 'DateTime'>
-    readonly deliveryStatus: FieldRef<"Order", 'String'>
     readonly deliveryAddress: FieldRef<"Order", 'String'>
   }
     
@@ -7453,30 +7784,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RentalItemScalarFieldEnum | RentalItemScalarFieldEnum[]
-  }
-
-  /**
-   * Order.workerSchedules
-   */
-  export type Order$workerSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    where?: WorkerScheduleWhereInput
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    cursor?: WorkerScheduleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
   }
 
   /**
@@ -18317,6 +18624,8 @@ export namespace Prisma {
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
+    deliveryItems?: boolean | RentalItem$deliveryItemsArgs<ExtArgs>
+    _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rentalItem"]>
 
   export type RentalItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18363,6 +18672,8 @@ export namespace Prisma {
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
+    deliveryItems?: boolean | RentalItem$deliveryItemsArgs<ExtArgs>
+    _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RentalItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -18384,6 +18695,7 @@ export namespace Prisma {
       rentalPackage: Prisma.$RentalPackagePayload<ExtArgs> | null
       variant: Prisma.$ProductVariantPayload<ExtArgs> | null
       unit: Prisma.$ProductUnitPayload<ExtArgs> | null
+      deliveryItems: Prisma.$DeliveryItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18791,6 +19103,7 @@ export namespace Prisma {
     rentalPackage<T extends RentalItem$rentalPackageArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$rentalPackageArgs<ExtArgs>>): Prisma__RentalPackageClient<$Result.GetResult<Prisma.$RentalPackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     variant<T extends RentalItem$variantArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$variantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     unit<T extends RentalItem$unitArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$unitArgs<ExtArgs>>): Prisma__ProductUnitClient<$Result.GetResult<Prisma.$ProductUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    deliveryItems<T extends RentalItem$deliveryItemsArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$deliveryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19280,6 +19593,30 @@ export namespace Prisma {
   }
 
   /**
+   * RentalItem.deliveryItems
+   */
+  export type RentalItem$deliveryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    where?: DeliveryItemWhereInput
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    cursor?: DeliveryItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryItemScalarFieldEnum | DeliveryItemScalarFieldEnum[]
+  }
+
+  /**
    * RentalItem without action
    */
   export type RentalItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19565,15 +19902,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: boolean | User$orders_orders_payment_confirmed_byTousersArgs<ExtArgs>
     orders?: boolean | User$ordersArgs<ExtArgs>
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
+    claimedDeliveries?: boolean | User$claimedDeliveriesArgs<ExtArgs>
+    deliveryLogs?: boolean | User$deliveryLogsArgs<ExtArgs>
+    deliveryEditLogs?: boolean | User$deliveryEditLogsArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
-    assignedSchedules?: boolean | User$assignedSchedulesArgs<ExtArgs>
-    workerSchedules?: boolean | User$workerSchedulesArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     chatGroupMemberships?: boolean | User$chatGroupMembershipsArgs<ExtArgs>
     sentGroupMessages?: boolean | User$sentGroupMessagesArgs<ExtArgs>
-    dailyReports?: boolean | User$dailyReportsArgs<ExtArgs>
     notificationDismissals?: boolean | User$notificationDismissalsArgs<ExtArgs>
     systemNotifications?: boolean | User$systemNotificationsArgs<ExtArgs>
     verifiedTransactions?: boolean | User$verifiedTransactionsArgs<ExtArgs>
@@ -19651,15 +19988,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: boolean | User$orders_orders_payment_confirmed_byTousersArgs<ExtArgs>
     orders?: boolean | User$ordersArgs<ExtArgs>
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
+    claimedDeliveries?: boolean | User$claimedDeliveriesArgs<ExtArgs>
+    deliveryLogs?: boolean | User$deliveryLogsArgs<ExtArgs>
+    deliveryEditLogs?: boolean | User$deliveryEditLogsArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
-    assignedSchedules?: boolean | User$assignedSchedulesArgs<ExtArgs>
-    workerSchedules?: boolean | User$workerSchedulesArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     chatGroupMemberships?: boolean | User$chatGroupMembershipsArgs<ExtArgs>
     sentGroupMessages?: boolean | User$sentGroupMessagesArgs<ExtArgs>
-    dailyReports?: boolean | User$dailyReportsArgs<ExtArgs>
     notificationDismissals?: boolean | User$notificationDismissalsArgs<ExtArgs>
     systemNotifications?: boolean | User$systemNotificationsArgs<ExtArgs>
     verifiedTransactions?: boolean | User$verifiedTransactionsArgs<ExtArgs>
@@ -19680,15 +20017,15 @@ export namespace Prisma {
       orders_orders_payment_confirmed_byTousers: Prisma.$OrderPayload<ExtArgs>[]
       orders: Prisma.$OrderPayload<ExtArgs>[]
       workerAttendance: Prisma.$WorkerAttendancePayload<ExtArgs>[]
+      claimedDeliveries: Prisma.$DeliveryPayload<ExtArgs>[]
+      deliveryLogs: Prisma.$DeliveryLogPayload<ExtArgs>[]
+      deliveryEditLogs: Prisma.$DeliveryEditLogPayload<ExtArgs>[]
       sentNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
       receivedNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
-      assignedSchedules: Prisma.$WorkerSchedulePayload<ExtArgs>[]
-      workerSchedules: Prisma.$WorkerSchedulePayload<ExtArgs>[]
       sentMessages: Prisma.$MessagePayload<ExtArgs>[]
       receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
       chatGroupMemberships: Prisma.$ChatGroupMemberPayload<ExtArgs>[]
       sentGroupMessages: Prisma.$GroupMessagePayload<ExtArgs>[]
-      dailyReports: Prisma.$DailyReportPayload<ExtArgs>[]
       notificationDismissals: Prisma.$NotificationDismissalPayload<ExtArgs>[]
       systemNotifications: Prisma.$SystemNotificationPayload<ExtArgs>[]
       verifiedTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
@@ -20114,15 +20451,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers<T extends User$orders_orders_payment_confirmed_byTousersArgs<ExtArgs> = {}>(args?: Subset<T, User$orders_orders_payment_confirmed_byTousersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workerAttendance<T extends User$workerAttendanceArgs<ExtArgs> = {}>(args?: Subset<T, User$workerAttendanceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    claimedDeliveries<T extends User$claimedDeliveriesArgs<ExtArgs> = {}>(args?: Subset<T, User$claimedDeliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deliveryLogs<T extends User$deliveryLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$deliveryLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deliveryEditLogs<T extends User$deliveryEditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$deliveryEditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentNotifications<T extends User$sentNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    assignedSchedules<T extends User$assignedSchedulesArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    workerSchedules<T extends User$workerSchedulesArgs<ExtArgs> = {}>(args?: Subset<T, User$workerSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     chatGroupMemberships<T extends User$chatGroupMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatGroupMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatGroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentGroupMessages<T extends User$sentGroupMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentGroupMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dailyReports<T extends User$dailyReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notificationDismissals<T extends User$notificationDismissalsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationDismissalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationDismissalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     systemNotifications<T extends User$systemNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$systemNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SystemNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     verifiedTransactions<T extends User$verifiedTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$verifiedTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -20730,6 +21067,78 @@ export namespace Prisma {
   }
 
   /**
+   * User.claimedDeliveries
+   */
+  export type User$claimedDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    where?: DeliveryWhereInput
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    cursor?: DeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * User.deliveryLogs
+   */
+  export type User$deliveryLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    where?: DeliveryLogWhereInput
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    cursor?: DeliveryLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryLogScalarFieldEnum | DeliveryLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.deliveryEditLogs
+   */
+  export type User$deliveryEditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    where?: DeliveryEditLogWhereInput
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    cursor?: DeliveryEditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryEditLogScalarFieldEnum | DeliveryEditLogScalarFieldEnum[]
+  }
+
+  /**
    * User.sentNotifications
    */
   export type User$sentNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20775,54 +21184,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkerNotificationScalarFieldEnum | WorkerNotificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.assignedSchedules
-   */
-  export type User$assignedSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    where?: WorkerScheduleWhereInput
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    cursor?: WorkerScheduleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
-  }
-
-  /**
-   * User.workerSchedules
-   */
-  export type User$workerSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    where?: WorkerScheduleWhereInput
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    cursor?: WorkerScheduleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
   }
 
   /**
@@ -20919,30 +21280,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GroupMessageScalarFieldEnum | GroupMessageScalarFieldEnum[]
-  }
-
-  /**
-   * User.dailyReports
-   */
-  export type User$dailyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    where?: DailyReportWhereInput
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    cursor?: DailyReportWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DailyReportScalarFieldEnum | DailyReportScalarFieldEnum[]
   }
 
   /**
@@ -26396,1188 +26733,6 @@ export namespace Prisma {
 
 
   /**
-   * Model WorkerSchedule
-   */
-
-  export type AggregateWorkerSchedule = {
-    _count: WorkerScheduleCountAggregateOutputType | null
-    _min: WorkerScheduleMinAggregateOutputType | null
-    _max: WorkerScheduleMaxAggregateOutputType | null
-  }
-
-  export type WorkerScheduleMinAggregateOutputType = {
-    id: string | null
-    workerId: string | null
-    orderId: string | null
-    assignedBy: string | null
-    assignedAt: Date | null
-    status: $Enums.schedule_status | null
-    scheduledDate: Date | null
-    notes: string | null
-    workerNotes: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type WorkerScheduleMaxAggregateOutputType = {
-    id: string | null
-    workerId: string | null
-    orderId: string | null
-    assignedBy: string | null
-    assignedAt: Date | null
-    status: $Enums.schedule_status | null
-    scheduledDate: Date | null
-    notes: string | null
-    workerNotes: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type WorkerScheduleCountAggregateOutputType = {
-    id: number
-    workerId: number
-    orderId: number
-    assignedBy: number
-    assignedAt: number
-    status: number
-    scheduledDate: number
-    notes: number
-    workerNotes: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type WorkerScheduleMinAggregateInputType = {
-    id?: true
-    workerId?: true
-    orderId?: true
-    assignedBy?: true
-    assignedAt?: true
-    status?: true
-    scheduledDate?: true
-    notes?: true
-    workerNotes?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type WorkerScheduleMaxAggregateInputType = {
-    id?: true
-    workerId?: true
-    orderId?: true
-    assignedBy?: true
-    assignedAt?: true
-    status?: true
-    scheduledDate?: true
-    notes?: true
-    workerNotes?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type WorkerScheduleCountAggregateInputType = {
-    id?: true
-    workerId?: true
-    orderId?: true
-    assignedBy?: true
-    assignedAt?: true
-    status?: true
-    scheduledDate?: true
-    notes?: true
-    workerNotes?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type WorkerScheduleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which WorkerSchedule to aggregate.
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WorkerSchedules to fetch.
-     */
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: WorkerScheduleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WorkerSchedules from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WorkerSchedules.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned WorkerSchedules
-    **/
-    _count?: true | WorkerScheduleCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: WorkerScheduleMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: WorkerScheduleMaxAggregateInputType
-  }
-
-  export type GetWorkerScheduleAggregateType<T extends WorkerScheduleAggregateArgs> = {
-        [P in keyof T & keyof AggregateWorkerSchedule]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateWorkerSchedule[P]>
-      : GetScalarType<T[P], AggregateWorkerSchedule[P]>
-  }
-
-
-
-
-  export type WorkerScheduleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WorkerScheduleWhereInput
-    orderBy?: WorkerScheduleOrderByWithAggregationInput | WorkerScheduleOrderByWithAggregationInput[]
-    by: WorkerScheduleScalarFieldEnum[] | WorkerScheduleScalarFieldEnum
-    having?: WorkerScheduleScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: WorkerScheduleCountAggregateInputType | true
-    _min?: WorkerScheduleMinAggregateInputType
-    _max?: WorkerScheduleMaxAggregateInputType
-  }
-
-  export type WorkerScheduleGroupByOutputType = {
-    id: string
-    workerId: string
-    orderId: string
-    assignedBy: string
-    assignedAt: Date | null
-    status: $Enums.schedule_status | null
-    scheduledDate: Date
-    notes: string | null
-    workerNotes: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    _count: WorkerScheduleCountAggregateOutputType | null
-    _min: WorkerScheduleMinAggregateOutputType | null
-    _max: WorkerScheduleMaxAggregateOutputType | null
-  }
-
-  type GetWorkerScheduleGroupByPayload<T extends WorkerScheduleGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<WorkerScheduleGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof WorkerScheduleGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], WorkerScheduleGroupByOutputType[P]>
-            : GetScalarType<T[P], WorkerScheduleGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type WorkerScheduleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    orderId?: boolean
-    assignedBy?: boolean
-    assignedAt?: boolean
-    status?: boolean
-    scheduledDate?: boolean
-    notes?: boolean
-    workerNotes?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    dailyReports?: boolean | WorkerSchedule$dailyReportsArgs<ExtArgs>
-    _count?: boolean | WorkerScheduleCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["workerSchedule"]>
-
-  export type WorkerScheduleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    orderId?: boolean
-    assignedBy?: boolean
-    assignedAt?: boolean
-    status?: boolean
-    scheduledDate?: boolean
-    notes?: boolean
-    workerNotes?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["workerSchedule"]>
-
-  export type WorkerScheduleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    orderId?: boolean
-    assignedBy?: boolean
-    assignedAt?: boolean
-    status?: boolean
-    scheduledDate?: boolean
-    notes?: boolean
-    workerNotes?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["workerSchedule"]>
-
-  export type WorkerScheduleSelectScalar = {
-    id?: boolean
-    workerId?: boolean
-    orderId?: boolean
-    assignedBy?: boolean
-    assignedAt?: boolean
-    status?: boolean
-    scheduledDate?: boolean
-    notes?: boolean
-    workerNotes?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type WorkerScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workerId" | "orderId" | "assignedBy" | "assignedAt" | "status" | "scheduledDate" | "notes" | "workerNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["workerSchedule"]>
-  export type WorkerScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    dailyReports?: boolean | WorkerSchedule$dailyReportsArgs<ExtArgs>
-    _count?: boolean | WorkerScheduleCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type WorkerScheduleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type WorkerScheduleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    assignedByUser?: boolean | UserDefaultArgs<ExtArgs>
-    order?: boolean | OrderDefaultArgs<ExtArgs>
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $WorkerSchedulePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "WorkerSchedule"
-    objects: {
-      assignedByUser: Prisma.$UserPayload<ExtArgs>
-      order: Prisma.$OrderPayload<ExtArgs>
-      worker: Prisma.$UserPayload<ExtArgs>
-      dailyReports: Prisma.$DailyReportPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      workerId: string
-      orderId: string
-      assignedBy: string
-      assignedAt: Date | null
-      status: $Enums.schedule_status | null
-      scheduledDate: Date
-      notes: string | null
-      workerNotes: string | null
-      createdAt: Date | null
-      updatedAt: Date | null
-    }, ExtArgs["result"]["workerSchedule"]>
-    composites: {}
-  }
-
-  type WorkerScheduleGetPayload<S extends boolean | null | undefined | WorkerScheduleDefaultArgs> = $Result.GetResult<Prisma.$WorkerSchedulePayload, S>
-
-  type WorkerScheduleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<WorkerScheduleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: WorkerScheduleCountAggregateInputType | true
-    }
-
-  export interface WorkerScheduleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WorkerSchedule'], meta: { name: 'WorkerSchedule' } }
-    /**
-     * Find zero or one WorkerSchedule that matches the filter.
-     * @param {WorkerScheduleFindUniqueArgs} args - Arguments to find a WorkerSchedule
-     * @example
-     * // Get one WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends WorkerScheduleFindUniqueArgs>(args: SelectSubset<T, WorkerScheduleFindUniqueArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one WorkerSchedule that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {WorkerScheduleFindUniqueOrThrowArgs} args - Arguments to find a WorkerSchedule
-     * @example
-     * // Get one WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends WorkerScheduleFindUniqueOrThrowArgs>(args: SelectSubset<T, WorkerScheduleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first WorkerSchedule that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleFindFirstArgs} args - Arguments to find a WorkerSchedule
-     * @example
-     * // Get one WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends WorkerScheduleFindFirstArgs>(args?: SelectSubset<T, WorkerScheduleFindFirstArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first WorkerSchedule that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleFindFirstOrThrowArgs} args - Arguments to find a WorkerSchedule
-     * @example
-     * // Get one WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends WorkerScheduleFindFirstOrThrowArgs>(args?: SelectSubset<T, WorkerScheduleFindFirstOrThrowArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more WorkerSchedules that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all WorkerSchedules
-     * const workerSchedules = await prisma.workerSchedule.findMany()
-     * 
-     * // Get first 10 WorkerSchedules
-     * const workerSchedules = await prisma.workerSchedule.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const workerScheduleWithIdOnly = await prisma.workerSchedule.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends WorkerScheduleFindManyArgs>(args?: SelectSubset<T, WorkerScheduleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a WorkerSchedule.
-     * @param {WorkerScheduleCreateArgs} args - Arguments to create a WorkerSchedule.
-     * @example
-     * // Create one WorkerSchedule
-     * const WorkerSchedule = await prisma.workerSchedule.create({
-     *   data: {
-     *     // ... data to create a WorkerSchedule
-     *   }
-     * })
-     * 
-     */
-    create<T extends WorkerScheduleCreateArgs>(args: SelectSubset<T, WorkerScheduleCreateArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many WorkerSchedules.
-     * @param {WorkerScheduleCreateManyArgs} args - Arguments to create many WorkerSchedules.
-     * @example
-     * // Create many WorkerSchedules
-     * const workerSchedule = await prisma.workerSchedule.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends WorkerScheduleCreateManyArgs>(args?: SelectSubset<T, WorkerScheduleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many WorkerSchedules and returns the data saved in the database.
-     * @param {WorkerScheduleCreateManyAndReturnArgs} args - Arguments to create many WorkerSchedules.
-     * @example
-     * // Create many WorkerSchedules
-     * const workerSchedule = await prisma.workerSchedule.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many WorkerSchedules and only return the `id`
-     * const workerScheduleWithIdOnly = await prisma.workerSchedule.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends WorkerScheduleCreateManyAndReturnArgs>(args?: SelectSubset<T, WorkerScheduleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a WorkerSchedule.
-     * @param {WorkerScheduleDeleteArgs} args - Arguments to delete one WorkerSchedule.
-     * @example
-     * // Delete one WorkerSchedule
-     * const WorkerSchedule = await prisma.workerSchedule.delete({
-     *   where: {
-     *     // ... filter to delete one WorkerSchedule
-     *   }
-     * })
-     * 
-     */
-    delete<T extends WorkerScheduleDeleteArgs>(args: SelectSubset<T, WorkerScheduleDeleteArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one WorkerSchedule.
-     * @param {WorkerScheduleUpdateArgs} args - Arguments to update one WorkerSchedule.
-     * @example
-     * // Update one WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends WorkerScheduleUpdateArgs>(args: SelectSubset<T, WorkerScheduleUpdateArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more WorkerSchedules.
-     * @param {WorkerScheduleDeleteManyArgs} args - Arguments to filter WorkerSchedules to delete.
-     * @example
-     * // Delete a few WorkerSchedules
-     * const { count } = await prisma.workerSchedule.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends WorkerScheduleDeleteManyArgs>(args?: SelectSubset<T, WorkerScheduleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more WorkerSchedules.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many WorkerSchedules
-     * const workerSchedule = await prisma.workerSchedule.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends WorkerScheduleUpdateManyArgs>(args: SelectSubset<T, WorkerScheduleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more WorkerSchedules and returns the data updated in the database.
-     * @param {WorkerScheduleUpdateManyAndReturnArgs} args - Arguments to update many WorkerSchedules.
-     * @example
-     * // Update many WorkerSchedules
-     * const workerSchedule = await prisma.workerSchedule.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more WorkerSchedules and only return the `id`
-     * const workerScheduleWithIdOnly = await prisma.workerSchedule.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends WorkerScheduleUpdateManyAndReturnArgs>(args: SelectSubset<T, WorkerScheduleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one WorkerSchedule.
-     * @param {WorkerScheduleUpsertArgs} args - Arguments to update or create a WorkerSchedule.
-     * @example
-     * // Update or create a WorkerSchedule
-     * const workerSchedule = await prisma.workerSchedule.upsert({
-     *   create: {
-     *     // ... data to create a WorkerSchedule
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the WorkerSchedule we want to update
-     *   }
-     * })
-     */
-    upsert<T extends WorkerScheduleUpsertArgs>(args: SelectSubset<T, WorkerScheduleUpsertArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of WorkerSchedules.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleCountArgs} args - Arguments to filter WorkerSchedules to count.
-     * @example
-     * // Count the number of WorkerSchedules
-     * const count = await prisma.workerSchedule.count({
-     *   where: {
-     *     // ... the filter for the WorkerSchedules we want to count
-     *   }
-     * })
-    **/
-    count<T extends WorkerScheduleCountArgs>(
-      args?: Subset<T, WorkerScheduleCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], WorkerScheduleCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a WorkerSchedule.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends WorkerScheduleAggregateArgs>(args: Subset<T, WorkerScheduleAggregateArgs>): Prisma.PrismaPromise<GetWorkerScheduleAggregateType<T>>
-
-    /**
-     * Group by WorkerSchedule.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WorkerScheduleGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends WorkerScheduleGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: WorkerScheduleGroupByArgs['orderBy'] }
-        : { orderBy?: WorkerScheduleGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, WorkerScheduleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkerScheduleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the WorkerSchedule model
-   */
-  readonly fields: WorkerScheduleFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for WorkerSchedule.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__WorkerScheduleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    assignedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    worker<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    dailyReports<T extends WorkerSchedule$dailyReportsArgs<ExtArgs> = {}>(args?: Subset<T, WorkerSchedule$dailyReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the WorkerSchedule model
-   */
-  interface WorkerScheduleFieldRefs {
-    readonly id: FieldRef<"WorkerSchedule", 'String'>
-    readonly workerId: FieldRef<"WorkerSchedule", 'String'>
-    readonly orderId: FieldRef<"WorkerSchedule", 'String'>
-    readonly assignedBy: FieldRef<"WorkerSchedule", 'String'>
-    readonly assignedAt: FieldRef<"WorkerSchedule", 'DateTime'>
-    readonly status: FieldRef<"WorkerSchedule", 'schedule_status'>
-    readonly scheduledDate: FieldRef<"WorkerSchedule", 'DateTime'>
-    readonly notes: FieldRef<"WorkerSchedule", 'String'>
-    readonly workerNotes: FieldRef<"WorkerSchedule", 'String'>
-    readonly createdAt: FieldRef<"WorkerSchedule", 'DateTime'>
-    readonly updatedAt: FieldRef<"WorkerSchedule", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * WorkerSchedule findUnique
-   */
-  export type WorkerScheduleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter, which WorkerSchedule to fetch.
-     */
-    where: WorkerScheduleWhereUniqueInput
-  }
-
-  /**
-   * WorkerSchedule findUniqueOrThrow
-   */
-  export type WorkerScheduleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter, which WorkerSchedule to fetch.
-     */
-    where: WorkerScheduleWhereUniqueInput
-  }
-
-  /**
-   * WorkerSchedule findFirst
-   */
-  export type WorkerScheduleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter, which WorkerSchedule to fetch.
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WorkerSchedules to fetch.
-     */
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for WorkerSchedules.
-     */
-    cursor?: WorkerScheduleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WorkerSchedules from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WorkerSchedules.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of WorkerSchedules.
-     */
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
-  }
-
-  /**
-   * WorkerSchedule findFirstOrThrow
-   */
-  export type WorkerScheduleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter, which WorkerSchedule to fetch.
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WorkerSchedules to fetch.
-     */
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for WorkerSchedules.
-     */
-    cursor?: WorkerScheduleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WorkerSchedules from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WorkerSchedules.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of WorkerSchedules.
-     */
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
-  }
-
-  /**
-   * WorkerSchedule findMany
-   */
-  export type WorkerScheduleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter, which WorkerSchedules to fetch.
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WorkerSchedules to fetch.
-     */
-    orderBy?: WorkerScheduleOrderByWithRelationInput | WorkerScheduleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing WorkerSchedules.
-     */
-    cursor?: WorkerScheduleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WorkerSchedules from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WorkerSchedules.
-     */
-    skip?: number
-    distinct?: WorkerScheduleScalarFieldEnum | WorkerScheduleScalarFieldEnum[]
-  }
-
-  /**
-   * WorkerSchedule create
-   */
-  export type WorkerScheduleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * The data needed to create a WorkerSchedule.
-     */
-    data: XOR<WorkerScheduleCreateInput, WorkerScheduleUncheckedCreateInput>
-  }
-
-  /**
-   * WorkerSchedule createMany
-   */
-  export type WorkerScheduleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many WorkerSchedules.
-     */
-    data: WorkerScheduleCreateManyInput | WorkerScheduleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * WorkerSchedule createManyAndReturn
-   */
-  export type WorkerScheduleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * The data used to create many WorkerSchedules.
-     */
-    data: WorkerScheduleCreateManyInput | WorkerScheduleCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * WorkerSchedule update
-   */
-  export type WorkerScheduleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * The data needed to update a WorkerSchedule.
-     */
-    data: XOR<WorkerScheduleUpdateInput, WorkerScheduleUncheckedUpdateInput>
-    /**
-     * Choose, which WorkerSchedule to update.
-     */
-    where: WorkerScheduleWhereUniqueInput
-  }
-
-  /**
-   * WorkerSchedule updateMany
-   */
-  export type WorkerScheduleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update WorkerSchedules.
-     */
-    data: XOR<WorkerScheduleUpdateManyMutationInput, WorkerScheduleUncheckedUpdateManyInput>
-    /**
-     * Filter which WorkerSchedules to update
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * Limit how many WorkerSchedules to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * WorkerSchedule updateManyAndReturn
-   */
-  export type WorkerScheduleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * The data used to update WorkerSchedules.
-     */
-    data: XOR<WorkerScheduleUpdateManyMutationInput, WorkerScheduleUncheckedUpdateManyInput>
-    /**
-     * Filter which WorkerSchedules to update
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * Limit how many WorkerSchedules to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * WorkerSchedule upsert
-   */
-  export type WorkerScheduleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * The filter to search for the WorkerSchedule to update in case it exists.
-     */
-    where: WorkerScheduleWhereUniqueInput
-    /**
-     * In case the WorkerSchedule found by the `where` argument doesn't exist, create a new WorkerSchedule with this data.
-     */
-    create: XOR<WorkerScheduleCreateInput, WorkerScheduleUncheckedCreateInput>
-    /**
-     * In case the WorkerSchedule was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<WorkerScheduleUpdateInput, WorkerScheduleUncheckedUpdateInput>
-  }
-
-  /**
-   * WorkerSchedule delete
-   */
-  export type WorkerScheduleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    /**
-     * Filter which WorkerSchedule to delete.
-     */
-    where: WorkerScheduleWhereUniqueInput
-  }
-
-  /**
-   * WorkerSchedule deleteMany
-   */
-  export type WorkerScheduleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which WorkerSchedules to delete
-     */
-    where?: WorkerScheduleWhereInput
-    /**
-     * Limit how many WorkerSchedules to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * WorkerSchedule.dailyReports
-   */
-  export type WorkerSchedule$dailyReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    where?: DailyReportWhereInput
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    cursor?: DailyReportWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DailyReportScalarFieldEnum | DailyReportScalarFieldEnum[]
-  }
-
-  /**
-   * WorkerSchedule without action
-   */
-  export type WorkerScheduleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model WorkerAttendance
    */
 
@@ -32083,2278 +31238,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MessageInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model DailyReport
-   */
-
-  export type AggregateDailyReport = {
-    _count: DailyReportCountAggregateOutputType | null
-    _min: DailyReportMinAggregateOutputType | null
-    _max: DailyReportMaxAggregateOutputType | null
-  }
-
-  export type DailyReportMinAggregateOutputType = {
-    id: string | null
-    workerId: string | null
-    scheduleId: string | null
-    reportDate: Date | null
-    jobSummary: string | null
-    deliveryStatus: string | null
-    notes: string | null
-    createdAt: Date | null
-  }
-
-  export type DailyReportMaxAggregateOutputType = {
-    id: string | null
-    workerId: string | null
-    scheduleId: string | null
-    reportDate: Date | null
-    jobSummary: string | null
-    deliveryStatus: string | null
-    notes: string | null
-    createdAt: Date | null
-  }
-
-  export type DailyReportCountAggregateOutputType = {
-    id: number
-    workerId: number
-    scheduleId: number
-    reportDate: number
-    jobSummary: number
-    deliveryStatus: number
-    notes: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type DailyReportMinAggregateInputType = {
-    id?: true
-    workerId?: true
-    scheduleId?: true
-    reportDate?: true
-    jobSummary?: true
-    deliveryStatus?: true
-    notes?: true
-    createdAt?: true
-  }
-
-  export type DailyReportMaxAggregateInputType = {
-    id?: true
-    workerId?: true
-    scheduleId?: true
-    reportDate?: true
-    jobSummary?: true
-    deliveryStatus?: true
-    notes?: true
-    createdAt?: true
-  }
-
-  export type DailyReportCountAggregateInputType = {
-    id?: true
-    workerId?: true
-    scheduleId?: true
-    reportDate?: true
-    jobSummary?: true
-    deliveryStatus?: true
-    notes?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type DailyReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DailyReport to aggregate.
-     */
-    where?: DailyReportWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DailyReports to fetch.
-     */
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DailyReportWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DailyReports from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DailyReports.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DailyReports
-    **/
-    _count?: true | DailyReportCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DailyReportMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DailyReportMaxAggregateInputType
-  }
-
-  export type GetDailyReportAggregateType<T extends DailyReportAggregateArgs> = {
-        [P in keyof T & keyof AggregateDailyReport]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDailyReport[P]>
-      : GetScalarType<T[P], AggregateDailyReport[P]>
-  }
-
-
-
-
-  export type DailyReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DailyReportWhereInput
-    orderBy?: DailyReportOrderByWithAggregationInput | DailyReportOrderByWithAggregationInput[]
-    by: DailyReportScalarFieldEnum[] | DailyReportScalarFieldEnum
-    having?: DailyReportScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DailyReportCountAggregateInputType | true
-    _min?: DailyReportMinAggregateInputType
-    _max?: DailyReportMaxAggregateInputType
-  }
-
-  export type DailyReportGroupByOutputType = {
-    id: string
-    workerId: string
-    scheduleId: string | null
-    reportDate: Date
-    jobSummary: string
-    deliveryStatus: string
-    notes: string | null
-    createdAt: Date
-    _count: DailyReportCountAggregateOutputType | null
-    _min: DailyReportMinAggregateOutputType | null
-    _max: DailyReportMaxAggregateOutputType | null
-  }
-
-  type GetDailyReportGroupByPayload<T extends DailyReportGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DailyReportGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DailyReportGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DailyReportGroupByOutputType[P]>
-            : GetScalarType<T[P], DailyReportGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DailyReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    scheduleId?: boolean
-    reportDate?: boolean
-    jobSummary?: boolean
-    deliveryStatus?: boolean
-    notes?: boolean
-    createdAt?: boolean
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-    deliveryItems?: boolean | DailyReport$deliveryItemsArgs<ExtArgs>
-    _count?: boolean | DailyReportCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["dailyReport"]>
-
-  export type DailyReportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    scheduleId?: boolean
-    reportDate?: boolean
-    jobSummary?: boolean
-    deliveryStatus?: boolean
-    notes?: boolean
-    createdAt?: boolean
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-  }, ExtArgs["result"]["dailyReport"]>
-
-  export type DailyReportSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    workerId?: boolean
-    scheduleId?: boolean
-    reportDate?: boolean
-    jobSummary?: boolean
-    deliveryStatus?: boolean
-    notes?: boolean
-    createdAt?: boolean
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-  }, ExtArgs["result"]["dailyReport"]>
-
-  export type DailyReportSelectScalar = {
-    id?: boolean
-    workerId?: boolean
-    scheduleId?: boolean
-    reportDate?: boolean
-    jobSummary?: boolean
-    deliveryStatus?: boolean
-    notes?: boolean
-    createdAt?: boolean
-  }
-
-  export type DailyReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workerId" | "scheduleId" | "reportDate" | "jobSummary" | "deliveryStatus" | "notes" | "createdAt", ExtArgs["result"]["dailyReport"]>
-  export type DailyReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-    deliveryItems?: boolean | DailyReport$deliveryItemsArgs<ExtArgs>
-    _count?: boolean | DailyReportCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type DailyReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-  }
-  export type DailyReportIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    worker?: boolean | UserDefaultArgs<ExtArgs>
-    schedule?: boolean | DailyReport$scheduleArgs<ExtArgs>
-  }
-
-  export type $DailyReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DailyReport"
-    objects: {
-      worker: Prisma.$UserPayload<ExtArgs>
-      schedule: Prisma.$WorkerSchedulePayload<ExtArgs> | null
-      deliveryItems: Prisma.$DeliveryChecklistItemPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      workerId: string
-      scheduleId: string | null
-      reportDate: Date
-      jobSummary: string
-      deliveryStatus: string
-      notes: string | null
-      createdAt: Date
-    }, ExtArgs["result"]["dailyReport"]>
-    composites: {}
-  }
-
-  type DailyReportGetPayload<S extends boolean | null | undefined | DailyReportDefaultArgs> = $Result.GetResult<Prisma.$DailyReportPayload, S>
-
-  type DailyReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DailyReportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DailyReportCountAggregateInputType | true
-    }
-
-  export interface DailyReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DailyReport'], meta: { name: 'DailyReport' } }
-    /**
-     * Find zero or one DailyReport that matches the filter.
-     * @param {DailyReportFindUniqueArgs} args - Arguments to find a DailyReport
-     * @example
-     * // Get one DailyReport
-     * const dailyReport = await prisma.dailyReport.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DailyReportFindUniqueArgs>(args: SelectSubset<T, DailyReportFindUniqueArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DailyReport that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DailyReportFindUniqueOrThrowArgs} args - Arguments to find a DailyReport
-     * @example
-     * // Get one DailyReport
-     * const dailyReport = await prisma.dailyReport.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DailyReportFindUniqueOrThrowArgs>(args: SelectSubset<T, DailyReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DailyReport that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportFindFirstArgs} args - Arguments to find a DailyReport
-     * @example
-     * // Get one DailyReport
-     * const dailyReport = await prisma.dailyReport.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DailyReportFindFirstArgs>(args?: SelectSubset<T, DailyReportFindFirstArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DailyReport that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportFindFirstOrThrowArgs} args - Arguments to find a DailyReport
-     * @example
-     * // Get one DailyReport
-     * const dailyReport = await prisma.dailyReport.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DailyReportFindFirstOrThrowArgs>(args?: SelectSubset<T, DailyReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DailyReports that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DailyReports
-     * const dailyReports = await prisma.dailyReport.findMany()
-     * 
-     * // Get first 10 DailyReports
-     * const dailyReports = await prisma.dailyReport.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const dailyReportWithIdOnly = await prisma.dailyReport.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DailyReportFindManyArgs>(args?: SelectSubset<T, DailyReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DailyReport.
-     * @param {DailyReportCreateArgs} args - Arguments to create a DailyReport.
-     * @example
-     * // Create one DailyReport
-     * const DailyReport = await prisma.dailyReport.create({
-     *   data: {
-     *     // ... data to create a DailyReport
-     *   }
-     * })
-     * 
-     */
-    create<T extends DailyReportCreateArgs>(args: SelectSubset<T, DailyReportCreateArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DailyReports.
-     * @param {DailyReportCreateManyArgs} args - Arguments to create many DailyReports.
-     * @example
-     * // Create many DailyReports
-     * const dailyReport = await prisma.dailyReport.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DailyReportCreateManyArgs>(args?: SelectSubset<T, DailyReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many DailyReports and returns the data saved in the database.
-     * @param {DailyReportCreateManyAndReturnArgs} args - Arguments to create many DailyReports.
-     * @example
-     * // Create many DailyReports
-     * const dailyReport = await prisma.dailyReport.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many DailyReports and only return the `id`
-     * const dailyReportWithIdOnly = await prisma.dailyReport.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends DailyReportCreateManyAndReturnArgs>(args?: SelectSubset<T, DailyReportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a DailyReport.
-     * @param {DailyReportDeleteArgs} args - Arguments to delete one DailyReport.
-     * @example
-     * // Delete one DailyReport
-     * const DailyReport = await prisma.dailyReport.delete({
-     *   where: {
-     *     // ... filter to delete one DailyReport
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DailyReportDeleteArgs>(args: SelectSubset<T, DailyReportDeleteArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DailyReport.
-     * @param {DailyReportUpdateArgs} args - Arguments to update one DailyReport.
-     * @example
-     * // Update one DailyReport
-     * const dailyReport = await prisma.dailyReport.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DailyReportUpdateArgs>(args: SelectSubset<T, DailyReportUpdateArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DailyReports.
-     * @param {DailyReportDeleteManyArgs} args - Arguments to filter DailyReports to delete.
-     * @example
-     * // Delete a few DailyReports
-     * const { count } = await prisma.dailyReport.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DailyReportDeleteManyArgs>(args?: SelectSubset<T, DailyReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DailyReports.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DailyReports
-     * const dailyReport = await prisma.dailyReport.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DailyReportUpdateManyArgs>(args: SelectSubset<T, DailyReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DailyReports and returns the data updated in the database.
-     * @param {DailyReportUpdateManyAndReturnArgs} args - Arguments to update many DailyReports.
-     * @example
-     * // Update many DailyReports
-     * const dailyReport = await prisma.dailyReport.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more DailyReports and only return the `id`
-     * const dailyReportWithIdOnly = await prisma.dailyReport.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends DailyReportUpdateManyAndReturnArgs>(args: SelectSubset<T, DailyReportUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one DailyReport.
-     * @param {DailyReportUpsertArgs} args - Arguments to update or create a DailyReport.
-     * @example
-     * // Update or create a DailyReport
-     * const dailyReport = await prisma.dailyReport.upsert({
-     *   create: {
-     *     // ... data to create a DailyReport
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DailyReport we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DailyReportUpsertArgs>(args: SelectSubset<T, DailyReportUpsertArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DailyReports.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportCountArgs} args - Arguments to filter DailyReports to count.
-     * @example
-     * // Count the number of DailyReports
-     * const count = await prisma.dailyReport.count({
-     *   where: {
-     *     // ... the filter for the DailyReports we want to count
-     *   }
-     * })
-    **/
-    count<T extends DailyReportCountArgs>(
-      args?: Subset<T, DailyReportCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DailyReportCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DailyReport.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DailyReportAggregateArgs>(args: Subset<T, DailyReportAggregateArgs>): Prisma.PrismaPromise<GetDailyReportAggregateType<T>>
-
-    /**
-     * Group by DailyReport.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DailyReportGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DailyReportGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DailyReportGroupByArgs['orderBy'] }
-        : { orderBy?: DailyReportGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DailyReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDailyReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DailyReport model
-   */
-  readonly fields: DailyReportFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DailyReport.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DailyReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    worker<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    schedule<T extends DailyReport$scheduleArgs<ExtArgs> = {}>(args?: Subset<T, DailyReport$scheduleArgs<ExtArgs>>): Prisma__WorkerScheduleClient<$Result.GetResult<Prisma.$WorkerSchedulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    deliveryItems<T extends DailyReport$deliveryItemsArgs<ExtArgs> = {}>(args?: Subset<T, DailyReport$deliveryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DailyReport model
-   */
-  interface DailyReportFieldRefs {
-    readonly id: FieldRef<"DailyReport", 'String'>
-    readonly workerId: FieldRef<"DailyReport", 'String'>
-    readonly scheduleId: FieldRef<"DailyReport", 'String'>
-    readonly reportDate: FieldRef<"DailyReport", 'DateTime'>
-    readonly jobSummary: FieldRef<"DailyReport", 'String'>
-    readonly deliveryStatus: FieldRef<"DailyReport", 'String'>
-    readonly notes: FieldRef<"DailyReport", 'String'>
-    readonly createdAt: FieldRef<"DailyReport", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DailyReport findUnique
-   */
-  export type DailyReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter, which DailyReport to fetch.
-     */
-    where: DailyReportWhereUniqueInput
-  }
-
-  /**
-   * DailyReport findUniqueOrThrow
-   */
-  export type DailyReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter, which DailyReport to fetch.
-     */
-    where: DailyReportWhereUniqueInput
-  }
-
-  /**
-   * DailyReport findFirst
-   */
-  export type DailyReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter, which DailyReport to fetch.
-     */
-    where?: DailyReportWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DailyReports to fetch.
-     */
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DailyReports.
-     */
-    cursor?: DailyReportWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DailyReports from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DailyReports.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DailyReports.
-     */
-    distinct?: DailyReportScalarFieldEnum | DailyReportScalarFieldEnum[]
-  }
-
-  /**
-   * DailyReport findFirstOrThrow
-   */
-  export type DailyReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter, which DailyReport to fetch.
-     */
-    where?: DailyReportWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DailyReports to fetch.
-     */
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DailyReports.
-     */
-    cursor?: DailyReportWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DailyReports from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DailyReports.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DailyReports.
-     */
-    distinct?: DailyReportScalarFieldEnum | DailyReportScalarFieldEnum[]
-  }
-
-  /**
-   * DailyReport findMany
-   */
-  export type DailyReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter, which DailyReports to fetch.
-     */
-    where?: DailyReportWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DailyReports to fetch.
-     */
-    orderBy?: DailyReportOrderByWithRelationInput | DailyReportOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DailyReports.
-     */
-    cursor?: DailyReportWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DailyReports from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DailyReports.
-     */
-    skip?: number
-    distinct?: DailyReportScalarFieldEnum | DailyReportScalarFieldEnum[]
-  }
-
-  /**
-   * DailyReport create
-   */
-  export type DailyReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DailyReport.
-     */
-    data: XOR<DailyReportCreateInput, DailyReportUncheckedCreateInput>
-  }
-
-  /**
-   * DailyReport createMany
-   */
-  export type DailyReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DailyReports.
-     */
-    data: DailyReportCreateManyInput | DailyReportCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DailyReport createManyAndReturn
-   */
-  export type DailyReportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * The data used to create many DailyReports.
-     */
-    data: DailyReportCreateManyInput | DailyReportCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DailyReport update
-   */
-  export type DailyReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DailyReport.
-     */
-    data: XOR<DailyReportUpdateInput, DailyReportUncheckedUpdateInput>
-    /**
-     * Choose, which DailyReport to update.
-     */
-    where: DailyReportWhereUniqueInput
-  }
-
-  /**
-   * DailyReport updateMany
-   */
-  export type DailyReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DailyReports.
-     */
-    data: XOR<DailyReportUpdateManyMutationInput, DailyReportUncheckedUpdateManyInput>
-    /**
-     * Filter which DailyReports to update
-     */
-    where?: DailyReportWhereInput
-    /**
-     * Limit how many DailyReports to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DailyReport updateManyAndReturn
-   */
-  export type DailyReportUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * The data used to update DailyReports.
-     */
-    data: XOR<DailyReportUpdateManyMutationInput, DailyReportUncheckedUpdateManyInput>
-    /**
-     * Filter which DailyReports to update
-     */
-    where?: DailyReportWhereInput
-    /**
-     * Limit how many DailyReports to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DailyReport upsert
-   */
-  export type DailyReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DailyReport to update in case it exists.
-     */
-    where: DailyReportWhereUniqueInput
-    /**
-     * In case the DailyReport found by the `where` argument doesn't exist, create a new DailyReport with this data.
-     */
-    create: XOR<DailyReportCreateInput, DailyReportUncheckedCreateInput>
-    /**
-     * In case the DailyReport was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DailyReportUpdateInput, DailyReportUncheckedUpdateInput>
-  }
-
-  /**
-   * DailyReport delete
-   */
-  export type DailyReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-    /**
-     * Filter which DailyReport to delete.
-     */
-    where: DailyReportWhereUniqueInput
-  }
-
-  /**
-   * DailyReport deleteMany
-   */
-  export type DailyReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DailyReports to delete
-     */
-    where?: DailyReportWhereInput
-    /**
-     * Limit how many DailyReports to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DailyReport.schedule
-   */
-  export type DailyReport$scheduleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WorkerSchedule
-     */
-    select?: WorkerScheduleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the WorkerSchedule
-     */
-    omit?: WorkerScheduleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WorkerScheduleInclude<ExtArgs> | null
-    where?: WorkerScheduleWhereInput
-  }
-
-  /**
-   * DailyReport.deliveryItems
-   */
-  export type DailyReport$deliveryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    where?: DeliveryChecklistItemWhereInput
-    orderBy?: DeliveryChecklistItemOrderByWithRelationInput | DeliveryChecklistItemOrderByWithRelationInput[]
-    cursor?: DeliveryChecklistItemWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DeliveryChecklistItemScalarFieldEnum | DeliveryChecklistItemScalarFieldEnum[]
-  }
-
-  /**
-   * DailyReport without action
-   */
-  export type DailyReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DailyReport
-     */
-    select?: DailyReportSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DailyReport
-     */
-    omit?: DailyReportOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DailyReportInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model DeliveryChecklistItem
-   */
-
-  export type AggregateDeliveryChecklistItem = {
-    _count: DeliveryChecklistItemCountAggregateOutputType | null
-    _avg: DeliveryChecklistItemAvgAggregateOutputType | null
-    _sum: DeliveryChecklistItemSumAggregateOutputType | null
-    _min: DeliveryChecklistItemMinAggregateOutputType | null
-    _max: DeliveryChecklistItemMaxAggregateOutputType | null
-  }
-
-  export type DeliveryChecklistItemAvgAggregateOutputType = {
-    quantity: number | null
-  }
-
-  export type DeliveryChecklistItemSumAggregateOutputType = {
-    quantity: number | null
-  }
-
-  export type DeliveryChecklistItemMinAggregateOutputType = {
-    id: string | null
-    reportId: string | null
-    rentalItemId: string | null
-    itemName: string | null
-    quantity: number | null
-    status: string | null
-    notes: string | null
-  }
-
-  export type DeliveryChecklistItemMaxAggregateOutputType = {
-    id: string | null
-    reportId: string | null
-    rentalItemId: string | null
-    itemName: string | null
-    quantity: number | null
-    status: string | null
-    notes: string | null
-  }
-
-  export type DeliveryChecklistItemCountAggregateOutputType = {
-    id: number
-    reportId: number
-    rentalItemId: number
-    itemName: number
-    quantity: number
-    status: number
-    notes: number
-    _all: number
-  }
-
-
-  export type DeliveryChecklistItemAvgAggregateInputType = {
-    quantity?: true
-  }
-
-  export type DeliveryChecklistItemSumAggregateInputType = {
-    quantity?: true
-  }
-
-  export type DeliveryChecklistItemMinAggregateInputType = {
-    id?: true
-    reportId?: true
-    rentalItemId?: true
-    itemName?: true
-    quantity?: true
-    status?: true
-    notes?: true
-  }
-
-  export type DeliveryChecklistItemMaxAggregateInputType = {
-    id?: true
-    reportId?: true
-    rentalItemId?: true
-    itemName?: true
-    quantity?: true
-    status?: true
-    notes?: true
-  }
-
-  export type DeliveryChecklistItemCountAggregateInputType = {
-    id?: true
-    reportId?: true
-    rentalItemId?: true
-    itemName?: true
-    quantity?: true
-    status?: true
-    notes?: true
-    _all?: true
-  }
-
-  export type DeliveryChecklistItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DeliveryChecklistItem to aggregate.
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DeliveryChecklistItems to fetch.
-     */
-    orderBy?: DeliveryChecklistItemOrderByWithRelationInput | DeliveryChecklistItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: DeliveryChecklistItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DeliveryChecklistItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DeliveryChecklistItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned DeliveryChecklistItems
-    **/
-    _count?: true | DeliveryChecklistItemCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: DeliveryChecklistItemAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DeliveryChecklistItemSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: DeliveryChecklistItemMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: DeliveryChecklistItemMaxAggregateInputType
-  }
-
-  export type GetDeliveryChecklistItemAggregateType<T extends DeliveryChecklistItemAggregateArgs> = {
-        [P in keyof T & keyof AggregateDeliveryChecklistItem]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDeliveryChecklistItem[P]>
-      : GetScalarType<T[P], AggregateDeliveryChecklistItem[P]>
-  }
-
-
-
-
-  export type DeliveryChecklistItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DeliveryChecklistItemWhereInput
-    orderBy?: DeliveryChecklistItemOrderByWithAggregationInput | DeliveryChecklistItemOrderByWithAggregationInput[]
-    by: DeliveryChecklistItemScalarFieldEnum[] | DeliveryChecklistItemScalarFieldEnum
-    having?: DeliveryChecklistItemScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: DeliveryChecklistItemCountAggregateInputType | true
-    _avg?: DeliveryChecklistItemAvgAggregateInputType
-    _sum?: DeliveryChecklistItemSumAggregateInputType
-    _min?: DeliveryChecklistItemMinAggregateInputType
-    _max?: DeliveryChecklistItemMaxAggregateInputType
-  }
-
-  export type DeliveryChecklistItemGroupByOutputType = {
-    id: string
-    reportId: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes: string | null
-    _count: DeliveryChecklistItemCountAggregateOutputType | null
-    _avg: DeliveryChecklistItemAvgAggregateOutputType | null
-    _sum: DeliveryChecklistItemSumAggregateOutputType | null
-    _min: DeliveryChecklistItemMinAggregateOutputType | null
-    _max: DeliveryChecklistItemMaxAggregateOutputType | null
-  }
-
-  type GetDeliveryChecklistItemGroupByPayload<T extends DeliveryChecklistItemGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<DeliveryChecklistItemGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DeliveryChecklistItemGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DeliveryChecklistItemGroupByOutputType[P]>
-            : GetScalarType<T[P], DeliveryChecklistItemGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type DeliveryChecklistItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    reportId?: boolean
-    rentalItemId?: boolean
-    itemName?: boolean
-    quantity?: boolean
-    status?: boolean
-    notes?: boolean
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["deliveryChecklistItem"]>
-
-  export type DeliveryChecklistItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    reportId?: boolean
-    rentalItemId?: boolean
-    itemName?: boolean
-    quantity?: boolean
-    status?: boolean
-    notes?: boolean
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["deliveryChecklistItem"]>
-
-  export type DeliveryChecklistItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    reportId?: boolean
-    rentalItemId?: boolean
-    itemName?: boolean
-    quantity?: boolean
-    status?: boolean
-    notes?: boolean
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["deliveryChecklistItem"]>
-
-  export type DeliveryChecklistItemSelectScalar = {
-    id?: boolean
-    reportId?: boolean
-    rentalItemId?: boolean
-    itemName?: boolean
-    quantity?: boolean
-    status?: boolean
-    notes?: boolean
-  }
-
-  export type DeliveryChecklistItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reportId" | "rentalItemId" | "itemName" | "quantity" | "status" | "notes", ExtArgs["result"]["deliveryChecklistItem"]>
-  export type DeliveryChecklistItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }
-  export type DeliveryChecklistItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }
-  export type DeliveryChecklistItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    report?: boolean | DailyReportDefaultArgs<ExtArgs>
-  }
-
-  export type $DeliveryChecklistItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DeliveryChecklistItem"
-    objects: {
-      report: Prisma.$DailyReportPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      reportId: string
-      rentalItemId: string
-      itemName: string
-      quantity: number
-      status: string
-      notes: string | null
-    }, ExtArgs["result"]["deliveryChecklistItem"]>
-    composites: {}
-  }
-
-  type DeliveryChecklistItemGetPayload<S extends boolean | null | undefined | DeliveryChecklistItemDefaultArgs> = $Result.GetResult<Prisma.$DeliveryChecklistItemPayload, S>
-
-  type DeliveryChecklistItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DeliveryChecklistItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DeliveryChecklistItemCountAggregateInputType | true
-    }
-
-  export interface DeliveryChecklistItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeliveryChecklistItem'], meta: { name: 'DeliveryChecklistItem' } }
-    /**
-     * Find zero or one DeliveryChecklistItem that matches the filter.
-     * @param {DeliveryChecklistItemFindUniqueArgs} args - Arguments to find a DeliveryChecklistItem
-     * @example
-     * // Get one DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends DeliveryChecklistItemFindUniqueArgs>(args: SelectSubset<T, DeliveryChecklistItemFindUniqueArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one DeliveryChecklistItem that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {DeliveryChecklistItemFindUniqueOrThrowArgs} args - Arguments to find a DeliveryChecklistItem
-     * @example
-     * // Get one DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends DeliveryChecklistItemFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliveryChecklistItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DeliveryChecklistItem that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemFindFirstArgs} args - Arguments to find a DeliveryChecklistItem
-     * @example
-     * // Get one DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends DeliveryChecklistItemFindFirstArgs>(args?: SelectSubset<T, DeliveryChecklistItemFindFirstArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first DeliveryChecklistItem that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemFindFirstOrThrowArgs} args - Arguments to find a DeliveryChecklistItem
-     * @example
-     * // Get one DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends DeliveryChecklistItemFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliveryChecklistItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more DeliveryChecklistItems that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all DeliveryChecklistItems
-     * const deliveryChecklistItems = await prisma.deliveryChecklistItem.findMany()
-     * 
-     * // Get first 10 DeliveryChecklistItems
-     * const deliveryChecklistItems = await prisma.deliveryChecklistItem.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const deliveryChecklistItemWithIdOnly = await prisma.deliveryChecklistItem.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends DeliveryChecklistItemFindManyArgs>(args?: SelectSubset<T, DeliveryChecklistItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a DeliveryChecklistItem.
-     * @param {DeliveryChecklistItemCreateArgs} args - Arguments to create a DeliveryChecklistItem.
-     * @example
-     * // Create one DeliveryChecklistItem
-     * const DeliveryChecklistItem = await prisma.deliveryChecklistItem.create({
-     *   data: {
-     *     // ... data to create a DeliveryChecklistItem
-     *   }
-     * })
-     * 
-     */
-    create<T extends DeliveryChecklistItemCreateArgs>(args: SelectSubset<T, DeliveryChecklistItemCreateArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many DeliveryChecklistItems.
-     * @param {DeliveryChecklistItemCreateManyArgs} args - Arguments to create many DeliveryChecklistItems.
-     * @example
-     * // Create many DeliveryChecklistItems
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends DeliveryChecklistItemCreateManyArgs>(args?: SelectSubset<T, DeliveryChecklistItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many DeliveryChecklistItems and returns the data saved in the database.
-     * @param {DeliveryChecklistItemCreateManyAndReturnArgs} args - Arguments to create many DeliveryChecklistItems.
-     * @example
-     * // Create many DeliveryChecklistItems
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many DeliveryChecklistItems and only return the `id`
-     * const deliveryChecklistItemWithIdOnly = await prisma.deliveryChecklistItem.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends DeliveryChecklistItemCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliveryChecklistItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a DeliveryChecklistItem.
-     * @param {DeliveryChecklistItemDeleteArgs} args - Arguments to delete one DeliveryChecklistItem.
-     * @example
-     * // Delete one DeliveryChecklistItem
-     * const DeliveryChecklistItem = await prisma.deliveryChecklistItem.delete({
-     *   where: {
-     *     // ... filter to delete one DeliveryChecklistItem
-     *   }
-     * })
-     * 
-     */
-    delete<T extends DeliveryChecklistItemDeleteArgs>(args: SelectSubset<T, DeliveryChecklistItemDeleteArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one DeliveryChecklistItem.
-     * @param {DeliveryChecklistItemUpdateArgs} args - Arguments to update one DeliveryChecklistItem.
-     * @example
-     * // Update one DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends DeliveryChecklistItemUpdateArgs>(args: SelectSubset<T, DeliveryChecklistItemUpdateArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more DeliveryChecklistItems.
-     * @param {DeliveryChecklistItemDeleteManyArgs} args - Arguments to filter DeliveryChecklistItems to delete.
-     * @example
-     * // Delete a few DeliveryChecklistItems
-     * const { count } = await prisma.deliveryChecklistItem.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends DeliveryChecklistItemDeleteManyArgs>(args?: SelectSubset<T, DeliveryChecklistItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DeliveryChecklistItems.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many DeliveryChecklistItems
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends DeliveryChecklistItemUpdateManyArgs>(args: SelectSubset<T, DeliveryChecklistItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more DeliveryChecklistItems and returns the data updated in the database.
-     * @param {DeliveryChecklistItemUpdateManyAndReturnArgs} args - Arguments to update many DeliveryChecklistItems.
-     * @example
-     * // Update many DeliveryChecklistItems
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more DeliveryChecklistItems and only return the `id`
-     * const deliveryChecklistItemWithIdOnly = await prisma.deliveryChecklistItem.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends DeliveryChecklistItemUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliveryChecklistItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one DeliveryChecklistItem.
-     * @param {DeliveryChecklistItemUpsertArgs} args - Arguments to update or create a DeliveryChecklistItem.
-     * @example
-     * // Update or create a DeliveryChecklistItem
-     * const deliveryChecklistItem = await prisma.deliveryChecklistItem.upsert({
-     *   create: {
-     *     // ... data to create a DeliveryChecklistItem
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the DeliveryChecklistItem we want to update
-     *   }
-     * })
-     */
-    upsert<T extends DeliveryChecklistItemUpsertArgs>(args: SelectSubset<T, DeliveryChecklistItemUpsertArgs<ExtArgs>>): Prisma__DeliveryChecklistItemClient<$Result.GetResult<Prisma.$DeliveryChecklistItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of DeliveryChecklistItems.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemCountArgs} args - Arguments to filter DeliveryChecklistItems to count.
-     * @example
-     * // Count the number of DeliveryChecklistItems
-     * const count = await prisma.deliveryChecklistItem.count({
-     *   where: {
-     *     // ... the filter for the DeliveryChecklistItems we want to count
-     *   }
-     * })
-    **/
-    count<T extends DeliveryChecklistItemCountArgs>(
-      args?: Subset<T, DeliveryChecklistItemCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DeliveryChecklistItemCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a DeliveryChecklistItem.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends DeliveryChecklistItemAggregateArgs>(args: Subset<T, DeliveryChecklistItemAggregateArgs>): Prisma.PrismaPromise<GetDeliveryChecklistItemAggregateType<T>>
-
-    /**
-     * Group by DeliveryChecklistItem.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {DeliveryChecklistItemGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends DeliveryChecklistItemGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DeliveryChecklistItemGroupByArgs['orderBy'] }
-        : { orderBy?: DeliveryChecklistItemGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, DeliveryChecklistItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliveryChecklistItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DeliveryChecklistItem model
-   */
-  readonly fields: DeliveryChecklistItemFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for DeliveryChecklistItem.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__DeliveryChecklistItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    report<T extends DailyReportDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DailyReportDefaultArgs<ExtArgs>>): Prisma__DailyReportClient<$Result.GetResult<Prisma.$DailyReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the DeliveryChecklistItem model
-   */
-  interface DeliveryChecklistItemFieldRefs {
-    readonly id: FieldRef<"DeliveryChecklistItem", 'String'>
-    readonly reportId: FieldRef<"DeliveryChecklistItem", 'String'>
-    readonly rentalItemId: FieldRef<"DeliveryChecklistItem", 'String'>
-    readonly itemName: FieldRef<"DeliveryChecklistItem", 'String'>
-    readonly quantity: FieldRef<"DeliveryChecklistItem", 'Int'>
-    readonly status: FieldRef<"DeliveryChecklistItem", 'String'>
-    readonly notes: FieldRef<"DeliveryChecklistItem", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * DeliveryChecklistItem findUnique
-   */
-  export type DeliveryChecklistItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter, which DeliveryChecklistItem to fetch.
-     */
-    where: DeliveryChecklistItemWhereUniqueInput
-  }
-
-  /**
-   * DeliveryChecklistItem findUniqueOrThrow
-   */
-  export type DeliveryChecklistItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter, which DeliveryChecklistItem to fetch.
-     */
-    where: DeliveryChecklistItemWhereUniqueInput
-  }
-
-  /**
-   * DeliveryChecklistItem findFirst
-   */
-  export type DeliveryChecklistItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter, which DeliveryChecklistItem to fetch.
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DeliveryChecklistItems to fetch.
-     */
-    orderBy?: DeliveryChecklistItemOrderByWithRelationInput | DeliveryChecklistItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DeliveryChecklistItems.
-     */
-    cursor?: DeliveryChecklistItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DeliveryChecklistItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DeliveryChecklistItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DeliveryChecklistItems.
-     */
-    distinct?: DeliveryChecklistItemScalarFieldEnum | DeliveryChecklistItemScalarFieldEnum[]
-  }
-
-  /**
-   * DeliveryChecklistItem findFirstOrThrow
-   */
-  export type DeliveryChecklistItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter, which DeliveryChecklistItem to fetch.
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DeliveryChecklistItems to fetch.
-     */
-    orderBy?: DeliveryChecklistItemOrderByWithRelationInput | DeliveryChecklistItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for DeliveryChecklistItems.
-     */
-    cursor?: DeliveryChecklistItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DeliveryChecklistItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DeliveryChecklistItems.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of DeliveryChecklistItems.
-     */
-    distinct?: DeliveryChecklistItemScalarFieldEnum | DeliveryChecklistItemScalarFieldEnum[]
-  }
-
-  /**
-   * DeliveryChecklistItem findMany
-   */
-  export type DeliveryChecklistItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter, which DeliveryChecklistItems to fetch.
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of DeliveryChecklistItems to fetch.
-     */
-    orderBy?: DeliveryChecklistItemOrderByWithRelationInput | DeliveryChecklistItemOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing DeliveryChecklistItems.
-     */
-    cursor?: DeliveryChecklistItemWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` DeliveryChecklistItems from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` DeliveryChecklistItems.
-     */
-    skip?: number
-    distinct?: DeliveryChecklistItemScalarFieldEnum | DeliveryChecklistItemScalarFieldEnum[]
-  }
-
-  /**
-   * DeliveryChecklistItem create
-   */
-  export type DeliveryChecklistItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * The data needed to create a DeliveryChecklistItem.
-     */
-    data: XOR<DeliveryChecklistItemCreateInput, DeliveryChecklistItemUncheckedCreateInput>
-  }
-
-  /**
-   * DeliveryChecklistItem createMany
-   */
-  export type DeliveryChecklistItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many DeliveryChecklistItems.
-     */
-    data: DeliveryChecklistItemCreateManyInput | DeliveryChecklistItemCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * DeliveryChecklistItem createManyAndReturn
-   */
-  export type DeliveryChecklistItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * The data used to create many DeliveryChecklistItems.
-     */
-    data: DeliveryChecklistItemCreateManyInput | DeliveryChecklistItemCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DeliveryChecklistItem update
-   */
-  export type DeliveryChecklistItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * The data needed to update a DeliveryChecklistItem.
-     */
-    data: XOR<DeliveryChecklistItemUpdateInput, DeliveryChecklistItemUncheckedUpdateInput>
-    /**
-     * Choose, which DeliveryChecklistItem to update.
-     */
-    where: DeliveryChecklistItemWhereUniqueInput
-  }
-
-  /**
-   * DeliveryChecklistItem updateMany
-   */
-  export type DeliveryChecklistItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update DeliveryChecklistItems.
-     */
-    data: XOR<DeliveryChecklistItemUpdateManyMutationInput, DeliveryChecklistItemUncheckedUpdateManyInput>
-    /**
-     * Filter which DeliveryChecklistItems to update
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * Limit how many DeliveryChecklistItems to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * DeliveryChecklistItem updateManyAndReturn
-   */
-  export type DeliveryChecklistItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * The data used to update DeliveryChecklistItems.
-     */
-    data: XOR<DeliveryChecklistItemUpdateManyMutationInput, DeliveryChecklistItemUncheckedUpdateManyInput>
-    /**
-     * Filter which DeliveryChecklistItems to update
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * Limit how many DeliveryChecklistItems to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * DeliveryChecklistItem upsert
-   */
-  export type DeliveryChecklistItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * The filter to search for the DeliveryChecklistItem to update in case it exists.
-     */
-    where: DeliveryChecklistItemWhereUniqueInput
-    /**
-     * In case the DeliveryChecklistItem found by the `where` argument doesn't exist, create a new DeliveryChecklistItem with this data.
-     */
-    create: XOR<DeliveryChecklistItemCreateInput, DeliveryChecklistItemUncheckedCreateInput>
-    /**
-     * In case the DeliveryChecklistItem was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<DeliveryChecklistItemUpdateInput, DeliveryChecklistItemUncheckedUpdateInput>
-  }
-
-  /**
-   * DeliveryChecklistItem delete
-   */
-  export type DeliveryChecklistItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
-    /**
-     * Filter which DeliveryChecklistItem to delete.
-     */
-    where: DeliveryChecklistItemWhereUniqueInput
-  }
-
-  /**
-   * DeliveryChecklistItem deleteMany
-   */
-  export type DeliveryChecklistItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which DeliveryChecklistItems to delete
-     */
-    where?: DeliveryChecklistItemWhereInput
-    /**
-     * Limit how many DeliveryChecklistItems to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * DeliveryChecklistItem without action
-   */
-  export type DeliveryChecklistItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the DeliveryChecklistItem
-     */
-    select?: DeliveryChecklistItemSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the DeliveryChecklistItem
-     */
-    omit?: DeliveryChecklistItemOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DeliveryChecklistItemInclude<ExtArgs> | null
   }
 
 
@@ -43888,6 +40771,5868 @@ export namespace Prisma {
 
 
   /**
+   * Model Vehicle
+   */
+
+  export type AggregateVehicle = {
+    _count: VehicleCountAggregateOutputType | null
+    _min: VehicleMinAggregateOutputType | null
+    _max: VehicleMaxAggregateOutputType | null
+  }
+
+  export type VehicleMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: $Enums.VehicleType | null
+    status: $Enums.VehicleStatus | null
+    currentDeliveryId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VehicleMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    type: $Enums.VehicleType | null
+    status: $Enums.VehicleStatus | null
+    currentDeliveryId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VehicleCountAggregateOutputType = {
+    id: number
+    name: number
+    type: number
+    status: number
+    currentDeliveryId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VehicleMinAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    status?: true
+    currentDeliveryId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VehicleMaxAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    status?: true
+    currentDeliveryId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VehicleCountAggregateInputType = {
+    id?: true
+    name?: true
+    type?: true
+    status?: true
+    currentDeliveryId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VehicleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Vehicle to aggregate.
+     */
+    where?: VehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vehicles to fetch.
+     */
+    orderBy?: VehicleOrderByWithRelationInput | VehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Vehicles
+    **/
+    _count?: true | VehicleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VehicleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VehicleMaxAggregateInputType
+  }
+
+  export type GetVehicleAggregateType<T extends VehicleAggregateArgs> = {
+        [P in keyof T & keyof AggregateVehicle]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVehicle[P]>
+      : GetScalarType<T[P], AggregateVehicle[P]>
+  }
+
+
+
+
+  export type VehicleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VehicleWhereInput
+    orderBy?: VehicleOrderByWithAggregationInput | VehicleOrderByWithAggregationInput[]
+    by: VehicleScalarFieldEnum[] | VehicleScalarFieldEnum
+    having?: VehicleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VehicleCountAggregateInputType | true
+    _min?: VehicleMinAggregateInputType
+    _max?: VehicleMaxAggregateInputType
+  }
+
+  export type VehicleGroupByOutputType = {
+    id: string
+    name: string
+    type: $Enums.VehicleType
+    status: $Enums.VehicleStatus
+    currentDeliveryId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VehicleCountAggregateOutputType | null
+    _min: VehicleMinAggregateOutputType | null
+    _max: VehicleMaxAggregateOutputType | null
+  }
+
+  type GetVehicleGroupByPayload<T extends VehicleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VehicleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VehicleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VehicleGroupByOutputType[P]>
+            : GetScalarType<T[P], VehicleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VehicleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    status?: boolean
+    currentDeliveryId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deliveries?: boolean | Vehicle$deliveriesArgs<ExtArgs>
+    _count?: boolean | VehicleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["vehicle"]>
+
+  export type VehicleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    status?: boolean
+    currentDeliveryId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["vehicle"]>
+
+  export type VehicleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    status?: boolean
+    currentDeliveryId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["vehicle"]>
+
+  export type VehicleSelectScalar = {
+    id?: boolean
+    name?: boolean
+    type?: boolean
+    status?: boolean
+    currentDeliveryId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VehicleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "type" | "status" | "currentDeliveryId" | "createdAt" | "updatedAt", ExtArgs["result"]["vehicle"]>
+  export type VehicleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deliveries?: boolean | Vehicle$deliveriesArgs<ExtArgs>
+    _count?: boolean | VehicleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VehicleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type VehicleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $VehiclePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Vehicle"
+    objects: {
+      deliveries: Prisma.$DeliveryPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      type: $Enums.VehicleType
+      status: $Enums.VehicleStatus
+      currentDeliveryId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["vehicle"]>
+    composites: {}
+  }
+
+  type VehicleGetPayload<S extends boolean | null | undefined | VehicleDefaultArgs> = $Result.GetResult<Prisma.$VehiclePayload, S>
+
+  type VehicleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VehicleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VehicleCountAggregateInputType | true
+    }
+
+  export interface VehicleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Vehicle'], meta: { name: 'Vehicle' } }
+    /**
+     * Find zero or one Vehicle that matches the filter.
+     * @param {VehicleFindUniqueArgs} args - Arguments to find a Vehicle
+     * @example
+     * // Get one Vehicle
+     * const vehicle = await prisma.vehicle.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VehicleFindUniqueArgs>(args: SelectSubset<T, VehicleFindUniqueArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Vehicle that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VehicleFindUniqueOrThrowArgs} args - Arguments to find a Vehicle
+     * @example
+     * // Get one Vehicle
+     * const vehicle = await prisma.vehicle.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VehicleFindUniqueOrThrowArgs>(args: SelectSubset<T, VehicleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Vehicle that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleFindFirstArgs} args - Arguments to find a Vehicle
+     * @example
+     * // Get one Vehicle
+     * const vehicle = await prisma.vehicle.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VehicleFindFirstArgs>(args?: SelectSubset<T, VehicleFindFirstArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Vehicle that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleFindFirstOrThrowArgs} args - Arguments to find a Vehicle
+     * @example
+     * // Get one Vehicle
+     * const vehicle = await prisma.vehicle.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VehicleFindFirstOrThrowArgs>(args?: SelectSubset<T, VehicleFindFirstOrThrowArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Vehicles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Vehicles
+     * const vehicles = await prisma.vehicle.findMany()
+     * 
+     * // Get first 10 Vehicles
+     * const vehicles = await prisma.vehicle.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const vehicleWithIdOnly = await prisma.vehicle.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VehicleFindManyArgs>(args?: SelectSubset<T, VehicleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Vehicle.
+     * @param {VehicleCreateArgs} args - Arguments to create a Vehicle.
+     * @example
+     * // Create one Vehicle
+     * const Vehicle = await prisma.vehicle.create({
+     *   data: {
+     *     // ... data to create a Vehicle
+     *   }
+     * })
+     * 
+     */
+    create<T extends VehicleCreateArgs>(args: SelectSubset<T, VehicleCreateArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Vehicles.
+     * @param {VehicleCreateManyArgs} args - Arguments to create many Vehicles.
+     * @example
+     * // Create many Vehicles
+     * const vehicle = await prisma.vehicle.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VehicleCreateManyArgs>(args?: SelectSubset<T, VehicleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Vehicles and returns the data saved in the database.
+     * @param {VehicleCreateManyAndReturnArgs} args - Arguments to create many Vehicles.
+     * @example
+     * // Create many Vehicles
+     * const vehicle = await prisma.vehicle.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Vehicles and only return the `id`
+     * const vehicleWithIdOnly = await prisma.vehicle.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VehicleCreateManyAndReturnArgs>(args?: SelectSubset<T, VehicleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Vehicle.
+     * @param {VehicleDeleteArgs} args - Arguments to delete one Vehicle.
+     * @example
+     * // Delete one Vehicle
+     * const Vehicle = await prisma.vehicle.delete({
+     *   where: {
+     *     // ... filter to delete one Vehicle
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VehicleDeleteArgs>(args: SelectSubset<T, VehicleDeleteArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Vehicle.
+     * @param {VehicleUpdateArgs} args - Arguments to update one Vehicle.
+     * @example
+     * // Update one Vehicle
+     * const vehicle = await prisma.vehicle.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VehicleUpdateArgs>(args: SelectSubset<T, VehicleUpdateArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Vehicles.
+     * @param {VehicleDeleteManyArgs} args - Arguments to filter Vehicles to delete.
+     * @example
+     * // Delete a few Vehicles
+     * const { count } = await prisma.vehicle.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VehicleDeleteManyArgs>(args?: SelectSubset<T, VehicleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Vehicles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Vehicles
+     * const vehicle = await prisma.vehicle.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VehicleUpdateManyArgs>(args: SelectSubset<T, VehicleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Vehicles and returns the data updated in the database.
+     * @param {VehicleUpdateManyAndReturnArgs} args - Arguments to update many Vehicles.
+     * @example
+     * // Update many Vehicles
+     * const vehicle = await prisma.vehicle.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Vehicles and only return the `id`
+     * const vehicleWithIdOnly = await prisma.vehicle.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VehicleUpdateManyAndReturnArgs>(args: SelectSubset<T, VehicleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Vehicle.
+     * @param {VehicleUpsertArgs} args - Arguments to update or create a Vehicle.
+     * @example
+     * // Update or create a Vehicle
+     * const vehicle = await prisma.vehicle.upsert({
+     *   create: {
+     *     // ... data to create a Vehicle
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Vehicle we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VehicleUpsertArgs>(args: SelectSubset<T, VehicleUpsertArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Vehicles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleCountArgs} args - Arguments to filter Vehicles to count.
+     * @example
+     * // Count the number of Vehicles
+     * const count = await prisma.vehicle.count({
+     *   where: {
+     *     // ... the filter for the Vehicles we want to count
+     *   }
+     * })
+    **/
+    count<T extends VehicleCountArgs>(
+      args?: Subset<T, VehicleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VehicleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Vehicle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VehicleAggregateArgs>(args: Subset<T, VehicleAggregateArgs>): Prisma.PrismaPromise<GetVehicleAggregateType<T>>
+
+    /**
+     * Group by Vehicle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VehicleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VehicleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VehicleGroupByArgs['orderBy'] }
+        : { orderBy?: VehicleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VehicleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVehicleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Vehicle model
+   */
+  readonly fields: VehicleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Vehicle.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VehicleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deliveries<T extends Vehicle$deliveriesArgs<ExtArgs> = {}>(args?: Subset<T, Vehicle$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Vehicle model
+   */
+  interface VehicleFieldRefs {
+    readonly id: FieldRef<"Vehicle", 'String'>
+    readonly name: FieldRef<"Vehicle", 'String'>
+    readonly type: FieldRef<"Vehicle", 'VehicleType'>
+    readonly status: FieldRef<"Vehicle", 'VehicleStatus'>
+    readonly currentDeliveryId: FieldRef<"Vehicle", 'String'>
+    readonly createdAt: FieldRef<"Vehicle", 'DateTime'>
+    readonly updatedAt: FieldRef<"Vehicle", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Vehicle findUnique
+   */
+  export type VehicleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which Vehicle to fetch.
+     */
+    where: VehicleWhereUniqueInput
+  }
+
+  /**
+   * Vehicle findUniqueOrThrow
+   */
+  export type VehicleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which Vehicle to fetch.
+     */
+    where: VehicleWhereUniqueInput
+  }
+
+  /**
+   * Vehicle findFirst
+   */
+  export type VehicleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which Vehicle to fetch.
+     */
+    where?: VehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vehicles to fetch.
+     */
+    orderBy?: VehicleOrderByWithRelationInput | VehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Vehicles.
+     */
+    cursor?: VehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Vehicles.
+     */
+    distinct?: VehicleScalarFieldEnum | VehicleScalarFieldEnum[]
+  }
+
+  /**
+   * Vehicle findFirstOrThrow
+   */
+  export type VehicleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which Vehicle to fetch.
+     */
+    where?: VehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vehicles to fetch.
+     */
+    orderBy?: VehicleOrderByWithRelationInput | VehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Vehicles.
+     */
+    cursor?: VehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vehicles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Vehicles.
+     */
+    distinct?: VehicleScalarFieldEnum | VehicleScalarFieldEnum[]
+  }
+
+  /**
+   * Vehicle findMany
+   */
+  export type VehicleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter, which Vehicles to fetch.
+     */
+    where?: VehicleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Vehicles to fetch.
+     */
+    orderBy?: VehicleOrderByWithRelationInput | VehicleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Vehicles.
+     */
+    cursor?: VehicleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Vehicles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Vehicles.
+     */
+    skip?: number
+    distinct?: VehicleScalarFieldEnum | VehicleScalarFieldEnum[]
+  }
+
+  /**
+   * Vehicle create
+   */
+  export type VehicleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Vehicle.
+     */
+    data: XOR<VehicleCreateInput, VehicleUncheckedCreateInput>
+  }
+
+  /**
+   * Vehicle createMany
+   */
+  export type VehicleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Vehicles.
+     */
+    data: VehicleCreateManyInput | VehicleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Vehicle createManyAndReturn
+   */
+  export type VehicleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * The data used to create many Vehicles.
+     */
+    data: VehicleCreateManyInput | VehicleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Vehicle update
+   */
+  export type VehicleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Vehicle.
+     */
+    data: XOR<VehicleUpdateInput, VehicleUncheckedUpdateInput>
+    /**
+     * Choose, which Vehicle to update.
+     */
+    where: VehicleWhereUniqueInput
+  }
+
+  /**
+   * Vehicle updateMany
+   */
+  export type VehicleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Vehicles.
+     */
+    data: XOR<VehicleUpdateManyMutationInput, VehicleUncheckedUpdateManyInput>
+    /**
+     * Filter which Vehicles to update
+     */
+    where?: VehicleWhereInput
+    /**
+     * Limit how many Vehicles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Vehicle updateManyAndReturn
+   */
+  export type VehicleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * The data used to update Vehicles.
+     */
+    data: XOR<VehicleUpdateManyMutationInput, VehicleUncheckedUpdateManyInput>
+    /**
+     * Filter which Vehicles to update
+     */
+    where?: VehicleWhereInput
+    /**
+     * Limit how many Vehicles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Vehicle upsert
+   */
+  export type VehicleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Vehicle to update in case it exists.
+     */
+    where: VehicleWhereUniqueInput
+    /**
+     * In case the Vehicle found by the `where` argument doesn't exist, create a new Vehicle with this data.
+     */
+    create: XOR<VehicleCreateInput, VehicleUncheckedCreateInput>
+    /**
+     * In case the Vehicle was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VehicleUpdateInput, VehicleUncheckedUpdateInput>
+  }
+
+  /**
+   * Vehicle delete
+   */
+  export type VehicleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    /**
+     * Filter which Vehicle to delete.
+     */
+    where: VehicleWhereUniqueInput
+  }
+
+  /**
+   * Vehicle deleteMany
+   */
+  export type VehicleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Vehicles to delete
+     */
+    where?: VehicleWhereInput
+    /**
+     * Limit how many Vehicles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Vehicle.deliveries
+   */
+  export type Vehicle$deliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    where?: DeliveryWhereInput
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    cursor?: DeliveryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * Vehicle without action
+   */
+  export type VehicleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Delivery
+   */
+
+  export type AggregateDelivery = {
+    _count: DeliveryCountAggregateOutputType | null
+    _avg: DeliveryAvgAggregateOutputType | null
+    _sum: DeliverySumAggregateOutputType | null
+    _min: DeliveryMinAggregateOutputType | null
+    _max: DeliveryMaxAggregateOutputType | null
+  }
+
+  export type DeliveryAvgAggregateOutputType = {
+    etaOverrideCount: number | null
+    delayMinutes: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type DeliverySumAggregateOutputType = {
+    etaOverrideCount: number | null
+    delayMinutes: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type DeliveryMinAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    deliveryMethod: $Enums.DeliveryMethod | null
+    deliveryType: $Enums.DeliveryType | null
+    vehicleId: string | null
+    status: $Enums.DeliveryStatus | null
+    claimedByWorkerId: string | null
+    claimedAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    eta: Date | null
+    etaOverrideCount: number | null
+    delayMinutes: number | null
+    latitude: number | null
+    longitude: number | null
+    lastLocationUpdate: Date | null
+    trackingCode: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeliveryMaxAggregateOutputType = {
+    id: string | null
+    invoiceId: string | null
+    deliveryMethod: $Enums.DeliveryMethod | null
+    deliveryType: $Enums.DeliveryType | null
+    vehicleId: string | null
+    status: $Enums.DeliveryStatus | null
+    claimedByWorkerId: string | null
+    claimedAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    eta: Date | null
+    etaOverrideCount: number | null
+    delayMinutes: number | null
+    latitude: number | null
+    longitude: number | null
+    lastLocationUpdate: Date | null
+    trackingCode: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeliveryCountAggregateOutputType = {
+    id: number
+    invoiceId: number
+    deliveryMethod: number
+    deliveryType: number
+    vehicleId: number
+    status: number
+    claimedByWorkerId: number
+    claimedAt: number
+    startedAt: number
+    completedAt: number
+    eta: number
+    etaOverrideCount: number
+    delayMinutes: number
+    latitude: number
+    longitude: number
+    lastLocationUpdate: number
+    trackingCode: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DeliveryAvgAggregateInputType = {
+    etaOverrideCount?: true
+    delayMinutes?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type DeliverySumAggregateInputType = {
+    etaOverrideCount?: true
+    delayMinutes?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type DeliveryMinAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    deliveryMethod?: true
+    deliveryType?: true
+    vehicleId?: true
+    status?: true
+    claimedByWorkerId?: true
+    claimedAt?: true
+    startedAt?: true
+    completedAt?: true
+    eta?: true
+    etaOverrideCount?: true
+    delayMinutes?: true
+    latitude?: true
+    longitude?: true
+    lastLocationUpdate?: true
+    trackingCode?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeliveryMaxAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    deliveryMethod?: true
+    deliveryType?: true
+    vehicleId?: true
+    status?: true
+    claimedByWorkerId?: true
+    claimedAt?: true
+    startedAt?: true
+    completedAt?: true
+    eta?: true
+    etaOverrideCount?: true
+    delayMinutes?: true
+    latitude?: true
+    longitude?: true
+    lastLocationUpdate?: true
+    trackingCode?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeliveryCountAggregateInputType = {
+    id?: true
+    invoiceId?: true
+    deliveryMethod?: true
+    deliveryType?: true
+    vehicleId?: true
+    status?: true
+    claimedByWorkerId?: true
+    claimedAt?: true
+    startedAt?: true
+    completedAt?: true
+    eta?: true
+    etaOverrideCount?: true
+    delayMinutes?: true
+    latitude?: true
+    longitude?: true
+    lastLocationUpdate?: true
+    trackingCode?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DeliveryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Delivery to aggregate.
+     */
+    where?: DeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliveries to fetch.
+     */
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Deliveries
+    **/
+    _count?: true | DeliveryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DeliveryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeliverySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeliveryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeliveryMaxAggregateInputType
+  }
+
+  export type GetDeliveryAggregateType<T extends DeliveryAggregateArgs> = {
+        [P in keyof T & keyof AggregateDelivery]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDelivery[P]>
+      : GetScalarType<T[P], AggregateDelivery[P]>
+  }
+
+
+
+
+  export type DeliveryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryWhereInput
+    orderBy?: DeliveryOrderByWithAggregationInput | DeliveryOrderByWithAggregationInput[]
+    by: DeliveryScalarFieldEnum[] | DeliveryScalarFieldEnum
+    having?: DeliveryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeliveryCountAggregateInputType | true
+    _avg?: DeliveryAvgAggregateInputType
+    _sum?: DeliverySumAggregateInputType
+    _min?: DeliveryMinAggregateInputType
+    _max?: DeliveryMaxAggregateInputType
+  }
+
+  export type DeliveryGroupByOutputType = {
+    id: string
+    invoiceId: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId: string | null
+    status: $Enums.DeliveryStatus
+    claimedByWorkerId: string | null
+    claimedAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    eta: Date | null
+    etaOverrideCount: number
+    delayMinutes: number
+    latitude: number | null
+    longitude: number | null
+    lastLocationUpdate: Date | null
+    trackingCode: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DeliveryCountAggregateOutputType | null
+    _avg: DeliveryAvgAggregateOutputType | null
+    _sum: DeliverySumAggregateOutputType | null
+    _min: DeliveryMinAggregateOutputType | null
+    _max: DeliveryMaxAggregateOutputType | null
+  }
+
+  type GetDeliveryGroupByPayload<T extends DeliveryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeliveryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeliveryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeliveryGroupByOutputType[P]>
+            : GetScalarType<T[P], DeliveryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeliverySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    deliveryMethod?: boolean
+    deliveryType?: boolean
+    vehicleId?: boolean
+    status?: boolean
+    claimedByWorkerId?: boolean
+    claimedAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    eta?: boolean
+    etaOverrideCount?: boolean
+    delayMinutes?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    lastLocationUpdate?: boolean
+    trackingCode?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+    items?: boolean | Delivery$itemsArgs<ExtArgs>
+    logs?: boolean | Delivery$logsArgs<ExtArgs>
+    editLogs?: boolean | Delivery$editLogsArgs<ExtArgs>
+    _count?: boolean | DeliveryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["delivery"]>
+
+  export type DeliverySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    deliveryMethod?: boolean
+    deliveryType?: boolean
+    vehicleId?: boolean
+    status?: boolean
+    claimedByWorkerId?: boolean
+    claimedAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    eta?: boolean
+    etaOverrideCount?: boolean
+    delayMinutes?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    lastLocationUpdate?: boolean
+    trackingCode?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+  }, ExtArgs["result"]["delivery"]>
+
+  export type DeliverySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    invoiceId?: boolean
+    deliveryMethod?: boolean
+    deliveryType?: boolean
+    vehicleId?: boolean
+    status?: boolean
+    claimedByWorkerId?: boolean
+    claimedAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    eta?: boolean
+    etaOverrideCount?: boolean
+    delayMinutes?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    lastLocationUpdate?: boolean
+    trackingCode?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+  }, ExtArgs["result"]["delivery"]>
+
+  export type DeliverySelectScalar = {
+    id?: boolean
+    invoiceId?: boolean
+    deliveryMethod?: boolean
+    deliveryType?: boolean
+    vehicleId?: boolean
+    status?: boolean
+    claimedByWorkerId?: boolean
+    claimedAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    eta?: boolean
+    etaOverrideCount?: boolean
+    delayMinutes?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    lastLocationUpdate?: boolean
+    trackingCode?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "deliveryMethod" | "deliveryType" | "vehicleId" | "status" | "claimedByWorkerId" | "claimedAt" | "startedAt" | "completedAt" | "eta" | "etaOverrideCount" | "delayMinutes" | "latitude" | "longitude" | "lastLocationUpdate" | "trackingCode" | "createdAt" | "updatedAt", ExtArgs["result"]["delivery"]>
+  export type DeliveryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+    items?: boolean | Delivery$itemsArgs<ExtArgs>
+    logs?: boolean | Delivery$logsArgs<ExtArgs>
+    editLogs?: boolean | Delivery$editLogsArgs<ExtArgs>
+    _count?: boolean | DeliveryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DeliveryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+  }
+  export type DeliveryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
+    vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
+    claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
+  }
+
+  export type $DeliveryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Delivery"
+    objects: {
+      invoice: Prisma.$InvoicePayload<ExtArgs> | null
+      vehicle: Prisma.$VehiclePayload<ExtArgs> | null
+      claimedByWorker: Prisma.$UserPayload<ExtArgs> | null
+      items: Prisma.$DeliveryItemPayload<ExtArgs>[]
+      logs: Prisma.$DeliveryLogPayload<ExtArgs>[]
+      editLogs: Prisma.$DeliveryEditLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      invoiceId: string | null
+      deliveryMethod: $Enums.DeliveryMethod
+      deliveryType: $Enums.DeliveryType
+      vehicleId: string | null
+      status: $Enums.DeliveryStatus
+      claimedByWorkerId: string | null
+      claimedAt: Date | null
+      startedAt: Date | null
+      completedAt: Date | null
+      eta: Date | null
+      etaOverrideCount: number
+      delayMinutes: number
+      latitude: number | null
+      longitude: number | null
+      lastLocationUpdate: Date | null
+      trackingCode: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["delivery"]>
+    composites: {}
+  }
+
+  type DeliveryGetPayload<S extends boolean | null | undefined | DeliveryDefaultArgs> = $Result.GetResult<Prisma.$DeliveryPayload, S>
+
+  type DeliveryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeliveryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeliveryCountAggregateInputType | true
+    }
+
+  export interface DeliveryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Delivery'], meta: { name: 'Delivery' } }
+    /**
+     * Find zero or one Delivery that matches the filter.
+     * @param {DeliveryFindUniqueArgs} args - Arguments to find a Delivery
+     * @example
+     * // Get one Delivery
+     * const delivery = await prisma.delivery.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeliveryFindUniqueArgs>(args: SelectSubset<T, DeliveryFindUniqueArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Delivery that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeliveryFindUniqueOrThrowArgs} args - Arguments to find a Delivery
+     * @example
+     * // Get one Delivery
+     * const delivery = await prisma.delivery.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeliveryFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliveryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Delivery that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryFindFirstArgs} args - Arguments to find a Delivery
+     * @example
+     * // Get one Delivery
+     * const delivery = await prisma.delivery.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeliveryFindFirstArgs>(args?: SelectSubset<T, DeliveryFindFirstArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Delivery that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryFindFirstOrThrowArgs} args - Arguments to find a Delivery
+     * @example
+     * // Get one Delivery
+     * const delivery = await prisma.delivery.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeliveryFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliveryFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Deliveries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Deliveries
+     * const deliveries = await prisma.delivery.findMany()
+     * 
+     * // Get first 10 Deliveries
+     * const deliveries = await prisma.delivery.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deliveryWithIdOnly = await prisma.delivery.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeliveryFindManyArgs>(args?: SelectSubset<T, DeliveryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Delivery.
+     * @param {DeliveryCreateArgs} args - Arguments to create a Delivery.
+     * @example
+     * // Create one Delivery
+     * const Delivery = await prisma.delivery.create({
+     *   data: {
+     *     // ... data to create a Delivery
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeliveryCreateArgs>(args: SelectSubset<T, DeliveryCreateArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Deliveries.
+     * @param {DeliveryCreateManyArgs} args - Arguments to create many Deliveries.
+     * @example
+     * // Create many Deliveries
+     * const delivery = await prisma.delivery.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeliveryCreateManyArgs>(args?: SelectSubset<T, DeliveryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Deliveries and returns the data saved in the database.
+     * @param {DeliveryCreateManyAndReturnArgs} args - Arguments to create many Deliveries.
+     * @example
+     * // Create many Deliveries
+     * const delivery = await prisma.delivery.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Deliveries and only return the `id`
+     * const deliveryWithIdOnly = await prisma.delivery.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeliveryCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliveryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Delivery.
+     * @param {DeliveryDeleteArgs} args - Arguments to delete one Delivery.
+     * @example
+     * // Delete one Delivery
+     * const Delivery = await prisma.delivery.delete({
+     *   where: {
+     *     // ... filter to delete one Delivery
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeliveryDeleteArgs>(args: SelectSubset<T, DeliveryDeleteArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Delivery.
+     * @param {DeliveryUpdateArgs} args - Arguments to update one Delivery.
+     * @example
+     * // Update one Delivery
+     * const delivery = await prisma.delivery.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeliveryUpdateArgs>(args: SelectSubset<T, DeliveryUpdateArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Deliveries.
+     * @param {DeliveryDeleteManyArgs} args - Arguments to filter Deliveries to delete.
+     * @example
+     * // Delete a few Deliveries
+     * const { count } = await prisma.delivery.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeliveryDeleteManyArgs>(args?: SelectSubset<T, DeliveryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deliveries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Deliveries
+     * const delivery = await prisma.delivery.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeliveryUpdateManyArgs>(args: SelectSubset<T, DeliveryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Deliveries and returns the data updated in the database.
+     * @param {DeliveryUpdateManyAndReturnArgs} args - Arguments to update many Deliveries.
+     * @example
+     * // Update many Deliveries
+     * const delivery = await prisma.delivery.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Deliveries and only return the `id`
+     * const deliveryWithIdOnly = await prisma.delivery.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeliveryUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliveryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Delivery.
+     * @param {DeliveryUpsertArgs} args - Arguments to update or create a Delivery.
+     * @example
+     * // Update or create a Delivery
+     * const delivery = await prisma.delivery.upsert({
+     *   create: {
+     *     // ... data to create a Delivery
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Delivery we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeliveryUpsertArgs>(args: SelectSubset<T, DeliveryUpsertArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Deliveries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryCountArgs} args - Arguments to filter Deliveries to count.
+     * @example
+     * // Count the number of Deliveries
+     * const count = await prisma.delivery.count({
+     *   where: {
+     *     // ... the filter for the Deliveries we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeliveryCountArgs>(
+      args?: Subset<T, DeliveryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeliveryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Delivery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeliveryAggregateArgs>(args: Subset<T, DeliveryAggregateArgs>): Prisma.PrismaPromise<GetDeliveryAggregateType<T>>
+
+    /**
+     * Group by Delivery.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeliveryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeliveryGroupByArgs['orderBy'] }
+        : { orderBy?: DeliveryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeliveryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliveryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Delivery model
+   */
+  readonly fields: DeliveryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Delivery.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeliveryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    invoice<T extends Delivery$invoiceArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$invoiceArgs<ExtArgs>>): Prisma__InvoiceClient<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    vehicle<T extends Delivery$vehicleArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$vehicleArgs<ExtArgs>>): Prisma__VehicleClient<$Result.GetResult<Prisma.$VehiclePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    claimedByWorker<T extends Delivery$claimedByWorkerArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$claimedByWorkerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    items<T extends Delivery$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    logs<T extends Delivery$logsArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    editLogs<T extends Delivery$editLogsArgs<ExtArgs> = {}>(args?: Subset<T, Delivery$editLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Delivery model
+   */
+  interface DeliveryFieldRefs {
+    readonly id: FieldRef<"Delivery", 'String'>
+    readonly invoiceId: FieldRef<"Delivery", 'String'>
+    readonly deliveryMethod: FieldRef<"Delivery", 'DeliveryMethod'>
+    readonly deliveryType: FieldRef<"Delivery", 'DeliveryType'>
+    readonly vehicleId: FieldRef<"Delivery", 'String'>
+    readonly status: FieldRef<"Delivery", 'DeliveryStatus'>
+    readonly claimedByWorkerId: FieldRef<"Delivery", 'String'>
+    readonly claimedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly startedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly completedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly eta: FieldRef<"Delivery", 'DateTime'>
+    readonly etaOverrideCount: FieldRef<"Delivery", 'Int'>
+    readonly delayMinutes: FieldRef<"Delivery", 'Int'>
+    readonly latitude: FieldRef<"Delivery", 'Float'>
+    readonly longitude: FieldRef<"Delivery", 'Float'>
+    readonly lastLocationUpdate: FieldRef<"Delivery", 'DateTime'>
+    readonly trackingCode: FieldRef<"Delivery", 'String'>
+    readonly createdAt: FieldRef<"Delivery", 'DateTime'>
+    readonly updatedAt: FieldRef<"Delivery", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Delivery findUnique
+   */
+  export type DeliveryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which Delivery to fetch.
+     */
+    where: DeliveryWhereUniqueInput
+  }
+
+  /**
+   * Delivery findUniqueOrThrow
+   */
+  export type DeliveryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which Delivery to fetch.
+     */
+    where: DeliveryWhereUniqueInput
+  }
+
+  /**
+   * Delivery findFirst
+   */
+  export type DeliveryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which Delivery to fetch.
+     */
+    where?: DeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliveries to fetch.
+     */
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deliveries.
+     */
+    cursor?: DeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deliveries.
+     */
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery findFirstOrThrow
+   */
+  export type DeliveryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which Delivery to fetch.
+     */
+    where?: DeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliveries to fetch.
+     */
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Deliveries.
+     */
+    cursor?: DeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliveries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Deliveries.
+     */
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery findMany
+   */
+  export type DeliveryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter, which Deliveries to fetch.
+     */
+    where?: DeliveryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Deliveries to fetch.
+     */
+    orderBy?: DeliveryOrderByWithRelationInput | DeliveryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Deliveries.
+     */
+    cursor?: DeliveryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Deliveries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Deliveries.
+     */
+    skip?: number
+    distinct?: DeliveryScalarFieldEnum | DeliveryScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery create
+   */
+  export type DeliveryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Delivery.
+     */
+    data: XOR<DeliveryCreateInput, DeliveryUncheckedCreateInput>
+  }
+
+  /**
+   * Delivery createMany
+   */
+  export type DeliveryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Deliveries.
+     */
+    data: DeliveryCreateManyInput | DeliveryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Delivery createManyAndReturn
+   */
+  export type DeliveryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * The data used to create many Deliveries.
+     */
+    data: DeliveryCreateManyInput | DeliveryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Delivery update
+   */
+  export type DeliveryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Delivery.
+     */
+    data: XOR<DeliveryUpdateInput, DeliveryUncheckedUpdateInput>
+    /**
+     * Choose, which Delivery to update.
+     */
+    where: DeliveryWhereUniqueInput
+  }
+
+  /**
+   * Delivery updateMany
+   */
+  export type DeliveryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Deliveries.
+     */
+    data: XOR<DeliveryUpdateManyMutationInput, DeliveryUncheckedUpdateManyInput>
+    /**
+     * Filter which Deliveries to update
+     */
+    where?: DeliveryWhereInput
+    /**
+     * Limit how many Deliveries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Delivery updateManyAndReturn
+   */
+  export type DeliveryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * The data used to update Deliveries.
+     */
+    data: XOR<DeliveryUpdateManyMutationInput, DeliveryUncheckedUpdateManyInput>
+    /**
+     * Filter which Deliveries to update
+     */
+    where?: DeliveryWhereInput
+    /**
+     * Limit how many Deliveries to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Delivery upsert
+   */
+  export type DeliveryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Delivery to update in case it exists.
+     */
+    where: DeliveryWhereUniqueInput
+    /**
+     * In case the Delivery found by the `where` argument doesn't exist, create a new Delivery with this data.
+     */
+    create: XOR<DeliveryCreateInput, DeliveryUncheckedCreateInput>
+    /**
+     * In case the Delivery was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeliveryUpdateInput, DeliveryUncheckedUpdateInput>
+  }
+
+  /**
+   * Delivery delete
+   */
+  export type DeliveryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+    /**
+     * Filter which Delivery to delete.
+     */
+    where: DeliveryWhereUniqueInput
+  }
+
+  /**
+   * Delivery deleteMany
+   */
+  export type DeliveryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deliveries to delete
+     */
+    where?: DeliveryWhereInput
+    /**
+     * Limit how many Deliveries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Delivery.invoice
+   */
+  export type Delivery$invoiceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invoice
+     */
+    select?: InvoiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invoice
+     */
+    omit?: InvoiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InvoiceInclude<ExtArgs> | null
+    where?: InvoiceWhereInput
+  }
+
+  /**
+   * Delivery.vehicle
+   */
+  export type Delivery$vehicleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vehicle
+     */
+    select?: VehicleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vehicle
+     */
+    omit?: VehicleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VehicleInclude<ExtArgs> | null
+    where?: VehicleWhereInput
+  }
+
+  /**
+   * Delivery.claimedByWorker
+   */
+  export type Delivery$claimedByWorkerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Delivery.items
+   */
+  export type Delivery$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    where?: DeliveryItemWhereInput
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    cursor?: DeliveryItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryItemScalarFieldEnum | DeliveryItemScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery.logs
+   */
+  export type Delivery$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    where?: DeliveryLogWhereInput
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    cursor?: DeliveryLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryLogScalarFieldEnum | DeliveryLogScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery.editLogs
+   */
+  export type Delivery$editLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    where?: DeliveryEditLogWhereInput
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    cursor?: DeliveryEditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DeliveryEditLogScalarFieldEnum | DeliveryEditLogScalarFieldEnum[]
+  }
+
+  /**
+   * Delivery without action
+   */
+  export type DeliveryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Delivery
+     */
+    select?: DeliverySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Delivery
+     */
+    omit?: DeliveryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DeliveryItem
+   */
+
+  export type AggregateDeliveryItem = {
+    _count: DeliveryItemCountAggregateOutputType | null
+    _avg: DeliveryItemAvgAggregateOutputType | null
+    _sum: DeliveryItemSumAggregateOutputType | null
+    _min: DeliveryItemMinAggregateOutputType | null
+    _max: DeliveryItemMaxAggregateOutputType | null
+  }
+
+  export type DeliveryItemAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type DeliveryItemSumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type DeliveryItemMinAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    rentalItemId: string | null
+    quantity: number | null
+  }
+
+  export type DeliveryItemMaxAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    rentalItemId: string | null
+    quantity: number | null
+  }
+
+  export type DeliveryItemCountAggregateOutputType = {
+    id: number
+    deliveryId: number
+    rentalItemId: number
+    quantity: number
+    _all: number
+  }
+
+
+  export type DeliveryItemAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type DeliveryItemSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type DeliveryItemMinAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    rentalItemId?: true
+    quantity?: true
+  }
+
+  export type DeliveryItemMaxAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    rentalItemId?: true
+    quantity?: true
+  }
+
+  export type DeliveryItemCountAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    rentalItemId?: true
+    quantity?: true
+    _all?: true
+  }
+
+  export type DeliveryItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryItem to aggregate.
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryItems to fetch.
+     */
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeliveryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DeliveryItems
+    **/
+    _count?: true | DeliveryItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DeliveryItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeliveryItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeliveryItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeliveryItemMaxAggregateInputType
+  }
+
+  export type GetDeliveryItemAggregateType<T extends DeliveryItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeliveryItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeliveryItem[P]>
+      : GetScalarType<T[P], AggregateDeliveryItem[P]>
+  }
+
+
+
+
+  export type DeliveryItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryItemWhereInput
+    orderBy?: DeliveryItemOrderByWithAggregationInput | DeliveryItemOrderByWithAggregationInput[]
+    by: DeliveryItemScalarFieldEnum[] | DeliveryItemScalarFieldEnum
+    having?: DeliveryItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeliveryItemCountAggregateInputType | true
+    _avg?: DeliveryItemAvgAggregateInputType
+    _sum?: DeliveryItemSumAggregateInputType
+    _min?: DeliveryItemMinAggregateInputType
+    _max?: DeliveryItemMaxAggregateInputType
+  }
+
+  export type DeliveryItemGroupByOutputType = {
+    id: string
+    deliveryId: string
+    rentalItemId: string
+    quantity: number
+    _count: DeliveryItemCountAggregateOutputType | null
+    _avg: DeliveryItemAvgAggregateOutputType | null
+    _sum: DeliveryItemSumAggregateOutputType | null
+    _min: DeliveryItemMinAggregateOutputType | null
+    _max: DeliveryItemMaxAggregateOutputType | null
+  }
+
+  type GetDeliveryItemGroupByPayload<T extends DeliveryItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeliveryItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeliveryItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeliveryItemGroupByOutputType[P]>
+            : GetScalarType<T[P], DeliveryItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeliveryItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    rentalItemId?: boolean
+    quantity?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryItem"]>
+
+  export type DeliveryItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    rentalItemId?: boolean
+    quantity?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryItem"]>
+
+  export type DeliveryItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    rentalItemId?: boolean
+    quantity?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryItem"]>
+
+  export type DeliveryItemSelectScalar = {
+    id?: boolean
+    deliveryId?: boolean
+    rentalItemId?: boolean
+    quantity?: boolean
+  }
+
+  export type DeliveryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "deliveryId" | "rentalItemId" | "quantity", ExtArgs["result"]["deliveryItem"]>
+  export type DeliveryItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }
+  export type DeliveryItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }
+  export type DeliveryItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+  }
+
+  export type $DeliveryItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DeliveryItem"
+    objects: {
+      delivery: Prisma.$DeliveryPayload<ExtArgs>
+      rentalItem: Prisma.$RentalItemPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      deliveryId: string
+      rentalItemId: string
+      quantity: number
+    }, ExtArgs["result"]["deliveryItem"]>
+    composites: {}
+  }
+
+  type DeliveryItemGetPayload<S extends boolean | null | undefined | DeliveryItemDefaultArgs> = $Result.GetResult<Prisma.$DeliveryItemPayload, S>
+
+  type DeliveryItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeliveryItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeliveryItemCountAggregateInputType | true
+    }
+
+  export interface DeliveryItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeliveryItem'], meta: { name: 'DeliveryItem' } }
+    /**
+     * Find zero or one DeliveryItem that matches the filter.
+     * @param {DeliveryItemFindUniqueArgs} args - Arguments to find a DeliveryItem
+     * @example
+     * // Get one DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeliveryItemFindUniqueArgs>(args: SelectSubset<T, DeliveryItemFindUniqueArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DeliveryItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeliveryItemFindUniqueOrThrowArgs} args - Arguments to find a DeliveryItem
+     * @example
+     * // Get one DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeliveryItemFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliveryItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemFindFirstArgs} args - Arguments to find a DeliveryItem
+     * @example
+     * // Get one DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeliveryItemFindFirstArgs>(args?: SelectSubset<T, DeliveryItemFindFirstArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemFindFirstOrThrowArgs} args - Arguments to find a DeliveryItem
+     * @example
+     * // Get one DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeliveryItemFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliveryItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DeliveryItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DeliveryItems
+     * const deliveryItems = await prisma.deliveryItem.findMany()
+     * 
+     * // Get first 10 DeliveryItems
+     * const deliveryItems = await prisma.deliveryItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deliveryItemWithIdOnly = await prisma.deliveryItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeliveryItemFindManyArgs>(args?: SelectSubset<T, DeliveryItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DeliveryItem.
+     * @param {DeliveryItemCreateArgs} args - Arguments to create a DeliveryItem.
+     * @example
+     * // Create one DeliveryItem
+     * const DeliveryItem = await prisma.deliveryItem.create({
+     *   data: {
+     *     // ... data to create a DeliveryItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeliveryItemCreateArgs>(args: SelectSubset<T, DeliveryItemCreateArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DeliveryItems.
+     * @param {DeliveryItemCreateManyArgs} args - Arguments to create many DeliveryItems.
+     * @example
+     * // Create many DeliveryItems
+     * const deliveryItem = await prisma.deliveryItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeliveryItemCreateManyArgs>(args?: SelectSubset<T, DeliveryItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DeliveryItems and returns the data saved in the database.
+     * @param {DeliveryItemCreateManyAndReturnArgs} args - Arguments to create many DeliveryItems.
+     * @example
+     * // Create many DeliveryItems
+     * const deliveryItem = await prisma.deliveryItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DeliveryItems and only return the `id`
+     * const deliveryItemWithIdOnly = await prisma.deliveryItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeliveryItemCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliveryItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DeliveryItem.
+     * @param {DeliveryItemDeleteArgs} args - Arguments to delete one DeliveryItem.
+     * @example
+     * // Delete one DeliveryItem
+     * const DeliveryItem = await prisma.deliveryItem.delete({
+     *   where: {
+     *     // ... filter to delete one DeliveryItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeliveryItemDeleteArgs>(args: SelectSubset<T, DeliveryItemDeleteArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DeliveryItem.
+     * @param {DeliveryItemUpdateArgs} args - Arguments to update one DeliveryItem.
+     * @example
+     * // Update one DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeliveryItemUpdateArgs>(args: SelectSubset<T, DeliveryItemUpdateArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DeliveryItems.
+     * @param {DeliveryItemDeleteManyArgs} args - Arguments to filter DeliveryItems to delete.
+     * @example
+     * // Delete a few DeliveryItems
+     * const { count } = await prisma.deliveryItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeliveryItemDeleteManyArgs>(args?: SelectSubset<T, DeliveryItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DeliveryItems
+     * const deliveryItem = await prisma.deliveryItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeliveryItemUpdateManyArgs>(args: SelectSubset<T, DeliveryItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryItems and returns the data updated in the database.
+     * @param {DeliveryItemUpdateManyAndReturnArgs} args - Arguments to update many DeliveryItems.
+     * @example
+     * // Update many DeliveryItems
+     * const deliveryItem = await prisma.deliveryItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DeliveryItems and only return the `id`
+     * const deliveryItemWithIdOnly = await prisma.deliveryItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeliveryItemUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliveryItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DeliveryItem.
+     * @param {DeliveryItemUpsertArgs} args - Arguments to update or create a DeliveryItem.
+     * @example
+     * // Update or create a DeliveryItem
+     * const deliveryItem = await prisma.deliveryItem.upsert({
+     *   create: {
+     *     // ... data to create a DeliveryItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DeliveryItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeliveryItemUpsertArgs>(args: SelectSubset<T, DeliveryItemUpsertArgs<ExtArgs>>): Prisma__DeliveryItemClient<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DeliveryItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemCountArgs} args - Arguments to filter DeliveryItems to count.
+     * @example
+     * // Count the number of DeliveryItems
+     * const count = await prisma.deliveryItem.count({
+     *   where: {
+     *     // ... the filter for the DeliveryItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeliveryItemCountArgs>(
+      args?: Subset<T, DeliveryItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeliveryItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DeliveryItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeliveryItemAggregateArgs>(args: Subset<T, DeliveryItemAggregateArgs>): Prisma.PrismaPromise<GetDeliveryItemAggregateType<T>>
+
+    /**
+     * Group by DeliveryItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeliveryItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeliveryItemGroupByArgs['orderBy'] }
+        : { orderBy?: DeliveryItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeliveryItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliveryItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DeliveryItem model
+   */
+  readonly fields: DeliveryItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DeliveryItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeliveryItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    delivery<T extends DeliveryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DeliveryDefaultArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rentalItem<T extends RentalItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RentalItemDefaultArgs<ExtArgs>>): Prisma__RentalItemClient<$Result.GetResult<Prisma.$RentalItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DeliveryItem model
+   */
+  interface DeliveryItemFieldRefs {
+    readonly id: FieldRef<"DeliveryItem", 'String'>
+    readonly deliveryId: FieldRef<"DeliveryItem", 'String'>
+    readonly rentalItemId: FieldRef<"DeliveryItem", 'String'>
+    readonly quantity: FieldRef<"DeliveryItem", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DeliveryItem findUnique
+   */
+  export type DeliveryItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryItem to fetch.
+     */
+    where: DeliveryItemWhereUniqueInput
+  }
+
+  /**
+   * DeliveryItem findUniqueOrThrow
+   */
+  export type DeliveryItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryItem to fetch.
+     */
+    where: DeliveryItemWhereUniqueInput
+  }
+
+  /**
+   * DeliveryItem findFirst
+   */
+  export type DeliveryItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryItem to fetch.
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryItems to fetch.
+     */
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryItems.
+     */
+    cursor?: DeliveryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryItems.
+     */
+    distinct?: DeliveryItemScalarFieldEnum | DeliveryItemScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryItem findFirstOrThrow
+   */
+  export type DeliveryItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryItem to fetch.
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryItems to fetch.
+     */
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryItems.
+     */
+    cursor?: DeliveryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryItems.
+     */
+    distinct?: DeliveryItemScalarFieldEnum | DeliveryItemScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryItem findMany
+   */
+  export type DeliveryItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryItems to fetch.
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryItems to fetch.
+     */
+    orderBy?: DeliveryItemOrderByWithRelationInput | DeliveryItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DeliveryItems.
+     */
+    cursor?: DeliveryItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryItems.
+     */
+    skip?: number
+    distinct?: DeliveryItemScalarFieldEnum | DeliveryItemScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryItem create
+   */
+  export type DeliveryItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DeliveryItem.
+     */
+    data: XOR<DeliveryItemCreateInput, DeliveryItemUncheckedCreateInput>
+  }
+
+  /**
+   * DeliveryItem createMany
+   */
+  export type DeliveryItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DeliveryItems.
+     */
+    data: DeliveryItemCreateManyInput | DeliveryItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DeliveryItem createManyAndReturn
+   */
+  export type DeliveryItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many DeliveryItems.
+     */
+    data: DeliveryItemCreateManyInput | DeliveryItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryItem update
+   */
+  export type DeliveryItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DeliveryItem.
+     */
+    data: XOR<DeliveryItemUpdateInput, DeliveryItemUncheckedUpdateInput>
+    /**
+     * Choose, which DeliveryItem to update.
+     */
+    where: DeliveryItemWhereUniqueInput
+  }
+
+  /**
+   * DeliveryItem updateMany
+   */
+  export type DeliveryItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DeliveryItems.
+     */
+    data: XOR<DeliveryItemUpdateManyMutationInput, DeliveryItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryItems to update
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * Limit how many DeliveryItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryItem updateManyAndReturn
+   */
+  export type DeliveryItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * The data used to update DeliveryItems.
+     */
+    data: XOR<DeliveryItemUpdateManyMutationInput, DeliveryItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryItems to update
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * Limit how many DeliveryItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryItem upsert
+   */
+  export type DeliveryItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DeliveryItem to update in case it exists.
+     */
+    where: DeliveryItemWhereUniqueInput
+    /**
+     * In case the DeliveryItem found by the `where` argument doesn't exist, create a new DeliveryItem with this data.
+     */
+    create: XOR<DeliveryItemCreateInput, DeliveryItemUncheckedCreateInput>
+    /**
+     * In case the DeliveryItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeliveryItemUpdateInput, DeliveryItemUncheckedUpdateInput>
+  }
+
+  /**
+   * DeliveryItem delete
+   */
+  export type DeliveryItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+    /**
+     * Filter which DeliveryItem to delete.
+     */
+    where: DeliveryItemWhereUniqueInput
+  }
+
+  /**
+   * DeliveryItem deleteMany
+   */
+  export type DeliveryItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryItems to delete
+     */
+    where?: DeliveryItemWhereInput
+    /**
+     * Limit how many DeliveryItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryItem without action
+   */
+  export type DeliveryItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryItem
+     */
+    select?: DeliveryItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryItem
+     */
+    omit?: DeliveryItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DeliveryLog
+   */
+
+  export type AggregateDeliveryLog = {
+    _count: DeliveryLogCountAggregateOutputType | null
+    _min: DeliveryLogMinAggregateOutputType | null
+    _max: DeliveryLogMaxAggregateOutputType | null
+  }
+
+  export type DeliveryLogMinAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    eventType: string | null
+    createdByUserId: string | null
+    role: $Enums.DeliveryRole | null
+    createdAt: Date | null
+  }
+
+  export type DeliveryLogMaxAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    eventType: string | null
+    createdByUserId: string | null
+    role: $Enums.DeliveryRole | null
+    createdAt: Date | null
+  }
+
+  export type DeliveryLogCountAggregateOutputType = {
+    id: number
+    deliveryId: number
+    eventType: number
+    oldValue: number
+    newValue: number
+    createdByUserId: number
+    role: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DeliveryLogMinAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    eventType?: true
+    createdByUserId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type DeliveryLogMaxAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    eventType?: true
+    createdByUserId?: true
+    role?: true
+    createdAt?: true
+  }
+
+  export type DeliveryLogCountAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    eventType?: true
+    oldValue?: true
+    newValue?: true
+    createdByUserId?: true
+    role?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DeliveryLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryLog to aggregate.
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryLogs to fetch.
+     */
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeliveryLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DeliveryLogs
+    **/
+    _count?: true | DeliveryLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeliveryLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeliveryLogMaxAggregateInputType
+  }
+
+  export type GetDeliveryLogAggregateType<T extends DeliveryLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeliveryLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeliveryLog[P]>
+      : GetScalarType<T[P], AggregateDeliveryLog[P]>
+  }
+
+
+
+
+  export type DeliveryLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryLogWhereInput
+    orderBy?: DeliveryLogOrderByWithAggregationInput | DeliveryLogOrderByWithAggregationInput[]
+    by: DeliveryLogScalarFieldEnum[] | DeliveryLogScalarFieldEnum
+    having?: DeliveryLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeliveryLogCountAggregateInputType | true
+    _min?: DeliveryLogMinAggregateInputType
+    _max?: DeliveryLogMaxAggregateInputType
+  }
+
+  export type DeliveryLogGroupByOutputType = {
+    id: string
+    deliveryId: string
+    eventType: string
+    oldValue: JsonValue | null
+    newValue: JsonValue | null
+    createdByUserId: string | null
+    role: $Enums.DeliveryRole
+    createdAt: Date
+    _count: DeliveryLogCountAggregateOutputType | null
+    _min: DeliveryLogMinAggregateOutputType | null
+    _max: DeliveryLogMaxAggregateOutputType | null
+  }
+
+  type GetDeliveryLogGroupByPayload<T extends DeliveryLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeliveryLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeliveryLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeliveryLogGroupByOutputType[P]>
+            : GetScalarType<T[P], DeliveryLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeliveryLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    eventType?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdByUserId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryLog"]>
+
+  export type DeliveryLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    eventType?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdByUserId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryLog"]>
+
+  export type DeliveryLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    eventType?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdByUserId?: boolean
+    role?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryLog"]>
+
+  export type DeliveryLogSelectScalar = {
+    id?: boolean
+    deliveryId?: boolean
+    eventType?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    createdByUserId?: boolean
+    role?: boolean
+    createdAt?: boolean
+  }
+
+  export type DeliveryLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "deliveryId" | "eventType" | "oldValue" | "newValue" | "createdByUserId" | "role" | "createdAt", ExtArgs["result"]["deliveryLog"]>
+  export type DeliveryLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }
+  export type DeliveryLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }
+  export type DeliveryLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    createdByUser?: boolean | DeliveryLog$createdByUserArgs<ExtArgs>
+  }
+
+  export type $DeliveryLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DeliveryLog"
+    objects: {
+      delivery: Prisma.$DeliveryPayload<ExtArgs>
+      createdByUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      deliveryId: string
+      eventType: string
+      oldValue: Prisma.JsonValue | null
+      newValue: Prisma.JsonValue | null
+      createdByUserId: string | null
+      role: $Enums.DeliveryRole
+      createdAt: Date
+    }, ExtArgs["result"]["deliveryLog"]>
+    composites: {}
+  }
+
+  type DeliveryLogGetPayload<S extends boolean | null | undefined | DeliveryLogDefaultArgs> = $Result.GetResult<Prisma.$DeliveryLogPayload, S>
+
+  type DeliveryLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeliveryLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeliveryLogCountAggregateInputType | true
+    }
+
+  export interface DeliveryLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeliveryLog'], meta: { name: 'DeliveryLog' } }
+    /**
+     * Find zero or one DeliveryLog that matches the filter.
+     * @param {DeliveryLogFindUniqueArgs} args - Arguments to find a DeliveryLog
+     * @example
+     * // Get one DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeliveryLogFindUniqueArgs>(args: SelectSubset<T, DeliveryLogFindUniqueArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DeliveryLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeliveryLogFindUniqueOrThrowArgs} args - Arguments to find a DeliveryLog
+     * @example
+     * // Get one DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeliveryLogFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliveryLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogFindFirstArgs} args - Arguments to find a DeliveryLog
+     * @example
+     * // Get one DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeliveryLogFindFirstArgs>(args?: SelectSubset<T, DeliveryLogFindFirstArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogFindFirstOrThrowArgs} args - Arguments to find a DeliveryLog
+     * @example
+     * // Get one DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeliveryLogFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliveryLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DeliveryLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DeliveryLogs
+     * const deliveryLogs = await prisma.deliveryLog.findMany()
+     * 
+     * // Get first 10 DeliveryLogs
+     * const deliveryLogs = await prisma.deliveryLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deliveryLogWithIdOnly = await prisma.deliveryLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeliveryLogFindManyArgs>(args?: SelectSubset<T, DeliveryLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DeliveryLog.
+     * @param {DeliveryLogCreateArgs} args - Arguments to create a DeliveryLog.
+     * @example
+     * // Create one DeliveryLog
+     * const DeliveryLog = await prisma.deliveryLog.create({
+     *   data: {
+     *     // ... data to create a DeliveryLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeliveryLogCreateArgs>(args: SelectSubset<T, DeliveryLogCreateArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DeliveryLogs.
+     * @param {DeliveryLogCreateManyArgs} args - Arguments to create many DeliveryLogs.
+     * @example
+     * // Create many DeliveryLogs
+     * const deliveryLog = await prisma.deliveryLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeliveryLogCreateManyArgs>(args?: SelectSubset<T, DeliveryLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DeliveryLogs and returns the data saved in the database.
+     * @param {DeliveryLogCreateManyAndReturnArgs} args - Arguments to create many DeliveryLogs.
+     * @example
+     * // Create many DeliveryLogs
+     * const deliveryLog = await prisma.deliveryLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DeliveryLogs and only return the `id`
+     * const deliveryLogWithIdOnly = await prisma.deliveryLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeliveryLogCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliveryLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DeliveryLog.
+     * @param {DeliveryLogDeleteArgs} args - Arguments to delete one DeliveryLog.
+     * @example
+     * // Delete one DeliveryLog
+     * const DeliveryLog = await prisma.deliveryLog.delete({
+     *   where: {
+     *     // ... filter to delete one DeliveryLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeliveryLogDeleteArgs>(args: SelectSubset<T, DeliveryLogDeleteArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DeliveryLog.
+     * @param {DeliveryLogUpdateArgs} args - Arguments to update one DeliveryLog.
+     * @example
+     * // Update one DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeliveryLogUpdateArgs>(args: SelectSubset<T, DeliveryLogUpdateArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DeliveryLogs.
+     * @param {DeliveryLogDeleteManyArgs} args - Arguments to filter DeliveryLogs to delete.
+     * @example
+     * // Delete a few DeliveryLogs
+     * const { count } = await prisma.deliveryLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeliveryLogDeleteManyArgs>(args?: SelectSubset<T, DeliveryLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DeliveryLogs
+     * const deliveryLog = await prisma.deliveryLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeliveryLogUpdateManyArgs>(args: SelectSubset<T, DeliveryLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryLogs and returns the data updated in the database.
+     * @param {DeliveryLogUpdateManyAndReturnArgs} args - Arguments to update many DeliveryLogs.
+     * @example
+     * // Update many DeliveryLogs
+     * const deliveryLog = await prisma.deliveryLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DeliveryLogs and only return the `id`
+     * const deliveryLogWithIdOnly = await prisma.deliveryLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeliveryLogUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliveryLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DeliveryLog.
+     * @param {DeliveryLogUpsertArgs} args - Arguments to update or create a DeliveryLog.
+     * @example
+     * // Update or create a DeliveryLog
+     * const deliveryLog = await prisma.deliveryLog.upsert({
+     *   create: {
+     *     // ... data to create a DeliveryLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DeliveryLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeliveryLogUpsertArgs>(args: SelectSubset<T, DeliveryLogUpsertArgs<ExtArgs>>): Prisma__DeliveryLogClient<$Result.GetResult<Prisma.$DeliveryLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DeliveryLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogCountArgs} args - Arguments to filter DeliveryLogs to count.
+     * @example
+     * // Count the number of DeliveryLogs
+     * const count = await prisma.deliveryLog.count({
+     *   where: {
+     *     // ... the filter for the DeliveryLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeliveryLogCountArgs>(
+      args?: Subset<T, DeliveryLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeliveryLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DeliveryLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeliveryLogAggregateArgs>(args: Subset<T, DeliveryLogAggregateArgs>): Prisma.PrismaPromise<GetDeliveryLogAggregateType<T>>
+
+    /**
+     * Group by DeliveryLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeliveryLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeliveryLogGroupByArgs['orderBy'] }
+        : { orderBy?: DeliveryLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeliveryLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliveryLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DeliveryLog model
+   */
+  readonly fields: DeliveryLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DeliveryLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeliveryLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    delivery<T extends DeliveryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DeliveryDefaultArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdByUser<T extends DeliveryLog$createdByUserArgs<ExtArgs> = {}>(args?: Subset<T, DeliveryLog$createdByUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DeliveryLog model
+   */
+  interface DeliveryLogFieldRefs {
+    readonly id: FieldRef<"DeliveryLog", 'String'>
+    readonly deliveryId: FieldRef<"DeliveryLog", 'String'>
+    readonly eventType: FieldRef<"DeliveryLog", 'String'>
+    readonly oldValue: FieldRef<"DeliveryLog", 'Json'>
+    readonly newValue: FieldRef<"DeliveryLog", 'Json'>
+    readonly createdByUserId: FieldRef<"DeliveryLog", 'String'>
+    readonly role: FieldRef<"DeliveryLog", 'DeliveryRole'>
+    readonly createdAt: FieldRef<"DeliveryLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DeliveryLog findUnique
+   */
+  export type DeliveryLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryLog to fetch.
+     */
+    where: DeliveryLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryLog findUniqueOrThrow
+   */
+  export type DeliveryLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryLog to fetch.
+     */
+    where: DeliveryLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryLog findFirst
+   */
+  export type DeliveryLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryLog to fetch.
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryLogs to fetch.
+     */
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryLogs.
+     */
+    cursor?: DeliveryLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryLogs.
+     */
+    distinct?: DeliveryLogScalarFieldEnum | DeliveryLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryLog findFirstOrThrow
+   */
+  export type DeliveryLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryLog to fetch.
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryLogs to fetch.
+     */
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryLogs.
+     */
+    cursor?: DeliveryLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryLogs.
+     */
+    distinct?: DeliveryLogScalarFieldEnum | DeliveryLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryLog findMany
+   */
+  export type DeliveryLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryLogs to fetch.
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryLogs to fetch.
+     */
+    orderBy?: DeliveryLogOrderByWithRelationInput | DeliveryLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DeliveryLogs.
+     */
+    cursor?: DeliveryLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryLogs.
+     */
+    skip?: number
+    distinct?: DeliveryLogScalarFieldEnum | DeliveryLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryLog create
+   */
+  export type DeliveryLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DeliveryLog.
+     */
+    data: XOR<DeliveryLogCreateInput, DeliveryLogUncheckedCreateInput>
+  }
+
+  /**
+   * DeliveryLog createMany
+   */
+  export type DeliveryLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DeliveryLogs.
+     */
+    data: DeliveryLogCreateManyInput | DeliveryLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DeliveryLog createManyAndReturn
+   */
+  export type DeliveryLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many DeliveryLogs.
+     */
+    data: DeliveryLogCreateManyInput | DeliveryLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryLog update
+   */
+  export type DeliveryLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DeliveryLog.
+     */
+    data: XOR<DeliveryLogUpdateInput, DeliveryLogUncheckedUpdateInput>
+    /**
+     * Choose, which DeliveryLog to update.
+     */
+    where: DeliveryLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryLog updateMany
+   */
+  export type DeliveryLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DeliveryLogs.
+     */
+    data: XOR<DeliveryLogUpdateManyMutationInput, DeliveryLogUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryLogs to update
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * Limit how many DeliveryLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryLog updateManyAndReturn
+   */
+  export type DeliveryLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * The data used to update DeliveryLogs.
+     */
+    data: XOR<DeliveryLogUpdateManyMutationInput, DeliveryLogUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryLogs to update
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * Limit how many DeliveryLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryLog upsert
+   */
+  export type DeliveryLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DeliveryLog to update in case it exists.
+     */
+    where: DeliveryLogWhereUniqueInput
+    /**
+     * In case the DeliveryLog found by the `where` argument doesn't exist, create a new DeliveryLog with this data.
+     */
+    create: XOR<DeliveryLogCreateInput, DeliveryLogUncheckedCreateInput>
+    /**
+     * In case the DeliveryLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeliveryLogUpdateInput, DeliveryLogUncheckedUpdateInput>
+  }
+
+  /**
+   * DeliveryLog delete
+   */
+  export type DeliveryLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+    /**
+     * Filter which DeliveryLog to delete.
+     */
+    where: DeliveryLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryLog deleteMany
+   */
+  export type DeliveryLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryLogs to delete
+     */
+    where?: DeliveryLogWhereInput
+    /**
+     * Limit how many DeliveryLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryLog.createdByUser
+   */
+  export type DeliveryLog$createdByUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * DeliveryLog without action
+   */
+  export type DeliveryLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryLog
+     */
+    select?: DeliveryLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryLog
+     */
+    omit?: DeliveryLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DeliveryEditLog
+   */
+
+  export type AggregateDeliveryEditLog = {
+    _count: DeliveryEditLogCountAggregateOutputType | null
+    _min: DeliveryEditLogMinAggregateOutputType | null
+    _max: DeliveryEditLogMaxAggregateOutputType | null
+  }
+
+  export type DeliveryEditLogMinAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    editedByUserId: string | null
+    role: $Enums.DeliveryRole | null
+    fieldChanged: string | null
+    oldValue: string | null
+    newValue: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type DeliveryEditLogMaxAggregateOutputType = {
+    id: string | null
+    deliveryId: string | null
+    editedByUserId: string | null
+    role: $Enums.DeliveryRole | null
+    fieldChanged: string | null
+    oldValue: string | null
+    newValue: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type DeliveryEditLogCountAggregateOutputType = {
+    id: number
+    deliveryId: number
+    editedByUserId: number
+    role: number
+    fieldChanged: number
+    oldValue: number
+    newValue: number
+    reason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DeliveryEditLogMinAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    editedByUserId?: true
+    role?: true
+    fieldChanged?: true
+    oldValue?: true
+    newValue?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type DeliveryEditLogMaxAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    editedByUserId?: true
+    role?: true
+    fieldChanged?: true
+    oldValue?: true
+    newValue?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type DeliveryEditLogCountAggregateInputType = {
+    id?: true
+    deliveryId?: true
+    editedByUserId?: true
+    role?: true
+    fieldChanged?: true
+    oldValue?: true
+    newValue?: true
+    reason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DeliveryEditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryEditLog to aggregate.
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryEditLogs to fetch.
+     */
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeliveryEditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryEditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryEditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DeliveryEditLogs
+    **/
+    _count?: true | DeliveryEditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeliveryEditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeliveryEditLogMaxAggregateInputType
+  }
+
+  export type GetDeliveryEditLogAggregateType<T extends DeliveryEditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeliveryEditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeliveryEditLog[P]>
+      : GetScalarType<T[P], AggregateDeliveryEditLog[P]>
+  }
+
+
+
+
+  export type DeliveryEditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeliveryEditLogWhereInput
+    orderBy?: DeliveryEditLogOrderByWithAggregationInput | DeliveryEditLogOrderByWithAggregationInput[]
+    by: DeliveryEditLogScalarFieldEnum[] | DeliveryEditLogScalarFieldEnum
+    having?: DeliveryEditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeliveryEditLogCountAggregateInputType | true
+    _min?: DeliveryEditLogMinAggregateInputType
+    _max?: DeliveryEditLogMaxAggregateInputType
+  }
+
+  export type DeliveryEditLogGroupByOutputType = {
+    id: string
+    deliveryId: string
+    editedByUserId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue: string | null
+    newValue: string | null
+    reason: string | null
+    createdAt: Date
+    _count: DeliveryEditLogCountAggregateOutputType | null
+    _min: DeliveryEditLogMinAggregateOutputType | null
+    _max: DeliveryEditLogMaxAggregateOutputType | null
+  }
+
+  type GetDeliveryEditLogGroupByPayload<T extends DeliveryEditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeliveryEditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeliveryEditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeliveryEditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], DeliveryEditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeliveryEditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    editedByUserId?: boolean
+    role?: boolean
+    fieldChanged?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryEditLog"]>
+
+  export type DeliveryEditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    editedByUserId?: boolean
+    role?: boolean
+    fieldChanged?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryEditLog"]>
+
+  export type DeliveryEditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deliveryId?: boolean
+    editedByUserId?: boolean
+    role?: boolean
+    fieldChanged?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["deliveryEditLog"]>
+
+  export type DeliveryEditLogSelectScalar = {
+    id?: boolean
+    deliveryId?: boolean
+    editedByUserId?: boolean
+    role?: boolean
+    fieldChanged?: boolean
+    oldValue?: boolean
+    newValue?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }
+
+  export type DeliveryEditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "deliveryId" | "editedByUserId" | "role" | "fieldChanged" | "oldValue" | "newValue" | "reason" | "createdAt", ExtArgs["result"]["deliveryEditLog"]>
+  export type DeliveryEditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DeliveryEditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DeliveryEditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    delivery?: boolean | DeliveryDefaultArgs<ExtArgs>
+    editedByUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DeliveryEditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DeliveryEditLog"
+    objects: {
+      delivery: Prisma.$DeliveryPayload<ExtArgs>
+      editedByUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      deliveryId: string
+      editedByUserId: string
+      role: $Enums.DeliveryRole
+      fieldChanged: string
+      oldValue: string | null
+      newValue: string | null
+      reason: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["deliveryEditLog"]>
+    composites: {}
+  }
+
+  type DeliveryEditLogGetPayload<S extends boolean | null | undefined | DeliveryEditLogDefaultArgs> = $Result.GetResult<Prisma.$DeliveryEditLogPayload, S>
+
+  type DeliveryEditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeliveryEditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeliveryEditLogCountAggregateInputType | true
+    }
+
+  export interface DeliveryEditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeliveryEditLog'], meta: { name: 'DeliveryEditLog' } }
+    /**
+     * Find zero or one DeliveryEditLog that matches the filter.
+     * @param {DeliveryEditLogFindUniqueArgs} args - Arguments to find a DeliveryEditLog
+     * @example
+     * // Get one DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeliveryEditLogFindUniqueArgs>(args: SelectSubset<T, DeliveryEditLogFindUniqueArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DeliveryEditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeliveryEditLogFindUniqueOrThrowArgs} args - Arguments to find a DeliveryEditLog
+     * @example
+     * // Get one DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeliveryEditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, DeliveryEditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryEditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogFindFirstArgs} args - Arguments to find a DeliveryEditLog
+     * @example
+     * // Get one DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeliveryEditLogFindFirstArgs>(args?: SelectSubset<T, DeliveryEditLogFindFirstArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DeliveryEditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogFindFirstOrThrowArgs} args - Arguments to find a DeliveryEditLog
+     * @example
+     * // Get one DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeliveryEditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, DeliveryEditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DeliveryEditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DeliveryEditLogs
+     * const deliveryEditLogs = await prisma.deliveryEditLog.findMany()
+     * 
+     * // Get first 10 DeliveryEditLogs
+     * const deliveryEditLogs = await prisma.deliveryEditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deliveryEditLogWithIdOnly = await prisma.deliveryEditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeliveryEditLogFindManyArgs>(args?: SelectSubset<T, DeliveryEditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DeliveryEditLog.
+     * @param {DeliveryEditLogCreateArgs} args - Arguments to create a DeliveryEditLog.
+     * @example
+     * // Create one DeliveryEditLog
+     * const DeliveryEditLog = await prisma.deliveryEditLog.create({
+     *   data: {
+     *     // ... data to create a DeliveryEditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeliveryEditLogCreateArgs>(args: SelectSubset<T, DeliveryEditLogCreateArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DeliveryEditLogs.
+     * @param {DeliveryEditLogCreateManyArgs} args - Arguments to create many DeliveryEditLogs.
+     * @example
+     * // Create many DeliveryEditLogs
+     * const deliveryEditLog = await prisma.deliveryEditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeliveryEditLogCreateManyArgs>(args?: SelectSubset<T, DeliveryEditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DeliveryEditLogs and returns the data saved in the database.
+     * @param {DeliveryEditLogCreateManyAndReturnArgs} args - Arguments to create many DeliveryEditLogs.
+     * @example
+     * // Create many DeliveryEditLogs
+     * const deliveryEditLog = await prisma.deliveryEditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DeliveryEditLogs and only return the `id`
+     * const deliveryEditLogWithIdOnly = await prisma.deliveryEditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeliveryEditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, DeliveryEditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DeliveryEditLog.
+     * @param {DeliveryEditLogDeleteArgs} args - Arguments to delete one DeliveryEditLog.
+     * @example
+     * // Delete one DeliveryEditLog
+     * const DeliveryEditLog = await prisma.deliveryEditLog.delete({
+     *   where: {
+     *     // ... filter to delete one DeliveryEditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeliveryEditLogDeleteArgs>(args: SelectSubset<T, DeliveryEditLogDeleteArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DeliveryEditLog.
+     * @param {DeliveryEditLogUpdateArgs} args - Arguments to update one DeliveryEditLog.
+     * @example
+     * // Update one DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeliveryEditLogUpdateArgs>(args: SelectSubset<T, DeliveryEditLogUpdateArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DeliveryEditLogs.
+     * @param {DeliveryEditLogDeleteManyArgs} args - Arguments to filter DeliveryEditLogs to delete.
+     * @example
+     * // Delete a few DeliveryEditLogs
+     * const { count } = await prisma.deliveryEditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeliveryEditLogDeleteManyArgs>(args?: SelectSubset<T, DeliveryEditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryEditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DeliveryEditLogs
+     * const deliveryEditLog = await prisma.deliveryEditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeliveryEditLogUpdateManyArgs>(args: SelectSubset<T, DeliveryEditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeliveryEditLogs and returns the data updated in the database.
+     * @param {DeliveryEditLogUpdateManyAndReturnArgs} args - Arguments to update many DeliveryEditLogs.
+     * @example
+     * // Update many DeliveryEditLogs
+     * const deliveryEditLog = await prisma.deliveryEditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DeliveryEditLogs and only return the `id`
+     * const deliveryEditLogWithIdOnly = await prisma.deliveryEditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeliveryEditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, DeliveryEditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DeliveryEditLog.
+     * @param {DeliveryEditLogUpsertArgs} args - Arguments to update or create a DeliveryEditLog.
+     * @example
+     * // Update or create a DeliveryEditLog
+     * const deliveryEditLog = await prisma.deliveryEditLog.upsert({
+     *   create: {
+     *     // ... data to create a DeliveryEditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DeliveryEditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeliveryEditLogUpsertArgs>(args: SelectSubset<T, DeliveryEditLogUpsertArgs<ExtArgs>>): Prisma__DeliveryEditLogClient<$Result.GetResult<Prisma.$DeliveryEditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DeliveryEditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogCountArgs} args - Arguments to filter DeliveryEditLogs to count.
+     * @example
+     * // Count the number of DeliveryEditLogs
+     * const count = await prisma.deliveryEditLog.count({
+     *   where: {
+     *     // ... the filter for the DeliveryEditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeliveryEditLogCountArgs>(
+      args?: Subset<T, DeliveryEditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeliveryEditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DeliveryEditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeliveryEditLogAggregateArgs>(args: Subset<T, DeliveryEditLogAggregateArgs>): Prisma.PrismaPromise<GetDeliveryEditLogAggregateType<T>>
+
+    /**
+     * Group by DeliveryEditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeliveryEditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeliveryEditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeliveryEditLogGroupByArgs['orderBy'] }
+        : { orderBy?: DeliveryEditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeliveryEditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeliveryEditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DeliveryEditLog model
+   */
+  readonly fields: DeliveryEditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DeliveryEditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeliveryEditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    delivery<T extends DeliveryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DeliveryDefaultArgs<ExtArgs>>): Prisma__DeliveryClient<$Result.GetResult<Prisma.$DeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    editedByUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DeliveryEditLog model
+   */
+  interface DeliveryEditLogFieldRefs {
+    readonly id: FieldRef<"DeliveryEditLog", 'String'>
+    readonly deliveryId: FieldRef<"DeliveryEditLog", 'String'>
+    readonly editedByUserId: FieldRef<"DeliveryEditLog", 'String'>
+    readonly role: FieldRef<"DeliveryEditLog", 'DeliveryRole'>
+    readonly fieldChanged: FieldRef<"DeliveryEditLog", 'String'>
+    readonly oldValue: FieldRef<"DeliveryEditLog", 'String'>
+    readonly newValue: FieldRef<"DeliveryEditLog", 'String'>
+    readonly reason: FieldRef<"DeliveryEditLog", 'String'>
+    readonly createdAt: FieldRef<"DeliveryEditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DeliveryEditLog findUnique
+   */
+  export type DeliveryEditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryEditLog to fetch.
+     */
+    where: DeliveryEditLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryEditLog findUniqueOrThrow
+   */
+  export type DeliveryEditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryEditLog to fetch.
+     */
+    where: DeliveryEditLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryEditLog findFirst
+   */
+  export type DeliveryEditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryEditLog to fetch.
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryEditLogs to fetch.
+     */
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryEditLogs.
+     */
+    cursor?: DeliveryEditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryEditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryEditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryEditLogs.
+     */
+    distinct?: DeliveryEditLogScalarFieldEnum | DeliveryEditLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryEditLog findFirstOrThrow
+   */
+  export type DeliveryEditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryEditLog to fetch.
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryEditLogs to fetch.
+     */
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeliveryEditLogs.
+     */
+    cursor?: DeliveryEditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryEditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryEditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeliveryEditLogs.
+     */
+    distinct?: DeliveryEditLogScalarFieldEnum | DeliveryEditLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryEditLog findMany
+   */
+  export type DeliveryEditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which DeliveryEditLogs to fetch.
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeliveryEditLogs to fetch.
+     */
+    orderBy?: DeliveryEditLogOrderByWithRelationInput | DeliveryEditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DeliveryEditLogs.
+     */
+    cursor?: DeliveryEditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeliveryEditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeliveryEditLogs.
+     */
+    skip?: number
+    distinct?: DeliveryEditLogScalarFieldEnum | DeliveryEditLogScalarFieldEnum[]
+  }
+
+  /**
+   * DeliveryEditLog create
+   */
+  export type DeliveryEditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DeliveryEditLog.
+     */
+    data: XOR<DeliveryEditLogCreateInput, DeliveryEditLogUncheckedCreateInput>
+  }
+
+  /**
+   * DeliveryEditLog createMany
+   */
+  export type DeliveryEditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DeliveryEditLogs.
+     */
+    data: DeliveryEditLogCreateManyInput | DeliveryEditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DeliveryEditLog createManyAndReturn
+   */
+  export type DeliveryEditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many DeliveryEditLogs.
+     */
+    data: DeliveryEditLogCreateManyInput | DeliveryEditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryEditLog update
+   */
+  export type DeliveryEditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DeliveryEditLog.
+     */
+    data: XOR<DeliveryEditLogUpdateInput, DeliveryEditLogUncheckedUpdateInput>
+    /**
+     * Choose, which DeliveryEditLog to update.
+     */
+    where: DeliveryEditLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryEditLog updateMany
+   */
+  export type DeliveryEditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DeliveryEditLogs.
+     */
+    data: XOR<DeliveryEditLogUpdateManyMutationInput, DeliveryEditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryEditLogs to update
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * Limit how many DeliveryEditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryEditLog updateManyAndReturn
+   */
+  export type DeliveryEditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update DeliveryEditLogs.
+     */
+    data: XOR<DeliveryEditLogUpdateManyMutationInput, DeliveryEditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which DeliveryEditLogs to update
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * Limit how many DeliveryEditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DeliveryEditLog upsert
+   */
+  export type DeliveryEditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DeliveryEditLog to update in case it exists.
+     */
+    where: DeliveryEditLogWhereUniqueInput
+    /**
+     * In case the DeliveryEditLog found by the `where` argument doesn't exist, create a new DeliveryEditLog with this data.
+     */
+    create: XOR<DeliveryEditLogCreateInput, DeliveryEditLogUncheckedCreateInput>
+    /**
+     * In case the DeliveryEditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeliveryEditLogUpdateInput, DeliveryEditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * DeliveryEditLog delete
+   */
+  export type DeliveryEditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+    /**
+     * Filter which DeliveryEditLog to delete.
+     */
+    where: DeliveryEditLogWhereUniqueInput
+  }
+
+  /**
+   * DeliveryEditLog deleteMany
+   */
+  export type DeliveryEditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeliveryEditLogs to delete
+     */
+    where?: DeliveryEditLogWhereInput
+    /**
+     * Limit how many DeliveryEditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DeliveryEditLog without action
+   */
+  export type DeliveryEditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeliveryEditLog
+     */
+    select?: DeliveryEditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DeliveryEditLog
+     */
+    omit?: DeliveryEditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeliveryEditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -43949,7 +46694,6 @@ export namespace Prisma {
     paymentStatus: 'paymentStatus',
     paymentConfirmedBy: 'paymentConfirmedBy',
     paymentConfirmedAt: 'paymentConfirmedAt',
-    deliveryStatus: 'deliveryStatus',
     deliveryAddress: 'deliveryAddress'
   };
 
@@ -44182,23 +46926,6 @@ export namespace Prisma {
   export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
-  export const WorkerScheduleScalarFieldEnum: {
-    id: 'id',
-    workerId: 'workerId',
-    orderId: 'orderId',
-    assignedBy: 'assignedBy',
-    assignedAt: 'assignedAt',
-    status: 'status',
-    scheduledDate: 'scheduledDate',
-    notes: 'notes',
-    workerNotes: 'workerNotes',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type WorkerScheduleScalarFieldEnum = (typeof WorkerScheduleScalarFieldEnum)[keyof typeof WorkerScheduleScalarFieldEnum]
-
-
   export const WorkerAttendanceScalarFieldEnum: {
     id: 'id',
     workerId: 'workerId',
@@ -44254,33 +46981,6 @@ export namespace Prisma {
   };
 
   export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
-
-
-  export const DailyReportScalarFieldEnum: {
-    id: 'id',
-    workerId: 'workerId',
-    scheduleId: 'scheduleId',
-    reportDate: 'reportDate',
-    jobSummary: 'jobSummary',
-    deliveryStatus: 'deliveryStatus',
-    notes: 'notes',
-    createdAt: 'createdAt'
-  };
-
-  export type DailyReportScalarFieldEnum = (typeof DailyReportScalarFieldEnum)[keyof typeof DailyReportScalarFieldEnum]
-
-
-  export const DeliveryChecklistItemScalarFieldEnum: {
-    id: 'id',
-    reportId: 'reportId',
-    rentalItemId: 'rentalItemId',
-    itemName: 'itemName',
-    quantity: 'quantity',
-    status: 'status',
-    notes: 'notes'
-  };
-
-  export type DeliveryChecklistItemScalarFieldEnum = (typeof DeliveryChecklistItemScalarFieldEnum)[keyof typeof DeliveryChecklistItemScalarFieldEnum]
 
 
   export const NotificationDismissalScalarFieldEnum: {
@@ -44389,6 +47089,83 @@ export namespace Prisma {
   };
 
   export type AiTrainingDataScalarFieldEnum = (typeof AiTrainingDataScalarFieldEnum)[keyof typeof AiTrainingDataScalarFieldEnum]
+
+
+  export const VehicleScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    type: 'type',
+    status: 'status',
+    currentDeliveryId: 'currentDeliveryId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VehicleScalarFieldEnum = (typeof VehicleScalarFieldEnum)[keyof typeof VehicleScalarFieldEnum]
+
+
+  export const DeliveryScalarFieldEnum: {
+    id: 'id',
+    invoiceId: 'invoiceId',
+    deliveryMethod: 'deliveryMethod',
+    deliveryType: 'deliveryType',
+    vehicleId: 'vehicleId',
+    status: 'status',
+    claimedByWorkerId: 'claimedByWorkerId',
+    claimedAt: 'claimedAt',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    eta: 'eta',
+    etaOverrideCount: 'etaOverrideCount',
+    delayMinutes: 'delayMinutes',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    lastLocationUpdate: 'lastLocationUpdate',
+    trackingCode: 'trackingCode',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DeliveryScalarFieldEnum = (typeof DeliveryScalarFieldEnum)[keyof typeof DeliveryScalarFieldEnum]
+
+
+  export const DeliveryItemScalarFieldEnum: {
+    id: 'id',
+    deliveryId: 'deliveryId',
+    rentalItemId: 'rentalItemId',
+    quantity: 'quantity'
+  };
+
+  export type DeliveryItemScalarFieldEnum = (typeof DeliveryItemScalarFieldEnum)[keyof typeof DeliveryItemScalarFieldEnum]
+
+
+  export const DeliveryLogScalarFieldEnum: {
+    id: 'id',
+    deliveryId: 'deliveryId',
+    eventType: 'eventType',
+    oldValue: 'oldValue',
+    newValue: 'newValue',
+    createdByUserId: 'createdByUserId',
+    role: 'role',
+    createdAt: 'createdAt'
+  };
+
+  export type DeliveryLogScalarFieldEnum = (typeof DeliveryLogScalarFieldEnum)[keyof typeof DeliveryLogScalarFieldEnum]
+
+
+  export const DeliveryEditLogScalarFieldEnum: {
+    id: 'id',
+    deliveryId: 'deliveryId',
+    editedByUserId: 'editedByUserId',
+    role: 'role',
+    fieldChanged: 'fieldChanged',
+    oldValue: 'oldValue',
+    newValue: 'newValue',
+    reason: 'reason',
+    createdAt: 'createdAt'
+  };
+
+  export type DeliveryEditLogScalarFieldEnum = (typeof DeliveryEditLogScalarFieldEnum)[keyof typeof DeliveryEditLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -44606,20 +47383,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'schedule_status'
-   */
-  export type Enumschedule_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'schedule_status'>
-    
-
-
-  /**
-   * Reference to a field of type 'schedule_status[]'
-   */
-  export type ListEnumschedule_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'schedule_status[]'>
-    
-
-
-  /**
    * Reference to a field of type 'attendance_status'
    */
   export type Enumattendance_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'attendance_status'>
@@ -44673,6 +47436,90 @@ export namespace Prisma {
    */
   export type ListEnumAiActionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AiActionStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'VehicleType'
+   */
+  export type EnumVehicleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleType'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleType[]'
+   */
+  export type ListEnumVehicleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleStatus'
+   */
+  export type EnumVehicleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VehicleStatus[]'
+   */
+  export type ListEnumVehicleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VehicleStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryMethod'
+   */
+  export type EnumDeliveryMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryMethod[]'
+   */
+  export type ListEnumDeliveryMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryMethod[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryType'
+   */
+  export type EnumDeliveryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryType[]'
+   */
+  export type ListEnumDeliveryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryStatus'
+   */
+  export type EnumDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryStatus[]'
+   */
+  export type ListEnumDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryRole'
+   */
+  export type EnumDeliveryRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeliveryRole[]'
+   */
+  export type ListEnumDeliveryRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeliveryRole[]'>
+    
   /**
    * Deep Input Types
    */
@@ -44705,6 +47552,7 @@ export namespace Prisma {
     emailSent?: BoolNullableFilter<"Invoice"> | boolean | null
     emailSentAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
+    deliveries?: DeliveryListRelationFilter
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
@@ -44732,6 +47580,7 @@ export namespace Prisma {
     emailSent?: SortOrderInput | SortOrder
     emailSentAt?: SortOrderInput | SortOrder
     order?: OrderOrderByWithRelationInput
+    deliveries?: DeliveryOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
   }
 
@@ -44762,6 +47611,7 @@ export namespace Prisma {
     emailSent?: BoolNullableFilter<"Invoice"> | boolean | null
     emailSentAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
+    deliveries?: DeliveryListRelationFilter
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "invoiceNumber" | "shareableToken">
 
@@ -44846,14 +47696,12 @@ export namespace Prisma {
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentConfirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    deliveryStatus?: StringNullableFilter<"Order"> | string | null
     deliveryAddress?: StringNullableFilter<"Order"> | string | null
     invoices?: InvoiceListRelationFilter
     assignedUnits?: ProductUnitListRelationFilter
     users_orders_payment_confirmed_byTousers?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     rentalItems?: RentalItemListRelationFilter
-    workerSchedules?: WorkerScheduleListRelationFilter
     paymentTransactions?: PaymentTransactionListRelationFilter
   }
 
@@ -44877,14 +47725,12 @@ export namespace Prisma {
     paymentStatus?: SortOrderInput | SortOrder
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentConfirmedAt?: SortOrderInput | SortOrder
-    deliveryStatus?: SortOrderInput | SortOrder
     deliveryAddress?: SortOrderInput | SortOrder
     invoices?: InvoiceOrderByRelationAggregateInput
     assignedUnits?: ProductUnitOrderByRelationAggregateInput
     users_orders_payment_confirmed_byTousers?: UserOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     rentalItems?: RentalItemOrderByRelationAggregateInput
-    workerSchedules?: WorkerScheduleOrderByRelationAggregateInput
     paymentTransactions?: PaymentTransactionOrderByRelationAggregateInput
   }
 
@@ -44911,14 +47757,12 @@ export namespace Prisma {
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentConfirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    deliveryStatus?: StringNullableFilter<"Order"> | string | null
     deliveryAddress?: StringNullableFilter<"Order"> | string | null
     invoices?: InvoiceListRelationFilter
     assignedUnits?: ProductUnitListRelationFilter
     users_orders_payment_confirmed_byTousers?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     rentalItems?: RentalItemListRelationFilter
-    workerSchedules?: WorkerScheduleListRelationFilter
     paymentTransactions?: PaymentTransactionListRelationFilter
   }, "id" | "orderNumber">
 
@@ -44942,7 +47786,6 @@ export namespace Prisma {
     paymentStatus?: SortOrderInput | SortOrder
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentConfirmedAt?: SortOrderInput | SortOrder
-    deliveryStatus?: SortOrderInput | SortOrder
     deliveryAddress?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
@@ -44974,7 +47817,6 @@ export namespace Prisma {
     paymentStatus?: StringNullableWithAggregatesFilter<"Order"> | string | null
     paymentConfirmedBy?: UuidNullableWithAggregatesFilter<"Order"> | string | null
     paymentConfirmedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
-    deliveryStatus?: StringNullableWithAggregatesFilter<"Order"> | string | null
     deliveryAddress?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
 
@@ -45718,6 +48560,7 @@ export namespace Prisma {
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
+    deliveryItems?: DeliveryItemListRelationFilter
   }
 
   export type RentalItemOrderByWithRelationInput = {
@@ -45732,6 +48575,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageOrderByWithRelationInput
     variant?: ProductVariantOrderByWithRelationInput
     unit?: ProductUnitOrderByWithRelationInput
+    deliveryItems?: DeliveryItemOrderByRelationAggregateInput
   }
 
   export type RentalItemWhereUniqueInput = Prisma.AtLeast<{
@@ -45749,6 +48593,7 @@ export namespace Prisma {
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
+    deliveryItems?: DeliveryItemListRelationFilter
   }, "id">
 
   export type RentalItemOrderByWithAggregationInput = {
@@ -45807,15 +48652,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderListRelationFilter
     orders?: OrderListRelationFilter
     workerAttendance?: WorkerAttendanceListRelationFilter
+    claimedDeliveries?: DeliveryListRelationFilter
+    deliveryLogs?: DeliveryLogListRelationFilter
+    deliveryEditLogs?: DeliveryEditLogListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
-    assignedSchedules?: WorkerScheduleListRelationFilter
-    workerSchedules?: WorkerScheduleListRelationFilter
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
     chatGroupMemberships?: ChatGroupMemberListRelationFilter
     sentGroupMessages?: GroupMessageListRelationFilter
-    dailyReports?: DailyReportListRelationFilter
     notificationDismissals?: NotificationDismissalListRelationFilter
     systemNotifications?: SystemNotificationListRelationFilter
     verifiedTransactions?: PaymentTransactionListRelationFilter
@@ -45848,15 +48693,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
     workerAttendance?: WorkerAttendanceOrderByRelationAggregateInput
+    claimedDeliveries?: DeliveryOrderByRelationAggregateInput
+    deliveryLogs?: DeliveryLogOrderByRelationAggregateInput
+    deliveryEditLogs?: DeliveryEditLogOrderByRelationAggregateInput
     sentNotifications?: WorkerNotificationOrderByRelationAggregateInput
     receivedNotifications?: WorkerNotificationOrderByRelationAggregateInput
-    assignedSchedules?: WorkerScheduleOrderByRelationAggregateInput
-    workerSchedules?: WorkerScheduleOrderByRelationAggregateInput
     sentMessages?: MessageOrderByRelationAggregateInput
     receivedMessages?: MessageOrderByRelationAggregateInput
     chatGroupMemberships?: ChatGroupMemberOrderByRelationAggregateInput
     sentGroupMessages?: GroupMessageOrderByRelationAggregateInput
-    dailyReports?: DailyReportOrderByRelationAggregateInput
     notificationDismissals?: NotificationDismissalOrderByRelationAggregateInput
     systemNotifications?: SystemNotificationOrderByRelationAggregateInput
     verifiedTransactions?: PaymentTransactionOrderByRelationAggregateInput
@@ -45892,15 +48737,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderListRelationFilter
     orders?: OrderListRelationFilter
     workerAttendance?: WorkerAttendanceListRelationFilter
+    claimedDeliveries?: DeliveryListRelationFilter
+    deliveryLogs?: DeliveryLogListRelationFilter
+    deliveryEditLogs?: DeliveryEditLogListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
-    assignedSchedules?: WorkerScheduleListRelationFilter
-    workerSchedules?: WorkerScheduleListRelationFilter
     sentMessages?: MessageListRelationFilter
     receivedMessages?: MessageListRelationFilter
     chatGroupMemberships?: ChatGroupMemberListRelationFilter
     sentGroupMessages?: GroupMessageListRelationFilter
-    dailyReports?: DailyReportListRelationFilter
     notificationDismissals?: NotificationDismissalListRelationFilter
     systemNotifications?: SystemNotificationListRelationFilter
     verifiedTransactions?: PaymentTransactionListRelationFilter
@@ -46241,100 +49086,6 @@ export namespace Prisma {
     userId?: UuidNullableWithAggregatesFilter<"ActivityLog"> | string | null
   }
 
-  export type WorkerScheduleWhereInput = {
-    AND?: WorkerScheduleWhereInput | WorkerScheduleWhereInput[]
-    OR?: WorkerScheduleWhereInput[]
-    NOT?: WorkerScheduleWhereInput | WorkerScheduleWhereInput[]
-    id?: UuidFilter<"WorkerSchedule"> | string
-    workerId?: UuidFilter<"WorkerSchedule"> | string
-    orderId?: UuidFilter<"WorkerSchedule"> | string
-    assignedBy?: UuidFilter<"WorkerSchedule"> | string
-    assignedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    status?: Enumschedule_statusNullableFilter<"WorkerSchedule"> | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFilter<"WorkerSchedule"> | Date | string
-    notes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    workerNotes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    createdAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    assignedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
-    worker?: XOR<UserScalarRelationFilter, UserWhereInput>
-    dailyReports?: DailyReportListRelationFilter
-  }
-
-  export type WorkerScheduleOrderByWithRelationInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    orderId?: SortOrder
-    assignedBy?: SortOrder
-    assignedAt?: SortOrderInput | SortOrder
-    status?: SortOrderInput | SortOrder
-    scheduledDate?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    workerNotes?: SortOrderInput | SortOrder
-    createdAt?: SortOrderInput | SortOrder
-    updatedAt?: SortOrderInput | SortOrder
-    assignedByUser?: UserOrderByWithRelationInput
-    order?: OrderOrderByWithRelationInput
-    worker?: UserOrderByWithRelationInput
-    dailyReports?: DailyReportOrderByRelationAggregateInput
-  }
-
-  export type WorkerScheduleWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: WorkerScheduleWhereInput | WorkerScheduleWhereInput[]
-    OR?: WorkerScheduleWhereInput[]
-    NOT?: WorkerScheduleWhereInput | WorkerScheduleWhereInput[]
-    workerId?: UuidFilter<"WorkerSchedule"> | string
-    orderId?: UuidFilter<"WorkerSchedule"> | string
-    assignedBy?: UuidFilter<"WorkerSchedule"> | string
-    assignedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    status?: Enumschedule_statusNullableFilter<"WorkerSchedule"> | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFilter<"WorkerSchedule"> | Date | string
-    notes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    workerNotes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    createdAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    assignedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
-    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
-    worker?: XOR<UserScalarRelationFilter, UserWhereInput>
-    dailyReports?: DailyReportListRelationFilter
-  }, "id">
-
-  export type WorkerScheduleOrderByWithAggregationInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    orderId?: SortOrder
-    assignedBy?: SortOrder
-    assignedAt?: SortOrderInput | SortOrder
-    status?: SortOrderInput | SortOrder
-    scheduledDate?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    workerNotes?: SortOrderInput | SortOrder
-    createdAt?: SortOrderInput | SortOrder
-    updatedAt?: SortOrderInput | SortOrder
-    _count?: WorkerScheduleCountOrderByAggregateInput
-    _max?: WorkerScheduleMaxOrderByAggregateInput
-    _min?: WorkerScheduleMinOrderByAggregateInput
-  }
-
-  export type WorkerScheduleScalarWhereWithAggregatesInput = {
-    AND?: WorkerScheduleScalarWhereWithAggregatesInput | WorkerScheduleScalarWhereWithAggregatesInput[]
-    OR?: WorkerScheduleScalarWhereWithAggregatesInput[]
-    NOT?: WorkerScheduleScalarWhereWithAggregatesInput | WorkerScheduleScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"WorkerSchedule"> | string
-    workerId?: UuidWithAggregatesFilter<"WorkerSchedule"> | string
-    orderId?: UuidWithAggregatesFilter<"WorkerSchedule"> | string
-    assignedBy?: UuidWithAggregatesFilter<"WorkerSchedule"> | string
-    assignedAt?: DateTimeNullableWithAggregatesFilter<"WorkerSchedule"> | Date | string | null
-    status?: Enumschedule_statusNullableWithAggregatesFilter<"WorkerSchedule"> | $Enums.schedule_status | null
-    scheduledDate?: DateTimeWithAggregatesFilter<"WorkerSchedule"> | Date | string
-    notes?: StringNullableWithAggregatesFilter<"WorkerSchedule"> | string | null
-    workerNotes?: StringNullableWithAggregatesFilter<"WorkerSchedule"> | string | null
-    createdAt?: DateTimeNullableWithAggregatesFilter<"WorkerSchedule"> | Date | string | null
-    updatedAt?: DateTimeNullableWithAggregatesFilter<"WorkerSchedule"> | Date | string | null
-  }
-
   export type WorkerAttendanceWhereInput = {
     AND?: WorkerAttendanceWhereInput | WorkerAttendanceWhereInput[]
     OR?: WorkerAttendanceWhereInput[]
@@ -46633,149 +49384,6 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"Message"> | string
     isRead?: BoolWithAggregatesFilter<"Message"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Message"> | Date | string
-  }
-
-  export type DailyReportWhereInput = {
-    AND?: DailyReportWhereInput | DailyReportWhereInput[]
-    OR?: DailyReportWhereInput[]
-    NOT?: DailyReportWhereInput | DailyReportWhereInput[]
-    id?: UuidFilter<"DailyReport"> | string
-    workerId?: UuidFilter<"DailyReport"> | string
-    scheduleId?: UuidNullableFilter<"DailyReport"> | string | null
-    reportDate?: DateTimeFilter<"DailyReport"> | Date | string
-    jobSummary?: StringFilter<"DailyReport"> | string
-    deliveryStatus?: StringFilter<"DailyReport"> | string
-    notes?: StringNullableFilter<"DailyReport"> | string | null
-    createdAt?: DateTimeFilter<"DailyReport"> | Date | string
-    worker?: XOR<UserScalarRelationFilter, UserWhereInput>
-    schedule?: XOR<WorkerScheduleNullableScalarRelationFilter, WorkerScheduleWhereInput> | null
-    deliveryItems?: DeliveryChecklistItemListRelationFilter
-  }
-
-  export type DailyReportOrderByWithRelationInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    scheduleId?: SortOrderInput | SortOrder
-    reportDate?: SortOrder
-    jobSummary?: SortOrder
-    deliveryStatus?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    worker?: UserOrderByWithRelationInput
-    schedule?: WorkerScheduleOrderByWithRelationInput
-    deliveryItems?: DeliveryChecklistItemOrderByRelationAggregateInput
-  }
-
-  export type DailyReportWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: DailyReportWhereInput | DailyReportWhereInput[]
-    OR?: DailyReportWhereInput[]
-    NOT?: DailyReportWhereInput | DailyReportWhereInput[]
-    workerId?: UuidFilter<"DailyReport"> | string
-    scheduleId?: UuidNullableFilter<"DailyReport"> | string | null
-    reportDate?: DateTimeFilter<"DailyReport"> | Date | string
-    jobSummary?: StringFilter<"DailyReport"> | string
-    deliveryStatus?: StringFilter<"DailyReport"> | string
-    notes?: StringNullableFilter<"DailyReport"> | string | null
-    createdAt?: DateTimeFilter<"DailyReport"> | Date | string
-    worker?: XOR<UserScalarRelationFilter, UserWhereInput>
-    schedule?: XOR<WorkerScheduleNullableScalarRelationFilter, WorkerScheduleWhereInput> | null
-    deliveryItems?: DeliveryChecklistItemListRelationFilter
-  }, "id">
-
-  export type DailyReportOrderByWithAggregationInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    scheduleId?: SortOrderInput | SortOrder
-    reportDate?: SortOrder
-    jobSummary?: SortOrder
-    deliveryStatus?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: DailyReportCountOrderByAggregateInput
-    _max?: DailyReportMaxOrderByAggregateInput
-    _min?: DailyReportMinOrderByAggregateInput
-  }
-
-  export type DailyReportScalarWhereWithAggregatesInput = {
-    AND?: DailyReportScalarWhereWithAggregatesInput | DailyReportScalarWhereWithAggregatesInput[]
-    OR?: DailyReportScalarWhereWithAggregatesInput[]
-    NOT?: DailyReportScalarWhereWithAggregatesInput | DailyReportScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"DailyReport"> | string
-    workerId?: UuidWithAggregatesFilter<"DailyReport"> | string
-    scheduleId?: UuidNullableWithAggregatesFilter<"DailyReport"> | string | null
-    reportDate?: DateTimeWithAggregatesFilter<"DailyReport"> | Date | string
-    jobSummary?: StringWithAggregatesFilter<"DailyReport"> | string
-    deliveryStatus?: StringWithAggregatesFilter<"DailyReport"> | string
-    notes?: StringNullableWithAggregatesFilter<"DailyReport"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"DailyReport"> | Date | string
-  }
-
-  export type DeliveryChecklistItemWhereInput = {
-    AND?: DeliveryChecklistItemWhereInput | DeliveryChecklistItemWhereInput[]
-    OR?: DeliveryChecklistItemWhereInput[]
-    NOT?: DeliveryChecklistItemWhereInput | DeliveryChecklistItemWhereInput[]
-    id?: UuidFilter<"DeliveryChecklistItem"> | string
-    reportId?: UuidFilter<"DeliveryChecklistItem"> | string
-    rentalItemId?: UuidFilter<"DeliveryChecklistItem"> | string
-    itemName?: StringFilter<"DeliveryChecklistItem"> | string
-    quantity?: IntFilter<"DeliveryChecklistItem"> | number
-    status?: StringFilter<"DeliveryChecklistItem"> | string
-    notes?: StringNullableFilter<"DeliveryChecklistItem"> | string | null
-    report?: XOR<DailyReportScalarRelationFilter, DailyReportWhereInput>
-  }
-
-  export type DeliveryChecklistItemOrderByWithRelationInput = {
-    id?: SortOrder
-    reportId?: SortOrder
-    rentalItemId?: SortOrder
-    itemName?: SortOrder
-    quantity?: SortOrder
-    status?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    report?: DailyReportOrderByWithRelationInput
-  }
-
-  export type DeliveryChecklistItemWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: DeliveryChecklistItemWhereInput | DeliveryChecklistItemWhereInput[]
-    OR?: DeliveryChecklistItemWhereInput[]
-    NOT?: DeliveryChecklistItemWhereInput | DeliveryChecklistItemWhereInput[]
-    reportId?: UuidFilter<"DeliveryChecklistItem"> | string
-    rentalItemId?: UuidFilter<"DeliveryChecklistItem"> | string
-    itemName?: StringFilter<"DeliveryChecklistItem"> | string
-    quantity?: IntFilter<"DeliveryChecklistItem"> | number
-    status?: StringFilter<"DeliveryChecklistItem"> | string
-    notes?: StringNullableFilter<"DeliveryChecklistItem"> | string | null
-    report?: XOR<DailyReportScalarRelationFilter, DailyReportWhereInput>
-  }, "id">
-
-  export type DeliveryChecklistItemOrderByWithAggregationInput = {
-    id?: SortOrder
-    reportId?: SortOrder
-    rentalItemId?: SortOrder
-    itemName?: SortOrder
-    quantity?: SortOrder
-    status?: SortOrder
-    notes?: SortOrderInput | SortOrder
-    _count?: DeliveryChecklistItemCountOrderByAggregateInput
-    _avg?: DeliveryChecklistItemAvgOrderByAggregateInput
-    _max?: DeliveryChecklistItemMaxOrderByAggregateInput
-    _min?: DeliveryChecklistItemMinOrderByAggregateInput
-    _sum?: DeliveryChecklistItemSumOrderByAggregateInput
-  }
-
-  export type DeliveryChecklistItemScalarWhereWithAggregatesInput = {
-    AND?: DeliveryChecklistItemScalarWhereWithAggregatesInput | DeliveryChecklistItemScalarWhereWithAggregatesInput[]
-    OR?: DeliveryChecklistItemScalarWhereWithAggregatesInput[]
-    NOT?: DeliveryChecklistItemScalarWhereWithAggregatesInput | DeliveryChecklistItemScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"DeliveryChecklistItem"> | string
-    reportId?: UuidWithAggregatesFilter<"DeliveryChecklistItem"> | string
-    rentalItemId?: UuidWithAggregatesFilter<"DeliveryChecklistItem"> | string
-    itemName?: StringWithAggregatesFilter<"DeliveryChecklistItem"> | string
-    quantity?: IntWithAggregatesFilter<"DeliveryChecklistItem"> | number
-    status?: StringWithAggregatesFilter<"DeliveryChecklistItem"> | string
-    notes?: StringNullableWithAggregatesFilter<"DeliveryChecklistItem"> | string | null
   }
 
   export type NotificationDismissalWhereInput = {
@@ -47320,6 +49928,419 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"AiTrainingData"> | Date | string
   }
 
+  export type VehicleWhereInput = {
+    AND?: VehicleWhereInput | VehicleWhereInput[]
+    OR?: VehicleWhereInput[]
+    NOT?: VehicleWhereInput | VehicleWhereInput[]
+    id?: UuidFilter<"Vehicle"> | string
+    name?: StringFilter<"Vehicle"> | string
+    type?: EnumVehicleTypeFilter<"Vehicle"> | $Enums.VehicleType
+    status?: EnumVehicleStatusFilter<"Vehicle"> | $Enums.VehicleStatus
+    currentDeliveryId?: UuidNullableFilter<"Vehicle"> | string | null
+    createdAt?: DateTimeFilter<"Vehicle"> | Date | string
+    updatedAt?: DateTimeFilter<"Vehicle"> | Date | string
+    deliveries?: DeliveryListRelationFilter
+  }
+
+  export type VehicleOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    currentDeliveryId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deliveries?: DeliveryOrderByRelationAggregateInput
+  }
+
+  export type VehicleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VehicleWhereInput | VehicleWhereInput[]
+    OR?: VehicleWhereInput[]
+    NOT?: VehicleWhereInput | VehicleWhereInput[]
+    name?: StringFilter<"Vehicle"> | string
+    type?: EnumVehicleTypeFilter<"Vehicle"> | $Enums.VehicleType
+    status?: EnumVehicleStatusFilter<"Vehicle"> | $Enums.VehicleStatus
+    currentDeliveryId?: UuidNullableFilter<"Vehicle"> | string | null
+    createdAt?: DateTimeFilter<"Vehicle"> | Date | string
+    updatedAt?: DateTimeFilter<"Vehicle"> | Date | string
+    deliveries?: DeliveryListRelationFilter
+  }, "id">
+
+  export type VehicleOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    currentDeliveryId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VehicleCountOrderByAggregateInput
+    _max?: VehicleMaxOrderByAggregateInput
+    _min?: VehicleMinOrderByAggregateInput
+  }
+
+  export type VehicleScalarWhereWithAggregatesInput = {
+    AND?: VehicleScalarWhereWithAggregatesInput | VehicleScalarWhereWithAggregatesInput[]
+    OR?: VehicleScalarWhereWithAggregatesInput[]
+    NOT?: VehicleScalarWhereWithAggregatesInput | VehicleScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Vehicle"> | string
+    name?: StringWithAggregatesFilter<"Vehicle"> | string
+    type?: EnumVehicleTypeWithAggregatesFilter<"Vehicle"> | $Enums.VehicleType
+    status?: EnumVehicleStatusWithAggregatesFilter<"Vehicle"> | $Enums.VehicleStatus
+    currentDeliveryId?: UuidNullableWithAggregatesFilter<"Vehicle"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Vehicle"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Vehicle"> | Date | string
+  }
+
+  export type DeliveryWhereInput = {
+    AND?: DeliveryWhereInput | DeliveryWhereInput[]
+    OR?: DeliveryWhereInput[]
+    NOT?: DeliveryWhereInput | DeliveryWhereInput[]
+    id?: UuidFilter<"Delivery"> | string
+    invoiceId?: UuidNullableFilter<"Delivery"> | string | null
+    deliveryMethod?: EnumDeliveryMethodFilter<"Delivery"> | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFilter<"Delivery"> | $Enums.DeliveryType
+    vehicleId?: UuidNullableFilter<"Delivery"> | string | null
+    status?: EnumDeliveryStatusFilter<"Delivery"> | $Enums.DeliveryStatus
+    claimedByWorkerId?: UuidNullableFilter<"Delivery"> | string | null
+    claimedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    eta?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    etaOverrideCount?: IntFilter<"Delivery"> | number
+    delayMinutes?: IntFilter<"Delivery"> | number
+    latitude?: FloatNullableFilter<"Delivery"> | number | null
+    longitude?: FloatNullableFilter<"Delivery"> | number | null
+    lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    trackingCode?: StringNullableFilter<"Delivery"> | string | null
+    createdAt?: DateTimeFilter<"Delivery"> | Date | string
+    updatedAt?: DateTimeFilter<"Delivery"> | Date | string
+    invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
+    vehicle?: XOR<VehicleNullableScalarRelationFilter, VehicleWhereInput> | null
+    claimedByWorker?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: DeliveryItemListRelationFilter
+    logs?: DeliveryLogListRelationFilter
+    editLogs?: DeliveryEditLogListRelationFilter
+  }
+
+  export type DeliveryOrderByWithRelationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrderInput | SortOrder
+    deliveryMethod?: SortOrder
+    deliveryType?: SortOrder
+    vehicleId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    claimedByWorkerId?: SortOrderInput | SortOrder
+    claimedAt?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    eta?: SortOrderInput | SortOrder
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    lastLocationUpdate?: SortOrderInput | SortOrder
+    trackingCode?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    invoice?: InvoiceOrderByWithRelationInput
+    vehicle?: VehicleOrderByWithRelationInput
+    claimedByWorker?: UserOrderByWithRelationInput
+    items?: DeliveryItemOrderByRelationAggregateInput
+    logs?: DeliveryLogOrderByRelationAggregateInput
+    editLogs?: DeliveryEditLogOrderByRelationAggregateInput
+  }
+
+  export type DeliveryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    trackingCode?: string
+    AND?: DeliveryWhereInput | DeliveryWhereInput[]
+    OR?: DeliveryWhereInput[]
+    NOT?: DeliveryWhereInput | DeliveryWhereInput[]
+    invoiceId?: UuidNullableFilter<"Delivery"> | string | null
+    deliveryMethod?: EnumDeliveryMethodFilter<"Delivery"> | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFilter<"Delivery"> | $Enums.DeliveryType
+    vehicleId?: UuidNullableFilter<"Delivery"> | string | null
+    status?: EnumDeliveryStatusFilter<"Delivery"> | $Enums.DeliveryStatus
+    claimedByWorkerId?: UuidNullableFilter<"Delivery"> | string | null
+    claimedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    eta?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    etaOverrideCount?: IntFilter<"Delivery"> | number
+    delayMinutes?: IntFilter<"Delivery"> | number
+    latitude?: FloatNullableFilter<"Delivery"> | number | null
+    longitude?: FloatNullableFilter<"Delivery"> | number | null
+    lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    createdAt?: DateTimeFilter<"Delivery"> | Date | string
+    updatedAt?: DateTimeFilter<"Delivery"> | Date | string
+    invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
+    vehicle?: XOR<VehicleNullableScalarRelationFilter, VehicleWhereInput> | null
+    claimedByWorker?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: DeliveryItemListRelationFilter
+    logs?: DeliveryLogListRelationFilter
+    editLogs?: DeliveryEditLogListRelationFilter
+  }, "id" | "trackingCode">
+
+  export type DeliveryOrderByWithAggregationInput = {
+    id?: SortOrder
+    invoiceId?: SortOrderInput | SortOrder
+    deliveryMethod?: SortOrder
+    deliveryType?: SortOrder
+    vehicleId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    claimedByWorkerId?: SortOrderInput | SortOrder
+    claimedAt?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    eta?: SortOrderInput | SortOrder
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    lastLocationUpdate?: SortOrderInput | SortOrder
+    trackingCode?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DeliveryCountOrderByAggregateInput
+    _avg?: DeliveryAvgOrderByAggregateInput
+    _max?: DeliveryMaxOrderByAggregateInput
+    _min?: DeliveryMinOrderByAggregateInput
+    _sum?: DeliverySumOrderByAggregateInput
+  }
+
+  export type DeliveryScalarWhereWithAggregatesInput = {
+    AND?: DeliveryScalarWhereWithAggregatesInput | DeliveryScalarWhereWithAggregatesInput[]
+    OR?: DeliveryScalarWhereWithAggregatesInput[]
+    NOT?: DeliveryScalarWhereWithAggregatesInput | DeliveryScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Delivery"> | string
+    invoiceId?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
+    deliveryMethod?: EnumDeliveryMethodWithAggregatesFilter<"Delivery"> | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeWithAggregatesFilter<"Delivery"> | $Enums.DeliveryType
+    vehicleId?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
+    status?: EnumDeliveryStatusWithAggregatesFilter<"Delivery"> | $Enums.DeliveryStatus
+    claimedByWorkerId?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
+    claimedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    startedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    eta?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    etaOverrideCount?: IntWithAggregatesFilter<"Delivery"> | number
+    delayMinutes?: IntWithAggregatesFilter<"Delivery"> | number
+    latitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
+    lastLocationUpdate?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    trackingCode?: StringNullableWithAggregatesFilter<"Delivery"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
+  }
+
+  export type DeliveryItemWhereInput = {
+    AND?: DeliveryItemWhereInput | DeliveryItemWhereInput[]
+    OR?: DeliveryItemWhereInput[]
+    NOT?: DeliveryItemWhereInput | DeliveryItemWhereInput[]
+    id?: UuidFilter<"DeliveryItem"> | string
+    deliveryId?: UuidFilter<"DeliveryItem"> | string
+    rentalItemId?: UuidFilter<"DeliveryItem"> | string
+    quantity?: IntFilter<"DeliveryItem"> | number
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    rentalItem?: XOR<RentalItemScalarRelationFilter, RentalItemWhereInput>
+  }
+
+  export type DeliveryItemOrderByWithRelationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    rentalItemId?: SortOrder
+    quantity?: SortOrder
+    delivery?: DeliveryOrderByWithRelationInput
+    rentalItem?: RentalItemOrderByWithRelationInput
+  }
+
+  export type DeliveryItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DeliveryItemWhereInput | DeliveryItemWhereInput[]
+    OR?: DeliveryItemWhereInput[]
+    NOT?: DeliveryItemWhereInput | DeliveryItemWhereInput[]
+    deliveryId?: UuidFilter<"DeliveryItem"> | string
+    rentalItemId?: UuidFilter<"DeliveryItem"> | string
+    quantity?: IntFilter<"DeliveryItem"> | number
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    rentalItem?: XOR<RentalItemScalarRelationFilter, RentalItemWhereInput>
+  }, "id">
+
+  export type DeliveryItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    rentalItemId?: SortOrder
+    quantity?: SortOrder
+    _count?: DeliveryItemCountOrderByAggregateInput
+    _avg?: DeliveryItemAvgOrderByAggregateInput
+    _max?: DeliveryItemMaxOrderByAggregateInput
+    _min?: DeliveryItemMinOrderByAggregateInput
+    _sum?: DeliveryItemSumOrderByAggregateInput
+  }
+
+  export type DeliveryItemScalarWhereWithAggregatesInput = {
+    AND?: DeliveryItemScalarWhereWithAggregatesInput | DeliveryItemScalarWhereWithAggregatesInput[]
+    OR?: DeliveryItemScalarWhereWithAggregatesInput[]
+    NOT?: DeliveryItemScalarWhereWithAggregatesInput | DeliveryItemScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"DeliveryItem"> | string
+    deliveryId?: UuidWithAggregatesFilter<"DeliveryItem"> | string
+    rentalItemId?: UuidWithAggregatesFilter<"DeliveryItem"> | string
+    quantity?: IntWithAggregatesFilter<"DeliveryItem"> | number
+  }
+
+  export type DeliveryLogWhereInput = {
+    AND?: DeliveryLogWhereInput | DeliveryLogWhereInput[]
+    OR?: DeliveryLogWhereInput[]
+    NOT?: DeliveryLogWhereInput | DeliveryLogWhereInput[]
+    id?: UuidFilter<"DeliveryLog"> | string
+    deliveryId?: UuidFilter<"DeliveryLog"> | string
+    eventType?: StringFilter<"DeliveryLog"> | string
+    oldValue?: JsonNullableFilter<"DeliveryLog">
+    newValue?: JsonNullableFilter<"DeliveryLog">
+    createdByUserId?: UuidNullableFilter<"DeliveryLog"> | string | null
+    role?: EnumDeliveryRoleFilter<"DeliveryLog"> | $Enums.DeliveryRole
+    createdAt?: DateTimeFilter<"DeliveryLog"> | Date | string
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type DeliveryLogOrderByWithRelationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    eventType?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    delivery?: DeliveryOrderByWithRelationInput
+    createdByUser?: UserOrderByWithRelationInput
+  }
+
+  export type DeliveryLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DeliveryLogWhereInput | DeliveryLogWhereInput[]
+    OR?: DeliveryLogWhereInput[]
+    NOT?: DeliveryLogWhereInput | DeliveryLogWhereInput[]
+    deliveryId?: UuidFilter<"DeliveryLog"> | string
+    eventType?: StringFilter<"DeliveryLog"> | string
+    oldValue?: JsonNullableFilter<"DeliveryLog">
+    newValue?: JsonNullableFilter<"DeliveryLog">
+    createdByUserId?: UuidNullableFilter<"DeliveryLog"> | string | null
+    role?: EnumDeliveryRoleFilter<"DeliveryLog"> | $Enums.DeliveryRole
+    createdAt?: DateTimeFilter<"DeliveryLog"> | Date | string
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    createdByUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type DeliveryLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    eventType?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+    _count?: DeliveryLogCountOrderByAggregateInput
+    _max?: DeliveryLogMaxOrderByAggregateInput
+    _min?: DeliveryLogMinOrderByAggregateInput
+  }
+
+  export type DeliveryLogScalarWhereWithAggregatesInput = {
+    AND?: DeliveryLogScalarWhereWithAggregatesInput | DeliveryLogScalarWhereWithAggregatesInput[]
+    OR?: DeliveryLogScalarWhereWithAggregatesInput[]
+    NOT?: DeliveryLogScalarWhereWithAggregatesInput | DeliveryLogScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"DeliveryLog"> | string
+    deliveryId?: UuidWithAggregatesFilter<"DeliveryLog"> | string
+    eventType?: StringWithAggregatesFilter<"DeliveryLog"> | string
+    oldValue?: JsonNullableWithAggregatesFilter<"DeliveryLog">
+    newValue?: JsonNullableWithAggregatesFilter<"DeliveryLog">
+    createdByUserId?: UuidNullableWithAggregatesFilter<"DeliveryLog"> | string | null
+    role?: EnumDeliveryRoleWithAggregatesFilter<"DeliveryLog"> | $Enums.DeliveryRole
+    createdAt?: DateTimeWithAggregatesFilter<"DeliveryLog"> | Date | string
+  }
+
+  export type DeliveryEditLogWhereInput = {
+    AND?: DeliveryEditLogWhereInput | DeliveryEditLogWhereInput[]
+    OR?: DeliveryEditLogWhereInput[]
+    NOT?: DeliveryEditLogWhereInput | DeliveryEditLogWhereInput[]
+    id?: UuidFilter<"DeliveryEditLog"> | string
+    deliveryId?: UuidFilter<"DeliveryEditLog"> | string
+    editedByUserId?: UuidFilter<"DeliveryEditLog"> | string
+    role?: EnumDeliveryRoleFilter<"DeliveryEditLog"> | $Enums.DeliveryRole
+    fieldChanged?: StringFilter<"DeliveryEditLog"> | string
+    oldValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    newValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    reason?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    createdAt?: DateTimeFilter<"DeliveryEditLog"> | Date | string
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    editedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type DeliveryEditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    editedByUserId?: SortOrder
+    role?: SortOrder
+    fieldChanged?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    delivery?: DeliveryOrderByWithRelationInput
+    editedByUser?: UserOrderByWithRelationInput
+  }
+
+  export type DeliveryEditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DeliveryEditLogWhereInput | DeliveryEditLogWhereInput[]
+    OR?: DeliveryEditLogWhereInput[]
+    NOT?: DeliveryEditLogWhereInput | DeliveryEditLogWhereInput[]
+    deliveryId?: UuidFilter<"DeliveryEditLog"> | string
+    editedByUserId?: UuidFilter<"DeliveryEditLog"> | string
+    role?: EnumDeliveryRoleFilter<"DeliveryEditLog"> | $Enums.DeliveryRole
+    fieldChanged?: StringFilter<"DeliveryEditLog"> | string
+    oldValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    newValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    reason?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    createdAt?: DateTimeFilter<"DeliveryEditLog"> | Date | string
+    delivery?: XOR<DeliveryScalarRelationFilter, DeliveryWhereInput>
+    editedByUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type DeliveryEditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    editedByUserId?: SortOrder
+    role?: SortOrder
+    fieldChanged?: SortOrder
+    oldValue?: SortOrderInput | SortOrder
+    newValue?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: DeliveryEditLogCountOrderByAggregateInput
+    _max?: DeliveryEditLogMaxOrderByAggregateInput
+    _min?: DeliveryEditLogMinOrderByAggregateInput
+  }
+
+  export type DeliveryEditLogScalarWhereWithAggregatesInput = {
+    AND?: DeliveryEditLogScalarWhereWithAggregatesInput | DeliveryEditLogScalarWhereWithAggregatesInput[]
+    OR?: DeliveryEditLogScalarWhereWithAggregatesInput[]
+    NOT?: DeliveryEditLogScalarWhereWithAggregatesInput | DeliveryEditLogScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"DeliveryEditLog"> | string
+    deliveryId?: UuidWithAggregatesFilter<"DeliveryEditLog"> | string
+    editedByUserId?: UuidWithAggregatesFilter<"DeliveryEditLog"> | string
+    role?: EnumDeliveryRoleWithAggregatesFilter<"DeliveryEditLog"> | $Enums.DeliveryRole
+    fieldChanged?: StringWithAggregatesFilter<"DeliveryEditLog"> | string
+    oldValue?: StringNullableWithAggregatesFilter<"DeliveryEditLog"> | string | null
+    newValue?: StringNullableWithAggregatesFilter<"DeliveryEditLog"> | string | null
+    reason?: StringNullableWithAggregatesFilter<"DeliveryEditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DeliveryEditLog"> | Date | string
+  }
+
   export type InvoiceCreateInput = {
     id?: string
     invoiceNumber: string
@@ -47342,6 +50363,7 @@ export namespace Prisma {
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
     order?: OrderCreateNestedOneWithoutInvoicesInput
+    deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
     user?: UserCreateNestedOneWithoutInvoicesInput
   }
 
@@ -47368,6 +50390,7 @@ export namespace Prisma {
     shareableToken?: string | null
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
+    deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUpdateInput = {
@@ -47392,6 +50415,7 @@ export namespace Prisma {
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     order?: OrderUpdateOneWithoutInvoicesNestedInput
+    deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
     user?: UserUpdateOneWithoutInvoicesNestedInput
   }
 
@@ -47418,6 +50442,7 @@ export namespace Prisma {
     shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceCreateManyInput = {
@@ -47511,14 +50536,12 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user: UserCreateNestedOneWithoutOrdersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -47542,12 +50565,10 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -47569,14 +50590,12 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -47600,12 +50619,10 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -47629,7 +50646,6 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
   }
 
@@ -47651,7 +50667,6 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -47675,7 +50690,6 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -48468,6 +51482,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateInput = {
@@ -48478,6 +51493,7 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     unitId?: string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUpdateInput = {
@@ -48488,6 +51504,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateInput = {
@@ -48498,6 +51515,7 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemCreateManyInput = {
@@ -48551,15 +51569,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -48592,15 +51610,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -48633,15 +51651,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -48674,15 +51692,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -49040,105 +52058,6 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type WorkerScheduleCreateInput = {
-    id?: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    assignedByUser: UserCreateNestedOneWithoutAssignedSchedulesInput
-    order: OrderCreateNestedOneWithoutWorkerSchedulesInput
-    worker: UserCreateNestedOneWithoutWorkerSchedulesInput
-    dailyReports?: DailyReportCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleUncheckedCreateInput = {
-    id?: string
-    workerId: string
-    orderId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assignedByUser?: UserUpdateOneRequiredWithoutAssignedSchedulesNestedInput
-    order?: OrderUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    worker?: UserUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleCreateManyInput = {
-    id?: string
-    workerId: string
-    orderId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-  }
-
-  export type WorkerScheduleUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
   export type WorkerAttendanceCreateInput = {
     id?: string
     date: Date | string
@@ -49444,154 +52363,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DailyReportCreateInput = {
-    id?: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    worker: UserCreateNestedOneWithoutDailyReportsInput
-    schedule?: WorkerScheduleCreateNestedOneWithoutDailyReportsInput
-    deliveryItems?: DeliveryChecklistItemCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportUncheckedCreateInput = {
-    id?: string
-    workerId: string
-    scheduleId?: string | null
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    worker?: UserUpdateOneRequiredWithoutDailyReportsNestedInput
-    schedule?: WorkerScheduleUpdateOneWithoutDailyReportsNestedInput
-    deliveryItems?: DeliveryChecklistItemUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportCreateManyInput = {
-    id?: string
-    workerId: string
-    scheduleId?: string | null
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-  }
-
-  export type DailyReportUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DailyReportUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DeliveryChecklistItemCreateInput = {
-    id?: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-    report: DailyReportCreateNestedOneWithoutDeliveryItemsInput
-  }
-
-  export type DeliveryChecklistItemUncheckedCreateInput = {
-    id?: string
-    reportId: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-  }
-
-  export type DeliveryChecklistItemUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    report?: DailyReportUpdateOneRequiredWithoutDeliveryItemsNestedInput
-  }
-
-  export type DeliveryChecklistItemUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportId?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DeliveryChecklistItemCreateManyInput = {
-    id?: string
-    reportId: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-  }
-
-  export type DeliveryChecklistItemUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DeliveryChecklistItemUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportId?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NotificationDismissalCreateInput = {
@@ -50168,6 +52939,447 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VehicleCreateInput = {
+    id?: string
+    name: string
+    type: $Enums.VehicleType
+    status?: $Enums.VehicleStatus
+    currentDeliveryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deliveries?: DeliveryCreateNestedManyWithoutVehicleInput
+  }
+
+  export type VehicleUncheckedCreateInput = {
+    id?: string
+    name: string
+    type: $Enums.VehicleType
+    status?: $Enums.VehicleStatus
+    currentDeliveryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deliveries?: DeliveryUncheckedCreateNestedManyWithoutVehicleInput
+  }
+
+  export type VehicleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deliveries?: DeliveryUpdateManyWithoutVehicleNestedInput
+  }
+
+  export type VehicleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deliveries?: DeliveryUncheckedUpdateManyWithoutVehicleNestedInput
+  }
+
+  export type VehicleCreateManyInput = {
+    id?: string
+    name: string
+    type: $Enums.VehicleType
+    status?: $Enums.VehicleStatus
+    currentDeliveryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VehicleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VehicleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryCreateInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryCreateManyInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliveryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryItemCreateInput = {
+    id?: string
+    quantity: number
+    delivery: DeliveryCreateNestedOneWithoutItemsInput
+    rentalItem: RentalItemCreateNestedOneWithoutDeliveryItemsInput
+  }
+
+  export type DeliveryItemUncheckedCreateInput = {
+    id?: string
+    deliveryId: string
+    rentalItemId: string
+    quantity: number
+  }
+
+  export type DeliveryItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    delivery?: DeliveryUpdateOneRequiredWithoutItemsNestedInput
+    rentalItem?: RentalItemUpdateOneRequiredWithoutDeliveryItemsNestedInput
+  }
+
+  export type DeliveryItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryItemCreateManyInput = {
+    id?: string
+    deliveryId: string
+    rentalItemId: string
+    quantity: number
+  }
+
+  export type DeliveryItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryLogCreateInput = {
+    id?: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+    delivery: DeliveryCreateNestedOneWithoutLogsInput
+    createdByUser?: UserCreateNestedOneWithoutDeliveryLogsInput
+  }
+
+  export type DeliveryLogUncheckedCreateInput = {
+    id?: string
+    deliveryId: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    delivery?: DeliveryUpdateOneRequiredWithoutLogsNestedInput
+    createdByUser?: UserUpdateOneWithoutDeliveryLogsNestedInput
+  }
+
+  export type DeliveryLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryLogCreateManyInput = {
+    id?: string
+    deliveryId: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogCreateInput = {
+    id?: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+    delivery: DeliveryCreateNestedOneWithoutEditLogsInput
+    editedByUser: UserCreateNestedOneWithoutDeliveryEditLogsInput
+  }
+
+  export type DeliveryEditLogUncheckedCreateInput = {
+    id?: string
+    deliveryId: string
+    editedByUserId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    delivery?: DeliveryUpdateOneRequiredWithoutEditLogsNestedInput
+    editedByUser?: UserUpdateOneRequiredWithoutDeliveryEditLogsNestedInput
+  }
+
+  export type DeliveryEditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    editedByUserId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogCreateManyInput = {
+    id?: string
+    deliveryId: string
+    editedByUserId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    editedByUserId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -50276,6 +53488,12 @@ export namespace Prisma {
     isNot?: OrderWhereInput | null
   }
 
+  export type DeliveryListRelationFilter = {
+    every?: DeliveryWhereInput
+    some?: DeliveryWhereInput
+    none?: DeliveryWhereInput
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -50284,6 +53502,10 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type DeliveryOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type InvoiceCountOrderByAggregateInput = {
@@ -50564,12 +53786,6 @@ export namespace Prisma {
     none?: RentalItemWhereInput
   }
 
-  export type WorkerScheduleListRelationFilter = {
-    every?: WorkerScheduleWhereInput
-    some?: WorkerScheduleWhereInput
-    none?: WorkerScheduleWhereInput
-  }
-
   export type PaymentTransactionListRelationFilter = {
     every?: PaymentTransactionWhereInput
     some?: PaymentTransactionWhereInput
@@ -50585,10 +53801,6 @@ export namespace Prisma {
   }
 
   export type RentalItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WorkerScheduleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -50616,7 +53828,6 @@ export namespace Prisma {
     paymentStatus?: SortOrder
     paymentConfirmedBy?: SortOrder
     paymentConfirmedAt?: SortOrder
-    deliveryStatus?: SortOrder
     deliveryAddress?: SortOrder
   }
 
@@ -50650,7 +53861,6 @@ export namespace Prisma {
     paymentStatus?: SortOrder
     paymentConfirmedBy?: SortOrder
     paymentConfirmedAt?: SortOrder
-    deliveryStatus?: SortOrder
     deliveryAddress?: SortOrder
   }
 
@@ -50674,7 +53884,6 @@ export namespace Prisma {
     paymentStatus?: SortOrder
     paymentConfirmedBy?: SortOrder
     paymentConfirmedAt?: SortOrder
-    deliveryStatus?: SortOrder
     deliveryAddress?: SortOrder
   }
 
@@ -51364,6 +54573,16 @@ export namespace Prisma {
     isNot?: ProductUnitWhereInput | null
   }
 
+  export type DeliveryItemListRelationFilter = {
+    every?: DeliveryItemWhereInput
+    some?: DeliveryItemWhereInput
+    none?: DeliveryItemWhereInput
+  }
+
+  export type DeliveryItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type RentalItemCountOrderByAggregateInput = {
     id?: SortOrder
     orderId?: SortOrder
@@ -51420,6 +54639,18 @@ export namespace Prisma {
     none?: WorkerAttendanceWhereInput
   }
 
+  export type DeliveryLogListRelationFilter = {
+    every?: DeliveryLogWhereInput
+    some?: DeliveryLogWhereInput
+    none?: DeliveryLogWhereInput
+  }
+
+  export type DeliveryEditLogListRelationFilter = {
+    every?: DeliveryEditLogWhereInput
+    some?: DeliveryEditLogWhereInput
+    none?: DeliveryEditLogWhereInput
+  }
+
   export type WorkerNotificationListRelationFilter = {
     every?: WorkerNotificationWhereInput
     some?: WorkerNotificationWhereInput
@@ -51442,12 +54673,6 @@ export namespace Prisma {
     every?: GroupMessageWhereInput
     some?: GroupMessageWhereInput
     none?: GroupMessageWhereInput
-  }
-
-  export type DailyReportListRelationFilter = {
-    every?: DailyReportWhereInput
-    some?: DailyReportWhereInput
-    none?: DailyReportWhereInput
   }
 
   export type NotificationDismissalListRelationFilter = {
@@ -51480,6 +54705,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type DeliveryLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DeliveryEditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type WorkerNotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -51493,10 +54726,6 @@ export namespace Prisma {
   }
 
   export type GroupMessageOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DailyReportOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -51703,65 +54932,6 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type Enumschedule_statusNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.schedule_status | Enumschedule_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumschedule_statusNullableFilter<$PrismaModel> | $Enums.schedule_status | null
-  }
-
-  export type WorkerScheduleCountOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    orderId?: SortOrder
-    assignedBy?: SortOrder
-    assignedAt?: SortOrder
-    status?: SortOrder
-    scheduledDate?: SortOrder
-    notes?: SortOrder
-    workerNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WorkerScheduleMaxOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    orderId?: SortOrder
-    assignedBy?: SortOrder
-    assignedAt?: SortOrder
-    status?: SortOrder
-    scheduledDate?: SortOrder
-    notes?: SortOrder
-    workerNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WorkerScheduleMinOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    orderId?: SortOrder
-    assignedBy?: SortOrder
-    assignedAt?: SortOrder
-    status?: SortOrder
-    scheduledDate?: SortOrder
-    notes?: SortOrder
-    workerNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type Enumschedule_statusNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.schedule_status | Enumschedule_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumschedule_statusNullableWithAggregatesFilter<$PrismaModel> | $Enums.schedule_status | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumschedule_statusNullableFilter<$PrismaModel>
-    _max?: NestedEnumschedule_statusNullableFilter<$PrismaModel>
-  }
-
   export type Enumattendance_statusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.attendance_status | Enumattendance_statusFieldRefInput<$PrismaModel> | null
     in?: $Enums.attendance_status[] | ListEnumattendance_statusFieldRefInput<$PrismaModel> | null
@@ -51944,97 +55114,6 @@ export namespace Prisma {
     content?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type WorkerScheduleNullableScalarRelationFilter = {
-    is?: WorkerScheduleWhereInput | null
-    isNot?: WorkerScheduleWhereInput | null
-  }
-
-  export type DeliveryChecklistItemListRelationFilter = {
-    every?: DeliveryChecklistItemWhereInput
-    some?: DeliveryChecklistItemWhereInput
-    none?: DeliveryChecklistItemWhereInput
-  }
-
-  export type DeliveryChecklistItemOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DailyReportCountOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    scheduleId?: SortOrder
-    reportDate?: SortOrder
-    jobSummary?: SortOrder
-    deliveryStatus?: SortOrder
-    notes?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type DailyReportMaxOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    scheduleId?: SortOrder
-    reportDate?: SortOrder
-    jobSummary?: SortOrder
-    deliveryStatus?: SortOrder
-    notes?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type DailyReportMinOrderByAggregateInput = {
-    id?: SortOrder
-    workerId?: SortOrder
-    scheduleId?: SortOrder
-    reportDate?: SortOrder
-    jobSummary?: SortOrder
-    deliveryStatus?: SortOrder
-    notes?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type DailyReportScalarRelationFilter = {
-    is?: DailyReportWhereInput
-    isNot?: DailyReportWhereInput
-  }
-
-  export type DeliveryChecklistItemCountOrderByAggregateInput = {
-    id?: SortOrder
-    reportId?: SortOrder
-    rentalItemId?: SortOrder
-    itemName?: SortOrder
-    quantity?: SortOrder
-    status?: SortOrder
-    notes?: SortOrder
-  }
-
-  export type DeliveryChecklistItemAvgOrderByAggregateInput = {
-    quantity?: SortOrder
-  }
-
-  export type DeliveryChecklistItemMaxOrderByAggregateInput = {
-    id?: SortOrder
-    reportId?: SortOrder
-    rentalItemId?: SortOrder
-    itemName?: SortOrder
-    quantity?: SortOrder
-    status?: SortOrder
-    notes?: SortOrder
-  }
-
-  export type DeliveryChecklistItemMinOrderByAggregateInput = {
-    id?: SortOrder
-    reportId?: SortOrder
-    rentalItemId?: SortOrder
-    itemName?: SortOrder
-    quantity?: SortOrder
-    status?: SortOrder
-    notes?: SortOrder
-  }
-
-  export type DeliveryChecklistItemSumOrderByAggregateInput = {
-    quantity?: SortOrder
   }
 
   export type NotificationDismissalUserIdEntityIdEntityTypeCompoundUniqueInput = {
@@ -52397,16 +55476,356 @@ export namespace Prisma {
     feedbackScore?: SortOrder
   }
 
+  export type EnumVehicleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeFilter<$PrismaModel> | $Enums.VehicleType
+  }
+
+  export type EnumVehicleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusFilter<$PrismaModel> | $Enums.VehicleStatus
+  }
+
+  export type VehicleCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    currentDeliveryId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VehicleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    currentDeliveryId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VehicleMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    currentDeliveryId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumVehicleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel> | $Enums.VehicleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleTypeFilter<$PrismaModel>
+    _max?: NestedEnumVehicleTypeFilter<$PrismaModel>
+  }
+
+  export type EnumVehicleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel> | $Enums.VehicleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleStatusFilter<$PrismaModel>
+    _max?: NestedEnumVehicleStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDeliveryMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryMethod | EnumDeliveryMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryMethodFilter<$PrismaModel> | $Enums.DeliveryMethod
+  }
+
+  export type EnumDeliveryTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryType | EnumDeliveryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryTypeFilter<$PrismaModel> | $Enums.DeliveryType
+  }
+
+  export type EnumDeliveryStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryStatus | EnumDeliveryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryStatusFilter<$PrismaModel> | $Enums.DeliveryStatus
+  }
+
+  export type InvoiceNullableScalarRelationFilter = {
+    is?: InvoiceWhereInput | null
+    isNot?: InvoiceWhereInput | null
+  }
+
+  export type VehicleNullableScalarRelationFilter = {
+    is?: VehicleWhereInput | null
+    isNot?: VehicleWhereInput | null
+  }
+
+  export type DeliveryCountOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    deliveryMethod?: SortOrder
+    deliveryType?: SortOrder
+    vehicleId?: SortOrder
+    status?: SortOrder
+    claimedByWorkerId?: SortOrder
+    claimedAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    eta?: SortOrder
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    lastLocationUpdate?: SortOrder
+    trackingCode?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliveryAvgOrderByAggregateInput = {
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type DeliveryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    deliveryMethod?: SortOrder
+    deliveryType?: SortOrder
+    vehicleId?: SortOrder
+    status?: SortOrder
+    claimedByWorkerId?: SortOrder
+    claimedAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    eta?: SortOrder
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    lastLocationUpdate?: SortOrder
+    trackingCode?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliveryMinOrderByAggregateInput = {
+    id?: SortOrder
+    invoiceId?: SortOrder
+    deliveryMethod?: SortOrder
+    deliveryType?: SortOrder
+    vehicleId?: SortOrder
+    status?: SortOrder
+    claimedByWorkerId?: SortOrder
+    claimedAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    eta?: SortOrder
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    lastLocationUpdate?: SortOrder
+    trackingCode?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeliverySumOrderByAggregateInput = {
+    etaOverrideCount?: SortOrder
+    delayMinutes?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type EnumDeliveryMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryMethod | EnumDeliveryMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryMethodWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryMethodFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryMethodFilter<$PrismaModel>
+  }
+
+  export type EnumDeliveryTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryType | EnumDeliveryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryTypeWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryTypeFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryTypeFilter<$PrismaModel>
+  }
+
+  export type EnumDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryStatus | EnumDeliveryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryStatusFilter<$PrismaModel>
+  }
+
+  export type DeliveryScalarRelationFilter = {
+    is?: DeliveryWhereInput
+    isNot?: DeliveryWhereInput
+  }
+
+  export type RentalItemScalarRelationFilter = {
+    is?: RentalItemWhereInput
+    isNot?: RentalItemWhereInput
+  }
+
+  export type DeliveryItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    rentalItemId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type DeliveryItemAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type DeliveryItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    rentalItemId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type DeliveryItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    rentalItemId?: SortOrder
+    quantity?: SortOrder
+  }
+
+  export type DeliveryItemSumOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type EnumDeliveryRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryRole | EnumDeliveryRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryRoleFilter<$PrismaModel> | $Enums.DeliveryRole
+  }
+
+  export type DeliveryLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    eventType?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    createdByUserId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DeliveryLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    eventType?: SortOrder
+    createdByUserId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DeliveryLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    eventType?: SortOrder
+    createdByUserId?: SortOrder
+    role?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumDeliveryRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryRole | EnumDeliveryRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryRoleWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryRoleFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryRoleFilter<$PrismaModel>
+  }
+
+  export type DeliveryEditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    editedByUserId?: SortOrder
+    role?: SortOrder
+    fieldChanged?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DeliveryEditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    editedByUserId?: SortOrder
+    role?: SortOrder
+    fieldChanged?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DeliveryEditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    deliveryId?: SortOrder
+    editedByUserId?: SortOrder
+    role?: SortOrder
+    fieldChanged?: SortOrder
+    oldValue?: SortOrder
+    newValue?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type OrderCreateNestedOneWithoutInvoicesInput = {
     create?: XOR<OrderCreateWithoutInvoicesInput, OrderUncheckedCreateWithoutInvoicesInput>
     connectOrCreate?: OrderCreateOrConnectWithoutInvoicesInput
     connect?: OrderWhereUniqueInput
   }
 
+  export type DeliveryCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput> | DeliveryCreateWithoutInvoiceInput[] | DeliveryUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutInvoiceInput | DeliveryCreateOrConnectWithoutInvoiceInput[]
+    createMany?: DeliveryCreateManyInvoiceInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutInvoicesInput = {
     create?: XOR<UserCreateWithoutInvoicesInput, UserUncheckedCreateWithoutInvoicesInput>
     connectOrCreate?: UserCreateOrConnectWithoutInvoicesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type DeliveryUncheckedCreateNestedManyWithoutInvoiceInput = {
+    create?: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput> | DeliveryCreateWithoutInvoiceInput[] | DeliveryUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutInvoiceInput | DeliveryCreateOrConnectWithoutInvoiceInput[]
+    createMany?: DeliveryCreateManyInvoiceInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -52459,6 +55878,20 @@ export namespace Prisma {
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutInvoicesInput, OrderUpdateWithoutInvoicesInput>, OrderUncheckedUpdateWithoutInvoicesInput>
   }
 
+  export type DeliveryUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput> | DeliveryCreateWithoutInvoiceInput[] | DeliveryUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutInvoiceInput | DeliveryCreateOrConnectWithoutInvoiceInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutInvoiceInput | DeliveryUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: DeliveryCreateManyInvoiceInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutInvoiceInput | DeliveryUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutInvoiceInput | DeliveryUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+  }
+
   export type UserUpdateOneWithoutInvoicesNestedInput = {
     create?: XOR<UserCreateWithoutInvoicesInput, UserUncheckedCreateWithoutInvoicesInput>
     connectOrCreate?: UserCreateOrConnectWithoutInvoicesInput
@@ -52467,6 +55900,20 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvoicesInput, UserUpdateWithoutInvoicesInput>, UserUncheckedUpdateWithoutInvoicesInput>
+  }
+
+  export type DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput = {
+    create?: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput> | DeliveryCreateWithoutInvoiceInput[] | DeliveryUncheckedCreateWithoutInvoiceInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutInvoiceInput | DeliveryCreateOrConnectWithoutInvoiceInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutInvoiceInput | DeliveryUpsertWithWhereUniqueWithoutInvoiceInput[]
+    createMany?: DeliveryCreateManyInvoiceInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutInvoiceInput | DeliveryUpdateWithWhereUniqueWithoutInvoiceInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutInvoiceInput | DeliveryUpdateManyWithWhereWithoutInvoiceInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
   }
 
   export type InvoiceCreateNestedManyWithoutOrderInput = {
@@ -52502,13 +55949,6 @@ export namespace Prisma {
     connect?: RentalItemWhereUniqueInput | RentalItemWhereUniqueInput[]
   }
 
-  export type WorkerScheduleCreateNestedManyWithoutOrderInput = {
-    create?: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput> | WorkerScheduleCreateWithoutOrderInput[] | WorkerScheduleUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutOrderInput | WorkerScheduleCreateOrConnectWithoutOrderInput[]
-    createMany?: WorkerScheduleCreateManyOrderInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-  }
-
   export type PaymentTransactionCreateNestedManyWithoutOrderInput = {
     create?: XOR<PaymentTransactionCreateWithoutOrderInput, PaymentTransactionUncheckedCreateWithoutOrderInput> | PaymentTransactionCreateWithoutOrderInput[] | PaymentTransactionUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PaymentTransactionCreateOrConnectWithoutOrderInput | PaymentTransactionCreateOrConnectWithoutOrderInput[]
@@ -52535,13 +55975,6 @@ export namespace Prisma {
     connectOrCreate?: RentalItemCreateOrConnectWithoutOrderInput | RentalItemCreateOrConnectWithoutOrderInput[]
     createMany?: RentalItemCreateManyOrderInputEnvelope
     connect?: RentalItemWhereUniqueInput | RentalItemWhereUniqueInput[]
-  }
-
-  export type WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput = {
-    create?: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput> | WorkerScheduleCreateWithoutOrderInput[] | WorkerScheduleUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutOrderInput | WorkerScheduleCreateOrConnectWithoutOrderInput[]
-    createMany?: WorkerScheduleCreateManyOrderInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
   }
 
   export type PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput = {
@@ -52623,20 +56056,6 @@ export namespace Prisma {
     deleteMany?: RentalItemScalarWhereInput | RentalItemScalarWhereInput[]
   }
 
-  export type WorkerScheduleUpdateManyWithoutOrderNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput> | WorkerScheduleCreateWithoutOrderInput[] | WorkerScheduleUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutOrderInput | WorkerScheduleCreateOrConnectWithoutOrderInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutOrderInput | WorkerScheduleUpsertWithWhereUniqueWithoutOrderInput[]
-    createMany?: WorkerScheduleCreateManyOrderInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutOrderInput | WorkerScheduleUpdateWithWhereUniqueWithoutOrderInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutOrderInput | WorkerScheduleUpdateManyWithWhereWithoutOrderInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
-  }
-
   export type PaymentTransactionUpdateManyWithoutOrderNestedInput = {
     create?: XOR<PaymentTransactionCreateWithoutOrderInput, PaymentTransactionUncheckedCreateWithoutOrderInput> | PaymentTransactionCreateWithoutOrderInput[] | PaymentTransactionUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PaymentTransactionCreateOrConnectWithoutOrderInput | PaymentTransactionCreateOrConnectWithoutOrderInput[]
@@ -52691,20 +56110,6 @@ export namespace Prisma {
     update?: RentalItemUpdateWithWhereUniqueWithoutOrderInput | RentalItemUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: RentalItemUpdateManyWithWhereWithoutOrderInput | RentalItemUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: RentalItemScalarWhereInput | RentalItemScalarWhereInput[]
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput> | WorkerScheduleCreateWithoutOrderInput[] | WorkerScheduleUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutOrderInput | WorkerScheduleCreateOrConnectWithoutOrderInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutOrderInput | WorkerScheduleUpsertWithWhereUniqueWithoutOrderInput[]
-    createMany?: WorkerScheduleCreateManyOrderInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutOrderInput | WorkerScheduleUpdateWithWhereUniqueWithoutOrderInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutOrderInput | WorkerScheduleUpdateManyWithWhereWithoutOrderInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
   }
 
   export type PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput = {
@@ -53433,6 +56838,20 @@ export namespace Prisma {
     connect?: ProductUnitWhereUniqueInput
   }
 
+  export type DeliveryItemCreateNestedManyWithoutRentalItemInput = {
+    create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
+    createMany?: DeliveryItemCreateManyRentalItemInputEnvelope
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+  }
+
+  export type DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput = {
+    create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
+    createMany?: DeliveryItemCreateManyRentalItemInputEnvelope
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+  }
+
   export type OrderUpdateOneRequiredWithoutRentalItemsNestedInput = {
     create?: XOR<OrderCreateWithoutRentalItemsInput, OrderUncheckedCreateWithoutRentalItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutRentalItemsInput
@@ -53469,6 +56888,34 @@ export namespace Prisma {
     delete?: ProductUnitWhereInput | boolean
     connect?: ProductUnitWhereUniqueInput
     update?: XOR<XOR<ProductUnitUpdateToOneWithWhereWithoutRentalItemsInput, ProductUnitUpdateWithoutRentalItemsInput>, ProductUnitUncheckedUpdateWithoutRentalItemsInput>
+  }
+
+  export type DeliveryItemUpdateManyWithoutRentalItemNestedInput = {
+    create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
+    upsert?: DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput[]
+    createMany?: DeliveryItemCreateManyRentalItemInputEnvelope
+    set?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    disconnect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    delete?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    update?: DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput[]
+    updateMany?: DeliveryItemUpdateManyWithWhereWithoutRentalItemInput | DeliveryItemUpdateManyWithWhereWithoutRentalItemInput[]
+    deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+  }
+
+  export type DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput = {
+    create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
+    upsert?: DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput[]
+    createMany?: DeliveryItemCreateManyRentalItemInputEnvelope
+    set?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    disconnect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    delete?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    update?: DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput[]
+    updateMany?: DeliveryItemUpdateManyWithWhereWithoutRentalItemInput | DeliveryItemUpdateManyWithWhereWithoutRentalItemInput[]
+    deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
   }
 
   export type ActivityLogCreateNestedManyWithoutUserInput = {
@@ -53520,6 +56967,27 @@ export namespace Prisma {
     connect?: WorkerAttendanceWhereUniqueInput | WorkerAttendanceWhereUniqueInput[]
   }
 
+  export type DeliveryCreateNestedManyWithoutClaimedByWorkerInput = {
+    create?: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput> | DeliveryCreateWithoutClaimedByWorkerInput[] | DeliveryUncheckedCreateWithoutClaimedByWorkerInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutClaimedByWorkerInput | DeliveryCreateOrConnectWithoutClaimedByWorkerInput[]
+    createMany?: DeliveryCreateManyClaimedByWorkerInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+  }
+
+  export type DeliveryLogCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput> | DeliveryLogCreateWithoutCreatedByUserInput[] | DeliveryLogUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutCreatedByUserInput | DeliveryLogCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: DeliveryLogCreateManyCreatedByUserInputEnvelope
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+  }
+
+  export type DeliveryEditLogCreateNestedManyWithoutEditedByUserInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput> | DeliveryEditLogCreateWithoutEditedByUserInput[] | DeliveryEditLogUncheckedCreateWithoutEditedByUserInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutEditedByUserInput | DeliveryEditLogCreateOrConnectWithoutEditedByUserInput[]
+    createMany?: DeliveryEditLogCreateManyEditedByUserInputEnvelope
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+  }
+
   export type WorkerNotificationCreateNestedManyWithoutFromAdminInput = {
     create?: XOR<WorkerNotificationCreateWithoutFromAdminInput, WorkerNotificationUncheckedCreateWithoutFromAdminInput> | WorkerNotificationCreateWithoutFromAdminInput[] | WorkerNotificationUncheckedCreateWithoutFromAdminInput[]
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutFromAdminInput | WorkerNotificationCreateOrConnectWithoutFromAdminInput[]
@@ -53532,20 +57000,6 @@ export namespace Prisma {
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutWorkerInput | WorkerNotificationCreateOrConnectWithoutWorkerInput[]
     createMany?: WorkerNotificationCreateManyWorkerInputEnvelope
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
-  }
-
-  export type WorkerScheduleCreateNestedManyWithoutAssignedByUserInput = {
-    create?: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput> | WorkerScheduleCreateWithoutAssignedByUserInput[] | WorkerScheduleUncheckedCreateWithoutAssignedByUserInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutAssignedByUserInput | WorkerScheduleCreateOrConnectWithoutAssignedByUserInput[]
-    createMany?: WorkerScheduleCreateManyAssignedByUserInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-  }
-
-  export type WorkerScheduleCreateNestedManyWithoutWorkerInput = {
-    create?: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput> | WorkerScheduleCreateWithoutWorkerInput[] | WorkerScheduleUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutWorkerInput | WorkerScheduleCreateOrConnectWithoutWorkerInput[]
-    createMany?: WorkerScheduleCreateManyWorkerInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
   }
 
   export type MessageCreateNestedManyWithoutSenderInput = {
@@ -53574,13 +57028,6 @@ export namespace Prisma {
     connectOrCreate?: GroupMessageCreateOrConnectWithoutSenderInput | GroupMessageCreateOrConnectWithoutSenderInput[]
     createMany?: GroupMessageCreateManySenderInputEnvelope
     connect?: GroupMessageWhereUniqueInput | GroupMessageWhereUniqueInput[]
-  }
-
-  export type DailyReportCreateNestedManyWithoutWorkerInput = {
-    create?: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput> | DailyReportCreateWithoutWorkerInput[] | DailyReportUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutWorkerInput | DailyReportCreateOrConnectWithoutWorkerInput[]
-    createMany?: DailyReportCreateManyWorkerInputEnvelope
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
   }
 
   export type NotificationDismissalCreateNestedManyWithoutUserInput = {
@@ -53667,6 +57114,27 @@ export namespace Prisma {
     connect?: WorkerAttendanceWhereUniqueInput | WorkerAttendanceWhereUniqueInput[]
   }
 
+  export type DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput = {
+    create?: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput> | DeliveryCreateWithoutClaimedByWorkerInput[] | DeliveryUncheckedCreateWithoutClaimedByWorkerInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutClaimedByWorkerInput | DeliveryCreateOrConnectWithoutClaimedByWorkerInput[]
+    createMany?: DeliveryCreateManyClaimedByWorkerInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+  }
+
+  export type DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput = {
+    create?: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput> | DeliveryLogCreateWithoutCreatedByUserInput[] | DeliveryLogUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutCreatedByUserInput | DeliveryLogCreateOrConnectWithoutCreatedByUserInput[]
+    createMany?: DeliveryLogCreateManyCreatedByUserInputEnvelope
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+  }
+
+  export type DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput> | DeliveryEditLogCreateWithoutEditedByUserInput[] | DeliveryEditLogUncheckedCreateWithoutEditedByUserInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutEditedByUserInput | DeliveryEditLogCreateOrConnectWithoutEditedByUserInput[]
+    createMany?: DeliveryEditLogCreateManyEditedByUserInputEnvelope
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+  }
+
   export type WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput = {
     create?: XOR<WorkerNotificationCreateWithoutFromAdminInput, WorkerNotificationUncheckedCreateWithoutFromAdminInput> | WorkerNotificationCreateWithoutFromAdminInput[] | WorkerNotificationUncheckedCreateWithoutFromAdminInput[]
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutFromAdminInput | WorkerNotificationCreateOrConnectWithoutFromAdminInput[]
@@ -53679,20 +57147,6 @@ export namespace Prisma {
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutWorkerInput | WorkerNotificationCreateOrConnectWithoutWorkerInput[]
     createMany?: WorkerNotificationCreateManyWorkerInputEnvelope
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
-  }
-
-  export type WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput = {
-    create?: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput> | WorkerScheduleCreateWithoutAssignedByUserInput[] | WorkerScheduleUncheckedCreateWithoutAssignedByUserInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutAssignedByUserInput | WorkerScheduleCreateOrConnectWithoutAssignedByUserInput[]
-    createMany?: WorkerScheduleCreateManyAssignedByUserInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-  }
-
-  export type WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput = {
-    create?: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput> | WorkerScheduleCreateWithoutWorkerInput[] | WorkerScheduleUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutWorkerInput | WorkerScheduleCreateOrConnectWithoutWorkerInput[]
-    createMany?: WorkerScheduleCreateManyWorkerInputEnvelope
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
   }
 
   export type MessageUncheckedCreateNestedManyWithoutSenderInput = {
@@ -53721,13 +57175,6 @@ export namespace Prisma {
     connectOrCreate?: GroupMessageCreateOrConnectWithoutSenderInput | GroupMessageCreateOrConnectWithoutSenderInput[]
     createMany?: GroupMessageCreateManySenderInputEnvelope
     connect?: GroupMessageWhereUniqueInput | GroupMessageWhereUniqueInput[]
-  }
-
-  export type DailyReportUncheckedCreateNestedManyWithoutWorkerInput = {
-    create?: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput> | DailyReportCreateWithoutWorkerInput[] | DailyReportUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutWorkerInput | DailyReportCreateOrConnectWithoutWorkerInput[]
-    createMany?: DailyReportCreateManyWorkerInputEnvelope
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
   }
 
   export type NotificationDismissalUncheckedCreateNestedManyWithoutUserInput = {
@@ -53863,6 +57310,48 @@ export namespace Prisma {
     deleteMany?: WorkerAttendanceScalarWhereInput | WorkerAttendanceScalarWhereInput[]
   }
 
+  export type DeliveryUpdateManyWithoutClaimedByWorkerNestedInput = {
+    create?: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput> | DeliveryCreateWithoutClaimedByWorkerInput[] | DeliveryUncheckedCreateWithoutClaimedByWorkerInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutClaimedByWorkerInput | DeliveryCreateOrConnectWithoutClaimedByWorkerInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput | DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput[]
+    createMany?: DeliveryCreateManyClaimedByWorkerInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutClaimedByWorkerInput | DeliveryUpdateWithWhereUniqueWithoutClaimedByWorkerInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutClaimedByWorkerInput | DeliveryUpdateManyWithWhereWithoutClaimedByWorkerInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+  }
+
+  export type DeliveryLogUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput> | DeliveryLogCreateWithoutCreatedByUserInput[] | DeliveryLogUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutCreatedByUserInput | DeliveryLogCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: DeliveryLogUpsertWithWhereUniqueWithoutCreatedByUserInput | DeliveryLogUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: DeliveryLogCreateManyCreatedByUserInputEnvelope
+    set?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    disconnect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    delete?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    update?: DeliveryLogUpdateWithWhereUniqueWithoutCreatedByUserInput | DeliveryLogUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: DeliveryLogUpdateManyWithWhereWithoutCreatedByUserInput | DeliveryLogUpdateManyWithWhereWithoutCreatedByUserInput[]
+    deleteMany?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+  }
+
+  export type DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput> | DeliveryEditLogCreateWithoutEditedByUserInput[] | DeliveryEditLogUncheckedCreateWithoutEditedByUserInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutEditedByUserInput | DeliveryEditLogCreateOrConnectWithoutEditedByUserInput[]
+    upsert?: DeliveryEditLogUpsertWithWhereUniqueWithoutEditedByUserInput | DeliveryEditLogUpsertWithWhereUniqueWithoutEditedByUserInput[]
+    createMany?: DeliveryEditLogCreateManyEditedByUserInputEnvelope
+    set?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    disconnect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    delete?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    update?: DeliveryEditLogUpdateWithWhereUniqueWithoutEditedByUserInput | DeliveryEditLogUpdateWithWhereUniqueWithoutEditedByUserInput[]
+    updateMany?: DeliveryEditLogUpdateManyWithWhereWithoutEditedByUserInput | DeliveryEditLogUpdateManyWithWhereWithoutEditedByUserInput[]
+    deleteMany?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+  }
+
   export type WorkerNotificationUpdateManyWithoutFromAdminNestedInput = {
     create?: XOR<WorkerNotificationCreateWithoutFromAdminInput, WorkerNotificationUncheckedCreateWithoutFromAdminInput> | WorkerNotificationCreateWithoutFromAdminInput[] | WorkerNotificationUncheckedCreateWithoutFromAdminInput[]
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutFromAdminInput | WorkerNotificationCreateOrConnectWithoutFromAdminInput[]
@@ -53889,34 +57378,6 @@ export namespace Prisma {
     update?: WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput | WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput[]
     updateMany?: WorkerNotificationUpdateManyWithWhereWithoutWorkerInput | WorkerNotificationUpdateManyWithWhereWithoutWorkerInput[]
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
-  }
-
-  export type WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput> | WorkerScheduleCreateWithoutAssignedByUserInput[] | WorkerScheduleUncheckedCreateWithoutAssignedByUserInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutAssignedByUserInput | WorkerScheduleCreateOrConnectWithoutAssignedByUserInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutAssignedByUserInput | WorkerScheduleUpsertWithWhereUniqueWithoutAssignedByUserInput[]
-    createMany?: WorkerScheduleCreateManyAssignedByUserInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutAssignedByUserInput | WorkerScheduleUpdateWithWhereUniqueWithoutAssignedByUserInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutAssignedByUserInput | WorkerScheduleUpdateManyWithWhereWithoutAssignedByUserInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
-  }
-
-  export type WorkerScheduleUpdateManyWithoutWorkerNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput> | WorkerScheduleCreateWithoutWorkerInput[] | WorkerScheduleUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutWorkerInput | WorkerScheduleCreateOrConnectWithoutWorkerInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutWorkerInput | WorkerScheduleUpsertWithWhereUniqueWithoutWorkerInput[]
-    createMany?: WorkerScheduleCreateManyWorkerInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutWorkerInput | WorkerScheduleUpdateWithWhereUniqueWithoutWorkerInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutWorkerInput | WorkerScheduleUpdateManyWithWhereWithoutWorkerInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
   }
 
   export type MessageUpdateManyWithoutSenderNestedInput = {
@@ -53973,20 +57434,6 @@ export namespace Prisma {
     update?: GroupMessageUpdateWithWhereUniqueWithoutSenderInput | GroupMessageUpdateWithWhereUniqueWithoutSenderInput[]
     updateMany?: GroupMessageUpdateManyWithWhereWithoutSenderInput | GroupMessageUpdateManyWithWhereWithoutSenderInput[]
     deleteMany?: GroupMessageScalarWhereInput | GroupMessageScalarWhereInput[]
-  }
-
-  export type DailyReportUpdateManyWithoutWorkerNestedInput = {
-    create?: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput> | DailyReportCreateWithoutWorkerInput[] | DailyReportUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutWorkerInput | DailyReportCreateOrConnectWithoutWorkerInput[]
-    upsert?: DailyReportUpsertWithWhereUniqueWithoutWorkerInput | DailyReportUpsertWithWhereUniqueWithoutWorkerInput[]
-    createMany?: DailyReportCreateManyWorkerInputEnvelope
-    set?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    disconnect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    delete?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    update?: DailyReportUpdateWithWhereUniqueWithoutWorkerInput | DailyReportUpdateWithWhereUniqueWithoutWorkerInput[]
-    updateMany?: DailyReportUpdateManyWithWhereWithoutWorkerInput | DailyReportUpdateManyWithWhereWithoutWorkerInput[]
-    deleteMany?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
   }
 
   export type NotificationDismissalUpdateManyWithoutUserNestedInput = {
@@ -54157,6 +57604,48 @@ export namespace Prisma {
     deleteMany?: WorkerAttendanceScalarWhereInput | WorkerAttendanceScalarWhereInput[]
   }
 
+  export type DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput = {
+    create?: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput> | DeliveryCreateWithoutClaimedByWorkerInput[] | DeliveryUncheckedCreateWithoutClaimedByWorkerInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutClaimedByWorkerInput | DeliveryCreateOrConnectWithoutClaimedByWorkerInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput | DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput[]
+    createMany?: DeliveryCreateManyClaimedByWorkerInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutClaimedByWorkerInput | DeliveryUpdateWithWhereUniqueWithoutClaimedByWorkerInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutClaimedByWorkerInput | DeliveryUpdateManyWithWhereWithoutClaimedByWorkerInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+  }
+
+  export type DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput = {
+    create?: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput> | DeliveryLogCreateWithoutCreatedByUserInput[] | DeliveryLogUncheckedCreateWithoutCreatedByUserInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutCreatedByUserInput | DeliveryLogCreateOrConnectWithoutCreatedByUserInput[]
+    upsert?: DeliveryLogUpsertWithWhereUniqueWithoutCreatedByUserInput | DeliveryLogUpsertWithWhereUniqueWithoutCreatedByUserInput[]
+    createMany?: DeliveryLogCreateManyCreatedByUserInputEnvelope
+    set?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    disconnect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    delete?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    update?: DeliveryLogUpdateWithWhereUniqueWithoutCreatedByUserInput | DeliveryLogUpdateWithWhereUniqueWithoutCreatedByUserInput[]
+    updateMany?: DeliveryLogUpdateManyWithWhereWithoutCreatedByUserInput | DeliveryLogUpdateManyWithWhereWithoutCreatedByUserInput[]
+    deleteMany?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+  }
+
+  export type DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput> | DeliveryEditLogCreateWithoutEditedByUserInput[] | DeliveryEditLogUncheckedCreateWithoutEditedByUserInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutEditedByUserInput | DeliveryEditLogCreateOrConnectWithoutEditedByUserInput[]
+    upsert?: DeliveryEditLogUpsertWithWhereUniqueWithoutEditedByUserInput | DeliveryEditLogUpsertWithWhereUniqueWithoutEditedByUserInput[]
+    createMany?: DeliveryEditLogCreateManyEditedByUserInputEnvelope
+    set?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    disconnect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    delete?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    update?: DeliveryEditLogUpdateWithWhereUniqueWithoutEditedByUserInput | DeliveryEditLogUpdateWithWhereUniqueWithoutEditedByUserInput[]
+    updateMany?: DeliveryEditLogUpdateManyWithWhereWithoutEditedByUserInput | DeliveryEditLogUpdateManyWithWhereWithoutEditedByUserInput[]
+    deleteMany?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+  }
+
   export type WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput = {
     create?: XOR<WorkerNotificationCreateWithoutFromAdminInput, WorkerNotificationUncheckedCreateWithoutFromAdminInput> | WorkerNotificationCreateWithoutFromAdminInput[] | WorkerNotificationUncheckedCreateWithoutFromAdminInput[]
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutFromAdminInput | WorkerNotificationCreateOrConnectWithoutFromAdminInput[]
@@ -54183,34 +57672,6 @@ export namespace Prisma {
     update?: WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput | WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput[]
     updateMany?: WorkerNotificationUpdateManyWithWhereWithoutWorkerInput | WorkerNotificationUpdateManyWithWhereWithoutWorkerInput[]
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput> | WorkerScheduleCreateWithoutAssignedByUserInput[] | WorkerScheduleUncheckedCreateWithoutAssignedByUserInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutAssignedByUserInput | WorkerScheduleCreateOrConnectWithoutAssignedByUserInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutAssignedByUserInput | WorkerScheduleUpsertWithWhereUniqueWithoutAssignedByUserInput[]
-    createMany?: WorkerScheduleCreateManyAssignedByUserInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutAssignedByUserInput | WorkerScheduleUpdateWithWhereUniqueWithoutAssignedByUserInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutAssignedByUserInput | WorkerScheduleUpdateManyWithWhereWithoutAssignedByUserInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput> | WorkerScheduleCreateWithoutWorkerInput[] | WorkerScheduleUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutWorkerInput | WorkerScheduleCreateOrConnectWithoutWorkerInput[]
-    upsert?: WorkerScheduleUpsertWithWhereUniqueWithoutWorkerInput | WorkerScheduleUpsertWithWhereUniqueWithoutWorkerInput[]
-    createMany?: WorkerScheduleCreateManyWorkerInputEnvelope
-    set?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    disconnect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    delete?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    connect?: WorkerScheduleWhereUniqueInput | WorkerScheduleWhereUniqueInput[]
-    update?: WorkerScheduleUpdateWithWhereUniqueWithoutWorkerInput | WorkerScheduleUpdateWithWhereUniqueWithoutWorkerInput[]
-    updateMany?: WorkerScheduleUpdateManyWithWhereWithoutWorkerInput | WorkerScheduleUpdateManyWithWhereWithoutWorkerInput[]
-    deleteMany?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
   }
 
   export type MessageUncheckedUpdateManyWithoutSenderNestedInput = {
@@ -54267,20 +57728,6 @@ export namespace Prisma {
     update?: GroupMessageUpdateWithWhereUniqueWithoutSenderInput | GroupMessageUpdateWithWhereUniqueWithoutSenderInput[]
     updateMany?: GroupMessageUpdateManyWithWhereWithoutSenderInput | GroupMessageUpdateManyWithWhereWithoutSenderInput[]
     deleteMany?: GroupMessageScalarWhereInput | GroupMessageScalarWhereInput[]
-  }
-
-  export type DailyReportUncheckedUpdateManyWithoutWorkerNestedInput = {
-    create?: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput> | DailyReportCreateWithoutWorkerInput[] | DailyReportUncheckedCreateWithoutWorkerInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutWorkerInput | DailyReportCreateOrConnectWithoutWorkerInput[]
-    upsert?: DailyReportUpsertWithWhereUniqueWithoutWorkerInput | DailyReportUpsertWithWhereUniqueWithoutWorkerInput[]
-    createMany?: DailyReportCreateManyWorkerInputEnvelope
-    set?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    disconnect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    delete?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    update?: DailyReportUpdateWithWhereUniqueWithoutWorkerInput | DailyReportUpdateWithWhereUniqueWithoutWorkerInput[]
-    updateMany?: DailyReportUpdateManyWithWhereWithoutWorkerInput | DailyReportUpdateManyWithWhereWithoutWorkerInput[]
-    deleteMany?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
   }
 
   export type NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput = {
@@ -54509,94 +57956,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivityLogsInput, UserUpdateWithoutActivityLogsInput>, UserUncheckedUpdateWithoutActivityLogsInput>
   }
 
-  export type UserCreateNestedOneWithoutAssignedSchedulesInput = {
-    create?: XOR<UserCreateWithoutAssignedSchedulesInput, UserUncheckedCreateWithoutAssignedSchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAssignedSchedulesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type OrderCreateNestedOneWithoutWorkerSchedulesInput = {
-    create?: XOR<OrderCreateWithoutWorkerSchedulesInput, OrderUncheckedCreateWithoutWorkerSchedulesInput>
-    connectOrCreate?: OrderCreateOrConnectWithoutWorkerSchedulesInput
-    connect?: OrderWhereUniqueInput
-  }
-
-  export type UserCreateNestedOneWithoutWorkerSchedulesInput = {
-    create?: XOR<UserCreateWithoutWorkerSchedulesInput, UserUncheckedCreateWithoutWorkerSchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWorkerSchedulesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type DailyReportCreateNestedManyWithoutScheduleInput = {
-    create?: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput> | DailyReportCreateWithoutScheduleInput[] | DailyReportUncheckedCreateWithoutScheduleInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutScheduleInput | DailyReportCreateOrConnectWithoutScheduleInput[]
-    createMany?: DailyReportCreateManyScheduleInputEnvelope
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-  }
-
-  export type DailyReportUncheckedCreateNestedManyWithoutScheduleInput = {
-    create?: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput> | DailyReportCreateWithoutScheduleInput[] | DailyReportUncheckedCreateWithoutScheduleInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutScheduleInput | DailyReportCreateOrConnectWithoutScheduleInput[]
-    createMany?: DailyReportCreateManyScheduleInputEnvelope
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-  }
-
-  export type NullableEnumschedule_statusFieldUpdateOperationsInput = {
-    set?: $Enums.schedule_status | null
-  }
-
-  export type UserUpdateOneRequiredWithoutAssignedSchedulesNestedInput = {
-    create?: XOR<UserCreateWithoutAssignedSchedulesInput, UserUncheckedCreateWithoutAssignedSchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAssignedSchedulesInput
-    upsert?: UserUpsertWithoutAssignedSchedulesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedSchedulesInput, UserUpdateWithoutAssignedSchedulesInput>, UserUncheckedUpdateWithoutAssignedSchedulesInput>
-  }
-
-  export type OrderUpdateOneRequiredWithoutWorkerSchedulesNestedInput = {
-    create?: XOR<OrderCreateWithoutWorkerSchedulesInput, OrderUncheckedCreateWithoutWorkerSchedulesInput>
-    connectOrCreate?: OrderCreateOrConnectWithoutWorkerSchedulesInput
-    upsert?: OrderUpsertWithoutWorkerSchedulesInput
-    connect?: OrderWhereUniqueInput
-    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutWorkerSchedulesInput, OrderUpdateWithoutWorkerSchedulesInput>, OrderUncheckedUpdateWithoutWorkerSchedulesInput>
-  }
-
-  export type UserUpdateOneRequiredWithoutWorkerSchedulesNestedInput = {
-    create?: XOR<UserCreateWithoutWorkerSchedulesInput, UserUncheckedCreateWithoutWorkerSchedulesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWorkerSchedulesInput
-    upsert?: UserUpsertWithoutWorkerSchedulesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWorkerSchedulesInput, UserUpdateWithoutWorkerSchedulesInput>, UserUncheckedUpdateWithoutWorkerSchedulesInput>
-  }
-
-  export type DailyReportUpdateManyWithoutScheduleNestedInput = {
-    create?: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput> | DailyReportCreateWithoutScheduleInput[] | DailyReportUncheckedCreateWithoutScheduleInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutScheduleInput | DailyReportCreateOrConnectWithoutScheduleInput[]
-    upsert?: DailyReportUpsertWithWhereUniqueWithoutScheduleInput | DailyReportUpsertWithWhereUniqueWithoutScheduleInput[]
-    createMany?: DailyReportCreateManyScheduleInputEnvelope
-    set?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    disconnect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    delete?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    update?: DailyReportUpdateWithWhereUniqueWithoutScheduleInput | DailyReportUpdateWithWhereUniqueWithoutScheduleInput[]
-    updateMany?: DailyReportUpdateManyWithWhereWithoutScheduleInput | DailyReportUpdateManyWithWhereWithoutScheduleInput[]
-    deleteMany?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
-  }
-
-  export type DailyReportUncheckedUpdateManyWithoutScheduleNestedInput = {
-    create?: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput> | DailyReportCreateWithoutScheduleInput[] | DailyReportUncheckedCreateWithoutScheduleInput[]
-    connectOrCreate?: DailyReportCreateOrConnectWithoutScheduleInput | DailyReportCreateOrConnectWithoutScheduleInput[]
-    upsert?: DailyReportUpsertWithWhereUniqueWithoutScheduleInput | DailyReportUpsertWithWhereUniqueWithoutScheduleInput[]
-    createMany?: DailyReportCreateManyScheduleInputEnvelope
-    set?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    disconnect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    delete?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    connect?: DailyReportWhereUniqueInput | DailyReportWhereUniqueInput[]
-    update?: DailyReportUpdateWithWhereUniqueWithoutScheduleInput | DailyReportUpdateWithWhereUniqueWithoutScheduleInput[]
-    updateMany?: DailyReportUpdateManyWithWhereWithoutScheduleInput | DailyReportUpdateManyWithWhereWithoutScheduleInput[]
-    deleteMany?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutWorkerAttendanceInput = {
     create?: XOR<UserCreateWithoutWorkerAttendanceInput, UserUncheckedCreateWithoutWorkerAttendanceInput>
     connectOrCreate?: UserCreateOrConnectWithoutWorkerAttendanceInput
@@ -54719,92 +58078,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutReceivedMessagesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedMessagesInput, UserUpdateWithoutReceivedMessagesInput>, UserUncheckedUpdateWithoutReceivedMessagesInput>
-  }
-
-  export type UserCreateNestedOneWithoutDailyReportsInput = {
-    create?: XOR<UserCreateWithoutDailyReportsInput, UserUncheckedCreateWithoutDailyReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDailyReportsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type WorkerScheduleCreateNestedOneWithoutDailyReportsInput = {
-    create?: XOR<WorkerScheduleCreateWithoutDailyReportsInput, WorkerScheduleUncheckedCreateWithoutDailyReportsInput>
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutDailyReportsInput
-    connect?: WorkerScheduleWhereUniqueInput
-  }
-
-  export type DeliveryChecklistItemCreateNestedManyWithoutReportInput = {
-    create?: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput> | DeliveryChecklistItemCreateWithoutReportInput[] | DeliveryChecklistItemUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: DeliveryChecklistItemCreateOrConnectWithoutReportInput | DeliveryChecklistItemCreateOrConnectWithoutReportInput[]
-    createMany?: DeliveryChecklistItemCreateManyReportInputEnvelope
-    connect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-  }
-
-  export type DeliveryChecklistItemUncheckedCreateNestedManyWithoutReportInput = {
-    create?: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput> | DeliveryChecklistItemCreateWithoutReportInput[] | DeliveryChecklistItemUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: DeliveryChecklistItemCreateOrConnectWithoutReportInput | DeliveryChecklistItemCreateOrConnectWithoutReportInput[]
-    createMany?: DeliveryChecklistItemCreateManyReportInputEnvelope
-    connect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-  }
-
-  export type UserUpdateOneRequiredWithoutDailyReportsNestedInput = {
-    create?: XOR<UserCreateWithoutDailyReportsInput, UserUncheckedCreateWithoutDailyReportsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDailyReportsInput
-    upsert?: UserUpsertWithoutDailyReportsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailyReportsInput, UserUpdateWithoutDailyReportsInput>, UserUncheckedUpdateWithoutDailyReportsInput>
-  }
-
-  export type WorkerScheduleUpdateOneWithoutDailyReportsNestedInput = {
-    create?: XOR<WorkerScheduleCreateWithoutDailyReportsInput, WorkerScheduleUncheckedCreateWithoutDailyReportsInput>
-    connectOrCreate?: WorkerScheduleCreateOrConnectWithoutDailyReportsInput
-    upsert?: WorkerScheduleUpsertWithoutDailyReportsInput
-    disconnect?: WorkerScheduleWhereInput | boolean
-    delete?: WorkerScheduleWhereInput | boolean
-    connect?: WorkerScheduleWhereUniqueInput
-    update?: XOR<XOR<WorkerScheduleUpdateToOneWithWhereWithoutDailyReportsInput, WorkerScheduleUpdateWithoutDailyReportsInput>, WorkerScheduleUncheckedUpdateWithoutDailyReportsInput>
-  }
-
-  export type DeliveryChecklistItemUpdateManyWithoutReportNestedInput = {
-    create?: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput> | DeliveryChecklistItemCreateWithoutReportInput[] | DeliveryChecklistItemUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: DeliveryChecklistItemCreateOrConnectWithoutReportInput | DeliveryChecklistItemCreateOrConnectWithoutReportInput[]
-    upsert?: DeliveryChecklistItemUpsertWithWhereUniqueWithoutReportInput | DeliveryChecklistItemUpsertWithWhereUniqueWithoutReportInput[]
-    createMany?: DeliveryChecklistItemCreateManyReportInputEnvelope
-    set?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    disconnect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    delete?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    connect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    update?: DeliveryChecklistItemUpdateWithWhereUniqueWithoutReportInput | DeliveryChecklistItemUpdateWithWhereUniqueWithoutReportInput[]
-    updateMany?: DeliveryChecklistItemUpdateManyWithWhereWithoutReportInput | DeliveryChecklistItemUpdateManyWithWhereWithoutReportInput[]
-    deleteMany?: DeliveryChecklistItemScalarWhereInput | DeliveryChecklistItemScalarWhereInput[]
-  }
-
-  export type DeliveryChecklistItemUncheckedUpdateManyWithoutReportNestedInput = {
-    create?: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput> | DeliveryChecklistItemCreateWithoutReportInput[] | DeliveryChecklistItemUncheckedCreateWithoutReportInput[]
-    connectOrCreate?: DeliveryChecklistItemCreateOrConnectWithoutReportInput | DeliveryChecklistItemCreateOrConnectWithoutReportInput[]
-    upsert?: DeliveryChecklistItemUpsertWithWhereUniqueWithoutReportInput | DeliveryChecklistItemUpsertWithWhereUniqueWithoutReportInput[]
-    createMany?: DeliveryChecklistItemCreateManyReportInputEnvelope
-    set?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    disconnect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    delete?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    connect?: DeliveryChecklistItemWhereUniqueInput | DeliveryChecklistItemWhereUniqueInput[]
-    update?: DeliveryChecklistItemUpdateWithWhereUniqueWithoutReportInput | DeliveryChecklistItemUpdateWithWhereUniqueWithoutReportInput[]
-    updateMany?: DeliveryChecklistItemUpdateManyWithWhereWithoutReportInput | DeliveryChecklistItemUpdateManyWithWhereWithoutReportInput[]
-    deleteMany?: DeliveryChecklistItemScalarWhereInput | DeliveryChecklistItemScalarWhereInput[]
-  }
-
-  export type DailyReportCreateNestedOneWithoutDeliveryItemsInput = {
-    create?: XOR<DailyReportCreateWithoutDeliveryItemsInput, DailyReportUncheckedCreateWithoutDeliveryItemsInput>
-    connectOrCreate?: DailyReportCreateOrConnectWithoutDeliveryItemsInput
-    connect?: DailyReportWhereUniqueInput
-  }
-
-  export type DailyReportUpdateOneRequiredWithoutDeliveryItemsNestedInput = {
-    create?: XOR<DailyReportCreateWithoutDeliveryItemsInput, DailyReportUncheckedCreateWithoutDeliveryItemsInput>
-    connectOrCreate?: DailyReportCreateOrConnectWithoutDeliveryItemsInput
-    upsert?: DailyReportUpsertWithoutDeliveryItemsInput
-    connect?: DailyReportWhereUniqueInput
-    update?: XOR<XOR<DailyReportUpdateToOneWithWhereWithoutDeliveryItemsInput, DailyReportUpdateWithoutDeliveryItemsInput>, DailyReportUncheckedUpdateWithoutDeliveryItemsInput>
   }
 
   export type UserCreateNestedOneWithoutNotificationDismissalsInput = {
@@ -55001,6 +58274,332 @@ export namespace Prisma {
     upsert?: AiAgentUpsertWithoutTrainingDataInput
     connect?: AiAgentWhereUniqueInput
     update?: XOR<XOR<AiAgentUpdateToOneWithWhereWithoutTrainingDataInput, AiAgentUpdateWithoutTrainingDataInput>, AiAgentUncheckedUpdateWithoutTrainingDataInput>
+  }
+
+  export type DeliveryCreateNestedManyWithoutVehicleInput = {
+    create?: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput> | DeliveryCreateWithoutVehicleInput[] | DeliveryUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutVehicleInput | DeliveryCreateOrConnectWithoutVehicleInput[]
+    createMany?: DeliveryCreateManyVehicleInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+  }
+
+  export type DeliveryUncheckedCreateNestedManyWithoutVehicleInput = {
+    create?: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput> | DeliveryCreateWithoutVehicleInput[] | DeliveryUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutVehicleInput | DeliveryCreateOrConnectWithoutVehicleInput[]
+    createMany?: DeliveryCreateManyVehicleInputEnvelope
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+  }
+
+  export type EnumVehicleTypeFieldUpdateOperationsInput = {
+    set?: $Enums.VehicleType
+  }
+
+  export type EnumVehicleStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VehicleStatus
+  }
+
+  export type DeliveryUpdateManyWithoutVehicleNestedInput = {
+    create?: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput> | DeliveryCreateWithoutVehicleInput[] | DeliveryUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutVehicleInput | DeliveryCreateOrConnectWithoutVehicleInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutVehicleInput | DeliveryUpsertWithWhereUniqueWithoutVehicleInput[]
+    createMany?: DeliveryCreateManyVehicleInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutVehicleInput | DeliveryUpdateWithWhereUniqueWithoutVehicleInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutVehicleInput | DeliveryUpdateManyWithWhereWithoutVehicleInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+  }
+
+  export type DeliveryUncheckedUpdateManyWithoutVehicleNestedInput = {
+    create?: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput> | DeliveryCreateWithoutVehicleInput[] | DeliveryUncheckedCreateWithoutVehicleInput[]
+    connectOrCreate?: DeliveryCreateOrConnectWithoutVehicleInput | DeliveryCreateOrConnectWithoutVehicleInput[]
+    upsert?: DeliveryUpsertWithWhereUniqueWithoutVehicleInput | DeliveryUpsertWithWhereUniqueWithoutVehicleInput[]
+    createMany?: DeliveryCreateManyVehicleInputEnvelope
+    set?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    disconnect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    delete?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    connect?: DeliveryWhereUniqueInput | DeliveryWhereUniqueInput[]
+    update?: DeliveryUpdateWithWhereUniqueWithoutVehicleInput | DeliveryUpdateWithWhereUniqueWithoutVehicleInput[]
+    updateMany?: DeliveryUpdateManyWithWhereWithoutVehicleInput | DeliveryUpdateManyWithWhereWithoutVehicleInput[]
+    deleteMany?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+  }
+
+  export type InvoiceCreateNestedOneWithoutDeliveriesInput = {
+    create?: XOR<InvoiceCreateWithoutDeliveriesInput, InvoiceUncheckedCreateWithoutDeliveriesInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutDeliveriesInput
+    connect?: InvoiceWhereUniqueInput
+  }
+
+  export type VehicleCreateNestedOneWithoutDeliveriesInput = {
+    create?: XOR<VehicleCreateWithoutDeliveriesInput, VehicleUncheckedCreateWithoutDeliveriesInput>
+    connectOrCreate?: VehicleCreateOrConnectWithoutDeliveriesInput
+    connect?: VehicleWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutClaimedDeliveriesInput = {
+    create?: XOR<UserCreateWithoutClaimedDeliveriesInput, UserUncheckedCreateWithoutClaimedDeliveriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClaimedDeliveriesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DeliveryItemCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput> | DeliveryItemCreateWithoutDeliveryInput[] | DeliveryItemUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutDeliveryInput | DeliveryItemCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryItemCreateManyDeliveryInputEnvelope
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+  }
+
+  export type DeliveryLogCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput> | DeliveryLogCreateWithoutDeliveryInput[] | DeliveryLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutDeliveryInput | DeliveryLogCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryLogCreateManyDeliveryInputEnvelope
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+  }
+
+  export type DeliveryEditLogCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput> | DeliveryEditLogCreateWithoutDeliveryInput[] | DeliveryEditLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutDeliveryInput | DeliveryEditLogCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryEditLogCreateManyDeliveryInputEnvelope
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+  }
+
+  export type DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput> | DeliveryItemCreateWithoutDeliveryInput[] | DeliveryItemUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutDeliveryInput | DeliveryItemCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryItemCreateManyDeliveryInputEnvelope
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+  }
+
+  export type DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput> | DeliveryLogCreateWithoutDeliveryInput[] | DeliveryLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutDeliveryInput | DeliveryLogCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryLogCreateManyDeliveryInputEnvelope
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+  }
+
+  export type DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput> | DeliveryEditLogCreateWithoutDeliveryInput[] | DeliveryEditLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutDeliveryInput | DeliveryEditLogCreateOrConnectWithoutDeliveryInput[]
+    createMany?: DeliveryEditLogCreateManyDeliveryInputEnvelope
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+  }
+
+  export type EnumDeliveryMethodFieldUpdateOperationsInput = {
+    set?: $Enums.DeliveryMethod
+  }
+
+  export type EnumDeliveryTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DeliveryType
+  }
+
+  export type EnumDeliveryStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DeliveryStatus
+  }
+
+  export type InvoiceUpdateOneWithoutDeliveriesNestedInput = {
+    create?: XOR<InvoiceCreateWithoutDeliveriesInput, InvoiceUncheckedCreateWithoutDeliveriesInput>
+    connectOrCreate?: InvoiceCreateOrConnectWithoutDeliveriesInput
+    upsert?: InvoiceUpsertWithoutDeliveriesInput
+    disconnect?: InvoiceWhereInput | boolean
+    delete?: InvoiceWhereInput | boolean
+    connect?: InvoiceWhereUniqueInput
+    update?: XOR<XOR<InvoiceUpdateToOneWithWhereWithoutDeliveriesInput, InvoiceUpdateWithoutDeliveriesInput>, InvoiceUncheckedUpdateWithoutDeliveriesInput>
+  }
+
+  export type VehicleUpdateOneWithoutDeliveriesNestedInput = {
+    create?: XOR<VehicleCreateWithoutDeliveriesInput, VehicleUncheckedCreateWithoutDeliveriesInput>
+    connectOrCreate?: VehicleCreateOrConnectWithoutDeliveriesInput
+    upsert?: VehicleUpsertWithoutDeliveriesInput
+    disconnect?: VehicleWhereInput | boolean
+    delete?: VehicleWhereInput | boolean
+    connect?: VehicleWhereUniqueInput
+    update?: XOR<XOR<VehicleUpdateToOneWithWhereWithoutDeliveriesInput, VehicleUpdateWithoutDeliveriesInput>, VehicleUncheckedUpdateWithoutDeliveriesInput>
+  }
+
+  export type UserUpdateOneWithoutClaimedDeliveriesNestedInput = {
+    create?: XOR<UserCreateWithoutClaimedDeliveriesInput, UserUncheckedCreateWithoutClaimedDeliveriesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClaimedDeliveriesInput
+    upsert?: UserUpsertWithoutClaimedDeliveriesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClaimedDeliveriesInput, UserUpdateWithoutClaimedDeliveriesInput>, UserUncheckedUpdateWithoutClaimedDeliveriesInput>
+  }
+
+  export type DeliveryItemUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput> | DeliveryItemCreateWithoutDeliveryInput[] | DeliveryItemUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutDeliveryInput | DeliveryItemCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryItemCreateManyDeliveryInputEnvelope
+    set?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    disconnect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    delete?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    update?: DeliveryItemUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryItemUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryItemUpdateManyWithWhereWithoutDeliveryInput | DeliveryItemUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+  }
+
+  export type DeliveryLogUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput> | DeliveryLogCreateWithoutDeliveryInput[] | DeliveryLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutDeliveryInput | DeliveryLogCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryLogUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryLogCreateManyDeliveryInputEnvelope
+    set?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    disconnect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    delete?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    update?: DeliveryLogUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryLogUpdateManyWithWhereWithoutDeliveryInput | DeliveryLogUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+  }
+
+  export type DeliveryEditLogUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput> | DeliveryEditLogCreateWithoutDeliveryInput[] | DeliveryEditLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutDeliveryInput | DeliveryEditLogCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryEditLogUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryEditLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryEditLogCreateManyDeliveryInputEnvelope
+    set?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    disconnect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    delete?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    update?: DeliveryEditLogUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryEditLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryEditLogUpdateManyWithWhereWithoutDeliveryInput | DeliveryEditLogUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+  }
+
+  export type DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput> | DeliveryItemCreateWithoutDeliveryInput[] | DeliveryItemUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryItemCreateOrConnectWithoutDeliveryInput | DeliveryItemCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryItemCreateManyDeliveryInputEnvelope
+    set?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    disconnect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    delete?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+    update?: DeliveryItemUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryItemUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryItemUpdateManyWithWhereWithoutDeliveryInput | DeliveryItemUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+  }
+
+  export type DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput> | DeliveryLogCreateWithoutDeliveryInput[] | DeliveryLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryLogCreateOrConnectWithoutDeliveryInput | DeliveryLogCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryLogUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryLogCreateManyDeliveryInputEnvelope
+    set?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    disconnect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    delete?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    connect?: DeliveryLogWhereUniqueInput | DeliveryLogWhereUniqueInput[]
+    update?: DeliveryLogUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryLogUpdateManyWithWhereWithoutDeliveryInput | DeliveryLogUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+  }
+
+  export type DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput = {
+    create?: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput> | DeliveryEditLogCreateWithoutDeliveryInput[] | DeliveryEditLogUncheckedCreateWithoutDeliveryInput[]
+    connectOrCreate?: DeliveryEditLogCreateOrConnectWithoutDeliveryInput | DeliveryEditLogCreateOrConnectWithoutDeliveryInput[]
+    upsert?: DeliveryEditLogUpsertWithWhereUniqueWithoutDeliveryInput | DeliveryEditLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+    createMany?: DeliveryEditLogCreateManyDeliveryInputEnvelope
+    set?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    disconnect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    delete?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    connect?: DeliveryEditLogWhereUniqueInput | DeliveryEditLogWhereUniqueInput[]
+    update?: DeliveryEditLogUpdateWithWhereUniqueWithoutDeliveryInput | DeliveryEditLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+    updateMany?: DeliveryEditLogUpdateManyWithWhereWithoutDeliveryInput | DeliveryEditLogUpdateManyWithWhereWithoutDeliveryInput[]
+    deleteMany?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+  }
+
+  export type DeliveryCreateNestedOneWithoutItemsInput = {
+    create?: XOR<DeliveryCreateWithoutItemsInput, DeliveryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutItemsInput
+    connect?: DeliveryWhereUniqueInput
+  }
+
+  export type RentalItemCreateNestedOneWithoutDeliveryItemsInput = {
+    create?: XOR<RentalItemCreateWithoutDeliveryItemsInput, RentalItemUncheckedCreateWithoutDeliveryItemsInput>
+    connectOrCreate?: RentalItemCreateOrConnectWithoutDeliveryItemsInput
+    connect?: RentalItemWhereUniqueInput
+  }
+
+  export type DeliveryUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<DeliveryCreateWithoutItemsInput, DeliveryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutItemsInput
+    upsert?: DeliveryUpsertWithoutItemsInput
+    connect?: DeliveryWhereUniqueInput
+    update?: XOR<XOR<DeliveryUpdateToOneWithWhereWithoutItemsInput, DeliveryUpdateWithoutItemsInput>, DeliveryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type RentalItemUpdateOneRequiredWithoutDeliveryItemsNestedInput = {
+    create?: XOR<RentalItemCreateWithoutDeliveryItemsInput, RentalItemUncheckedCreateWithoutDeliveryItemsInput>
+    connectOrCreate?: RentalItemCreateOrConnectWithoutDeliveryItemsInput
+    upsert?: RentalItemUpsertWithoutDeliveryItemsInput
+    connect?: RentalItemWhereUniqueInput
+    update?: XOR<XOR<RentalItemUpdateToOneWithWhereWithoutDeliveryItemsInput, RentalItemUpdateWithoutDeliveryItemsInput>, RentalItemUncheckedUpdateWithoutDeliveryItemsInput>
+  }
+
+  export type DeliveryCreateNestedOneWithoutLogsInput = {
+    create?: XOR<DeliveryCreateWithoutLogsInput, DeliveryUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutLogsInput
+    connect?: DeliveryWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDeliveryLogsInput = {
+    create?: XOR<UserCreateWithoutDeliveryLogsInput, UserUncheckedCreateWithoutDeliveryLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeliveryLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDeliveryRoleFieldUpdateOperationsInput = {
+    set?: $Enums.DeliveryRole
+  }
+
+  export type DeliveryUpdateOneRequiredWithoutLogsNestedInput = {
+    create?: XOR<DeliveryCreateWithoutLogsInput, DeliveryUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutLogsInput
+    upsert?: DeliveryUpsertWithoutLogsInput
+    connect?: DeliveryWhereUniqueInput
+    update?: XOR<XOR<DeliveryUpdateToOneWithWhereWithoutLogsInput, DeliveryUpdateWithoutLogsInput>, DeliveryUncheckedUpdateWithoutLogsInput>
+  }
+
+  export type UserUpdateOneWithoutDeliveryLogsNestedInput = {
+    create?: XOR<UserCreateWithoutDeliveryLogsInput, UserUncheckedCreateWithoutDeliveryLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeliveryLogsInput
+    upsert?: UserUpsertWithoutDeliveryLogsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeliveryLogsInput, UserUpdateWithoutDeliveryLogsInput>, UserUncheckedUpdateWithoutDeliveryLogsInput>
+  }
+
+  export type DeliveryCreateNestedOneWithoutEditLogsInput = {
+    create?: XOR<DeliveryCreateWithoutEditLogsInput, DeliveryUncheckedCreateWithoutEditLogsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutEditLogsInput
+    connect?: DeliveryWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDeliveryEditLogsInput = {
+    create?: XOR<UserCreateWithoutDeliveryEditLogsInput, UserUncheckedCreateWithoutDeliveryEditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeliveryEditLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DeliveryUpdateOneRequiredWithoutEditLogsNestedInput = {
+    create?: XOR<DeliveryCreateWithoutEditLogsInput, DeliveryUncheckedCreateWithoutEditLogsInput>
+    connectOrCreate?: DeliveryCreateOrConnectWithoutEditLogsInput
+    upsert?: DeliveryUpsertWithoutEditLogsInput
+    connect?: DeliveryWhereUniqueInput
+    update?: XOR<XOR<DeliveryUpdateToOneWithWhereWithoutEditLogsInput, DeliveryUpdateWithoutEditLogsInput>, DeliveryUncheckedUpdateWithoutEditLogsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDeliveryEditLogsNestedInput = {
+    create?: XOR<UserCreateWithoutDeliveryEditLogsInput, UserUncheckedCreateWithoutDeliveryEditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeliveryEditLogsInput
+    upsert?: UserUpsertWithoutDeliveryEditLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeliveryEditLogsInput, UserUpdateWithoutDeliveryEditLogsInput>, UserUncheckedUpdateWithoutDeliveryEditLogsInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -55445,23 +59044,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedEnumschedule_statusNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.schedule_status | Enumschedule_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumschedule_statusNullableFilter<$PrismaModel> | $Enums.schedule_status | null
-  }
-
-  export type NestedEnumschedule_statusNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.schedule_status | Enumschedule_statusFieldRefInput<$PrismaModel> | null
-    in?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    notIn?: $Enums.schedule_status[] | ListEnumschedule_statusFieldRefInput<$PrismaModel> | null
-    not?: NestedEnumschedule_statusNullableWithAggregatesFilter<$PrismaModel> | $Enums.schedule_status | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumschedule_statusNullableFilter<$PrismaModel>
-    _max?: NestedEnumschedule_statusNullableFilter<$PrismaModel>
-  }
-
   export type NestedEnumattendance_statusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.attendance_status | Enumattendance_statusFieldRefInput<$PrismaModel> | null
     in?: $Enums.attendance_status[] | ListEnumattendance_statusFieldRefInput<$PrismaModel> | null
@@ -55553,6 +59135,108 @@ export namespace Prisma {
     _max?: NestedEnumAiActionStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumVehicleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeFilter<$PrismaModel> | $Enums.VehicleType
+  }
+
+  export type NestedEnumVehicleStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusFilter<$PrismaModel> | $Enums.VehicleStatus
+  }
+
+  export type NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleType | EnumVehicleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleType[] | ListEnumVehicleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleTypeWithAggregatesFilter<$PrismaModel> | $Enums.VehicleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleTypeFilter<$PrismaModel>
+    _max?: NestedEnumVehicleTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VehicleStatus | EnumVehicleStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VehicleStatus[] | ListEnumVehicleStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVehicleStatusWithAggregatesFilter<$PrismaModel> | $Enums.VehicleStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVehicleStatusFilter<$PrismaModel>
+    _max?: NestedEnumVehicleStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeliveryMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryMethod | EnumDeliveryMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryMethodFilter<$PrismaModel> | $Enums.DeliveryMethod
+  }
+
+  export type NestedEnumDeliveryTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryType | EnumDeliveryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryTypeFilter<$PrismaModel> | $Enums.DeliveryType
+  }
+
+  export type NestedEnumDeliveryStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryStatus | EnumDeliveryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryStatusFilter<$PrismaModel> | $Enums.DeliveryStatus
+  }
+
+  export type NestedEnumDeliveryMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryMethod | EnumDeliveryMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryMethod[] | ListEnumDeliveryMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryMethodWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryMethodFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryMethodFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeliveryTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryType | EnumDeliveryTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryType[] | ListEnumDeliveryTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryTypeWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryTypeFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryStatus | EnumDeliveryStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryStatus[] | ListEnumDeliveryStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryStatusWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryStatusFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeliveryRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryRole | EnumDeliveryRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryRoleFilter<$PrismaModel> | $Enums.DeliveryRole
+  }
+
+  export type NestedEnumDeliveryRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeliveryRole | EnumDeliveryRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeliveryRole[] | ListEnumDeliveryRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeliveryRoleWithAggregatesFilter<$PrismaModel> | $Enums.DeliveryRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeliveryRoleFilter<$PrismaModel>
+    _max?: NestedEnumDeliveryRoleFilter<$PrismaModel>
+  }
+
   export type OrderCreateWithoutInvoicesInput = {
     id?: string
     orderNumber: string
@@ -55571,13 +59255,11 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user: UserCreateNestedOneWithoutOrdersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -55601,17 +59283,73 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutInvoicesInput = {
     where: OrderWhereUniqueInput
     create: XOR<OrderCreateWithoutInvoicesInput, OrderUncheckedCreateWithoutInvoicesInput>
+  }
+
+  export type DeliveryCreateWithoutInvoiceInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutInvoiceInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutInvoiceInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type DeliveryCreateManyInvoiceInputEnvelope = {
+    data: DeliveryCreateManyInvoiceInput | DeliveryCreateManyInvoiceInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutInvoicesInput = {
@@ -55638,15 +59376,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -55678,15 +59416,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -55728,13 +59466,11 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -55758,12 +59494,51 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type DeliveryUpsertWithWhereUniqueWithoutInvoiceInput = {
+    where: DeliveryWhereUniqueInput
+    update: XOR<DeliveryUpdateWithoutInvoiceInput, DeliveryUncheckedUpdateWithoutInvoiceInput>
+    create: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput>
+  }
+
+  export type DeliveryUpdateWithWhereUniqueWithoutInvoiceInput = {
+    where: DeliveryWhereUniqueInput
+    data: XOR<DeliveryUpdateWithoutInvoiceInput, DeliveryUncheckedUpdateWithoutInvoiceInput>
+  }
+
+  export type DeliveryUpdateManyWithWhereWithoutInvoiceInput = {
+    where: DeliveryScalarWhereInput
+    data: XOR<DeliveryUpdateManyMutationInput, DeliveryUncheckedUpdateManyWithoutInvoiceInput>
+  }
+
+  export type DeliveryScalarWhereInput = {
+    AND?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+    OR?: DeliveryScalarWhereInput[]
+    NOT?: DeliveryScalarWhereInput | DeliveryScalarWhereInput[]
+    id?: UuidFilter<"Delivery"> | string
+    invoiceId?: UuidNullableFilter<"Delivery"> | string | null
+    deliveryMethod?: EnumDeliveryMethodFilter<"Delivery"> | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFilter<"Delivery"> | $Enums.DeliveryType
+    vehicleId?: UuidNullableFilter<"Delivery"> | string | null
+    status?: EnumDeliveryStatusFilter<"Delivery"> | $Enums.DeliveryStatus
+    claimedByWorkerId?: UuidNullableFilter<"Delivery"> | string | null
+    claimedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    eta?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    etaOverrideCount?: IntFilter<"Delivery"> | number
+    delayMinutes?: IntFilter<"Delivery"> | number
+    latitude?: FloatNullableFilter<"Delivery"> | number | null
+    longitude?: FloatNullableFilter<"Delivery"> | number | null
+    lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    trackingCode?: StringNullableFilter<"Delivery"> | string | null
+    createdAt?: DateTimeFilter<"Delivery"> | Date | string
+    updatedAt?: DateTimeFilter<"Delivery"> | Date | string
   }
 
   export type UserUpsertWithoutInvoicesInput = {
@@ -55801,15 +59576,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -55841,15 +59616,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -55878,6 +59653,7 @@ export namespace Prisma {
     shareableToken?: string | null
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
+    deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
     user?: UserCreateNestedOneWithoutInvoicesInput
   }
 
@@ -55903,6 +59679,7 @@ export namespace Prisma {
     shareableToken?: string | null
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
+    deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutOrderInput = {
@@ -55977,15 +59754,15 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -56017,15 +59794,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -56062,15 +59839,15 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -56102,15 +59879,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -56130,6 +59907,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutOrderInput = {
@@ -56139,6 +59917,7 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     unitId?: string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutOrderInput = {
@@ -56148,44 +59927,6 @@ export namespace Prisma {
 
   export type RentalItemCreateManyOrderInputEnvelope = {
     data: RentalItemCreateManyOrderInput | RentalItemCreateManyOrderInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WorkerScheduleCreateWithoutOrderInput = {
-    id?: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    assignedByUser: UserCreateNestedOneWithoutAssignedSchedulesInput
-    worker: UserCreateNestedOneWithoutWorkerSchedulesInput
-    dailyReports?: DailyReportCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleUncheckedCreateWithoutOrderInput = {
-    id?: string
-    workerId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleCreateOrConnectWithoutOrderInput = {
-    where: WorkerScheduleWhereUniqueInput
-    create: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput>
-  }
-
-  export type WorkerScheduleCreateManyOrderInputEnvelope = {
-    data: WorkerScheduleCreateManyOrderInput | WorkerScheduleCreateManyOrderInput[]
     skipDuplicates?: boolean
   }
 
@@ -56338,15 +60079,15 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -56378,15 +60119,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -56429,15 +60170,15 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -56469,15 +60210,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -56512,39 +60253,6 @@ export namespace Prisma {
     quantity?: IntNullableFilter<"RentalItem"> | number | null
     createdAt?: DateTimeNullableFilter<"RentalItem"> | Date | string | null
     unitId?: UuidNullableFilter<"RentalItem"> | string | null
-  }
-
-  export type WorkerScheduleUpsertWithWhereUniqueWithoutOrderInput = {
-    where: WorkerScheduleWhereUniqueInput
-    update: XOR<WorkerScheduleUpdateWithoutOrderInput, WorkerScheduleUncheckedUpdateWithoutOrderInput>
-    create: XOR<WorkerScheduleCreateWithoutOrderInput, WorkerScheduleUncheckedCreateWithoutOrderInput>
-  }
-
-  export type WorkerScheduleUpdateWithWhereUniqueWithoutOrderInput = {
-    where: WorkerScheduleWhereUniqueInput
-    data: XOR<WorkerScheduleUpdateWithoutOrderInput, WorkerScheduleUncheckedUpdateWithoutOrderInput>
-  }
-
-  export type WorkerScheduleUpdateManyWithWhereWithoutOrderInput = {
-    where: WorkerScheduleScalarWhereInput
-    data: XOR<WorkerScheduleUpdateManyMutationInput, WorkerScheduleUncheckedUpdateManyWithoutOrderInput>
-  }
-
-  export type WorkerScheduleScalarWhereInput = {
-    AND?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
-    OR?: WorkerScheduleScalarWhereInput[]
-    NOT?: WorkerScheduleScalarWhereInput | WorkerScheduleScalarWhereInput[]
-    id?: UuidFilter<"WorkerSchedule"> | string
-    workerId?: UuidFilter<"WorkerSchedule"> | string
-    orderId?: UuidFilter<"WorkerSchedule"> | string
-    assignedBy?: UuidFilter<"WorkerSchedule"> | string
-    assignedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    status?: Enumschedule_statusNullableFilter<"WorkerSchedule"> | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFilter<"WorkerSchedule"> | Date | string
-    notes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    workerNotes?: StringNullableFilter<"WorkerSchedule"> | string | null
-    createdAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"WorkerSchedule"> | Date | string | null
   }
 
   export type PaymentTransactionUpsertWithWhereUniqueWithoutOrderInput = {
@@ -56599,14 +60307,12 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user: UserCreateNestedOneWithoutOrdersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutPaymentTransactionsInput = {
@@ -56629,12 +60335,10 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutPaymentTransactionsInput = {
@@ -56667,15 +60371,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
@@ -56707,15 +60411,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -56756,14 +60460,12 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutPaymentTransactionsInput = {
@@ -56786,12 +60488,10 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type UserUpsertWithoutVerifiedTransactionsInput = {
@@ -56830,15 +60530,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
@@ -56870,15 +60570,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -57240,6 +60940,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutRentalPackageInput = {
@@ -57249,6 +60950,7 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     unitId?: string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutRentalPackageInput = {
@@ -57621,6 +61323,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutVariantInput = {
@@ -57630,6 +61333,7 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     unitId?: string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutVariantInput = {
@@ -57802,13 +61506,11 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user: UserCreateNestedOneWithoutOrdersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -57832,11 +61534,9 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -57852,6 +61552,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutUnitInput = {
@@ -57861,6 +61562,7 @@ export namespace Prisma {
     packageId?: string | null
     quantity?: number | null
     createdAt?: Date | string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutUnitInput = {
@@ -57967,13 +61669,11 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -57997,11 +61697,9 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -58110,15 +61808,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -58150,15 +61848,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -58245,15 +61943,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -58285,15 +61983,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -58325,15 +62023,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
@@ -58365,15 +62063,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -58421,15 +62119,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
@@ -58461,15 +62159,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -58494,13 +62192,11 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user: UserCreateNestedOneWithoutOrdersInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -58524,11 +62220,9 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -58630,6 +62324,28 @@ export namespace Prisma {
     create: XOR<ProductUnitCreateWithoutRentalItemsInput, ProductUnitUncheckedCreateWithoutRentalItemsInput>
   }
 
+  export type DeliveryItemCreateWithoutRentalItemInput = {
+    id?: string
+    quantity: number
+    delivery: DeliveryCreateNestedOneWithoutItemsInput
+  }
+
+  export type DeliveryItemUncheckedCreateWithoutRentalItemInput = {
+    id?: string
+    deliveryId: string
+    quantity: number
+  }
+
+  export type DeliveryItemCreateOrConnectWithoutRentalItemInput = {
+    where: DeliveryItemWhereUniqueInput
+    create: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type DeliveryItemCreateManyRentalItemInputEnvelope = {
+    data: DeliveryItemCreateManyRentalItemInput | DeliveryItemCreateManyRentalItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrderUpsertWithoutRentalItemsInput = {
     update: XOR<OrderUpdateWithoutRentalItemsInput, OrderUncheckedUpdateWithoutRentalItemsInput>
     create: XOR<OrderCreateWithoutRentalItemsInput, OrderUncheckedCreateWithoutRentalItemsInput>
@@ -58659,13 +62375,11 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -58689,11 +62403,9 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -58806,6 +62518,32 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     history?: UnitHistoryUncheckedUpdateManyWithoutUnitNestedInput
+  }
+
+  export type DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput = {
+    where: DeliveryItemWhereUniqueInput
+    update: XOR<DeliveryItemUpdateWithoutRentalItemInput, DeliveryItemUncheckedUpdateWithoutRentalItemInput>
+    create: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput = {
+    where: DeliveryItemWhereUniqueInput
+    data: XOR<DeliveryItemUpdateWithoutRentalItemInput, DeliveryItemUncheckedUpdateWithoutRentalItemInput>
+  }
+
+  export type DeliveryItemUpdateManyWithWhereWithoutRentalItemInput = {
+    where: DeliveryItemScalarWhereInput
+    data: XOR<DeliveryItemUpdateManyMutationInput, DeliveryItemUncheckedUpdateManyWithoutRentalItemInput>
+  }
+
+  export type DeliveryItemScalarWhereInput = {
+    AND?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+    OR?: DeliveryItemScalarWhereInput[]
+    NOT?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+    id?: UuidFilter<"DeliveryItem"> | string
+    deliveryId?: UuidFilter<"DeliveryItem"> | string
+    rentalItemId?: UuidFilter<"DeliveryItem"> | string
+    quantity?: IntFilter<"DeliveryItem"> | number
   }
 
   export type ActivityLogCreateWithoutUserInput = {
@@ -58928,6 +62666,7 @@ export namespace Prisma {
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
     order?: OrderCreateNestedOneWithoutInvoicesInput
+    deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceUncheckedCreateWithoutUserInput = {
@@ -58952,6 +62691,7 @@ export namespace Prisma {
     shareableToken?: string | null
     emailSent?: boolean | null
     emailSentAt?: Date | string | null
+    deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
   export type InvoiceCreateOrConnectWithoutUserInput = {
@@ -58982,13 +62722,11 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     user: UserCreateNestedOneWithoutOrdersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -59011,12 +62749,10 @@ export namespace Prisma {
     userId: string
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -59048,13 +62784,11 @@ export namespace Prisma {
     createdAt?: Date | string | null
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
   }
 
@@ -59077,12 +62811,10 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -59123,6 +62855,126 @@ export namespace Prisma {
 
   export type WorkerAttendanceCreateManyWorkerInputEnvelope = {
     data: WorkerAttendanceCreateManyWorkerInput | WorkerAttendanceCreateManyWorkerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryCreateWithoutClaimedByWorkerInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutClaimedByWorkerInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutClaimedByWorkerInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput>
+  }
+
+  export type DeliveryCreateManyClaimedByWorkerInputEnvelope = {
+    data: DeliveryCreateManyClaimedByWorkerInput | DeliveryCreateManyClaimedByWorkerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryLogCreateWithoutCreatedByUserInput = {
+    id?: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+    delivery: DeliveryCreateNestedOneWithoutLogsInput
+  }
+
+  export type DeliveryLogUncheckedCreateWithoutCreatedByUserInput = {
+    id?: string
+    deliveryId: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryLogCreateOrConnectWithoutCreatedByUserInput = {
+    where: DeliveryLogWhereUniqueInput
+    create: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput>
+  }
+
+  export type DeliveryLogCreateManyCreatedByUserInputEnvelope = {
+    data: DeliveryLogCreateManyCreatedByUserInput | DeliveryLogCreateManyCreatedByUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryEditLogCreateWithoutEditedByUserInput = {
+    id?: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+    delivery: DeliveryCreateNestedOneWithoutEditLogsInput
+  }
+
+  export type DeliveryEditLogUncheckedCreateWithoutEditedByUserInput = {
+    id?: string
+    deliveryId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogCreateOrConnectWithoutEditedByUserInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    create: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput>
+  }
+
+  export type DeliveryEditLogCreateManyEditedByUserInputEnvelope = {
+    data: DeliveryEditLogCreateManyEditedByUserInput | DeliveryEditLogCreateManyEditedByUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -59183,82 +63035,6 @@ export namespace Prisma {
 
   export type WorkerNotificationCreateManyWorkerInputEnvelope = {
     data: WorkerNotificationCreateManyWorkerInput | WorkerNotificationCreateManyWorkerInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WorkerScheduleCreateWithoutAssignedByUserInput = {
-    id?: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    order: OrderCreateNestedOneWithoutWorkerSchedulesInput
-    worker: UserCreateNestedOneWithoutWorkerSchedulesInput
-    dailyReports?: DailyReportCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleUncheckedCreateWithoutAssignedByUserInput = {
-    id?: string
-    workerId: string
-    orderId: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleCreateOrConnectWithoutAssignedByUserInput = {
-    where: WorkerScheduleWhereUniqueInput
-    create: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput>
-  }
-
-  export type WorkerScheduleCreateManyAssignedByUserInputEnvelope = {
-    data: WorkerScheduleCreateManyAssignedByUserInput | WorkerScheduleCreateManyAssignedByUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WorkerScheduleCreateWithoutWorkerInput = {
-    id?: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    assignedByUser: UserCreateNestedOneWithoutAssignedSchedulesInput
-    order: OrderCreateNestedOneWithoutWorkerSchedulesInput
-    dailyReports?: DailyReportCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleUncheckedCreateWithoutWorkerInput = {
-    id?: string
-    orderId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutScheduleInput
-  }
-
-  export type WorkerScheduleCreateOrConnectWithoutWorkerInput = {
-    where: WorkerScheduleWhereUniqueInput
-    create: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput>
-  }
-
-  export type WorkerScheduleCreateManyWorkerInputEnvelope = {
-    data: WorkerScheduleCreateManyWorkerInput | WorkerScheduleCreateManyWorkerInput[]
     skipDuplicates?: boolean
   }
 
@@ -59359,38 +63135,6 @@ export namespace Prisma {
 
   export type GroupMessageCreateManySenderInputEnvelope = {
     data: GroupMessageCreateManySenderInput | GroupMessageCreateManySenderInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DailyReportCreateWithoutWorkerInput = {
-    id?: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    schedule?: WorkerScheduleCreateNestedOneWithoutDailyReportsInput
-    deliveryItems?: DeliveryChecklistItemCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportUncheckedCreateWithoutWorkerInput = {
-    id?: string
-    scheduleId?: string | null
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportCreateOrConnectWithoutWorkerInput = {
-    where: DailyReportWhereUniqueInput
-    create: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput>
-  }
-
-  export type DailyReportCreateManyWorkerInputEnvelope = {
-    data: DailyReportCreateManyWorkerInput | DailyReportCreateManyWorkerInput[]
     skipDuplicates?: boolean
   }
 
@@ -59669,7 +63413,6 @@ export namespace Prisma {
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentConfirmedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    deliveryStatus?: StringNullableFilter<"Order"> | string | null
     deliveryAddress?: StringNullableFilter<"Order"> | string | null
   }
 
@@ -59719,6 +63462,83 @@ export namespace Prisma {
     createdAt?: DateTimeNullableFilter<"WorkerAttendance"> | Date | string | null
   }
 
+  export type DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput = {
+    where: DeliveryWhereUniqueInput
+    update: XOR<DeliveryUpdateWithoutClaimedByWorkerInput, DeliveryUncheckedUpdateWithoutClaimedByWorkerInput>
+    create: XOR<DeliveryCreateWithoutClaimedByWorkerInput, DeliveryUncheckedCreateWithoutClaimedByWorkerInput>
+  }
+
+  export type DeliveryUpdateWithWhereUniqueWithoutClaimedByWorkerInput = {
+    where: DeliveryWhereUniqueInput
+    data: XOR<DeliveryUpdateWithoutClaimedByWorkerInput, DeliveryUncheckedUpdateWithoutClaimedByWorkerInput>
+  }
+
+  export type DeliveryUpdateManyWithWhereWithoutClaimedByWorkerInput = {
+    where: DeliveryScalarWhereInput
+    data: XOR<DeliveryUpdateManyMutationInput, DeliveryUncheckedUpdateManyWithoutClaimedByWorkerInput>
+  }
+
+  export type DeliveryLogUpsertWithWhereUniqueWithoutCreatedByUserInput = {
+    where: DeliveryLogWhereUniqueInput
+    update: XOR<DeliveryLogUpdateWithoutCreatedByUserInput, DeliveryLogUncheckedUpdateWithoutCreatedByUserInput>
+    create: XOR<DeliveryLogCreateWithoutCreatedByUserInput, DeliveryLogUncheckedCreateWithoutCreatedByUserInput>
+  }
+
+  export type DeliveryLogUpdateWithWhereUniqueWithoutCreatedByUserInput = {
+    where: DeliveryLogWhereUniqueInput
+    data: XOR<DeliveryLogUpdateWithoutCreatedByUserInput, DeliveryLogUncheckedUpdateWithoutCreatedByUserInput>
+  }
+
+  export type DeliveryLogUpdateManyWithWhereWithoutCreatedByUserInput = {
+    where: DeliveryLogScalarWhereInput
+    data: XOR<DeliveryLogUpdateManyMutationInput, DeliveryLogUncheckedUpdateManyWithoutCreatedByUserInput>
+  }
+
+  export type DeliveryLogScalarWhereInput = {
+    AND?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+    OR?: DeliveryLogScalarWhereInput[]
+    NOT?: DeliveryLogScalarWhereInput | DeliveryLogScalarWhereInput[]
+    id?: UuidFilter<"DeliveryLog"> | string
+    deliveryId?: UuidFilter<"DeliveryLog"> | string
+    eventType?: StringFilter<"DeliveryLog"> | string
+    oldValue?: JsonNullableFilter<"DeliveryLog">
+    newValue?: JsonNullableFilter<"DeliveryLog">
+    createdByUserId?: UuidNullableFilter<"DeliveryLog"> | string | null
+    role?: EnumDeliveryRoleFilter<"DeliveryLog"> | $Enums.DeliveryRole
+    createdAt?: DateTimeFilter<"DeliveryLog"> | Date | string
+  }
+
+  export type DeliveryEditLogUpsertWithWhereUniqueWithoutEditedByUserInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    update: XOR<DeliveryEditLogUpdateWithoutEditedByUserInput, DeliveryEditLogUncheckedUpdateWithoutEditedByUserInput>
+    create: XOR<DeliveryEditLogCreateWithoutEditedByUserInput, DeliveryEditLogUncheckedCreateWithoutEditedByUserInput>
+  }
+
+  export type DeliveryEditLogUpdateWithWhereUniqueWithoutEditedByUserInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    data: XOR<DeliveryEditLogUpdateWithoutEditedByUserInput, DeliveryEditLogUncheckedUpdateWithoutEditedByUserInput>
+  }
+
+  export type DeliveryEditLogUpdateManyWithWhereWithoutEditedByUserInput = {
+    where: DeliveryEditLogScalarWhereInput
+    data: XOR<DeliveryEditLogUpdateManyMutationInput, DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserInput>
+  }
+
+  export type DeliveryEditLogScalarWhereInput = {
+    AND?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+    OR?: DeliveryEditLogScalarWhereInput[]
+    NOT?: DeliveryEditLogScalarWhereInput | DeliveryEditLogScalarWhereInput[]
+    id?: UuidFilter<"DeliveryEditLog"> | string
+    deliveryId?: UuidFilter<"DeliveryEditLog"> | string
+    editedByUserId?: UuidFilter<"DeliveryEditLog"> | string
+    role?: EnumDeliveryRoleFilter<"DeliveryEditLog"> | $Enums.DeliveryRole
+    fieldChanged?: StringFilter<"DeliveryEditLog"> | string
+    oldValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    newValue?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    reason?: StringNullableFilter<"DeliveryEditLog"> | string | null
+    createdAt?: DateTimeFilter<"DeliveryEditLog"> | Date | string
+  }
+
   export type WorkerNotificationUpsertWithWhereUniqueWithoutFromAdminInput = {
     where: WorkerNotificationWhereUniqueInput
     update: XOR<WorkerNotificationUpdateWithoutFromAdminInput, WorkerNotificationUncheckedUpdateWithoutFromAdminInput>
@@ -59763,38 +63583,6 @@ export namespace Prisma {
   export type WorkerNotificationUpdateManyWithWhereWithoutWorkerInput = {
     where: WorkerNotificationScalarWhereInput
     data: XOR<WorkerNotificationUpdateManyMutationInput, WorkerNotificationUncheckedUpdateManyWithoutWorkerInput>
-  }
-
-  export type WorkerScheduleUpsertWithWhereUniqueWithoutAssignedByUserInput = {
-    where: WorkerScheduleWhereUniqueInput
-    update: XOR<WorkerScheduleUpdateWithoutAssignedByUserInput, WorkerScheduleUncheckedUpdateWithoutAssignedByUserInput>
-    create: XOR<WorkerScheduleCreateWithoutAssignedByUserInput, WorkerScheduleUncheckedCreateWithoutAssignedByUserInput>
-  }
-
-  export type WorkerScheduleUpdateWithWhereUniqueWithoutAssignedByUserInput = {
-    where: WorkerScheduleWhereUniqueInput
-    data: XOR<WorkerScheduleUpdateWithoutAssignedByUserInput, WorkerScheduleUncheckedUpdateWithoutAssignedByUserInput>
-  }
-
-  export type WorkerScheduleUpdateManyWithWhereWithoutAssignedByUserInput = {
-    where: WorkerScheduleScalarWhereInput
-    data: XOR<WorkerScheduleUpdateManyMutationInput, WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserInput>
-  }
-
-  export type WorkerScheduleUpsertWithWhereUniqueWithoutWorkerInput = {
-    where: WorkerScheduleWhereUniqueInput
-    update: XOR<WorkerScheduleUpdateWithoutWorkerInput, WorkerScheduleUncheckedUpdateWithoutWorkerInput>
-    create: XOR<WorkerScheduleCreateWithoutWorkerInput, WorkerScheduleUncheckedCreateWithoutWorkerInput>
-  }
-
-  export type WorkerScheduleUpdateWithWhereUniqueWithoutWorkerInput = {
-    where: WorkerScheduleWhereUniqueInput
-    data: XOR<WorkerScheduleUpdateWithoutWorkerInput, WorkerScheduleUncheckedUpdateWithoutWorkerInput>
-  }
-
-  export type WorkerScheduleUpdateManyWithWhereWithoutWorkerInput = {
-    where: WorkerScheduleScalarWhereInput
-    data: XOR<WorkerScheduleUpdateManyMutationInput, WorkerScheduleUncheckedUpdateManyWithoutWorkerInput>
   }
 
   export type MessageUpsertWithWhereUniqueWithoutSenderInput = {
@@ -59893,36 +63681,6 @@ export namespace Prisma {
     senderId?: UuidFilter<"GroupMessage"> | string
     content?: StringFilter<"GroupMessage"> | string
     createdAt?: DateTimeFilter<"GroupMessage"> | Date | string
-  }
-
-  export type DailyReportUpsertWithWhereUniqueWithoutWorkerInput = {
-    where: DailyReportWhereUniqueInput
-    update: XOR<DailyReportUpdateWithoutWorkerInput, DailyReportUncheckedUpdateWithoutWorkerInput>
-    create: XOR<DailyReportCreateWithoutWorkerInput, DailyReportUncheckedCreateWithoutWorkerInput>
-  }
-
-  export type DailyReportUpdateWithWhereUniqueWithoutWorkerInput = {
-    where: DailyReportWhereUniqueInput
-    data: XOR<DailyReportUpdateWithoutWorkerInput, DailyReportUncheckedUpdateWithoutWorkerInput>
-  }
-
-  export type DailyReportUpdateManyWithWhereWithoutWorkerInput = {
-    where: DailyReportScalarWhereInput
-    data: XOR<DailyReportUpdateManyMutationInput, DailyReportUncheckedUpdateManyWithoutWorkerInput>
-  }
-
-  export type DailyReportScalarWhereInput = {
-    AND?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
-    OR?: DailyReportScalarWhereInput[]
-    NOT?: DailyReportScalarWhereInput | DailyReportScalarWhereInput[]
-    id?: UuidFilter<"DailyReport"> | string
-    workerId?: UuidFilter<"DailyReport"> | string
-    scheduleId?: UuidNullableFilter<"DailyReport"> | string | null
-    reportDate?: DateTimeFilter<"DailyReport"> | Date | string
-    jobSummary?: StringFilter<"DailyReport"> | string
-    deliveryStatus?: StringFilter<"DailyReport"> | string
-    notes?: StringNullableFilter<"DailyReport"> | string | null
-    createdAt?: DateTimeFilter<"DailyReport"> | Date | string
   }
 
   export type NotificationDismissalUpsertWithWhereUniqueWithoutUserInput = {
@@ -60175,14 +63933,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -60215,14 +63973,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -60300,14 +64058,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -60340,14 +64098,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -60403,14 +64161,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -60443,14 +64201,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -60528,14 +64286,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -60568,14 +64326,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -60607,15 +64365,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -60647,15 +64405,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -60703,15 +64461,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -60743,548 +64501,20 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
-  }
-
-  export type UserCreateWithoutAssignedSchedulesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
-    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserUncheckedCreateWithoutAssignedSchedulesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
-    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserCreateOrConnectWithoutAssignedSchedulesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAssignedSchedulesInput, UserUncheckedCreateWithoutAssignedSchedulesInput>
-  }
-
-  export type OrderCreateWithoutWorkerSchedulesInput = {
-    id?: string
-    orderNumber: string
-    status?: string
-    startDate: Date | string
-    endDate: Date | string
-    duration: number
-    totalAmount: Decimal | DecimalJsLike | number | string
-    subtotal: Decimal | DecimalJsLike | number | string
-    tax?: Decimal | DecimalJsLike | number | string
-    deliveryFee?: Decimal | DecimalJsLike | number | string
-    discountPercentage?: number | null
-    discountAmount?: Decimal | DecimalJsLike | number | string | null
-    currency?: string | null
-    paymentMethod?: string | null
-    createdAt?: Date | string | null
-    paymentStatus?: string | null
-    paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
-    deliveryAddress?: string | null
-    invoices?: InvoiceCreateNestedManyWithoutOrderInput
-    assignedUnits?: ProductUnitCreateNestedManyWithoutAssignedOrderInput
-    users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
-    user: UserCreateNestedOneWithoutOrdersInput
-    rentalItems?: RentalItemCreateNestedManyWithoutOrderInput
-    paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutWorkerSchedulesInput = {
-    id?: string
-    orderNumber: string
-    status?: string
-    startDate: Date | string
-    endDate: Date | string
-    duration: number
-    totalAmount: Decimal | DecimalJsLike | number | string
-    subtotal: Decimal | DecimalJsLike | number | string
-    tax?: Decimal | DecimalJsLike | number | string
-    deliveryFee?: Decimal | DecimalJsLike | number | string
-    discountPercentage?: number | null
-    discountAmount?: Decimal | DecimalJsLike | number | string | null
-    currency?: string | null
-    paymentMethod?: string | null
-    createdAt?: Date | string | null
-    userId: string
-    paymentStatus?: string | null
-    paymentConfirmedBy?: string | null
-    paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
-    deliveryAddress?: string | null
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
-    assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
-    rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
-    paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutWorkerSchedulesInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutWorkerSchedulesInput, OrderUncheckedCreateWithoutWorkerSchedulesInput>
-  }
-
-  export type UserCreateWithoutWorkerSchedulesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
-    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserUncheckedCreateWithoutWorkerSchedulesInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
-    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserCreateOrConnectWithoutWorkerSchedulesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutWorkerSchedulesInput, UserUncheckedCreateWithoutWorkerSchedulesInput>
-  }
-
-  export type DailyReportCreateWithoutScheduleInput = {
-    id?: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    worker: UserCreateNestedOneWithoutDailyReportsInput
-    deliveryItems?: DeliveryChecklistItemCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportUncheckedCreateWithoutScheduleInput = {
-    id?: string
-    workerId: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedCreateNestedManyWithoutReportInput
-  }
-
-  export type DailyReportCreateOrConnectWithoutScheduleInput = {
-    where: DailyReportWhereUniqueInput
-    create: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput>
-  }
-
-  export type DailyReportCreateManyScheduleInputEnvelope = {
-    data: DailyReportCreateManyScheduleInput | DailyReportCreateManyScheduleInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutAssignedSchedulesInput = {
-    update: XOR<UserUpdateWithoutAssignedSchedulesInput, UserUncheckedUpdateWithoutAssignedSchedulesInput>
-    create: XOR<UserCreateWithoutAssignedSchedulesInput, UserUncheckedCreateWithoutAssignedSchedulesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutAssignedSchedulesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutAssignedSchedulesInput, UserUncheckedUpdateWithoutAssignedSchedulesInput>
-  }
-
-  export type UserUpdateWithoutAssignedSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
-    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAssignedSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
-    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
-  }
-
-  export type OrderUpsertWithoutWorkerSchedulesInput = {
-    update: XOR<OrderUpdateWithoutWorkerSchedulesInput, OrderUncheckedUpdateWithoutWorkerSchedulesInput>
-    create: XOR<OrderCreateWithoutWorkerSchedulesInput, OrderUncheckedCreateWithoutWorkerSchedulesInput>
-    where?: OrderWhereInput
-  }
-
-  export type OrderUpdateToOneWithWhereWithoutWorkerSchedulesInput = {
-    where?: OrderWhereInput
-    data: XOR<OrderUpdateWithoutWorkerSchedulesInput, OrderUncheckedUpdateWithoutWorkerSchedulesInput>
-  }
-
-  export type OrderUpdateWithoutWorkerSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderNumber?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    duration?: IntFieldUpdateOperationsInput | number
-    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    deliveryFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    invoices?: InvoiceUpdateManyWithoutOrderNestedInput
-    assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
-    users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutWorkerSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderNumber?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    duration?: IntFieldUpdateOperationsInput | number
-    totalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    deliveryFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    currency?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userId?: StringFieldUpdateOperationsInput | string
-    paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
-    assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
-    rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
-  }
-
-  export type UserUpsertWithoutWorkerSchedulesInput = {
-    update: XOR<UserUpdateWithoutWorkerSchedulesInput, UserUncheckedUpdateWithoutWorkerSchedulesInput>
-    create: XOR<UserCreateWithoutWorkerSchedulesInput, UserUncheckedCreateWithoutWorkerSchedulesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutWorkerSchedulesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutWorkerSchedulesInput, UserUncheckedUpdateWithoutWorkerSchedulesInput>
-  }
-
-  export type UserUpdateWithoutWorkerSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
-    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutWorkerSchedulesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
-    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
-  }
-
-  export type DailyReportUpsertWithWhereUniqueWithoutScheduleInput = {
-    where: DailyReportWhereUniqueInput
-    update: XOR<DailyReportUpdateWithoutScheduleInput, DailyReportUncheckedUpdateWithoutScheduleInput>
-    create: XOR<DailyReportCreateWithoutScheduleInput, DailyReportUncheckedCreateWithoutScheduleInput>
-  }
-
-  export type DailyReportUpdateWithWhereUniqueWithoutScheduleInput = {
-    where: DailyReportWhereUniqueInput
-    data: XOR<DailyReportUpdateWithoutScheduleInput, DailyReportUncheckedUpdateWithoutScheduleInput>
-  }
-
-  export type DailyReportUpdateManyWithWhereWithoutScheduleInput = {
-    where: DailyReportScalarWhereInput
-    data: XOR<DailyReportUpdateManyMutationInput, DailyReportUncheckedUpdateManyWithoutScheduleInput>
   }
 
   export type UserCreateWithoutWorkerAttendanceInput = {
@@ -61311,15 +64541,15 @@ export namespace Prisma {
     invoices?: InvoiceCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -61351,15 +64581,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -61407,15 +64637,15 @@ export namespace Prisma {
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -61447,15 +64677,15 @@ export namespace Prisma {
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -61526,15 +64756,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -61566,15 +64796,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -61611,15 +64841,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -61651,15 +64881,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -61752,15 +64982,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -61792,15 +65022,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -61843,15 +65073,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -61883,15 +65113,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -61924,14 +65154,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -61964,14 +65194,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -62009,14 +65239,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -62049,14 +65279,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -62105,14 +65335,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -62145,14 +65375,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -62196,14 +65426,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -62236,14 +65466,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -62276,14 +65506,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -62316,14 +65546,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -62361,14 +65591,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -62401,14 +65631,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -62457,14 +65687,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -62497,14 +65727,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -62548,14 +65778,14 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -62588,249 +65818,12 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
-    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
-  }
-
-  export type UserCreateWithoutDailyReportsInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
-    sentMessages?: MessageCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserUncheckedCreateWithoutDailyReportsInput = {
-    id?: string
-    username: string
-    password: string
-    email: string
-    fullName: string
-    whatsapp: string
-    baliAddress?: string | null
-    mapsAddressLink?: string | null
-    role?: string
-    createdAt?: Date | string | null
-    isVerified?: boolean
-    resetPasswordExpires?: Date | string | null
-    resetPasswordToken?: string | null
-    isActive?: boolean
-    profileImage?: string | null
-    identityFile?: string | null
-    identityType?: string | null
-    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
-    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
-    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
-    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
-    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
-    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
-    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
-    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
-    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
-    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
-    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
-    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
-    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
-    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
-  }
-
-  export type UserCreateOrConnectWithoutDailyReportsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDailyReportsInput, UserUncheckedCreateWithoutDailyReportsInput>
-  }
-
-  export type WorkerScheduleCreateWithoutDailyReportsInput = {
-    id?: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-    assignedByUser: UserCreateNestedOneWithoutAssignedSchedulesInput
-    order: OrderCreateNestedOneWithoutWorkerSchedulesInput
-    worker: UserCreateNestedOneWithoutWorkerSchedulesInput
-  }
-
-  export type WorkerScheduleUncheckedCreateWithoutDailyReportsInput = {
-    id?: string
-    workerId: string
-    orderId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-  }
-
-  export type WorkerScheduleCreateOrConnectWithoutDailyReportsInput = {
-    where: WorkerScheduleWhereUniqueInput
-    create: XOR<WorkerScheduleCreateWithoutDailyReportsInput, WorkerScheduleUncheckedCreateWithoutDailyReportsInput>
-  }
-
-  export type DeliveryChecklistItemCreateWithoutReportInput = {
-    id?: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-  }
-
-  export type DeliveryChecklistItemUncheckedCreateWithoutReportInput = {
-    id?: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-  }
-
-  export type DeliveryChecklistItemCreateOrConnectWithoutReportInput = {
-    where: DeliveryChecklistItemWhereUniqueInput
-    create: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput>
-  }
-
-  export type DeliveryChecklistItemCreateManyReportInputEnvelope = {
-    data: DeliveryChecklistItemCreateManyReportInput | DeliveryChecklistItemCreateManyReportInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutDailyReportsInput = {
-    update: XOR<UserUpdateWithoutDailyReportsInput, UserUncheckedUpdateWithoutDailyReportsInput>
-    create: XOR<UserCreateWithoutDailyReportsInput, UserUncheckedCreateWithoutDailyReportsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDailyReportsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDailyReportsInput, UserUncheckedUpdateWithoutDailyReportsInput>
-  }
-
-  export type UserUpdateWithoutDailyReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
-    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
-    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
-    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
-    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
-    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
-    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
-    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDailyReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    whatsapp?: StringFieldUpdateOperationsInput | string
-    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
-    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
-    identityType?: NullableStringFieldUpdateOperationsInput | string | null
-    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
-    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
-    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
-    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
-    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
-    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
-    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
-    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -62838,134 +65831,6 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
-  }
-
-  export type WorkerScheduleUpsertWithoutDailyReportsInput = {
-    update: XOR<WorkerScheduleUpdateWithoutDailyReportsInput, WorkerScheduleUncheckedUpdateWithoutDailyReportsInput>
-    create: XOR<WorkerScheduleCreateWithoutDailyReportsInput, WorkerScheduleUncheckedCreateWithoutDailyReportsInput>
-    where?: WorkerScheduleWhereInput
-  }
-
-  export type WorkerScheduleUpdateToOneWithWhereWithoutDailyReportsInput = {
-    where?: WorkerScheduleWhereInput
-    data: XOR<WorkerScheduleUpdateWithoutDailyReportsInput, WorkerScheduleUncheckedUpdateWithoutDailyReportsInput>
-  }
-
-  export type WorkerScheduleUpdateWithoutDailyReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assignedByUser?: UserUpdateOneRequiredWithoutAssignedSchedulesNestedInput
-    order?: OrderUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    worker?: UserUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateWithoutDailyReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type DeliveryChecklistItemUpsertWithWhereUniqueWithoutReportInput = {
-    where: DeliveryChecklistItemWhereUniqueInput
-    update: XOR<DeliveryChecklistItemUpdateWithoutReportInput, DeliveryChecklistItemUncheckedUpdateWithoutReportInput>
-    create: XOR<DeliveryChecklistItemCreateWithoutReportInput, DeliveryChecklistItemUncheckedCreateWithoutReportInput>
-  }
-
-  export type DeliveryChecklistItemUpdateWithWhereUniqueWithoutReportInput = {
-    where: DeliveryChecklistItemWhereUniqueInput
-    data: XOR<DeliveryChecklistItemUpdateWithoutReportInput, DeliveryChecklistItemUncheckedUpdateWithoutReportInput>
-  }
-
-  export type DeliveryChecklistItemUpdateManyWithWhereWithoutReportInput = {
-    where: DeliveryChecklistItemScalarWhereInput
-    data: XOR<DeliveryChecklistItemUpdateManyMutationInput, DeliveryChecklistItemUncheckedUpdateManyWithoutReportInput>
-  }
-
-  export type DeliveryChecklistItemScalarWhereInput = {
-    AND?: DeliveryChecklistItemScalarWhereInput | DeliveryChecklistItemScalarWhereInput[]
-    OR?: DeliveryChecklistItemScalarWhereInput[]
-    NOT?: DeliveryChecklistItemScalarWhereInput | DeliveryChecklistItemScalarWhereInput[]
-    id?: UuidFilter<"DeliveryChecklistItem"> | string
-    reportId?: UuidFilter<"DeliveryChecklistItem"> | string
-    rentalItemId?: UuidFilter<"DeliveryChecklistItem"> | string
-    itemName?: StringFilter<"DeliveryChecklistItem"> | string
-    quantity?: IntFilter<"DeliveryChecklistItem"> | number
-    status?: StringFilter<"DeliveryChecklistItem"> | string
-    notes?: StringNullableFilter<"DeliveryChecklistItem"> | string | null
-  }
-
-  export type DailyReportCreateWithoutDeliveryItemsInput = {
-    id?: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-    worker: UserCreateNestedOneWithoutDailyReportsInput
-    schedule?: WorkerScheduleCreateNestedOneWithoutDailyReportsInput
-  }
-
-  export type DailyReportUncheckedCreateWithoutDeliveryItemsInput = {
-    id?: string
-    workerId: string
-    scheduleId?: string | null
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-  }
-
-  export type DailyReportCreateOrConnectWithoutDeliveryItemsInput = {
-    where: DailyReportWhereUniqueInput
-    create: XOR<DailyReportCreateWithoutDeliveryItemsInput, DailyReportUncheckedCreateWithoutDeliveryItemsInput>
-  }
-
-  export type DailyReportUpsertWithoutDeliveryItemsInput = {
-    update: XOR<DailyReportUpdateWithoutDeliveryItemsInput, DailyReportUncheckedUpdateWithoutDeliveryItemsInput>
-    create: XOR<DailyReportCreateWithoutDeliveryItemsInput, DailyReportUncheckedCreateWithoutDeliveryItemsInput>
-    where?: DailyReportWhereInput
-  }
-
-  export type DailyReportUpdateToOneWithWhereWithoutDeliveryItemsInput = {
-    where?: DailyReportWhereInput
-    data: XOR<DailyReportUpdateWithoutDeliveryItemsInput, DailyReportUncheckedUpdateWithoutDeliveryItemsInput>
-  }
-
-  export type DailyReportUpdateWithoutDeliveryItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    worker?: UserUpdateOneRequiredWithoutDailyReportsNestedInput
-    schedule?: WorkerScheduleUpdateOneWithoutDailyReportsNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateWithoutDeliveryItemsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutNotificationDismissalsInput = {
@@ -62993,15 +65858,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
@@ -63033,15 +65898,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
@@ -63089,15 +65954,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
@@ -63129,15 +65994,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -63412,15 +66277,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
@@ -63452,15 +66317,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    assignedSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutAssignedByUserInput
-    workerSchedules?: WorkerScheduleUncheckedCreateNestedManyWithoutWorkerInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
-    dailyReports?: DailyReportUncheckedCreateNestedManyWithoutWorkerInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
@@ -63543,15 +66408,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
@@ -63583,15 +66448,15 @@ export namespace Prisma {
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    assignedSchedules?: WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutWorkerNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutWorkerNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
@@ -63662,6 +66527,1394 @@ export namespace Prisma {
     actions?: AiActionUncheckedUpdateManyWithoutAgentNestedInput
   }
 
+  export type DeliveryCreateWithoutVehicleInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutVehicleInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutVehicleInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput>
+  }
+
+  export type DeliveryCreateManyVehicleInputEnvelope = {
+    data: DeliveryCreateManyVehicleInput | DeliveryCreateManyVehicleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryUpsertWithWhereUniqueWithoutVehicleInput = {
+    where: DeliveryWhereUniqueInput
+    update: XOR<DeliveryUpdateWithoutVehicleInput, DeliveryUncheckedUpdateWithoutVehicleInput>
+    create: XOR<DeliveryCreateWithoutVehicleInput, DeliveryUncheckedCreateWithoutVehicleInput>
+  }
+
+  export type DeliveryUpdateWithWhereUniqueWithoutVehicleInput = {
+    where: DeliveryWhereUniqueInput
+    data: XOR<DeliveryUpdateWithoutVehicleInput, DeliveryUncheckedUpdateWithoutVehicleInput>
+  }
+
+  export type DeliveryUpdateManyWithWhereWithoutVehicleInput = {
+    where: DeliveryScalarWhereInput
+    data: XOR<DeliveryUpdateManyMutationInput, DeliveryUncheckedUpdateManyWithoutVehicleInput>
+  }
+
+  export type InvoiceCreateWithoutDeliveriesInput = {
+    id?: string
+    invoiceNumber: string
+    subtotal: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    deliveryFee?: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
+    currency?: string | null
+    createdAt?: Date | string | null
+    status?: string
+    guestEmail?: string | null
+    guestName?: string | null
+    guestWhatsapp?: string | null
+    guestAddress?: string | null
+    deliveryFeeOverride?: Decimal | DecimalJsLike | number | string | null
+    taxRate?: Decimal | DecimalJsLike | number | string | null
+    discountPercentage?: number | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    shareableToken?: string | null
+    emailSent?: boolean | null
+    emailSentAt?: Date | string | null
+    order?: OrderCreateNestedOneWithoutInvoicesInput
+    user?: UserCreateNestedOneWithoutInvoicesInput
+  }
+
+  export type InvoiceUncheckedCreateWithoutDeliveriesInput = {
+    id?: string
+    invoiceNumber: string
+    orderId?: string | null
+    subtotal: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    deliveryFee?: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
+    currency?: string | null
+    createdAt?: Date | string | null
+    userId?: string | null
+    status?: string
+    guestEmail?: string | null
+    guestName?: string | null
+    guestWhatsapp?: string | null
+    guestAddress?: string | null
+    deliveryFeeOverride?: Decimal | DecimalJsLike | number | string | null
+    taxRate?: Decimal | DecimalJsLike | number | string | null
+    discountPercentage?: number | null
+    discountAmount?: Decimal | DecimalJsLike | number | string | null
+    shareableToken?: string | null
+    emailSent?: boolean | null
+    emailSentAt?: Date | string | null
+  }
+
+  export type InvoiceCreateOrConnectWithoutDeliveriesInput = {
+    where: InvoiceWhereUniqueInput
+    create: XOR<InvoiceCreateWithoutDeliveriesInput, InvoiceUncheckedCreateWithoutDeliveriesInput>
+  }
+
+  export type VehicleCreateWithoutDeliveriesInput = {
+    id?: string
+    name: string
+    type: $Enums.VehicleType
+    status?: $Enums.VehicleStatus
+    currentDeliveryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VehicleUncheckedCreateWithoutDeliveriesInput = {
+    id?: string
+    name: string
+    type: $Enums.VehicleType
+    status?: $Enums.VehicleStatus
+    currentDeliveryId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VehicleCreateOrConnectWithoutDeliveriesInput = {
+    where: VehicleWhereUniqueInput
+    create: XOR<VehicleCreateWithoutDeliveriesInput, VehicleUncheckedCreateWithoutDeliveriesInput>
+  }
+
+  export type UserCreateWithoutClaimedDeliveriesInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserUncheckedCreateWithoutClaimedDeliveriesInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserCreateOrConnectWithoutClaimedDeliveriesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutClaimedDeliveriesInput, UserUncheckedCreateWithoutClaimedDeliveriesInput>
+  }
+
+  export type DeliveryItemCreateWithoutDeliveryInput = {
+    id?: string
+    quantity: number
+    rentalItem: RentalItemCreateNestedOneWithoutDeliveryItemsInput
+  }
+
+  export type DeliveryItemUncheckedCreateWithoutDeliveryInput = {
+    id?: string
+    rentalItemId: string
+    quantity: number
+  }
+
+  export type DeliveryItemCreateOrConnectWithoutDeliveryInput = {
+    where: DeliveryItemWhereUniqueInput
+    create: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryItemCreateManyDeliveryInputEnvelope = {
+    data: DeliveryItemCreateManyDeliveryInput | DeliveryItemCreateManyDeliveryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryLogCreateWithoutDeliveryInput = {
+    id?: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+    createdByUser?: UserCreateNestedOneWithoutDeliveryLogsInput
+  }
+
+  export type DeliveryLogUncheckedCreateWithoutDeliveryInput = {
+    id?: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryLogCreateOrConnectWithoutDeliveryInput = {
+    where: DeliveryLogWhereUniqueInput
+    create: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryLogCreateManyDeliveryInputEnvelope = {
+    data: DeliveryLogCreateManyDeliveryInput | DeliveryLogCreateManyDeliveryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DeliveryEditLogCreateWithoutDeliveryInput = {
+    id?: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+    editedByUser: UserCreateNestedOneWithoutDeliveryEditLogsInput
+  }
+
+  export type DeliveryEditLogUncheckedCreateWithoutDeliveryInput = {
+    id?: string
+    editedByUserId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogCreateOrConnectWithoutDeliveryInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    create: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryEditLogCreateManyDeliveryInputEnvelope = {
+    data: DeliveryEditLogCreateManyDeliveryInput | DeliveryEditLogCreateManyDeliveryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InvoiceUpsertWithoutDeliveriesInput = {
+    update: XOR<InvoiceUpdateWithoutDeliveriesInput, InvoiceUncheckedUpdateWithoutDeliveriesInput>
+    create: XOR<InvoiceCreateWithoutDeliveriesInput, InvoiceUncheckedCreateWithoutDeliveriesInput>
+    where?: InvoiceWhereInput
+  }
+
+  export type InvoiceUpdateToOneWithWhereWithoutDeliveriesInput = {
+    where?: InvoiceWhereInput
+    data: XOR<InvoiceUpdateWithoutDeliveriesInput, InvoiceUncheckedUpdateWithoutDeliveriesInput>
+  }
+
+  export type InvoiceUpdateWithoutDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deliveryFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    guestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    guestName?: NullableStringFieldUpdateOperationsInput | string | null
+    guestWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    guestAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryFeeOverride?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: OrderUpdateOneWithoutInvoicesNestedInput
+    user?: UserUpdateOneWithoutInvoicesNestedInput
+  }
+
+  export type InvoiceUncheckedUpdateWithoutDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceNumber?: StringFieldUpdateOperationsInput | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    subtotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deliveryFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    guestEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    guestName?: NullableStringFieldUpdateOperationsInput | string | null
+    guestWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    guestAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryFeeOverride?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
+    emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type VehicleUpsertWithoutDeliveriesInput = {
+    update: XOR<VehicleUpdateWithoutDeliveriesInput, VehicleUncheckedUpdateWithoutDeliveriesInput>
+    create: XOR<VehicleCreateWithoutDeliveriesInput, VehicleUncheckedCreateWithoutDeliveriesInput>
+    where?: VehicleWhereInput
+  }
+
+  export type VehicleUpdateToOneWithWhereWithoutDeliveriesInput = {
+    where?: VehicleWhereInput
+    data: XOR<VehicleUpdateWithoutDeliveriesInput, VehicleUncheckedUpdateWithoutDeliveriesInput>
+  }
+
+  export type VehicleUpdateWithoutDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VehicleUncheckedUpdateWithoutDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumVehicleTypeFieldUpdateOperationsInput | $Enums.VehicleType
+    status?: EnumVehicleStatusFieldUpdateOperationsInput | $Enums.VehicleStatus
+    currentDeliveryId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutClaimedDeliveriesInput = {
+    update: XOR<UserUpdateWithoutClaimedDeliveriesInput, UserUncheckedUpdateWithoutClaimedDeliveriesInput>
+    create: XOR<UserCreateWithoutClaimedDeliveriesInput, UserUncheckedCreateWithoutClaimedDeliveriesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutClaimedDeliveriesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutClaimedDeliveriesInput, UserUncheckedUpdateWithoutClaimedDeliveriesInput>
+  }
+
+  export type UserUpdateWithoutClaimedDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutClaimedDeliveriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+  }
+
+  export type DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryItemWhereUniqueInput
+    update: XOR<DeliveryItemUpdateWithoutDeliveryInput, DeliveryItemUncheckedUpdateWithoutDeliveryInput>
+    create: XOR<DeliveryItemCreateWithoutDeliveryInput, DeliveryItemUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryItemUpdateWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryItemWhereUniqueInput
+    data: XOR<DeliveryItemUpdateWithoutDeliveryInput, DeliveryItemUncheckedUpdateWithoutDeliveryInput>
+  }
+
+  export type DeliveryItemUpdateManyWithWhereWithoutDeliveryInput = {
+    where: DeliveryItemScalarWhereInput
+    data: XOR<DeliveryItemUpdateManyMutationInput, DeliveryItemUncheckedUpdateManyWithoutDeliveryInput>
+  }
+
+  export type DeliveryLogUpsertWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryLogWhereUniqueInput
+    update: XOR<DeliveryLogUpdateWithoutDeliveryInput, DeliveryLogUncheckedUpdateWithoutDeliveryInput>
+    create: XOR<DeliveryLogCreateWithoutDeliveryInput, DeliveryLogUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryLogUpdateWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryLogWhereUniqueInput
+    data: XOR<DeliveryLogUpdateWithoutDeliveryInput, DeliveryLogUncheckedUpdateWithoutDeliveryInput>
+  }
+
+  export type DeliveryLogUpdateManyWithWhereWithoutDeliveryInput = {
+    where: DeliveryLogScalarWhereInput
+    data: XOR<DeliveryLogUpdateManyMutationInput, DeliveryLogUncheckedUpdateManyWithoutDeliveryInput>
+  }
+
+  export type DeliveryEditLogUpsertWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    update: XOR<DeliveryEditLogUpdateWithoutDeliveryInput, DeliveryEditLogUncheckedUpdateWithoutDeliveryInput>
+    create: XOR<DeliveryEditLogCreateWithoutDeliveryInput, DeliveryEditLogUncheckedCreateWithoutDeliveryInput>
+  }
+
+  export type DeliveryEditLogUpdateWithWhereUniqueWithoutDeliveryInput = {
+    where: DeliveryEditLogWhereUniqueInput
+    data: XOR<DeliveryEditLogUpdateWithoutDeliveryInput, DeliveryEditLogUncheckedUpdateWithoutDeliveryInput>
+  }
+
+  export type DeliveryEditLogUpdateManyWithWhereWithoutDeliveryInput = {
+    where: DeliveryEditLogScalarWhereInput
+    data: XOR<DeliveryEditLogUpdateManyMutationInput, DeliveryEditLogUncheckedUpdateManyWithoutDeliveryInput>
+  }
+
+  export type DeliveryCreateWithoutItemsInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutItemsInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutItemsInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutItemsInput, DeliveryUncheckedCreateWithoutItemsInput>
+  }
+
+  export type RentalItemCreateWithoutDeliveryItemsInput = {
+    id?: string
+    quantity?: number | null
+    createdAt?: Date | string | null
+    order: OrderCreateNestedOneWithoutRentalItemsInput
+    rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
+    variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+  }
+
+  export type RentalItemUncheckedCreateWithoutDeliveryItemsInput = {
+    id?: string
+    orderId: string
+    variantId?: string | null
+    packageId?: string | null
+    quantity?: number | null
+    createdAt?: Date | string | null
+    unitId?: string | null
+  }
+
+  export type RentalItemCreateOrConnectWithoutDeliveryItemsInput = {
+    where: RentalItemWhereUniqueInput
+    create: XOR<RentalItemCreateWithoutDeliveryItemsInput, RentalItemUncheckedCreateWithoutDeliveryItemsInput>
+  }
+
+  export type DeliveryUpsertWithoutItemsInput = {
+    update: XOR<DeliveryUpdateWithoutItemsInput, DeliveryUncheckedUpdateWithoutItemsInput>
+    create: XOR<DeliveryCreateWithoutItemsInput, DeliveryUncheckedCreateWithoutItemsInput>
+    where?: DeliveryWhereInput
+  }
+
+  export type DeliveryUpdateToOneWithWhereWithoutItemsInput = {
+    where?: DeliveryWhereInput
+    data: XOR<DeliveryUpdateWithoutItemsInput, DeliveryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type DeliveryUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type RentalItemUpsertWithoutDeliveryItemsInput = {
+    update: XOR<RentalItemUpdateWithoutDeliveryItemsInput, RentalItemUncheckedUpdateWithoutDeliveryItemsInput>
+    create: XOR<RentalItemCreateWithoutDeliveryItemsInput, RentalItemUncheckedCreateWithoutDeliveryItemsInput>
+    where?: RentalItemWhereInput
+  }
+
+  export type RentalItemUpdateToOneWithWhereWithoutDeliveryItemsInput = {
+    where?: RentalItemWhereInput
+    data: XOR<RentalItemUpdateWithoutDeliveryItemsInput, RentalItemUncheckedUpdateWithoutDeliveryItemsInput>
+  }
+
+  export type RentalItemUpdateWithoutDeliveryItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
+    rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
+    variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+  }
+
+  export type RentalItemUncheckedUpdateWithoutDeliveryItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    packageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    unitId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DeliveryCreateWithoutLogsInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutLogsInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutLogsInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutLogsInput, DeliveryUncheckedCreateWithoutLogsInput>
+  }
+
+  export type UserCreateWithoutDeliveryLogsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserUncheckedCreateWithoutDeliveryLogsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserCreateOrConnectWithoutDeliveryLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeliveryLogsInput, UserUncheckedCreateWithoutDeliveryLogsInput>
+  }
+
+  export type DeliveryUpsertWithoutLogsInput = {
+    update: XOR<DeliveryUpdateWithoutLogsInput, DeliveryUncheckedUpdateWithoutLogsInput>
+    create: XOR<DeliveryCreateWithoutLogsInput, DeliveryUncheckedCreateWithoutLogsInput>
+    where?: DeliveryWhereInput
+  }
+
+  export type DeliveryUpdateToOneWithWhereWithoutLogsInput = {
+    where?: DeliveryWhereInput
+    data: XOR<DeliveryUpdateWithoutLogsInput, DeliveryUncheckedUpdateWithoutLogsInput>
+  }
+
+  export type DeliveryUpdateWithoutLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type UserUpsertWithoutDeliveryLogsInput = {
+    update: XOR<UserUpdateWithoutDeliveryLogsInput, UserUncheckedUpdateWithoutDeliveryLogsInput>
+    create: XOR<UserCreateWithoutDeliveryLogsInput, UserUncheckedCreateWithoutDeliveryLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDeliveryLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDeliveryLogsInput, UserUncheckedUpdateWithoutDeliveryLogsInput>
+  }
+
+  export type UserUpdateWithoutDeliveryLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDeliveryLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+  }
+
+  export type DeliveryCreateWithoutEditLogsInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
+    vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
+    claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
+    items?: DeliveryItemCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryUncheckedCreateWithoutEditLogsInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
+    logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
+  }
+
+  export type DeliveryCreateOrConnectWithoutEditLogsInput = {
+    where: DeliveryWhereUniqueInput
+    create: XOR<DeliveryCreateWithoutEditLogsInput, DeliveryUncheckedCreateWithoutEditLogsInput>
+  }
+
+  export type UserCreateWithoutDeliveryEditLogsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserUncheckedCreateWithoutDeliveryEditLogsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserCreateOrConnectWithoutDeliveryEditLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeliveryEditLogsInput, UserUncheckedCreateWithoutDeliveryEditLogsInput>
+  }
+
+  export type DeliveryUpsertWithoutEditLogsInput = {
+    update: XOR<DeliveryUpdateWithoutEditLogsInput, DeliveryUncheckedUpdateWithoutEditLogsInput>
+    create: XOR<DeliveryCreateWithoutEditLogsInput, DeliveryUncheckedCreateWithoutEditLogsInput>
+    where?: DeliveryWhereInput
+  }
+
+  export type DeliveryUpdateToOneWithWhereWithoutEditLogsInput = {
+    where?: DeliveryWhereInput
+    data: XOR<DeliveryUpdateWithoutEditLogsInput, DeliveryUncheckedUpdateWithoutEditLogsInput>
+  }
+
+  export type DeliveryUpdateWithoutEditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutEditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type UserUpsertWithoutDeliveryEditLogsInput = {
+    update: XOR<UserUpdateWithoutDeliveryEditLogsInput, UserUncheckedUpdateWithoutDeliveryEditLogsInput>
+    create: XOR<UserCreateWithoutDeliveryEditLogsInput, UserUncheckedCreateWithoutDeliveryEditLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDeliveryEditLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDeliveryEditLogsInput, UserUncheckedUpdateWithoutDeliveryEditLogsInput>
+  }
+
+  export type UserUpdateWithoutDeliveryEditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDeliveryEditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+  }
+
+  export type DeliveryCreateManyInvoiceInput = {
+    id?: string
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliveryUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateManyWithoutInvoiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InvoiceCreateManyOrderInput = {
     id?: string
     invoiceNumber: string
@@ -63707,19 +67960,6 @@ export namespace Prisma {
     unitId?: string | null
   }
 
-  export type WorkerScheduleCreateManyOrderInput = {
-    id?: string
-    workerId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-  }
-
   export type PaymentTransactionCreateManyOrderInput = {
     id?: string
     provider: $Enums.PaymentProvider
@@ -63755,6 +67995,7 @@ export namespace Prisma {
     shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
     user?: UserUpdateOneWithoutInvoicesNestedInput
   }
 
@@ -63780,6 +68021,7 @@ export namespace Prisma {
     shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateManyWithoutOrderInput = {
@@ -63853,6 +68095,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutOrderInput = {
@@ -63862,6 +68105,7 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutOrderInput = {
@@ -63871,47 +68115,6 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WorkerScheduleUpdateWithoutOrderInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assignedByUser?: UserUpdateOneRequiredWithoutAssignedSchedulesNestedInput
-    worker?: UserUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateWithoutOrderInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutOrderInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentTransactionUpdateWithoutOrderInput = {
@@ -64000,6 +68203,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutRentalPackageInput = {
@@ -64009,6 +68213,7 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutRentalPackageInput = {
@@ -64240,6 +68445,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutVariantInput = {
@@ -64249,6 +68455,7 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutVariantInput = {
@@ -64327,6 +68534,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutUnitInput = {
@@ -64336,6 +68544,7 @@ export namespace Prisma {
     packageId?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutUnitInput = {
@@ -64378,6 +68587,30 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DeliveryItemCreateManyRentalItemInput = {
+    id?: string
+    deliveryId: string
+    quantity: number
+  }
+
+  export type DeliveryItemUpdateWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    delivery?: DeliveryUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type DeliveryItemUncheckedUpdateWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryItemUncheckedUpdateManyWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
   }
 
   export type ActivityLogCreateManyUserInput = {
@@ -64457,7 +68690,6 @@ export namespace Prisma {
     userId: string
     paymentStatus?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
   }
 
@@ -64480,7 +68712,6 @@ export namespace Prisma {
     paymentStatus?: string | null
     paymentConfirmedBy?: string | null
     paymentConfirmedAt?: Date | string | null
-    deliveryStatus?: string | null
     deliveryAddress?: string | null
   }
 
@@ -64492,6 +68723,48 @@ export namespace Prisma {
     checkOutTime?: Date | string | null
     notes?: string | null
     createdAt?: Date | string | null
+  }
+
+  export type DeliveryCreateManyClaimedByWorkerInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    vehicleId?: string | null
+    status?: $Enums.DeliveryStatus
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliveryLogCreateManyCreatedByUserInput = {
+    id?: string
+    deliveryId: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogCreateManyEditedByUserInput = {
+    id?: string
+    deliveryId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
   }
 
   export type WorkerNotificationCreateManyFromAdminInput = {
@@ -64512,32 +68785,6 @@ export namespace Prisma {
     message: string
     isRead?: boolean | null
     createdAt?: Date | string | null
-  }
-
-  export type WorkerScheduleCreateManyAssignedByUserInput = {
-    id?: string
-    workerId: string
-    orderId: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
-  }
-
-  export type WorkerScheduleCreateManyWorkerInput = {
-    id?: string
-    orderId: string
-    assignedBy: string
-    assignedAt?: Date | string | null
-    status?: $Enums.schedule_status | null
-    scheduledDate: Date | string
-    notes?: string | null
-    workerNotes?: string | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
   }
 
   export type MessageCreateManySenderInput = {
@@ -64567,16 +68814,6 @@ export namespace Prisma {
     id?: string
     groupId: string
     content: string
-    createdAt?: Date | string
-  }
-
-  export type DailyReportCreateManyWorkerInput = {
-    id?: string
-    scheduleId?: string | null
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
     createdAt?: Date | string
   }
 
@@ -64759,6 +68996,7 @@ export namespace Prisma {
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     order?: OrderUpdateOneWithoutInvoicesNestedInput
+    deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateWithoutUserInput = {
@@ -64783,6 +69021,7 @@ export namespace Prisma {
     shareableToken?: NullableStringFieldUpdateOperationsInput | string | null
     emailSent?: NullableBoolFieldUpdateOperationsInput | boolean | null
     emailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
   export type InvoiceUncheckedUpdateManyWithoutUserInput = {
@@ -64827,13 +69066,11 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -64856,12 +69093,10 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -64884,7 +69119,6 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -64906,13 +69140,11 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUpdateManyWithoutAssignedOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     rentalItems?: RentalItemUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
   }
 
@@ -64935,12 +69167,10 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
-    workerSchedules?: WorkerScheduleUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -64963,7 +69193,6 @@ export namespace Prisma {
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deliveryStatus?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -64995,6 +69224,138 @@ export namespace Prisma {
     checkOutTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DeliveryUpdateWithoutClaimedByWorkerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutClaimedByWorkerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateManyWithoutClaimedByWorkerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    vehicleId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryLogUpdateWithoutCreatedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    delivery?: DeliveryUpdateOneRequiredWithoutLogsNestedInput
+  }
+
+  export type DeliveryLogUncheckedUpdateWithoutCreatedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryLogUncheckedUpdateManyWithoutCreatedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogUpdateWithoutEditedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    delivery?: DeliveryUpdateOneRequiredWithoutEditLogsNestedInput
+  }
+
+  export type DeliveryEditLogUncheckedUpdateWithoutEditedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkerNotificationUpdateWithoutFromAdminInput = {
@@ -65055,88 +69416,6 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     isRead?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type WorkerScheduleUpdateWithoutAssignedByUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    order?: OrderUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    worker?: UserUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateWithoutAssignedByUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutAssignedByUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type WorkerScheduleUpdateWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assignedByUser?: UserUpdateOneRequiredWithoutAssignedSchedulesNestedInput
-    order?: OrderUpdateOneRequiredWithoutWorkerSchedulesNestedInput
-    dailyReports?: DailyReportUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    dailyReports?: DailyReportUncheckedUpdateManyWithoutScheduleNestedInput
-  }
-
-  export type WorkerScheduleUncheckedUpdateManyWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: StringFieldUpdateOperationsInput | string
-    assignedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    status?: NullableEnumschedule_statusFieldUpdateOperationsInput | $Enums.schedule_status | null
-    scheduledDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    workerNotes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type MessageUpdateWithoutSenderInput = {
@@ -65226,38 +69505,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     groupId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DailyReportUpdateWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    schedule?: WorkerScheduleUpdateOneWithoutDailyReportsNestedInput
-    deliveryItems?: DeliveryChecklistItemUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateManyWithoutWorkerInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    scheduleId?: NullableStringFieldUpdateOperationsInput | string | null
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -65482,84 +69729,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DailyReportCreateManyScheduleInput = {
-    id?: string
-    workerId: string
-    reportDate?: Date | string
-    jobSummary: string
-    deliveryStatus: string
-    notes?: string | null
-    createdAt?: Date | string
-  }
-
-  export type DailyReportUpdateWithoutScheduleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    worker?: UserUpdateOneRequiredWithoutDailyReportsNestedInput
-    deliveryItems?: DeliveryChecklistItemUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateWithoutScheduleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deliveryItems?: DeliveryChecklistItemUncheckedUpdateManyWithoutReportNestedInput
-  }
-
-  export type DailyReportUncheckedUpdateManyWithoutScheduleInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    workerId?: StringFieldUpdateOperationsInput | string
-    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobSummary?: StringFieldUpdateOperationsInput | string
-    deliveryStatus?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DeliveryChecklistItemCreateManyReportInput = {
-    id?: string
-    rentalItemId: string
-    itemName: string
-    quantity: number
-    status: string
-    notes?: string | null
-  }
-
-  export type DeliveryChecklistItemUpdateWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DeliveryChecklistItemUncheckedUpdateWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DeliveryChecklistItemUncheckedUpdateManyWithoutReportInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    itemName?: StringFieldUpdateOperationsInput | string
-    quantity?: IntFieldUpdateOperationsInput | number
-    status?: StringFieldUpdateOperationsInput | string
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type AiActionCreateManyAgentInput = {
     id?: string
     actionType: string
@@ -65633,6 +69802,204 @@ export namespace Prisma {
     suggestion?: StringFieldUpdateOperationsInput | string
     adminDecision?: StringFieldUpdateOperationsInput | string
     feedbackScore?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryCreateManyVehicleInput = {
+    id?: string
+    invoiceId?: string | null
+    deliveryMethod: $Enums.DeliveryMethod
+    deliveryType: $Enums.DeliveryType
+    status?: $Enums.DeliveryStatus
+    claimedByWorkerId?: string | null
+    claimedAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    eta?: Date | string | null
+    etaOverrideCount?: number
+    delayMinutes?: number
+    latitude?: number | null
+    longitude?: number | null
+    lastLocationUpdate?: Date | string | null
+    trackingCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeliveryUpdateWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
+    claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
+    items?: DeliveryItemUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
+    logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
+    editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
+  }
+
+  export type DeliveryUncheckedUpdateManyWithoutVehicleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryMethod?: EnumDeliveryMethodFieldUpdateOperationsInput | $Enums.DeliveryMethod
+    deliveryType?: EnumDeliveryTypeFieldUpdateOperationsInput | $Enums.DeliveryType
+    status?: EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+    claimedByWorkerId?: NullableStringFieldUpdateOperationsInput | string | null
+    claimedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    eta?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    etaOverrideCount?: IntFieldUpdateOperationsInput | number
+    delayMinutes?: IntFieldUpdateOperationsInput | number
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryItemCreateManyDeliveryInput = {
+    id?: string
+    rentalItemId: string
+    quantity: number
+  }
+
+  export type DeliveryLogCreateManyDeliveryInput = {
+    id?: string
+    eventType: string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    role: $Enums.DeliveryRole
+    createdAt?: Date | string
+  }
+
+  export type DeliveryEditLogCreateManyDeliveryInput = {
+    id?: string
+    editedByUserId: string
+    role: $Enums.DeliveryRole
+    fieldChanged: string
+    oldValue?: string | null
+    newValue?: string | null
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DeliveryItemUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    rentalItem?: RentalItemUpdateOneRequiredWithoutDeliveryItemsNestedInput
+  }
+
+  export type DeliveryItemUncheckedUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryItemUncheckedUpdateManyWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeliveryLogUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUser?: UserUpdateOneWithoutDeliveryLogsNestedInput
+  }
+
+  export type DeliveryLogUncheckedUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryLogUncheckedUpdateManyWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventType?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableJsonNullValueInput | InputJsonValue
+    newValue?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    editedByUser?: UserUpdateOneRequiredWithoutDeliveryEditLogsNestedInput
+  }
+
+  export type DeliveryEditLogUncheckedUpdateWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    editedByUserId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeliveryEditLogUncheckedUpdateManyWithoutDeliveryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    editedByUserId?: StringFieldUpdateOperationsInput | string
+    role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    fieldChanged?: StringFieldUpdateOperationsInput | string
+    oldValue?: NullableStringFieldUpdateOperationsInput | string | null
+    newValue?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

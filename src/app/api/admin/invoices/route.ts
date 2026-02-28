@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         }
 
         if (sendToCompany) {
-            recipients.push('tropictechindo@gmail.com')
+            recipients.push('contact@tropictech.online')
         }
 
         if (recipients.length > 0) {

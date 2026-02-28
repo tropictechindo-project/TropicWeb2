@@ -2,12 +2,11 @@
 
 ## Before the app will build successfully, you must:
 
-### 1. Run the SQL Migration in Supabase
+### 1. Run the SQL Migrations in Supabase
 
-Open your Supabase Dashboard → SQL Editor, and run the entire contents of:
-```
-prisma/advanced_features_migration.sql
-```
+Open your Supabase Dashboard → SQL Editor, and run the entire contents of these files (in order):
+1. \`prisma/advanced_features_migration.sql\` (If you haven't already run it)
+2. \`prisma/delivery_system_migration.sql\` (Critical for the new Google Maps Delivery Flow)
 
 This will create the new tables and columns needed for the advanced features:
 - `worker_schedules`
@@ -26,6 +25,21 @@ npm run build
 ## Why the build is failing now
 
 The code references new database columns (`tax_rate`, `shareable_token`, etc.) that don't exist yet in your database. Once you run the migration SQL file, the build will succeed.
+
+### 3. Setup Google Maps API Keys (For Delivery Flow)
+
+For the upcoming Delivery and Order workflows, you need to configure the Google Maps API in your `.env` file. 
+
+Add the following variables (already scaffolded in `.env`):
+```env
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_public_google_maps_api_key_here
+GOOGLE_MAPS_API_KEY=your_server_google_maps_api_key_here
+```
+Ensure that the following APIs are enabled in your Google Cloud Console:
+- Maps JavaScript API
+- Directions API
+- Distance Matrix API
+- Places API
 
 ## What's been implemented (70% complete)
 

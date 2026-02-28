@@ -111,6 +111,31 @@ The website operates through three distinct entry points based on user roles:
 - [x] **UI Connections**: Connected rental packages to their included products in public UI (`ProductDetailPage` and `ProductDetailModal`).
 - [x] **Authentication Flow**: Fixed Supabase PKCE code challenge loop in Password Reset by migrating to `@supabase/ssr` with Next.js cookies. Added Exit (X) buttons to all auth modals.
 - [x] **Delivery Flow Prep**: Added 'Set Delivery' mock CTA to Admin Invoices and documented Google Maps API keys (Directions, Distance Matrix, Places) in `.env` and `MIGRATION_REQUIRED.md`.
+- [x] **New Delivery & Dispatch API Core**: 
+  - Eradicated legacy `WorkerSchedule`, `DailyReport`, and `DeliveryChecklistItem` components to enforce "Clean Slate" system integrity.
+  - Implemented 100% type-safe Prisma schema models (`Vehicle`, `Delivery`, `DeliveryItem`, `DeliveryLog`, `DeliveryEditLog`).
+  - Authored `/api/admin/deliveries/*` and `/api/admin/vehicles/*` REST handlers for queue management, overrides, and cancellations.
+  - Authored highly secure, atomic `/api/worker/deliveries/*` API for Workers containing explicit Transaction models for Claiming (locking vehicle pools), Updating GPS ETA, and fully robust final Delivery Completion with automated `InventorySyncLog` audits.
+- [x] **New Delivery & Dispatch UI Architectures**:
+  - Rebuilt `Admin Dashboard` Server/Client separation for **Deliveries Queue** and **Vehicles Fleet**. Overrides enabled via robust Shadcn modal interfaces.
+  - Rebuilt `Worker Dashboard` by bifurcating classic 'Schedules' into unified **Available Pool** card interactions where Drivers select a targeted Vehicle lock and verify claim.
+  - Rebuilt fully-fledged `Public Tracking` layout module in `/tracking/[code]` visually detailing Couriers, Delivery delays, and interactive event logs utilizing the new REST API outputs.
+  - [x] **Worker Dashboard Optimization**:
+  - Implemented **Complete Delivery Dialog** with integrated photo proof and notes support.
+  - Added **12-Hour Edit Log Window** allowing workers to correct their own delivery logs before finalize.
+- [x] **Next.js 15 & Type Safety Hardening**:
+  - System-wide migration of 15+ API routes to **Asynchronous `params` compliance** for Next.js 15.
+  - Resolved `user?.userId` vs `user?.id` property mismatches across the dashboard layer.
+  - Achieved **Clean `npx tsc` status** for all core application modules.
+- [x] **Supabase Security RLS Hardening**:
+  - Authored `rls_hardening.sql` to resolve "Always True" warnings for `orders`, `invoices`, and `rental_items`.
+  - Implemented role-based access control (RBAC) ensuring users only see their own data while Admins retain full visibility.
+- [x] **Google Maps Infrastructure**:
+  - Finalized server-side geography layer (`src/lib/google-maps.ts`) for secure ETA and route calculation.
+  - Implemented startup environment validation to prevent deployment with missing API keys.
+
+> [!IMPORTANT]
+> **Action Required**: Run `/prisma/rls_hardening.sql` in the Supabase SQL Editor to finalize database security.
 
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.

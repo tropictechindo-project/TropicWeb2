@@ -54,10 +54,11 @@ export async function GET(request: NextRequest) {
                 take: 20,
                 include: { user: { select: { fullName: true } } }
             }),
-            db.dailyReport.findMany({
-                orderBy: { createdAt: 'desc' },
+            db.delivery.findMany({
+                where: { status: 'COMPLETED' },
+                orderBy: { completedAt: 'desc' },
                 take: 20,
-                include: { worker: { select: { fullName: true } } }
+                include: { claimedByWorker: { select: { fullName: true } } }
             }),
             db.message.findMany({
                 orderBy: { createdAt: 'desc' },
@@ -111,14 +112,14 @@ export async function GET(request: NextRequest) {
                 entityId: o.id,
                 source: 'ORDER'
             })),
-            ...recentReports.map(r => ({
-                id: r.id,
-                type: 'WARNING', // Use warning color for visibility or INFO
-                title: 'Worker Report',
-                message: `Report filed by ${r.worker.fullName}: ${r.jobSummary.substring(0, 50)}...`,
-                createdAt: r.createdAt,
-                entityId: r.id,
-                source: 'REPORT'
+            ...recentReports.map(d => ({
+                id: d.id,
+                type: 'SUCCESS', // Use warning color for visibility or INFO
+                title: 'Delivery Completed',
+                message: `Delivery completed by ${d.claimedByWorker?.fullName || 'Courier'} (Invoice: ${d.invoiceId || 'N/A'})`,
+                createdAt: d.completedAt || d.updatedAt,
+                entityId: d.id,
+                source: 'DELIVERY'
             })),
             ...recentMessages.map(m => ({
                 id: m.id,

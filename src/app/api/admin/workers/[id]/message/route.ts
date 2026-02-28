@@ -9,7 +9,7 @@ import { logActivity } from '@/lib/logger'
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const user = await verifyAuth(request)
@@ -17,6 +17,7 @@ export async function POST(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
+        const { id } = await params
         const { title, message } = await request.json()
         const adminId = user.id
 
@@ -24,7 +25,7 @@ export async function POST(
         await (db as any).message.create({
             data: {
                 senderId: adminId,
-                receiverId: params.id,
+                receiverId: id,
                 content: `${title ? `[${title}] ` : ''}${message}`
             }
         })
@@ -32,7 +33,7 @@ export async function POST(
         // Also create a Notification for the worker's dashboard alerts
         const notification = await db.workerNotification.create({
             data: {
-                workerId: params.id,
+                workerId: id,
                 fromAdminId: adminId,
                 type: 'ADMIN_MESSAGE',
                 title: title || 'New Message from Admin',
@@ -45,7 +46,7 @@ export async function POST(
             userId: adminId,
             action: 'SEND_MESSAGE',
             entity: 'WORKER_NOTIFICATION',
-            details: `Sent message to worker ${params.id}: ${title}`
+            details: `Sent message to worker ${id}: ${title}`
         })
 
         return NextResponse.json({ success: true, notification })

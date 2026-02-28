@@ -7,7 +7,7 @@ import { verifyAuth } from '@/lib/auth/auth-helper'
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    { params }: { params: Promise<{ groupId: string }> }
 ) {
     try {
         const user = await verifyAuth(request)
@@ -15,7 +15,7 @@ export async function GET(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const groupId = params.groupId
+        const { groupId } = await params
 
         // Verify user is a member of the group
         const membership = await (db as any).chatGroupMember.findFirst({
@@ -58,7 +58,7 @@ export async function GET(
  */
 export async function POST(
     request: NextRequest,
-    { params }: { params: { groupId: string } }
+    { params }: { params: Promise<{ groupId: string }> }
 ) {
     try {
         const user = await verifyAuth(request)
@@ -66,7 +66,7 @@ export async function POST(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const groupId = params.groupId
+        const { groupId } = await params
         const { content } = await request.json()
 
         if (!content || !content.trim()) {

@@ -100,7 +100,7 @@ export default function OrderPopup({ isOpen, onClose, item }: OrderPopupProps) {
 
       if (paymentMethod === 'WHATSAPP') {
         // Redirect to WhatsApp
-        const message = `Hello Tropic Tech! I would like to order:\n\n${item.name}\nDuration: ${item.duration || '30'} days\nPrice: ${currencySymbols[currency]}${convertedPrice.toFixed(2)}\n\nPayment Method: WhatsApp Order\n\n${deliveryAddress ? `Delivery Address: ${deliveryAddress}` : ''}${notes ? `\n\nNotes: ${notes}` : ''}`
+        const message = `Hello Tropic Tech Bali! I would like to order:\n\n${item.name}\nDuration: ${item.duration || '30'} days\nPrice: ${currencySymbols[currency]}${convertedPrice.toFixed(2)}\n\nPayment Method: WhatsApp Order\n\n${deliveryAddress ? `Delivery Address: ${deliveryAddress}` : ''}${notes ? `\n\nNotes: ${notes}` : ''}`
         const whatsappUrl = `https://wa.me/6282266574860?text=${encodeURIComponent(message)}`
         window.open(whatsappUrl, '_blank')
         onClose()

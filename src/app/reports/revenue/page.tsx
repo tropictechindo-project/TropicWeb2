@@ -162,10 +162,10 @@ export default function RevenueChartPage() {
                   const percentage = (item.revenue / maxRevenue) * 100
                   const barWidth = Math.max(percentage * 0.6, 5)
                   const left = (index * 8.33) + (100 - (index * 8.33))
-                  
+
                   return (
                     <div key={item.month} className="absolute top-1/2 bottom-0 h-6 flex items-center">
-                      <div 
+                      <div
                         className="h-full rounded-t-md transition-all duration-300"
                         style={{
                           left: `${left}%`,
@@ -219,10 +219,10 @@ export default function RevenueChartPage() {
                   const percentage = (item.orders / maxOrders) * 100
                   const barWidth = Math.max(percentage * 0.7, 10)
                   const left = (index * 8.33) + (100 - (index * 8.33))
-                  
+
                   return (
                     <div key={item.month} className="absolute top-1/2 bottom-0 h-6 flex items-center">
-                      <div 
+                      <div
                         className="h-full rounded-t-full transition-all duration-300"
                         style={{
                           left: `${left}%`,
@@ -381,8 +381,8 @@ export default function RevenueChartPage() {
                 <div>
                   <p className="font-semibold">Role-Based Dashboards</p>
                   <p className="text-sm text-muted-foreground">
-                    User: Rentals, Invoices, Payments, Profile<br/>
-                    Worker: Job Schedule, Delivery Reports, Stock Updates<br/>
+                    User: Rentals, Invoices, Payments, Profile<br />
+                    Worker: Job Schedule, Delivery Reports, Stock Updates<br />
                     Admin: Products, Users, Orders, Revenue Management, Reports
                   </p>
                 </div>
@@ -453,7 +453,7 @@ export default function RevenueChartPage() {
                 <div>
                   <p className="font-semibold">Email Updated</p>
                   <p className="text-sm text-muted-foreground">
-                    Changed to tropictechindo@gmail.com across all components (Footer, Invoice PDF)
+                    Changed to contact@tropictech.online across all components (Footer, Invoice PDF)
                   </p>
                 </div>
               </div>

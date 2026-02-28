@@ -172,6 +172,36 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
         }
     }
 
+    const handleSetDelivery = async (invoiceId: string) => {
+        setIsLoading(true)
+        try {
+            const token = localStorage.getItem('token')
+            const res = await fetch('/api/admin/deliveries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    invoiceId,
+                    deliveryMethod: 'INTERNAL'
+                })
+            })
+
+            if (!res.ok) {
+                const data = await res.json()
+                throw new Error(data.error || 'Failed to create delivery')
+            }
+
+            toast.success("Delivery pushed to Queue successfully!")
+            router.push('/admin/deliveries')
+        } catch (error: any) {
+            toast.error(error.message)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
@@ -284,7 +314,8 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                                             variant="outline"
                                             size="sm"
                                             className="h-8 text-xs font-bold gap-1 mr-2 bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700"
-                                            onClick={() => toast.info("Delivery flow selected (Placeholder for the upcoming Google Maps integration)")}
+                                            onClick={() => handleSetDelivery(inv.id)}
+                                            disabled={isLoading}
                                         >
                                             <Truck className="h-3 w-3" /> SET DELIVERY
                                         </Button>
@@ -411,7 +442,7 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Checkbox id="comp" checked={formData.sendToCompany} onCheckedChange={(v) => setFormData({ ...formData, sendToCompany: !!v })} />
-                                    <label htmlFor="comp" className="text-xs font-bold cursor-pointer">Forward to Company (tropictechindo@gmail.com)</label>
+                                    <label htmlFor="comp" className="text-xs font-bold cursor-pointer">Forward to Company (contact@tropictech.online)</label>
                                 </div>
                             </div>
                         </div>

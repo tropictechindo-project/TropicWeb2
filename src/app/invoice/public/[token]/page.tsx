@@ -99,9 +99,9 @@ export default function PublicInvoicePage() {
                                 </Badge>
                             </div>
                             <div className="text-right">
-                                <h2 className="text-2xl font-bold">Tropic Tech</h2>
+                                <h2 className="text-2xl font-bold">Tropic Tech Bali</h2>
                                 <p className="text-sm text-muted-foreground">Premium Workstation Rentals</p>
-                                <p className="text-sm text-muted-foreground mt-2">tropictechindo@gmail.com</p>
+                                <p className="text-sm text-muted-foreground mt-2">contact@tropictech.online</p>
                                 <p className="text-sm text-muted-foreground">Bali, Indonesia</p>
                             </div>
                         </div>
@@ -200,7 +200,7 @@ export default function PublicInvoicePage() {
                     {/* Footer */}
                     <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
                         <p className="mb-2">Thank you for your business!</p>
-                        <p>For questions about this invoice, please contact tropictechindo@gmail.com</p>
+                        <p>For questions about this invoice, please contact contact@tropictech.online</p>
                     </div>
                 </Card>
             </div>

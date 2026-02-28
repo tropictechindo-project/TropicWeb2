@@ -166,7 +166,6 @@ exports.Prisma.OrderScalarFieldEnum = {
   paymentStatus: 'paymentStatus',
   paymentConfirmedBy: 'paymentConfirmedBy',
   paymentConfirmedAt: 'paymentConfirmedAt',
-  deliveryStatus: 'deliveryStatus',
   deliveryAddress: 'deliveryAddress'
 };
 
@@ -348,20 +347,6 @@ exports.Prisma.ActivityLogScalarFieldEnum = {
   userId: 'userId'
 };
 
-exports.Prisma.WorkerScheduleScalarFieldEnum = {
-  id: 'id',
-  workerId: 'workerId',
-  orderId: 'orderId',
-  assignedBy: 'assignedBy',
-  assignedAt: 'assignedAt',
-  status: 'status',
-  scheduledDate: 'scheduledDate',
-  notes: 'notes',
-  workerNotes: 'workerNotes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.WorkerAttendanceScalarFieldEnum = {
   id: 'id',
   workerId: 'workerId',
@@ -405,27 +390,6 @@ exports.Prisma.MessageScalarFieldEnum = {
   content: 'content',
   isRead: 'isRead',
   createdAt: 'createdAt'
-};
-
-exports.Prisma.DailyReportScalarFieldEnum = {
-  id: 'id',
-  workerId: 'workerId',
-  scheduleId: 'scheduleId',
-  reportDate: 'reportDate',
-  jobSummary: 'jobSummary',
-  deliveryStatus: 'deliveryStatus',
-  notes: 'notes',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.DeliveryChecklistItemScalarFieldEnum = {
-  id: 'id',
-  reportId: 'reportId',
-  rentalItemId: 'rentalItemId',
-  itemName: 'itemName',
-  quantity: 'quantity',
-  status: 'status',
-  notes: 'notes'
 };
 
 exports.Prisma.NotificationDismissalScalarFieldEnum = {
@@ -509,6 +473,68 @@ exports.Prisma.AiTrainingDataScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.VehicleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  status: 'status',
+  currentDeliveryId: 'currentDeliveryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DeliveryScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  deliveryMethod: 'deliveryMethod',
+  deliveryType: 'deliveryType',
+  vehicleId: 'vehicleId',
+  status: 'status',
+  claimedByWorkerId: 'claimedByWorkerId',
+  claimedAt: 'claimedAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  eta: 'eta',
+  etaOverrideCount: 'etaOverrideCount',
+  delayMinutes: 'delayMinutes',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  lastLocationUpdate: 'lastLocationUpdate',
+  trackingCode: 'trackingCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DeliveryItemScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  rentalItemId: 'rentalItemId',
+  quantity: 'quantity'
+};
+
+exports.Prisma.DeliveryLogScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  eventType: 'eventType',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  createdByUserId: 'createdByUserId',
+  role: 'role',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DeliveryEditLogScalarFieldEnum = {
+  id: 'id',
+  deliveryId: 'deliveryId',
+  editedByUserId: 'editedByUserId',
+  role: 'role',
+  fieldChanged: 'fieldChanged',
+  oldValue: 'oldValue',
+  newValue: 'newValue',
+  reason: 'reason',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -580,14 +606,6 @@ exports.UnitCondition = exports.$Enums.UnitCondition = {
   NEEDS_SERVICE: 'NEEDS_SERVICE'
 };
 
-exports.schedule_status = exports.$Enums.schedule_status = {
-  PENDING: 'PENDING',
-  ONGOING: 'ONGOING',
-  FINISHED: 'FINISHED',
-  DELAYED: 'DELAYED',
-  CANCELLED: 'CANCELLED'
-};
-
 exports.attendance_status = exports.$Enums.attendance_status = {
   PRESENT: 'PRESENT',
   ABSENT: 'ABSENT',
@@ -615,6 +633,44 @@ exports.AiActionStatus = exports.$Enums.AiActionStatus = {
   EXECUTED: 'EXECUTED'
 };
 
+exports.VehicleType = exports.$Enums.VehicleType = {
+  VAN: 'VAN',
+  MOTORCYCLE: 'MOTORCYCLE'
+};
+
+exports.VehicleStatus = exports.$Enums.VehicleStatus = {
+  AVAILABLE: 'AVAILABLE',
+  IN_USE: 'IN_USE',
+  MAINTENANCE: 'MAINTENANCE'
+};
+
+exports.DeliveryMethod = exports.$Enums.DeliveryMethod = {
+  INTERNAL: 'INTERNAL',
+  GOJEK: 'GOJEK'
+};
+
+exports.DeliveryType = exports.$Enums.DeliveryType = {
+  DROPOFF: 'DROPOFF',
+  PICKUP: 'PICKUP'
+};
+
+exports.DeliveryStatus = exports.$Enums.DeliveryStatus = {
+  QUEUED: 'QUEUED',
+  CLAIMED: 'CLAIMED',
+  OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  PAUSED: 'PAUSED',
+  DELAYED: 'DELAYED',
+  CANCEL_REQUESTED: 'CANCEL_REQUESTED',
+  COMPLETED: 'COMPLETED',
+  CANCELED: 'CANCELED'
+};
+
+exports.DeliveryRole = exports.$Enums.DeliveryRole = {
+  ADMIN: 'ADMIN',
+  WORKER: 'WORKER',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   Invoice: 'Invoice',
   Order: 'Order',
@@ -634,13 +690,10 @@ exports.Prisma.ModelName = {
   GroupMessage: 'GroupMessage',
   SiteSetting: 'SiteSetting',
   ActivityLog: 'ActivityLog',
-  WorkerSchedule: 'WorkerSchedule',
   WorkerAttendance: 'WorkerAttendance',
   InventorySyncLog: 'InventorySyncLog',
   WorkerNotification: 'WorkerNotification',
   Message: 'Message',
-  DailyReport: 'DailyReport',
-  DeliveryChecklistItem: 'DeliveryChecklistItem',
   NotificationDismissal: 'NotificationDismissal',
   SystemJobLog: 'SystemJobLog',
   IdempotencyKey: 'IdempotencyKey',
@@ -649,7 +702,12 @@ exports.Prisma.ModelName = {
   AiAgent: 'AiAgent',
   AiPermission: 'AiPermission',
   AiAction: 'AiAction',
-  AiTrainingData: 'AiTrainingData'
+  AiTrainingData: 'AiTrainingData',
+  Vehicle: 'Vehicle',
+  Delivery: 'Delivery',
+  DeliveryItem: 'DeliveryItem',
+  DeliveryLog: 'DeliveryLog',
+  DeliveryEditLog: 'DeliveryEditLog'
 };
 
 /**
