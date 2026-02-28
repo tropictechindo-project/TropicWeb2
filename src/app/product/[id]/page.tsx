@@ -23,6 +23,12 @@ type Item = {
     imageUrl?: string | null
     specs?: any
     category?: string
+    items?: Array<{
+        id: string
+        name?: string
+        quantity: number
+        product?: { name: string }
+    }>
 }
 
 export default function ProductDetailPage() {
@@ -140,6 +146,26 @@ export default function ProductDetailPage() {
                         <div className="prose dark:prose-invert max-w-none text-muted-foreground">
                             <p>{item.description}</p>
                         </div>
+
+                        {/* Package Items section */}
+                        {item.items && item.items.length > 0 && (
+                            <div className="bg-primary/5 p-6 rounded-xl border border-primary/20 space-y-4">
+                                <h3 className="font-bold text-lg flex items-center gap-2">
+                                    <span className="w-2 h-6 bg-primary rounded-full" />
+                                    Included in this Package
+                                </h3>
+                                <div className="grid grid-cols-1 gap-3">
+                                    {item.items.map((pkgItem) => (
+                                        <div key={pkgItem.id} className="flex justify-between items-center bg-background p-3 rounded-lg border shadow-sm">
+                                            <span className="font-medium">{pkgItem.name || pkgItem.product?.name}</span>
+                                            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black">
+                                                x{pkgItem.quantity}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Specs Section */}
                         {(specs.features || specs.dimensions || specs.colours) && (

@@ -15,7 +15,10 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-primary">Tropic Tech</h3>
             <p className="text-sm text-muted-foreground">
-              PT Tropic Tech International
+```tsx
+<span className="text-xs block">Operated By</span>
+PT Tropic Tech International
+```
             </p>
             <p className="text-sm text-muted-foreground">
               5+ Years in Bali - Leading the Industry
@@ -98,7 +101,7 @@ export default function Footer() {
 
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 PT Tropic Tech International. {t('allRightsReserved')}
+&copy; 2026 PT Tropic Tech International<sup>TM</sup>. {t('allRightsReserved')}
           </p>
         </div>
       </div>

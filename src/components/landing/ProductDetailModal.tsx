@@ -39,6 +39,12 @@ interface ProductDetailModalProps {
         imageUrl?: string | null
         specs?: any
         category?: string
+        items?: Array<{
+            id: string
+            name?: string
+            quantity: number
+            product?: { name: string }
+        }>
     }
 }
 
@@ -141,6 +147,26 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                                     Rp {price.toLocaleString('id-ID')} / month
                                 </p>
                             </div>
+
+                            {/* Package Items section */}
+                            {product.items && product.items.length > 0 && (
+                                <div className="space-y-3 bg-primary/5 p-4 rounded-xl border border-primary/20">
+                                    <h4 className="font-bold text-sm flex items-center gap-2">
+                                        <span className="w-1.5 h-4 bg-primary rounded-full" />
+                                        Included in this Package
+                                    </h4>
+                                    <div className="space-y-1.5">
+                                        {product.items.map((item) => (
+                                            <div key={item.id} className="flex justify-between items-center text-sm bg-background p-2 px-3 rounded-lg border shadow-sm">
+                                                <span className="font-medium text-xs">{item.name || item.product?.name}</span>
+                                                <span className="text-primary font-black text-[10px] bg-primary/10 px-2 py-0.5 rounded-full">
+                                                    x{item.quantity}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {specs && (
                                 <div className="space-y-4 border-t pt-4">
