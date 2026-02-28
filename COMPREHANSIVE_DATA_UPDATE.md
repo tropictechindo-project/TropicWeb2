@@ -1,7 +1,7 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-02-28 04:25:00 (WITA/GMT+8)
-**System Version**: 0.1.0-alpha
+**Last Updated**: 2026-02-28 15:20:00 (WITA/GMT+8)
+**System Version**: 1.0.0-beta
 **Environment**: Production Ready (Next.js 15+ Scaffolding)
 
 ---
@@ -133,9 +133,23 @@ The website operates through three distinct entry points based on user roles:
 - [x] **Google Maps Infrastructure**:
   - Finalized server-side geography layer (`src/lib/google-maps.ts`) for secure ETA and route calculation.
   - Implemented startup environment validation to prevent deployment with missing API keys.
+- [x] **Global Brand Identity Transition (Tropic Tech Bali)**: 
+  - Standardized all UI components, public invoices, and automated notifications to **"Tropic Tech Bali"**.
+  - Transitioned the entire ecosystem from legacy Gmail to professional domain hub: **`contact@tropictech.online`**.
+- [x] **Landing Page & Animation**: 
+  - Implemented cinematic **3-second fade-in** for the Hero background Image.
+  - Optimized image loading with `priority` and `eager` fetch settings for LCP speed.
+- [x] **SEO & Discovery Infrastructure**: 
+  - **Dynamic Sitemap**: Created a dynamic `sitemap.ts` that automatically indexes all Products and Rental Packages with accurate database timestamps.
+  - **Robots Management**: Configured `robots.ts` to guide search crawlers and protect sensitive admin/API paths.
+  - **Schema Markup**: Enhanced JSON-LD structured data for products, FAQs, and business details.
+- [x] **Final Production Build & Commitment**: 
+  - Verified a **100% Successful Production Build** with `npm run build`.
+  - Staged and committed **13 major architectural updates** to the local `main` branch.
+- [x] **Workspace Cleanliness**: Purged all temporary logs (`tsc.log`) and scratch files to ensure a lean production-ready codebase.
 
 > [!IMPORTANT]
-> **Action Required**: Run `/prisma/rls_hardening.sql` in the Supabase SQL Editor to finalize database security.
+> **Production Note**: The local repository is currently 13 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.
 
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
