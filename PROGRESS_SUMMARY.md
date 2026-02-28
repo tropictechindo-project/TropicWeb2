@@ -150,10 +150,11 @@
 - **Overall**: ~70% complete
 
 ## 🚀 Next Session Tasks
-1. Update Worker Dashboard UI with real data
-2. Add Log Out buttons to remaining dashboards
-3. Create public invoice page UI
-4. Add payment confirmation button to Admin Orders page
-5. Integrate real-time polling
-6. Run database migration
-7. Test all workflows end-to-end
+1. **Setup Google Maps API Keys** (`.env` file) for advanced Delivery & Order tracking workflows.
+2. Update Worker Dashboard UI with real data
+3. Add Log Out buttons to remaining dashboards
+4. Create public invoice page UI
+5. Add payment confirmation button to Admin Orders page
+6. Integrate real-time polling
+7. Run database migration
+8. Test all workflows end-to-end
