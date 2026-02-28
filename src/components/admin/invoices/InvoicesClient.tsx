@@ -21,7 +21,8 @@ import {
     Loader2,
     Edit,
     Mail,
-    Trash2
+    Trash2,
+    Truck
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -278,7 +279,15 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                                 </TableCell>
                                 <TableCell className="text-right font-black">Rp {inv.total.toLocaleString('id-ID')}</TableCell>
                                 <TableCell className="text-right">
-                                    <div className="flex justify-end gap-1">
+                                    <div className="flex items-center justify-end gap-1">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-8 text-xs font-bold gap-1 mr-2 bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700"
+                                            onClick={() => toast.info("Delivery flow selected (Placeholder for the upcoming Google Maps integration)")}
+                                        >
+                                            <Truck className="h-3 w-3" /> SET DELIVERY
+                                        </Button>
                                         <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500" onClick={() => handleShare(inv)}>
                                             <LinkIcon className="h-4 w-4" />
                                         </Button>
