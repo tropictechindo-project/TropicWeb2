@@ -105,6 +105,12 @@ The website operates through three distinct entry points based on user roles:
 - [x] Added worker attendance auto-late detection.
 - [X] Deployment of Inventory Sync Conflict UI.
 - [x] Enhanced Public Invoice sharing (Token-based, No Auth).
+- [x] **Category Management**: Added dynamic "Add New" category creation logic to Admin Dashboard.
+- [x] **Data Cleanup**: Purged duplicate product categories (Chairs, Desks, etc.) and optimized database.
+- [x] **Deployment Fix**: Added `rhel-openssl-3.0.x` binary targets to Prisma schema to resolve deployment engine errors.
+- [x] **UI Connections**: Connected rental packages to their included products in public UI (`ProductDetailPage` and `ProductDetailModal`).
+- [x] **Authentication Flow**: Fixed Supabase PKCE code challenge loop in Password Reset by migrating to `@supabase/ssr` with Next.js cookies. Added Exit (X) buttons to all auth modals.
+- [x] **Delivery Flow Prep**: Added 'Set Delivery' mock CTA to Admin Invoices and documented Google Maps API keys (Directions, Distance Matrix, Places) in `.env` and `MIGRATION_REQUIRED.md`.
 
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
