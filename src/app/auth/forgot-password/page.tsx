@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ForgotPasswordPage() {
@@ -45,6 +45,14 @@ export default function ForgotPasswordPage() {
         return (
             <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
                 <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-primary/10 text-center">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-4 top-4 z-50 hover:bg-transparent text-muted-foreground hover:text-foreground"
+                        onClick={() => router.push('/')}
+                    >
+                        <X className="h-5 w-5" />
+                    </Button>
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
 
@@ -68,6 +76,14 @@ export default function ForgotPasswordPage() {
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
             <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-primary/10">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-4 top-4 z-50 hover:bg-transparent text-muted-foreground hover:text-foreground"
+                    onClick={() => router.push('/')}
+                >
+                    <X className="h-5 w-5" />
+                </Button>
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
 

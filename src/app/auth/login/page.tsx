@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { toast } from 'sonner'
 import Link from 'next/link'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, X } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -68,9 +68,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
-      <Card className="w-full max-w-md relative">
-        {/* Removed the X button as per the provided Code Edit structure */}
-        <CardHeader className="text-center pt-10">
+      <Card className="w-full max-w-md relative overflow-hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-4 top-4 z-50 hover:bg-transparent text-muted-foreground hover:text-foreground"
+          onClick={() => router.push('/')}
+        >
+          <X className="h-5 w-5" />
+        </Button>
+        <CardHeader className="text-center pt-10 relative z-10">
           <CardTitle className="text-3xl font-bold text-primary">Tropic Tech</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
