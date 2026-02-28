@@ -49,7 +49,7 @@ export async function PUT(
   try {
     const { id } = await params
     const data = await request.json()
-    const { name, description, price, duration, imageUrl, items } = data
+    const { name, description, price, duration, imageUrl, images, items } = data
 
     // Use a transaction to ensure atomicity
     const rentalPackage = await db.$transaction(async (tx) => {
@@ -67,6 +67,7 @@ export async function PUT(
           price,
           duration,
           imageUrl,
+          images: images || [],
           discountPercentage: data.discountPercentage || 0,
           rentalPackageItems: {
             create: items.map((item: any) => ({

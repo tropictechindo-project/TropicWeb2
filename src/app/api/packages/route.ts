@@ -37,7 +37,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
-    const { name, description, price, duration, imageUrl, items } = data
+    const { name, description, price, duration, imageUrl, images, items } = data
 
     const rentalPackage = await db.rentalPackage.create({
       data: {
@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         price,
         duration,
         imageUrl,
+        images: images || [],
         discountPercentage: data.discountPercentage || 0,
         rentalPackageItems: {
           create: items.map((item: any) => ({

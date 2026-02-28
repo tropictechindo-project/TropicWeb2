@@ -61,6 +61,7 @@ export async function PUT(
           category: data.category,
           monthlyPrice: data.monthlyPrice,
           imageUrl: data.imageUrl,
+          images: data.images || [],
           discountPercentage: data.discountPercentage,
           variants: {
             deleteMany: {}, // Delete all and recreate based on data
@@ -97,6 +98,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await db.$transaction(async (tx) => {
       // 1. Manually nullify unitId on any RentalItems associated with this product's units
       // to avoid Postgres Foreign Key violation when deleting the product cascade down to units

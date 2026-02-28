@@ -104,7 +104,7 @@ Button.displayName = 'Button';
 // INPUT COMPONENT
 // ============================================
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -146,14 +146,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        
+
         <div className="relative">
           {leftIcon && (
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
               {leftIcon}
             </div>
           )}
-          
+
           <input
             ref={ref}
             id={inputId}
@@ -169,20 +169,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={cn(errorId, helperId)}
             {...props}
           />
-          
+
           {rightIcon && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
               {rightIcon}
             </div>
           )}
         </div>
-        
+
         {error && (
           <span id={errorId} className="helper-text helper-text-error" role="alert">
             {error}
           </span>
         )}
-        
+
         {!error && helperText && (
           <span id={helperId} className="helper-text">
             {helperText}
@@ -238,11 +238,11 @@ export function Card({ children, className, interactive = false, onClick }: Card
       onKeyDown={
         interactive
           ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onClick?.();
-              }
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onClick?.();
             }
+          }
           : undefined
       }
     >
@@ -655,11 +655,11 @@ export function Avatar({ src, alt, fallback, size = 'md', className }: AvatarPro
   const showFallback = !src || imageError;
   const initials = fallback
     ? fallback
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
     : '?';
 
   return (

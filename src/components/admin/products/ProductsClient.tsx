@@ -25,6 +25,14 @@ import {
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { ImageUploadTool } from "../ImageUploadTool"
 
 interface Product {
     id: string
@@ -33,6 +41,7 @@ interface Product {
     price: number
     description: string | null
     imageUrl: string | null
+    images: string[]
     stock: number | null
     discountPercentage: number
     variants: any[]
@@ -55,15 +64,18 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         price: "",
         description: "",
         imageUrl: "",
+        images: [] as string[],
         discountPercentage: "0",
         variants: [] as any[]
     })
     const [variantForm, setVariantForm] = useState({ color: "", stockQuantity: "0" })
+    const [isCustomCategory, setIsCustomCategory] = useState(false)
 
     const resetForm = () => {
-        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "", discountPercentage: "0", variants: [] })
+        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "", images: [], discountPercentage: "0", variants: [] })
         setEditingProduct(null)
         setVariantForm({ color: "", stockQuantity: "0" })
+        setIsCustomCategory(false)
     }
 
     const handleOpenChange = (open: boolean) => {
@@ -79,9 +91,19 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             price: product.price.toString(),
             description: product.description || "",
             imageUrl: product.imageUrl || "",
+            images: product.images || (product.imageUrl ? [product.imageUrl] : []),
             discountPercentage: product.discountPercentage?.toString() || "0",
             variants: product.variants || []
         })
+
+        // If the product belongs to a category not in the standard list, open custom mode immediately
+        const defaultCats = ["Chair", "Desk", "Monitor", "Mouse And Keyboard", "Accessories", "Other"]
+        if (!defaultCats.includes(product.category)) {
+            setIsCustomCategory(true)
+        } else {
+            setIsCustomCategory(false)
+        }
+
         setIsOpen(true)
     }
 
@@ -118,7 +140,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     category: formData.category,
                     monthlyPrice: parseFloat(formData.price),
                     description: formData.description,
-                    imageUrl: formData.imageUrl,
+                    imageUrl: formData.images[0] || formData.imageUrl,
+                    images: formData.images,
                     discountPercentage: parseInt(formData.discountPercentage),
                     variants: formData.variants
                 })
@@ -204,13 +227,55 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="category">Category</Label>
-                                <Input
-                                    id="category"
-                                    value={formData.category}
-                                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                    required
-                                />
+                                <div className="flex justify-between items-center">
+                                    <Label htmlFor="category">Category</Label>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-6 px-2 text-[10px] uppercase font-bold tracking-wider"
+                                        onClick={() => {
+                                            setIsCustomCategory(!isCustomCategory)
+                                            if (isCustomCategory) {
+                                                setFormData({ ...formData, category: "" })
+                                            }
+                                        }}
+                                    >
+                                        {isCustomCategory ? "Use Dropdown" : "+ Add New"}
+                                    </Button>
+                                </div>
+                                {isCustomCategory ? (
+                                    <Input
+                                        id="category"
+                                        placeholder="Type new category name..."
+                                        value={formData.category}
+                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                        required
+                                    />
+                                ) : (
+                                    <Select
+                                        value={formData.category}
+                                        onValueChange={(val) => setFormData({ ...formData, category: val })}
+                                        required
+                                    >
+                                        <SelectTrigger id="category">
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Array.from(new Set([
+                                                "Chair",
+                                                "Desk",
+                                                "Monitor",
+                                                "Mouse And Keyboard",
+                                                "Accessories",
+                                                "Other",
+                                                ...initialProducts.map(p => p.category)
+                                            ])).map(cat => (
+                                                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -222,14 +287,6 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                     value={formData.price}
                                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                                     required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="imageUrl">Image URL</Label>
-                                <Input
-                                    id="imageUrl"
-                                    value={formData.imageUrl}
-                                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -245,11 +302,17 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                             </div>
                         </div>
 
-                        {formData.imageUrl && (
-                            <div className="mt-2 relative aspect-[21/9] rounded-xl overflow-hidden border bg-muted">
-                                <img src={formData.imageUrl} alt="Preview" className="object-cover w-full h-full" />
+                        <div className="space-y-4">
+                            <div>
+                                <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Product Gallery (WebP Auto-Compression)</Label>
+                                <p className="text-xs text-muted-foreground mb-3">Upload high quality JPG, PNG, or HEIC files. The system will transcode and compress them to WebP to guarantee fast page loads.</p>
                             </div>
-                        )}
+                            <ImageUploadTool
+                                value={formData.images}
+                                onChange={(urls) => setFormData({ ...formData, images: urls, imageUrl: urls[0] || "" })}
+                                maxImages={8}
+                            />
+                        </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="description">Description</Label>
@@ -345,7 +408,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                         </DialogFooter>
                     </form>
                 </DialogContent>
-            </Dialog>
+            </Dialog >
         </>
     )
 }

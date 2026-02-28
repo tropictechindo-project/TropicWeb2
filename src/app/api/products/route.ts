@@ -44,6 +44,7 @@ export async function POST(request: Request) {
         category: json.category,
         monthlyPrice: json.monthlyPrice,
         imageUrl: json.imageUrl,
+        images: json.images || [],
         discountPercentage: json.discountPercentage || 0,
         variants: {
           create: json.variants?.map((v: any) => ({

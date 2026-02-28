@@ -28,7 +28,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 500000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 15 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -39,7 +39,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 400000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -50,7 +50,7 @@ async function seed() {
         category: 'Desks',
         imageUrl: '',
         monthlyPrice: 300000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -64,7 +64,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 400000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -75,7 +75,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 250000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -86,7 +86,7 @@ async function seed() {
         category: 'Monitors',
         imageUrl: '',
         monthlyPrice: 500000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 10 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -100,7 +100,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 300000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -111,7 +111,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 250000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -122,7 +122,7 @@ async function seed() {
         category: 'Chairs',
         imageUrl: '',
         monthlyPrice: 400000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 10 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -136,7 +136,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 100000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 40 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -147,7 +147,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 80000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 35 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -158,7 +158,7 @@ async function seed() {
         category: 'Keyboard & Mouse',
         imageUrl: '',
         monthlyPrice: 50000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 50 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -172,7 +172,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 75000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 30 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -183,7 +183,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 100000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 25 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -194,7 +194,7 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 120000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 20 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
@@ -205,21 +205,21 @@ async function seed() {
         category: 'Accessories',
         imageUrl: '',
         monthlyPrice: 50000,
-        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000), stockQuantity: 35 } },
+        variants: { create: { color: "STANDARD", sku: "GEN-" + Math.floor(Math.random() * 10000) } },
       },
     })
 
     console.log('✅ Created accessories')
 
     // Create sample packages
-    const starterPackage = await db.package.create({
+    const starterPackage = await db.rentalPackage.create({
       data: {
         name: 'Starter Package',
         description: 'Everything you need to get started working remotely in Bali.',
         imageUrl: '',
         price: 700000,
         duration: 30,
-        items: {
+        rentalPackageItems: {
           create: [
             { productId: desk1.id, quantity: 1 },
             { productId: chair1.id, quantity: 1 },
@@ -229,14 +229,14 @@ async function seed() {
       },
     })
 
-    const professionalPackage = await db.package.create({
+    const professionalPackage = await db.rentalPackage.create({
       data: {
         name: 'Professional Package',
         description: 'Complete professional workstation setup for power users.',
         imageUrl: '',
         price: 1200000,
         duration: 30,
-        items: {
+        rentalPackageItems: {
           create: [
             { productId: desk2.id, quantity: 1 },
             { productId: chair3.id, quantity: 1 },
@@ -248,14 +248,14 @@ async function seed() {
       },
     })
 
-    const digitalNomadPackage = await db.package.create({
+    const digitalNomadPackage = await db.rentalPackage.create({
       data: {
         name: 'Digital Nomad Package',
         description: 'Ultimate setup for the traveling professional.',
         imageUrl: '',
         price: 2000000,
         duration: 30,
-        items: {
+        rentalPackageItems: {
           create: [
             { productId: desk1.id, quantity: 1 },
             { productId: chair1.id, quantity: 1 },

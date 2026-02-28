@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select"
 import { Plus, Pencil, Trash2, Loader2, X } from "lucide-react"
 import { toast } from "sonner"
+import { ImageUploadTool } from "../ImageUploadTool"
 
 interface PackageItem {
     id?: string // Optional for new items
@@ -46,8 +47,8 @@ interface Package {
     price: number
     duration: number
     imageUrl: string | null
+    images: string[]
     items: PackageItem[]
-    discountPercentage: number
     discountPercentage: number
 }
 
@@ -75,6 +76,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
         price: "",
         duration: "1", // Default 1 month
         imageUrl: "",
+        images: [] as string[],
         discountPercentage: "0"
     })
     const [selectedItems, setSelectedItems] = useState<PackageItem[]>([])
@@ -84,7 +86,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
     const [itemQuantity, setItemQuantity] = useState<string>("1")
 
     const resetForm = () => {
-        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "", discountPercentage: "0" })
+        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "", images: [], discountPercentage: "0" })
         setSelectedItems([])
         setEditingId(null)
         setSelectedProductId("")
@@ -104,6 +106,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
             price: pkg.price.toString(),
             duration: pkg.duration.toString(),
             imageUrl: pkg.imageUrl || "",
+            images: pkg.images || (pkg.imageUrl ? [pkg.imageUrl] : []),
             discountPercentage: pkg.discountPercentage?.toString() || "0"
         })
         setSelectedItems([...pkg.items])
@@ -168,7 +171,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                     description: formData.description,
                     price: parseFloat(formData.price),
                     duration: parseInt(formData.duration),
-                    imageUrl: formData.imageUrl,
+                    imageUrl: formData.images[0] || formData.imageUrl,
+                    images: formData.images,
                     discountPercentage: parseInt(formData.discountPercentage),
                     items: selectedItems.map(i => ({
                         productId: i.productId,
@@ -263,15 +267,6 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="imageUrl">Photo / Image Link</Label>
-                                <Input
-                                    id="imageUrl"
-                                    placeholder="https://example.com/image.jpg"
-                                    value={formData.imageUrl}
-                                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                                />
-                            </div>
-                            <div className="space-y-2">
                                 <Label htmlFor="discount">Discount (%)</Label>
                                 <Input
                                     id="discount"
@@ -283,16 +278,18 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                                 />
                             </div>
                         </div>
-                        {formData.imageUrl && (
-                            <div className="mt-2 relative h-32 w-full overflow-hidden rounded-xl border bg-muted">
-                                <img
-                                    src={formData.imageUrl}
-                                    alt="Preview"
-                                    className="h-full w-full object-cover"
-                                    onError={(e) => (e.currentTarget.style.display = 'none')}
-                                />
+
+                        <div className="space-y-4">
+                            <div>
+                                <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Package Gallery (WebP Auto-Compression)</Label>
+                                <p className="text-xs text-muted-foreground mb-3">Upload high quality JPG, PNG, or HEIC files. The system will transcode and compress them to WebP.</p>
                             </div>
-                        )}
+                            <ImageUploadTool
+                                value={formData.images}
+                                onChange={(urls) => setFormData({ ...formData, images: urls, imageUrl: urls[0] || "" })}
+                                maxImages={8}
+                            />
+                        </div>
 
                         <div className="space-y-2 border-t pt-4">
                             <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Package Items</Label>

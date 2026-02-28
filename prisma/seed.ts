@@ -322,7 +322,6 @@ async function main() {
                 imageUrl: imageUrl,
                 images: [imageUrl], // Use single image for now or duplicate if needed for slider effect
                 specs: specs,
-                stock: (p as any).inStock ? 10 : 0,
             },
         })
         console.log(`Created product: ${product.name}`)

@@ -7,7 +7,7 @@ async function test() {
       include: { user: true, rentalItems: { include: { unit: true } } }
     });
     console.log('✅ Order relations (user, unit) are accessible.');
-  } catch (e) {
+  } catch (e: any) {
     console.error('❌ Prisma Runtime Error:', e.message);
   }
 }
