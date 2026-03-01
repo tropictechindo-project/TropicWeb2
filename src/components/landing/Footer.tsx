@@ -42,7 +42,7 @@ export default function Footer() {
               </a>
               <a href="https://maps.app.goo.gl/oaQhpew78fnHjmkB8" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="View our location on Google Maps">
                 <MapPin className="h-4 w-4" />
-                Jl. Tunjungsari No.8, Denpasar - Bali 80117
+                Jl. Tunjungsari No.8, Bali 80117
               </a>
               <a href="https://www.instagram.com/tropictechs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Follow us on Instagram">
                 <Instagram className="h-4 w-4" />

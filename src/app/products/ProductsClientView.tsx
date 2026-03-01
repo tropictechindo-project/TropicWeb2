@@ -479,26 +479,23 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             </div>
                         </div>
 
-                        <div className="flex justify-center flex-wrap gap-x-14 gap-y-1 mt-3 text-center border-b border-slate-200 pb-3 w-full">
+                        <div className="flex justify-center flex-wrap gap-x-16 gap-y-1.5 mt-3 text-center border-b border-slate-200 pb-3 w-full">
                             <div className="flex items-center gap-3">
-                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Email :</span>
+                                <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Email :</span>
                                 <span className="font-black text-slate-950 contact-item">contact@tropictech.online</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Whatsapp :</span>
+                                <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Whatsapp :</span>
                                 <span className="font-black text-slate-950 contact-item">+62 822 6657 4860</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Web :</span>
+                                <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Web :</span>
                                 <span className="font-black text-slate-950 contact-item">www.tropictech.online</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Catalog :</span>
+                                <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Catalog :</span>
                                 <span className="font-black text-slate-950 contact-item">Edition April 2026</span>
                             </div>
-                        </div>
-                        <div className="text-center mt-2">
-                            <p className="text-[7.5pt] text-slate-500 font-bold tracking-widest">Address : Jl. Tunjung Sari No.08, Padangsambian Kaja, Denpasar Barat, Bali 80117</p>
                         </div>
                     </div>
 
