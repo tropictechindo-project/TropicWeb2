@@ -233,6 +233,27 @@ export function UsersClient({ users }: UsersClientProps) {
         }
     }
 
+    const onUpdateRole = async (userId: string, newRole: string) => {
+        setIsLoading(true)
+        try {
+            const res = await fetch(`/api/admin/users/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ role: newRole })
+            })
+            if (!res.ok) throw new Error("Failed to update role")
+            toast.success(`User role updated to ${newRole}`)
+            router.refresh()
+        } catch {
+            toast.error("Failed to update role")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-4 py-2">
@@ -377,6 +398,17 @@ export function UsersClient({ users }: UsersClientProps) {
                                                         <Edit className="h-4 w-4" /> Edit User
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
+                                                        className="font-bold gap-2 text-primary"
+                                                        onClick={() => onUpdateRole(user.id, user.role === 'WORKER' ? 'USER' : 'WORKER')}
+                                                        disabled={user.role === 'ADMIN'}
+                                                    >
+                                                        {user.role === 'WORKER' ? (
+                                                            <><Shield className="h-4 w-4" /> Set as Regular User</>
+                                                        ) : (
+                                                            <><ShieldCheck className="h-4 w-4" /> Appoint as Worker</>
+                                                        )}
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
                                                         className="text-destructive font-bold gap-2"
                                                         onClick={() => handleDeleteUser(user.id)}
                                                     >
@@ -432,15 +464,17 @@ export function UsersClient({ users }: UsersClientProps) {
             </Dialog>
 
             {/* Message Dialog - Using shared ChatDialog */}
-            {selectedUser && (
-                <ChatDialog
-                    open={isMessageOpen}
-                    onOpenChange={setIsMessageOpen}
-                    otherUserId={selectedUser.id}
-                    otherUserName={selectedUser.fullName || selectedUser.username}
-                    otherUserImage={selectedUser.profileImage}
-                />
-            )}
+            {
+                selectedUser && (
+                    <ChatDialog
+                        open={isMessageOpen}
+                        onOpenChange={setIsMessageOpen}
+                        otherUserId={selectedUser.id}
+                        otherUserName={selectedUser.fullName || selectedUser.username}
+                        otherUserImage={selectedUser.profileImage}
+                    />
+                )
+            }
 
             {/* Add User Dialog */}
             <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
@@ -659,7 +693,7 @@ export function UsersClient({ users }: UsersClientProps) {
                     </div>
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     )
 }
 

@@ -479,22 +479,22 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             </div>
                         </div>
 
-                        <div className="flex justify-center flex-wrap gap-x-20 gap-y-2 mt-3 text-center border-b border-slate-200 pb-3 w-full">
-                            <div className="flex items-center gap-2 mr-4">
+                        <div className="flex justify-center flex-wrap mt-3 text-center border-b border-slate-200 pb-3 w-full">
+                            <div className="inline-flex items-center" style={{ marginRight: '15pt' }}>
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Email :</span>
-                                <span className="font-black text-slate-950 contact-item">contact@tropictech.online</span>
+                                <span className="font-black text-slate-950 contact-item ml-1">contact@tropictech.online</span>
                             </div>
-                            <div className="flex items-center gap-2 mr-4">
+                            <div className="inline-flex items-center" style={{ marginRight: '15pt' }}>
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Whatsapp :</span>
-                                <span className="font-black text-slate-950 contact-item">+62 822 6657 4860</span>
+                                <span className="font-black text-slate-950 contact-item ml-1">+62 822 6657 4860</span>
                             </div>
-                            <div className="flex items-center gap-2 mr-4">
+                            <div className="inline-flex items-center" style={{ marginRight: '15pt' }}>
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Web :</span>
-                                <span className="font-black text-slate-950 contact-item">www.tropictech.online</span>
+                                <span className="font-black text-slate-950 contact-item ml-1">www.tropictech.online</span>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="inline-flex items-center">
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Catalog :</span>
-                                <span className="font-black text-slate-950 contact-item">Edition April 2026</span>
+                                <span className="font-black text-slate-950 contact-item ml-1">Edition April 2026</span>
                             </div>
                         </div>
                     </div>

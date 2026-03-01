@@ -49,8 +49,7 @@ export async function GET(request: NextRequest) {
 
         if (!user) {
             // New user via Google: Auto-register to bypass confirmation loop.
-            // Generate a secure random password since they login via SSO.
-            const randomPassword = generatePassword(16);
+            const randomPassword = generatePassword(); // Fixed: no arguments
             const hashedPassword = await hashPassword(randomPassword);
 
             // Extract Google Avatar if available
@@ -58,47 +57,52 @@ export async function GET(request: NextRequest) {
 
             user = await db.user.create({
                 data: {
+                    id: supabaseUser.id, // Sync with Supabase ID
                     email: supabaseUser.email,
                     username: generateUsername(supabaseUser.email),
                     password: hashedPassword,
                     fullName: supabaseUser.user_metadata?.full_name || supabaseUser.email.split('@')[0],
+                    whatsapp: '+628000000000', // Default required field
                     role: 'USER',
                     isVerified: true, // Google emails are pre-verified
                     profileImage: photoUrl
                 }
             });
         }
-        const allowedAdminEmails = ['admin@tropictech.com', 'tropictechbali@gmail.com', 'damnbayu@gmail.com'];
+        const allowedAdminEmails = [
+            'admin@tropictech.com',
+            'tropictechbali@gmail.com',
+            'damnbayu@gmail.com',
+            'tropictechindo@gmail.com',
+            'ceo@tropictech.online'
+        ];
+
         let sessionRole = user.role;
 
         if (sessionRole === 'ADMIN' && !allowedAdminEmails.includes(user.email)) {
-            // For security, if an unauthorized email somehow got ADMIN role, 
-            // we downgrade their session role to USER.
             sessionRole = 'USER';
         }
 
-        // Existing user - generate app JWT
+        // Generate app JWT
         const token = await generateToken({
             userId: user.id,
             username: user.username,
             email: user.email,
-            role: sessionRole, // Use the verified session role
+            role: sessionRole,
         })
 
-        // Set cookie or redirect with token in a safe way
-        // For this app, it seems we use localStorage for tokens, so we might need a bridge page or redirect with token in hash
-
-        const response = NextResponse.redirect(`${requestUrl.origin}/dashboard/${sessionRole === 'ADMIN' ? 'admin' : sessionRole === 'WORKER' ? 'worker' : 'user'}`)
-
-        // We can't easily set localStorage from a redirect response
-        // Using a "bridge" param to let the client know to save the token if we pass it in query (careful with security)
-        // Or just redirect to a page that saves it.
-
-        if (next) {
-            return NextResponse.redirect(`${requestUrl.origin}${next}?bridge_token=${token}`)
+        // Determine destination based on role as requested
+        let destination = '/dashboard/user';
+        if (sessionRole === 'ADMIN' || sessionRole === 'WORKER') {
+            destination = '/';
         }
 
-        return NextResponse.redirect(`${requestUrl.origin}/auth/login?bridge_token=${token}`)
+        if (next) {
+            destination = next;
+        }
+
+        // Redirect with bridge_token to allow AuthContext to capture it
+        return NextResponse.redirect(`${requestUrl.origin}${destination}${destination.includes('?') ? '&' : '?'}bridge_token=${token}`)
     }
 
     // return the user to an error page with instructions

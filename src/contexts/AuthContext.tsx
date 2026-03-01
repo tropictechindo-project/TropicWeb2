@@ -35,6 +35,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = async () => {
     try {
+      // Check for bridge_token in URL (from Google Auth callback)
+      const urlParams = new URLSearchParams(window.location.search)
+      const bridgeToken = urlParams.get('bridge_token')
+
+      if (bridgeToken) {
+        localStorage.setItem('token', bridgeToken)
+        // Clean URL without reloading
+        const newUrl = window.location.pathname + window.location.hash
+        window.history.replaceState({}, '', newUrl)
+      }
+
       const token = localStorage.getItem('token')
       if (!token) {
         setIsLoading(false)
