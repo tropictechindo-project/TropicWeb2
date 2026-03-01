@@ -193,7 +193,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                 <style jsx global>{`
                     @page {
                         size: A3 landscape;
-                        margin: 0mm 4mm 8mm 4mm; /* ZERO top margin for maximum vertical usage */
+                        margin: 0 !important; /* Force zero margin to remove browser artifacts */
                     }
                     @media print {
                         .no-print, 
@@ -206,13 +206,18 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         button,
                         [data-sonner-toast],
                         .sonner-toast,
-                        [class*="toast"] {
+                        [class*="toast"],
+                        .loading-overlay,
+                        .preparing-indicator,
+                        .cta-area,
+                        .spinner,
+                        [class*="spinner"],
+                        .lucide-loader2 {
                             display: none !important;
                             opacity: 0 !important;
                             visibility: hidden !important;
                             height: 0 !important;
-                            margin: 0 !important;
-                            padding: 0 !important;
+                            width: 0 !important;
                         }
                         .print-only {
                             display: block !important;
@@ -226,6 +231,12 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             padding: 0 !important;
                             line-height: 1.2 !important;
                         }
+                        .catalog-container {
+                            padding: 4mm 8mm !important; /* Replacement for @page margin */
+                            margin: 0 !important;
+                            width: 100% !important;
+                            max-width: none !important;
+                        }
                         .container {
                             max-width: 100% !important;
                             width: 100% !important;
@@ -235,7 +246,9 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         .grid {
                             display: grid !important;
                             grid-template-columns: repeat(6, 1fr) !important;
-                            gap: 10px 6px !important; /* Managed vertical gap to prevent overlap */
+                            gap: 4mm !important; /* Consistent spacing to prevent overlap */
+                            row-gap: 6mm !important; /* Extra vertical gap for page break safety */
+                            width: 100% !important;
                             padding: 0 !important;
                         }
                         .card {
@@ -243,19 +256,20 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             page-break-inside: avoid !important;
                             border: 0.5px solid #e2e8f0 !important;
                             box-shadow: none !important;
-                            padding: 4px !important;
-                            border-radius: 6px !important;
+                            padding: 3px !important; /* Ultra-compact padding */
+                            border-radius: 4px !important;
                             height: auto !important;
-                            min-height: 110px !important; /* Radically lower card height */
+                            min-height: 100px !important; /* Even lower */
                             display: flex !important;
                             flex-direction: column !important;
                             position: relative !important;
+                            margin-bottom: 0 !important; /* Let grid gap handle it */
                         }
                         .card-image-container {
-                            height: 60px !important; /* Very short image height */
-                            min-height: 60px !important;
+                            height: 55px !important; /* Ultra-short image */
+                            min-height: 55px !important;
                             padding: 0 !important;
-                            margin-bottom: 2px !important;
+                            margin-bottom: 1px !important;
                             background: white !important;
                         }
                         .card img {
@@ -264,14 +278,14 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             object-fit: contain !important;
                         }
                         h3 {
-                            font-size: 8pt !important;
+                            font-size: 7.2pt !important; /* Planned 7.2pt */
                             font-weight: 800 !important;
                             margin-bottom: 1px !important;
                             color: #0f172a !important;
                             line-height: 1.05 !important;
                         }
                         p.description {
-                            font-size: 6.5pt !important;
+                            font-size: 5.5pt !important; /* Planned 5.5pt micro-text */
                             color: #475569 !important;
                             line-height: 1 !important;
                             margin-bottom: 3px !important;
@@ -286,15 +300,15 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             border-top: 0.5px solid #f1f5f9 !important;
                         }
                         .price-total {
-                            font-size: 9pt !important;
+                            font-size: 8.5pt !important; /* Planned 8.5pt */
                             font-weight: 900 !important;
                             color: #1e40af !important;
                         }
                         .print-header {
                             margin: 0 !important;
                             padding: 0 !important;
-                            margin-top: -8mm !important; /* Force pull to the absolute top */
-                            margin-bottom: 4mm !important;
+                            margin-top: 2mm !important; /* Move to absolute top with safety */
+                            margin-bottom: 3mm !important;
                         }
                         .catalog-main-title {
                             font-size: 15pt !important;
@@ -314,189 +328,205 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                     }
                 `}</style>
 
-                {/* Ultra-Premium Centered Header */}
-                <div className="hidden print-only print-header">
-                    <div className="flex flex-col items-center text-center border-b-[2px] border-slate-900 pb-3 w-full">
-                        <Image
-                            src="/LogoTropicTech.webp"
-                            alt="Logo"
-                            width={150}
-                            height={48}
-                            className="object-contain mb-2"
-                        />
-                        <h1 className="catalog-main-title tracking-tighter text-slate-950 leading-none">PT TROPIC TECH INTERNATIONAL</h1>
-                        <div className="mt-2 text-center">
-                            <p className="font-black text-[9.5pt] text-blue-700 uppercase tracking-[0.25em]">{heroSubtitle || 'Workstation Rental Company'}</p>
-                            <p className="text-[8.5pt] text-slate-500 font-bold max-w-3xl mx-auto mt-1 italic">{heroSubtitle2 || 'Premium monitors, ergonomic desks, and accessories - delivered same day in Bali.'}</p>
+                {/* Catalog Container for Zero-Margin Page Printing */}
+                <div className="catalog-container">
+                    {/* Ultra-Premium Centered Header */}
+                    <div className="hidden print-only print-header">
+                        <div className="flex flex-col items-center text-center border-b-[2px] border-slate-900 pb-3 w-full">
+                            <Image
+                                src="/LogoTropicTech.webp"
+                                alt="Logo"
+                                width={150}
+                                height={48}
+                                className="object-contain mb-2"
+                            />
+                            <h1 className="catalog-main-title tracking-tighter text-slate-950 leading-none">PT TROPIC TECH INTERNATIONAL</h1>
+                            <div className="mt-2 text-center">
+                                <p className="font-black text-[9.5pt] text-blue-700 uppercase tracking-[0.25em]">{heroSubtitle || 'Workstation Rental Company'}</p>
+                                <p className="text-[8.5pt] text-slate-500 font-bold max-w-3xl mx-auto mt-1 italic">{heroSubtitle2 || 'Premium monitors, ergonomic desks, and accessories - delivered same day in Bali.'}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center flex-wrap gap-x-14 gap-y-1 mt-3 text-center border-b border-slate-200 pb-3 w-full">
+                            <div className="flex items-center gap-3">
+                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Email :</span>
+                                <span className="font-black text-slate-950 contact-item">contact@tropictech.online</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Whatsapp :</span>
+                                <span className="font-black text-slate-950 contact-item">+62 822 6657 4860</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Web :</span>
+                                <span className="font-black text-slate-950 contact-item">www.tropictech.online</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Catalog :</span>
+                                <span className="font-black text-slate-950 contact-item">Edition April 2026</span>
+                            </div>
+                        </div>
+                        <div className="text-center mt-2">
+                            <p className="text-[7.5pt] text-slate-500 font-bold uppercase tracking-widest">Address : Jl. Tunjung Sari No.08, Padangsambian Kaja, Denpasar Barat, Bali 80117</p>
                         </div>
                     </div>
 
-                    <div className="flex justify-center flex-wrap gap-x-14 gap-y-1 mt-3 text-center border-b border-slate-200 pb-3 w-full">
-                        <div className="flex items-center gap-3">
-                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Email :</span>
-                            <span className="font-black text-slate-950 contact-item">contact@tropictech.online</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Whatsapp :</span>
-                            <span className="font-black text-slate-950 contact-item">+62 822 6657 4860</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Web :</span>
-                            <span className="font-black text-slate-950 contact-item">www.tropictech.online</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Catalog :</span>
-                            <span className="font-black text-slate-950 contact-item">Edition April 2026</span>
-                        </div>
+                    {/* Category Navigation */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mb-12 category-nav no-print">
+                        {tabs.map(tab => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${activeTab === tab
+                                    ? 'bg-primary text-primary-foreground shadow-md scale-105'
+                                    : 'bg-background hover:bg-primary/10 text-muted-foreground hover:text-foreground shadow-sm'
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
                     </div>
-                    <div className="text-center mt-2">
-                        <p className="text-[7.5pt] text-slate-500 font-bold uppercase tracking-widest">Address : Jl. Tunjung Sari No.08, Padangsambian Kaja, Denpasar Barat, Bali 80117</p>
-                    </div>
-                </div>
 
-                {/* Category Navigation */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-12 category-nav no-print">
-                    {tabs.map(tab => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${activeTab === tab
-                                ? 'bg-primary text-primary-foreground shadow-md scale-105'
-                                : 'bg-background hover:bg-primary/10 text-muted-foreground hover:text-foreground shadow-sm'
-                                }`}
-                        >
-                            {tab}
-                        </button>
-                    ))}
-                </div>
+                    {/* Unified Product Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 catalog-grid">
+                        {filteredItems.map(item => {
+                            const originalPrice = item.price
+                            const discountedPrice = item.discountPercentage > 0
+                                ? originalPrice * (1 - item.discountPercentage / 100)
+                                : originalPrice
 
-                {/* Unified Product Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 catalog-grid">
-                    {filteredItems.map(item => {
-                        const originalPrice = item.price
-                        const discountedPrice = item.discountPercentage > 0
-                            ? originalPrice * (1 - item.discountPercentage / 100)
-                            : originalPrice
+                            const itemLink = `/${item.type === 'PRODUCT' ? 'product' : item.type === 'PACKAGE' ? 'package' : 'offer'}/${item.id}`
 
-                        const itemLink = `/${item.type === 'PRODUCT' ? 'product' : item.type === 'PACKAGE' ? 'package' : 'offer'}/${item.id}`
-
-                        return (
-                            <Card key={item.id} className="group overflow-hidden flex flex-col hover:shadow-2xl transition-all duration-300 border-primary/10 bg-card rounded-2xl h-full">
-                                {/* Image Box */}
-                                <div className="relative aspect-square overflow-hidden bg-muted p-6 card-image-container">
-                                    {item.discountPercentage > 0 && (
-                                        <Badge className="absolute top-4 left-4 z-10 bg-red-500 hover:bg-red-600 text-white font-bold px-3 py-1 shadow-lg badge no-print">
-                                            -{item.discountPercentage}% OFF
+                            return (
+                                <Card key={item.id} className="group overflow-hidden flex flex-col hover:shadow-2xl transition-all duration-300 border-primary/10 bg-card rounded-2xl h-full">
+                                    {/* Image Box */}
+                                    <div className="relative aspect-square overflow-hidden bg-muted p-6 card-image-container">
+                                        {item.discountPercentage > 0 && (
+                                            <Badge className="absolute top-4 left-4 z-10 bg-red-500 hover:bg-red-600 text-white font-bold px-3 py-1 shadow-lg badge no-print">
+                                                -{item.discountPercentage}% OFF
+                                            </Badge>
+                                        )}
+                                        <Badge variant="outline" className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm border-primary/20 font-semibold shadow-sm badge no-print">
+                                            {item.category}
                                         </Badge>
-                                    )}
-                                    <Badge variant="outline" className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm border-primary/20 font-semibold shadow-sm badge no-print">
-                                        {item.category}
-                                    </Badge>
 
-                                    <Link href={itemLink} className="block w-full h-full no-print">
-                                        <Image
-                                            src={item.imageUrl}
-                                            alt={item.name}
-                                            fill
-                                            className="object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
-                                        />
-                                    </Link>
-                                    <div className="hidden print-only relative w-full h-full">
-                                        <img
-                                            src={item.imageUrl}
-                                            alt={item.name}
-                                            className="w-full h-full object-contain"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Content Box */}
-                                <div className="flex-1 flex flex-col p-6 space-y-4 no-print">
-                                    <div className="flex-1">
-                                        <Link href={itemLink} className="no-print">
-                                            <h3 className="font-bold text-xl line-clamp-2 hover:text-primary transition-colors leading-tight mb-2">
-                                                {item.name}
-                                            </h3>
+                                        <Link href={itemLink} className="block w-full h-full no-print">
+                                            <Image
+                                                src={item.imageUrl}
+                                                alt={item.name}
+                                                fill
+                                                className="object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
+                                            />
                                         </Link>
-                                        <p className="text-sm text-muted-foreground line-clamp-2 description">
-                                            {item.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Pricing Layout - Total Focus */}
-                                    <div className="pt-4 border-t border-border/50 price-block">
-                                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-1 no-print">Total Price</div>
-                                        <div className="flex items-baseline gap-2">
-                                            <span className="text-2xl font-black text-primary price-total">
-                                                Rp {discountedPrice.toLocaleString('id-ID')}
-                                            </span>
-                                            {item.discountPercentage > 0 && (
-                                                <span className="text-sm line-through text-muted-foreground font-medium no-print">
-                                                    Rp {originalPrice.toLocaleString('id-ID')}
-                                                </span>
-                                            )}
+                                        <div className="hidden print-only relative w-full h-full">
+                                            <img
+                                                src={item.imageUrl}
+                                                alt={item.name}
+                                                className="w-full h-full object-contain"
+                                            />
                                         </div>
                                     </div>
 
-                                    {/* Advanced Action Bar */}
-                                    <div className="grid grid-cols-2 gap-3 pt-2 no-print">
-                                        <Button asChild className="w-full font-bold shadow-md hover:shadow-lg transition-all" variant="default">
-                                            <Link href={itemLink}>
-                                                <ShoppingCart className="mr-2 h-4 w-4" />
-                                                Order Now
+                                    {/* Content Box */}
+                                    <div className="flex-1 flex flex-col p-6 space-y-4 no-print">
+                                        <div className="flex-1">
+                                            <Link href={itemLink} className="no-print">
+                                                <h3 className="font-bold text-xl line-clamp-2 hover:text-primary transition-colors leading-tight mb-2">
+                                                    {item.name}
+                                                </h3>
                                             </Link>
-                                        </Button>
-                                        <div className="flex gap-2">
-                                            <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" onClick={() => handleShare(item)} title="Share Product">
-                                                <Share2 className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" asChild title="View Details">
+                                            <p className="text-sm text-muted-foreground line-clamp-2 description">
+                                                {item.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Pricing Layout - Total Focus */}
+                                        <div className="pt-4 border-t border-border/50 price-block">
+                                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-1 no-print">Total Price</div>
+                                            <div className="flex items-baseline gap-2">
+                                                <span className="text-2xl font-black text-primary price-total">
+                                                    Rp {discountedPrice.toLocaleString('id-ID')}
+                                                </span>
+                                                {item.discountPercentage > 0 && (
+                                                    <span className="text-sm line-through text-muted-foreground font-medium no-print">
+                                                        Rp {originalPrice.toLocaleString('id-ID')}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Advanced Action Bar */}
+                                        <div className="grid grid-cols-2 gap-3 pt-2 no-print">
+                                            <Button asChild className="w-full font-bold shadow-md hover:shadow-lg transition-all" variant="default">
                                                 <Link href={itemLink}>
-                                                    <Info className="h-4 w-4" />
+                                                    <ShoppingCart className="mr-2 h-4 w-4" />
+                                                    Order Now
                                                 </Link>
                                             </Button>
+                                            <div className="flex gap-2">
+                                                <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" onClick={() => handleShare(item)} title="Share Product">
+                                                    <Share2 className="h-4 w-4" />
+                                                </Button>
+                                                <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" asChild title="View Details">
+                                                    <Link href={itemLink}>
+                                                        <Info className="h-4 w-4" />
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Print-Only Content Box - TOTAL CTA REMOVAL */}
-                                <div className="hidden print-only flex-1 flex flex-col p-0 space-y-1">
-                                    <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
-                                    <p className="text-[6.5pt] text-slate-500 line-clamp-2 description leading-tight">
-                                        {item.description}
-                                    </p>
-                                    <div className="pt-1.5 border-t border-slate-100 mt-auto price-block">
-                                        <span className="text-[9pt] font-black text-blue-800 price-total">
-                                            Rp {discountedPrice.toLocaleString('id-ID')}
-                                        </span>
+                                    {/* Print-Only Content Box - TOTAL CTA REMOVAL */}
+                                    <div className="hidden print-only flex-1 flex flex-col p-0 space-y-1">
+                                        <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
+                                        <p className="text-[6.5pt] text-slate-500 line-clamp-2 description leading-tight">
+                                            {item.description}
+                                        </p>
+                                        <div className="pt-1.5 border-t border-slate-100 mt-auto price-block">
+                                            <span className="text-[9pt] font-black text-blue-800 price-total">
+                                                Rp {discountedPrice.toLocaleString('id-ID')}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        )
-                    })}
+                                </Card>
+                            )
+                        })}
+                    </div>
+
+                    {filteredItems.length === 0 && (
+                        <div className="text-center py-20 px-4 bg-card rounded-2xl border border-dashed border-primary/20 w-full max-w-2xl mx-auto shadow-sm">
+                            <ShoppingCart className="mx-auto h-16 w-16 text-muted-foreground/30 mb-4" />
+                            <h3 className="text-2xl font-bold mb-2">No Matching Items</h3>
+                            <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
+                            <Button variant="link" onClick={() => { setSearchQuery(''); setActiveTab('All') }} className="mt-4 font-bold text-primary">Clear all filters</Button>
+                        </div>
+                    )}
+                    {/* Print-Only Professional Footer - Perfectly Centered */}
+                    <div className="hidden print-only print-footer">
+                        <div className="flex flex-col items-center justify-center text-center">
+                            <p className="text-slate-950 text-[9pt] font-black uppercase tracking-[0.1em]">PT Tropic Tech International</p>
+                            <div className="flex justify-center gap-6 mt-1 text-slate-500 text-[7.5pt] font-bold">
+                                <p>© 2026 All rights reserved.</p>
+                                <p>Prices are subject to rental duration and availability.</p>
+                            </div>
+                            <p className="mt-2 font-black text-blue-700 text-[8.5pt] tracking-tight">
+                                Access full digital catalog: www.tropictech.online/products
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                {filteredItems.length === 0 && (
-                    <div className="text-center py-20 px-4 bg-card rounded-2xl border border-dashed border-primary/20 w-full max-w-2xl mx-auto shadow-sm">
-                        <ShoppingCart className="mx-auto h-16 w-16 text-muted-foreground/30 mb-4" />
-                        <h3 className="text-2xl font-bold mb-2">No Matching Items</h3>
-                        <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
-                        <Button variant="link" onClick={() => { setSearchQuery(''); setActiveTab('All') }} className="mt-4 font-bold text-primary">Clear all filters</Button>
+                {/* Dynamic Loading Overlay - Hidden in Print */}
+                {isGeneratingPdf && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm no-print items-preparing">
+                        <div className="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4 text-center">
+                            <Loader2 className="h-10 w-10 text-blue-600 animate-spin" />
+                            <div>
+                                <h3 className="text-xl font-bold text-slate-900 no-print">Preparing high-resolution catalog items...</h3>
+                                <p className="text-slate-500 mt-1 no-print">This ensures all images look crisp in your brochure.</p>
+                            </div>
+                        </div>
                     </div>
                 )}
-                {/* Print-Only Professional Footer - Perfectly Centered */}
-                <div className="hidden print-only print-footer">
-                    <div className="flex flex-col items-center justify-center text-center">
-                        <p className="text-slate-950 text-[9pt] font-black uppercase tracking-[0.1em]">PT Tropic Tech International</p>
-                        <div className="flex justify-center gap-6 mt-1 text-slate-500 text-[7.5pt] font-bold">
-                            <p>© 2026 All rights reserved.</p>
-                            <p>Prices are subject to rental duration and availability.</p>
-                        </div>
-                        <p className="mt-2 font-black text-blue-700 text-[8.5pt] tracking-tight">
-                            Access full digital catalog: www.tropictech.online/products
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     )
