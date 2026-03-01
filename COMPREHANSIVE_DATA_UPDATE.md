@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-02-28 15:20:00 (WITA/GMT+8)
-**System Version**: 1.0.0-beta
-**Environment**: Production Ready (Next.js 15+ Scaffolding)
+**Last Updated**: 2026-03-02 05:30:00 (WITA/GMT+8)
+**System Version**: 1.1.0-beta
+**Environment**: Production Ready (Auth & Dispatch Overhaul)
 
 ---
 
@@ -16,7 +16,8 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 - **Database**: PostgreSQL (Supabase) with Prisma ORM
 - **Authentication**: NextAuth.js 4
 - **State/Data**: Zustand (Client State), TanStack Query v5 (Server State)
-- **Utilities**: Framer Motion (Animations), Nodemailer (Email), jsPDF (Invoices), Sharp (Images)
+- **Utilities**: Framer Motion (Animations), Resend.com (Email - Professional Domain), jsPDF (Invoices), Sharp (Images)
+- **Email Infrastructure**: Switched to **Local Transport (Resend.com)** for all auth and system notifications via `contact@tropictech.online`.
 - **AI Engine**: OpenAI Integrated with custom AI Orchestration (Sales, Worker, Risk, Seller, Master agents)
 
 ---
@@ -151,7 +152,22 @@ The website operates through three distinct entry points based on user roles:
   - Shipped the entire `SpecialOffer` database architecture with integrated `/api/special-offers` CRUD pipelines.
   - Injected an active Carousel node to the Landing Page featuring centered, perfectly-widened cards and dynamic modal breakouts.
 - [x] **AI Seller Pipeline Integration**: Expanded the OpenAI seller prompt to dynamically query and stream all Rental Packages and Special Offers into the active ChatGPT `CURRENT CATALOG` context. The bot is now fully aware of bundled deals.
-- [x] **UI Layout Calibrations**: Forcefully widened desktop visibility for Rental Packages (`Max-W: 400px`, `xl:basis-[30%]`) and guarded the Navigation Cart Context from math `TypeError` serialization bugs on initial renders.
+- [x] **Auth System Overhaul (Phase 20)**:
+  - Reset all users and seeded verified Admin accounts.
+  - Implemented role-based Google SSO redirects (Admin/Worker -> Home, User -> Dashboard).
+- [x] **Professional Email Domain (Phase 21)**:
+  - Transitioned all system "From" addresses to `contact@tropictech.online`.
+  - Preserved internal Affiliate routing to `tropictechindo@gmail.com`.
+- [x] **Local Forgot Password Flow (Phase 22)**:
+  - Replaced Supabase's failing email system with a local, highly-reliable token flow.
+  - Reset links now use the professional domain for improved deliverability and brand appearance.
+- [x] **Global Worker Dispatch (Phase 23)**:
+  - Automated `Delivery` creation upon any new Order or manual Invoice.
+  - Market-based job assignment: Workers "Claim" jobs from a global pool in their dashboard.
+  - **Dispatch Watchdog**: Background job automatically alerts admins via email if a job is unclaimed for 60 minutes.
+- [x] **PDF Catalog Polishing**:
+  - Standardized label casing (Normal Case: Email, Whatsapp, Web, Catalog).
+  - Enhanced item spacing in print headers to prevent text overlapping across different OS print engines.
 
 > [!IMPORTANT]
 > **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.
