@@ -178,7 +178,7 @@ export default function Header() {
                                     {item.type} • {item.duration ? `${item.duration} Days` : 'Monthly'}
                                   </p>
                                   <p className="text-sm font-semibold">
-                                    Rp {item.price.toLocaleString('id-ID')}
+                                    Rp {(Number(item.price) || 0).toLocaleString('id-ID')}
                                   </p>
                                 </div>
                                 <Button

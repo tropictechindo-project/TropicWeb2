@@ -72,7 +72,10 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                     >
                         <CarouselContent className="-ml-2 md:-ml-4">
                             {offers.map((offer) => (
-                                <CarouselItem key={offer.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                                <CarouselItem
+                                    key={offer.id}
+                                    className={`pl-2 md:pl-4 basis-[95%] sm:basis-[80%] md:basis-[60%] lg:basis-[50%] xl:basis-[40%] max-w-2xl ${offers.length === 1 ? 'mx-auto' : ''}`}
+                                >
                                     <div className="h-full pt-4 pb-8">
                                         <div
                                             className="group relative flex flex-col justify-between h-full bg-card rounded-xl border-2 border-primary/20 shadow-xl overflow-hidden hover:border-primary transition-colors cursor-pointer text-center"

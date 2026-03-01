@@ -55,7 +55,7 @@ export default function Packages({ initialPackages = [] }: PackagesProps) {
             >
               <CarouselContent className="-ml-2 md:-ml-4">
                 {packages.map((pkg) => (
-                  <CarouselItem key={pkg.id} className="pl-4 basis-[85%] md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={pkg.id} className="pl-4 basis-[85%] sm:basis-[70%] md:basis-1/2 lg:basis-1/3 xl:basis-[30%] max-w-[400px]">
                     <div className="h-full pt-4 pb-8">
                       <PackageCard package={pkg} />
                     </div>
