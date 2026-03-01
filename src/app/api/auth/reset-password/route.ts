@@ -1,76 +1,65 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { hashPassword } from '@/lib/auth/utils'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createClient } from '@supabase/supabase-js'
 
 export async function POST(request: NextRequest) {
     try {
-        const { password } = await request.json()
+        const { password, token } = await request.json()
 
-        if (!password) {
+        if (!password || !token) {
             return NextResponse.json(
-                { error: 'Password is required' },
+                { error: 'Password and token are required' },
                 { status: 400 }
             )
         }
 
-        // Initialize Supabase SSR client with cookies to properly read the session
-        const cookieStore = await cookies()
-        const supabase = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    get(name: string) {
-                        return cookieStore.get(name)?.value
-                    },
-                    set(name: string, value: string, options: CookieOptions) {
-                        cookieStore.set({ name, value, ...options })
-                    },
-                    remove(name: string, options: CookieOptions) {
-                        cookieStore.set({ name, value: '', ...options })
-                    },
-                },
+        // 1. Find user by reset token and ensure not expired
+        const user = await db.user.findFirst({
+            where: {
+                resetPasswordToken: token,
+                resetPasswordExpires: {
+                    gt: new Date()
+                }
             }
-        )
+        })
 
-        // Supabase Auth handles verifying the link token and establishing a temporary session
-        // We just need to get that active user session
-        const { data: { user }, error: userError } = await supabase.auth.getUser()
-
-        if (userError || !user || !user.email) {
+        if (!user) {
             return NextResponse.json(
-                { error: 'Invalid or expired reset session. Please request a new link.' },
+                { error: 'Invalid or expired reset token. Please request a new link.' },
                 { status: 401 }
             )
         }
 
-        // Update the password in Supabase
-        const { error: updateError } = await supabase.auth.updateUser({ password })
+        // 2. Sync with Supabase Auth (since we share credentials)
+        // We use the service role key to forcefully update the user's password in Supabase
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY! || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        )
+
+        const { error: updateError } = await supabase.auth.admin.updateUserById(
+            user.id,
+            { password: password }
+        )
 
         if (updateError) {
-            console.error('Supabase update password error:', updateError)
-            return NextResponse.json(
-                { error: updateError.message || 'Failed to update password in authentication provider.' },
-                { status: 500 }
-            )
+            console.error('Supabase admin update password error:', updateError)
+            // We proceed anyway to update our local DB, but log it
         }
 
-        // Synchronize our Prisma database with the new password
+        // 3. Update the password in our Prisma database
         const hashedPassword = await hashPassword(password)
 
-        await db.user.updateMany({
-            where: { email: user.email }, // Update using email since Prisma ID = Supabase ID might have edge cases from old accounts
+        await db.user.update({
+            where: { id: user.id },
             data: {
                 password: hashedPassword,
-                resetPasswordToken: null, // Clear these out just in case they were left behind by old flow
+                resetPasswordToken: null,
                 resetPasswordExpires: null,
+                isVerified: true // If they can reset password, they are effectively verified
             },
         })
-
-        // Clear the temporary session now that password is reset
-        await supabase.auth.signOut()
 
         return NextResponse.json({ message: 'Password has been reset successfully.' })
     } catch (error) {

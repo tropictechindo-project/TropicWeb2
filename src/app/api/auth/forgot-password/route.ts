@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { generateResetToken } from '@/lib/auth/utils'
+import { sendResetPasswordEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const user = await db.user.findFirst({
+        const user = await db.user.findUnique({
             where: { email },
         })
 
@@ -23,37 +23,28 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'If an account exists, a reset link has been sent.' })
         }
 
-        const cookieStore = await cookies()
-        const supabase = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    get(name: string) {
-                        return cookieStore.get(name)?.value
-                    },
-                    set(name: string, value: string, options: CookieOptions) {
-                        cookieStore.set({ name, value, ...options })
-                    },
-                    remove(name: string, options: CookieOptions) {
-                        cookieStore.set({ name, value: '', ...options })
-                    },
-                },
+        // 1. Generate local reset token
+        const resetToken = generateResetToken()
+        const tokenExpiry = new Date(Date.now() + 3600000) // 1 hour from now
+
+        // 2. Save token to Database
+        await db.user.update({
+            where: { id: user.id },
+            data: {
+                resetPasswordToken: resetToken,
+                resetPasswordExpires: tokenExpiry
             }
-        )
-
-        const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/callback?next=/auth/reset-password`
-
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: redirectTo,
         })
 
-        if (error) {
-            console.error('Supabase reset password error:', error)
-            return NextResponse.json(
-                { error: 'Failed to send reset instructions.' },
-                { status: 500 }
-            )
+        // 3. Send professional email via lib/email.ts (Resend/SMTP)
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+        const resetLink = `${baseUrl}/auth/reset-password?token=${resetToken}`
+
+        const emailSuccess = await sendResetPasswordEmail(user.email, resetLink)
+
+        if (!emailSuccess) {
+            console.error('Failed to send reset email via local transport')
+            // Don't stop here, we still return the standard message to user
         }
 
         return NextResponse.json({ message: 'If an account exists, a reset link has been sent.' })

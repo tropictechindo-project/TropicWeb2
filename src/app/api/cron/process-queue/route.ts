@@ -45,6 +45,30 @@ export async function GET(request: Request) {
                 console.log('Simulating Email Send:', result.payload)
             } else if (result.type === 'NOTIFICATION') {
                 // await sendNotification(result.payload)
+            } else if (result.type === 'CHECK_DELIVERY_CLAIM') {
+                const { deliveryId } = result.payload as { deliveryId: string }
+                const delivery = await db.delivery.findUnique({
+                    where: { id: deliveryId },
+                    include: { invoice: true }
+                })
+
+                if (delivery && delivery.status === 'QUEUED') {
+                    // Send alert to admin
+                    const { sendEmail } = await import('@/lib/email')
+                    await sendEmail({
+                        to: 'contact@tropictech.online',
+                        subject: `🚨 UNCLAIMED JOB ALERT: Delivery ${deliveryId.substring(0, 8)}`,
+                        html: `
+                            <h2>Unclaimed Delivery Job</h2>
+                            <p>Delivery for Invoice <strong>${delivery.invoice?.invoiceNumber || 'N/A'}</strong> has been unclaimed for over 1 hour.</p>
+                            <p>Status: QUEUED</p>
+                            <p>Please take action in the Admin Dashboard.</p>
+                            <hr/>
+                            <p>Tropic Tech Dispatch System</p>
+                        `
+                    })
+                    console.log(`Alert sent for unclaimed delivery ${deliveryId}`)
+                }
             }
 
             // Mark DONE

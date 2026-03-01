@@ -39,6 +39,29 @@ export async function POST(req: Request) {
             } as any
         })
 
+        // Auto-create Delivery (Global Job Assignment)
+        const delivery = await db.delivery.create({
+            data: {
+                invoiceId: invoice.id,
+                deliveryMethod: 'INTERNAL',
+                deliveryType: 'DROPOFF',
+                status: 'QUEUED',
+            }
+        })
+
+        // Create Background Job for 1-hour Claim Timeout
+        const runAt = new Date()
+        runAt.setHours(runAt.getHours() + 1)
+
+        await db.jobQueue.create({
+            data: {
+                type: 'CHECK_DELIVERY_CLAIM',
+                payload: { deliveryId: delivery.id },
+                runAt,
+                status: 'PENDING'
+            }
+        })
+
         // Handle Email Forwarding
         const recipients: string[] = []
 

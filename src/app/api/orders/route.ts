@@ -137,7 +137,30 @@ export async function POST(request: Request) {
                 })
             }
 
-            return { order, invoice }
+            // F. Create Delivery (Global Job Assignment)
+            const delivery = await tx.delivery.create({
+                data: {
+                    invoiceId: invoice.id,
+                    deliveryMethod: 'INTERNAL',
+                    deliveryType: 'DROPOFF',
+                    status: 'QUEUED',
+                }
+            })
+
+            // G. Create Background Job for 1-hour Claim Timeout
+            const runAt = new Date()
+            runAt.setHours(runAt.getHours() + 1)
+
+            await tx.jobQueue.create({
+                data: {
+                    type: 'CHECK_DELIVERY_CLAIM',
+                    payload: { deliveryId: delivery.id },
+                    runAt,
+                    status: 'PENDING'
+                }
+            })
+
+            return { order, invoice, delivery }
         })
 
         // 3. Async Background Tasks (Email) - Non-blocking
