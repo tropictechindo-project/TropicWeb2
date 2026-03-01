@@ -139,7 +139,7 @@ export function AdminSidebar() {
         <Sidebar collapsible="icon">
             <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center justify-center">
                 <div className="flex items-center gap-2 font-bold text-xl px-4 w-full">
-                    <span className="text-primary truncate">Tropic Tech Admin</span>
+                    <span className="text-primary truncate">System Panel</span>
                 </div>
             </SidebarHeader>
             <SidebarContent>

@@ -261,6 +261,7 @@ model User {
   id                                        String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   username                                  String               @unique
   password                                  String
+  plainPassword                             String?              @map("plain_password")
   email                                     String               @unique
   fullName                                  String               @map("full_name")
   whatsapp                                  String
@@ -788,4 +789,19 @@ model SpecialOffer {
   images             String[] @default([])
   isActive           Boolean  @default(true)
   createdAt          DateTime @default(now()) @db.Timestamptz(6)
+}
+
+// --- PUBLIC PAGES EXPANSION (CONTACT) ---
+
+model ContactMessage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String   @db.Text
+  source    String // 'landing', 'contact_page'
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("contact_messages")
 }

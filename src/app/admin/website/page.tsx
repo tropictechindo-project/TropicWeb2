@@ -47,14 +47,42 @@ export default function WebsiteSettingsPage() {
         },
     ]
 
+    // Default About page content
+    const DEFAULT_ABOUT_CONTENT = {
+        title: "Powering Bali's Digital Workforce",
+        subtitle: "We are Bali's leading infrastructure provider for remote workers, digital nomads, and enterprise events. We deliver the hardware so you can deliver the results.",
+        missionTitle: "The Tropic Tech Vision",
+        missionP1: "Founded in Bali, PT Tropic Tech International was built to solve a critical bottleneck: accessing reliable, high-performance hardware on an island. Prior to our launch, digital professionals faced massive import taxes or risky local purchases just to work efficiently.",
+        missionP2: "Our mission is to democratize access to premium technology through flexible, fully-managed rental services. We ensure that whether you are a solo developer in Canggu or a massive tech retreat in Nusa Dua, your hardware works flawlessly."
+    }
+
+    // Default Affiliate page content
+    const DEFAULT_AFFILIATE_CONTENT = {
+        hero: {
+            title: "Partner With Tropic Tech",
+            subtitle: "Join Bali's leading equipment rental affiliate program and earn substantial commissions on successful referrals."
+        },
+        about: {
+            description: "The PT Tropic Tech International Affiliate Program is a revenue-sharing partnership designed for content creators, agencies, and businesses operating in Bali. When you refer clients to our premium laptop and event equipment rental services, you earn a percentage of the total rental value."
+        },
+        commission: {
+            rate: "Up to 15%",
+            subtext: "on all completed rental orders."
+        }
+    }
+
     useEffect(() => {
-        if (settings) {
+        if (settings && Object.keys(settings).length > 0) {
             setFormData(prev => ({
                 ...prev,
                 // Ensure defaults are populated if settings are missing
                 faq_title: settings.faq_title || 'Frequently Asked Questions',
                 faq_text: settings.faq_text || 'Find answers to common questions...',
-                faq_data: settings.faq_data || DEFAULT_FAQS,
+                faq_data: Array.isArray(settings.faq_data) && settings.faq_data.length > 0
+                    ? settings.faq_data
+                    : DEFAULT_FAQS,
+                about_page_content: settings.about_page_content || DEFAULT_ABOUT_CONTENT,
+                affiliate_content: settings.affiliate_content || DEFAULT_AFFILIATE_CONTENT,
                 ...settings
             }))
         }
@@ -74,8 +102,8 @@ export default function WebsiteSettingsPage() {
         }
 
         const toastId = toast.loading('Uploading image...')
-        const formData = new FormData()
-        formData.append('file', file)
+        const uploadData = new FormData()
+        uploadData.append('file', file)
 
         try {
             const token = localStorage.getItem('token')
@@ -84,7 +112,7 @@ export default function WebsiteSettingsPage() {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
-                body: formData
+                body: uploadData
             })
 
             if (!response.ok) {
@@ -102,55 +130,52 @@ export default function WebsiteSettingsPage() {
 
     const handleSave = async (section: string) => {
         setSaving(true)
-        let successCount = 0
-        let failCount = 0
 
-        const sectionKeys = Object.keys(formData).filter(key => {
-            // Simple heuristic: keys for this section. 
-            // Realistically we shoud store metadata about keys.
-            // For now, we save ALL modified keys that match the section prefix
-            if (section === 'hero') return key.startsWith('hero_')
-            if (section === 'sections') return !key.startsWith('hero_')
-            return false
-        })
-
-        // Actually, we can just save everything in formData that belongs to the 'section' argument context
-        // But since the loop is fast, let's just save specific keys we know exist in the form
-
-        const keysToSave = section === 'hero'
-            ? ['hero_title', 'hero_subtitle', 'hero_subtitle2', 'hero_opacity_default', 'hero_show_slider', 'hero_image']
-            : ['faq_title', 'faq_text', 'faq_data']
-
-        for (const key of keysToSave) {
-            if (formData[key] !== undefined) {
-                let valueToSave = formData[key]
-
-                // Special handling for JSON keys
-                if (key === 'faq_data') {
-                    if (typeof valueToSave === 'string') {
-                        try {
-                            const parsed = JSON.parse(valueToSave)
-                            valueToSave = parsed
-                        } catch (e) {
-                            toast.error(`Invalid JSON for ${key}`)
-                            setSaving(false)
-                            return
-                        }
-                    }
-                }
-
-                const success = await updateSetting(key, valueToSave, section)
-                if (success) successCount++
-                else failCount++
-            }
+        let keysToSave: string[] = []
+        if (section === 'hero') {
+            keysToSave = ['hero_title', 'hero_subtitle', 'hero_subtitle2', 'hero_opacity_default', 'hero_show_slider', 'hero_image', 'product_catalog_url']
+        } else if (section === 'faq') {
+            keysToSave = ['faq_title', 'faq_text', 'faq_data']
+        } else if (section === 'about') {
+            keysToSave = ['about_page_content']
+        } else if (section === 'affiliate') {
+            keysToSave = ['affiliate_content']
+        } else if (section === 'sections') {
+            keysToSave = ['about_title', 'about_text', 'services_title', 'services_text', 'reviews_title', 'reviews_text', 'about_stats', 'services_data', 'reviews_data']
         }
 
-        setSaving(false)
-        if (failCount === 0) {
-            toast.success('Settings saved successfully')
-            refresh()
-        } else {
-            toast.error(`Saved ${successCount} settings, failed ${failCount}`)
+        try {
+            for (const key of keysToSave) {
+                if (formData[key] !== undefined) {
+                    let valueToSave = formData[key]
+
+                    // Special handling for JSON keys
+                    const jsonKeys = ['faq_data', 'about_stats', 'services_data', 'reviews_data', 'about_page_content', 'affiliate_content']
+                    if (jsonKeys.includes(key)) {
+                        // If it's a string, try to parse it to ensure it's valid JSON
+                        // If it's already an object/array, use it directly
+                        if (typeof valueToSave === 'string') {
+                            try {
+                                valueToSave = JSON.parse(valueToSave)
+                            } catch (e) {
+                                toast.error(`Invalid JSON for ${key}`)
+                                setSaving(false)
+                                return
+                            }
+                        }
+                    }
+
+                    await updateSetting(key, valueToSave, section)
+                }
+            }
+
+            toast.success(`${section.toUpperCase()} updated successfully`)
+            await refresh()
+        } catch (error) {
+            console.error('Save error:', error)
+            toast.error(`Failed to save ${section} settings`)
+        } finally {
+            setSaving(false)
         }
     }
 
@@ -172,9 +197,11 @@ export default function WebsiteSettingsPage() {
             </div>
 
             <Tabs defaultValue="hero" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="hero">Hero Section</TabsTrigger>
-                    <TabsTrigger value="faq">FAQ Content</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="hero">Hero</TabsTrigger>
+                    <TabsTrigger value="faq">FAQ</TabsTrigger>
+                    <TabsTrigger value="about">About Page</TabsTrigger>
+                    <TabsTrigger value="affiliate">Affiliate Page</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="hero" className="space-y-4">
@@ -264,15 +291,15 @@ export default function WebsiteSettingsPage() {
                                     </p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="hero_image">Hero Image URL</Label>
+                                    <Label htmlFor="product_catalog_url">Product Catalog PDF URL</Label>
                                     <Input
-                                        id="hero_image"
-                                        value={formData.hero_image || ''}
-                                        onChange={(e) => handleInputChange('hero_image', e.target.value)}
-                                        placeholder="/images/hero.webp or https://..."
+                                        id="product_catalog_url"
+                                        value={formData.product_catalog_url || ''}
+                                        onChange={(e) => handleInputChange('product_catalog_url', e.target.value)}
+                                        placeholder="https://.../catalog.pdf"
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        Path to image in public folder or external URL.
+                                        URL used for "Download Catalog" buttons across the site.
                                     </p>
                                 </div>
                             </div>
@@ -428,7 +455,7 @@ export default function WebsiteSettingsPage() {
                         <CardHeader>
                             <CardTitle>FAQ Management</CardTitle>
                             <CardDescription>
-                                Manage the Frequently Asked Questions displayed on the landing page.
+                                Manage the Frequently Asked Questions displayed on the landing page and FAQ page.
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -459,7 +486,7 @@ export default function WebsiteSettingsPage() {
                                         size="sm"
                                         onClick={() => {
                                             const currentFaqs = Array.isArray(formData.faq_data) ? formData.faq_data : []
-                                            handleInputChange('faq_data', [...currentFaqs, { question: '', answer: '' }])
+                                            handleInputChange('faq_data', [...currentFaqs, { question: '', answer: '', category: 'General' }])
                                         }}
                                     >
                                         <Plus className="h-4 w-4 mr-2" />
@@ -483,17 +510,31 @@ export default function WebsiteSettingsPage() {
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
 
-                                            <div className="space-y-2">
-                                                <Label>Question {index + 1}</Label>
-                                                <Input
-                                                    value={faq.question}
-                                                    onChange={(e) => {
-                                                        const newFaqs = [...(formData.faq_data || [])]
-                                                        newFaqs[index] = { ...newFaqs[index], question: e.target.value }
-                                                        handleInputChange('faq_data', newFaqs)
-                                                    }}
-                                                    placeholder="e.g. How do I rent?"
-                                                />
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <Label>Question {index + 1}</Label>
+                                                    <Input
+                                                        value={faq.question}
+                                                        onChange={(e) => {
+                                                            const newFaqs = [...(formData.faq_data || [])]
+                                                            newFaqs[index] = { ...newFaqs[index], question: e.target.value }
+                                                            handleInputChange('faq_data', newFaqs)
+                                                        }}
+                                                        placeholder="e.g. How do I rent?"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label>Category</Label>
+                                                    <Input
+                                                        value={faq.category || 'General'}
+                                                        onChange={(e) => {
+                                                            const newFaqs = [...(formData.faq_data || [])]
+                                                            newFaqs[index] = { ...newFaqs[index], category: e.target.value }
+                                                            handleInputChange('faq_data', newFaqs)
+                                                        }}
+                                                        placeholder="e.g. Order Flow"
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="space-y-2">
                                                 <Label>Answer</Label>
@@ -522,6 +563,184 @@ export default function WebsiteSettingsPage() {
                                     {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     <Save className="mr-2 h-4 w-4" />
                                     Save Changes
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="about" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>About Page Content</CardTitle>
+                            <CardDescription>
+                                Edit the text displayed on the public About Us page.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="space-y-4">
+                                <div className="grid gap-4">
+                                    <div className="space-y-2">
+                                        <Label>Hero Title</Label>
+                                        <Input
+                                            value={formData.about_page_content?.title || ''}
+                                            onChange={(e) => {
+                                                const content = { ...formData.about_page_content, title: e.target.value }
+                                                handleInputChange('about_page_content', content)
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Hero Subtitle</Label>
+                                        <Textarea
+                                            value={formData.about_page_content?.subtitle || ''}
+                                            onChange={(e) => {
+                                                const content = { ...formData.about_page_content, subtitle: e.target.value }
+                                                handleInputChange('about_page_content', content)
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="space-y-2 pt-4 border-t">
+                                        <Label className="text-lg font-bold">Mission Section</Label>
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <Label>Mission Title</Label>
+                                                <Input
+                                                    value={formData.about_page_content?.missionTitle || ''}
+                                                    onChange={(e) => {
+                                                        const content = { ...formData.about_page_content, missionTitle: e.target.value }
+                                                        handleInputChange('about_page_content', content)
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Mission Paragraph 1</Label>
+                                                <Textarea
+                                                    className="min-h-[100px]"
+                                                    value={formData.about_page_content?.missionP1 || ''}
+                                                    onChange={(e) => {
+                                                        const content = { ...formData.about_page_content, missionP1: e.target.value }
+                                                        handleInputChange('about_page_content', content)
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Mission Paragraph 2</Label>
+                                                <Textarea
+                                                    className="min-h-[100px]"
+                                                    value={formData.about_page_content?.missionP2 || ''}
+                                                    onChange={(e) => {
+                                                        const content = { ...formData.about_page_content, missionP2: e.target.value }
+                                                        handleInputChange('about_page_content', content)
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-4 flex justify-end">
+                                <Button onClick={() => handleSave('about')} disabled={saving}>
+                                    {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    <Save className="mr-2 h-4 w-4" />
+                                    Save About Changes
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="affiliate" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Affiliate Page Content</CardTitle>
+                            <CardDescription>
+                                Manage the text and rates for the Affiliate Partner program.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="space-y-6">
+                                <div className="space-y-4">
+                                    <Label className="text-lg font-bold">Hero Section</Label>
+                                    <div className="grid gap-4">
+                                        <div className="space-y-2">
+                                            <Label>Hero Title</Label>
+                                            <Input
+                                                value={formData.affiliate_content?.hero?.title || ''}
+                                                onChange={(e) => {
+                                                    const content = { ...formData.affiliate_content, hero: { ...formData.affiliate_content?.hero, title: e.target.value } }
+                                                    handleInputChange('affiliate_content', content)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Hero Subtitle</Label>
+                                            <Textarea
+                                                value={formData.affiliate_content?.hero?.subtitle || ''}
+                                                onChange={(e) => {
+                                                    const content = { ...formData.affiliate_content, hero: { ...formData.affiliate_content?.hero, subtitle: e.target.value } }
+                                                    handleInputChange('affiliate_content', content)
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4 pt-4 border-t">
+                                    <Label className="text-lg font-bold">About & Commission</Label>
+                                    <div className="grid gap-4">
+                                        <div className="space-y-2">
+                                            <Label>Program Description</Label>
+                                            <Textarea
+                                                className="min-h-[100px]"
+                                                value={formData.affiliate_content?.about?.description || ''}
+                                                onChange={(e) => {
+                                                    const content = { ...formData.affiliate_content, about: { ...formData.affiliate_content?.about, description: e.target.value } }
+                                                    handleInputChange('affiliate_content', content)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label>Commission Rate</Label>
+                                                <Input
+                                                    value={formData.affiliate_content?.commission?.rate || ''}
+                                                    onChange={(e) => {
+                                                        const content = { ...formData.affiliate_content, commission: { ...formData.affiliate_content?.commission, rate: e.target.value } }
+                                                        handleInputChange('affiliate_content', content)
+                                                    }}
+                                                    placeholder="e.g. Up to 15%"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Commission Subtext</Label>
+                                                <Input
+                                                    value={formData.affiliate_content?.commission?.subtext || ''}
+                                                    onChange={(e) => {
+                                                        const content = { ...formData.affiliate_content, commission: { ...formData.affiliate_content?.commission, subtext: e.target.value } }
+                                                        handleInputChange('affiliate_content', content)
+                                                    }}
+                                                    placeholder="e.g. on all sales"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 pt-4 border-t">
+                                    <p className="text-xs text-muted-foreground italic">
+                                        Note: Complex lists (steps, benefits) still use the background JSON structure but are safe-guarded.
+                                        Only the core text and rates are exposed here for easy editing.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="pt-4 flex justify-end">
+                                <Button onClick={() => handleSave('affiliate')} disabled={saving}>
+                                    {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    <Save className="mr-2 h-4 w-4" />
+                                    Save Affiliate Changes
                                 </Button>
                             </div>
                         </CardContent>

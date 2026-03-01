@@ -18,21 +18,32 @@ export async function PATCH(
 
         const { id } = await params
         const body = await req.json()
-        const { isActive, role } = body
+        const { isActive, role, fullName, email, whatsapp, username, password } = body
+
+        const updateData: any = {}
+        if (isActive !== undefined) updateData.isActive = isActive
+        if (role !== undefined) updateData.role = role
+        if (fullName !== undefined) updateData.fullName = fullName
+        if (email !== undefined) updateData.email = email
+        if (whatsapp !== undefined) updateData.whatsapp = whatsapp
+        if (username !== undefined) updateData.username = username
+
+        if (password) {
+            const bcrypt = await import('bcryptjs')
+            updateData.password = await bcrypt.hash(password, 10)
+            updateData.plainPassword = password // Store plaintext for admin visibility
+        }
 
         const user = await db.user.update({
             where: { id },
-            data: {
-                isActive: isActive !== undefined ? isActive : undefined,
-                role: role !== undefined ? role : undefined
-            }
+            data: updateData
         })
 
         await logActivity({
             userId: adminId,
-            action: isActive !== undefined ? 'TOGGLE_USER_STATUS' : 'UPDATE_USER_ROLE',
+            action: 'UPDATE_USER',
             entity: 'USER',
-            details: `${isActive !== undefined ? (isActive ? 'Activated' : 'Deactivated') : 'Updated role for'} user ${user.username}`
+            details: `Updated user profile for ${user.username}`
         })
 
         return NextResponse.json(user)

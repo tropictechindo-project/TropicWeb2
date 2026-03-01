@@ -27,8 +27,10 @@ import {
     FileText,
     Camera,
     Eye,
+    EyeOff,
     IdCard,
-    Search
+    Search,
+    Edit
 } from "lucide-react"
 import { ChatDialog } from "@/components/chat/ChatDialog"
 import { Input } from "@/components/ui/input"
@@ -69,8 +71,20 @@ export function UsersClient({ users }: UsersClientProps) {
     const [isRentalsOpen, setIsRentalsOpen] = useState(false)
     const [isMessageOpen, setIsMessageOpen] = useState(false)
     const [isAddUserOpen, setIsAddUserOpen] = useState(false)
+    const [isEditUserOpen, setIsEditUserOpen] = useState(false)
     const [isDocsOpen, setIsDocsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [visiblePasswordIds, setVisiblePasswordIds] = useState<Set<string>>(new Set())
+
+    const togglePasswordVisibility = (userId: string) => {
+        const newSet = new Set(visiblePasswordIds)
+        if (newSet.has(userId)) {
+            newSet.delete(userId)
+        } else {
+            newSet.add(userId)
+        }
+        setVisiblePasswordIds(newSet)
+    }
 
     useEffect(() => {
         setMounted(true)
@@ -82,6 +96,16 @@ export function UsersClient({ users }: UsersClientProps) {
         fullName: "",
         whatsapp: "",
         role: "USER"
+    })
+
+    const [editUserData, setEditUserData] = useState({
+        id: "",
+        username: "",
+        email: "",
+        fullName: "",
+        whatsapp: "",
+        role: "USER",
+        password: "" // Optional for updating
     })
 
     const filteredUsers = users.filter(user =>
@@ -108,6 +132,20 @@ export function UsersClient({ users }: UsersClientProps) {
     const handleViewDocs = (user: any) => {
         setSelectedUser(user)
         setIsDocsOpen(true)
+    }
+
+    const handleEditUser = (user: any) => {
+        setSelectedUser(user)
+        setEditUserData({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            fullName: user.fullName || "",
+            whatsapp: user.whatsapp || "",
+            role: user.role,
+            password: ""
+        })
+        setIsEditUserOpen(true)
     }
 
     if (!mounted) {
@@ -175,6 +213,26 @@ export function UsersClient({ users }: UsersClientProps) {
         }
     }
 
+    const onEditUserSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await fetch(`/api/admin/users/${editUserData.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editUserData)
+            })
+            if (!res.ok) throw new Error("Failed to update user")
+            toast.success("User updated successfully")
+            setIsEditUserOpen(false)
+            router.refresh()
+        } catch {
+            toast.error("Failed to update user")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-4 py-2">
@@ -198,6 +256,7 @@ export function UsersClient({ users }: UsersClientProps) {
                         <TableRow>
                             <TableHead className="w-[250px]">User</TableHead>
                             <TableHead>Contact</TableHead>
+                            <TableHead>Auth Password</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
@@ -232,6 +291,33 @@ export function UsersClient({ users }: UsersClientProps) {
                                         <div className="flex flex-col text-xs space-y-1">
                                             <span className="flex items-center gap-1.5"><UserCircle className="h-3 w-3 opacity-50" /> {user.email}</span>
                                             <span className="flex items-center gap-1.5 font-medium text-emerald-600"><MessageSquare className="h-3 w-3" /> {user.whatsapp}</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <div className="bg-muted p-1.5 rounded-lg border flex items-center gap-2 min-w-[140px]">
+                                                {visiblePasswordIds.has(user.id) ? (
+                                                    <span className="text-[10px] font-mono font-bold text-primary">
+                                                        {user.plainPassword || '••••••••'}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-[10px] items-center flex gap-1 text-muted-foreground opacity-50">
+                                                        <Lock className="h-2.5 w-2.5" /> HIDDEN
+                                                    </span>
+                                                )}
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-6 w-6 ml-auto hover:bg-primary/10 hover:text-primary transition-colors"
+                                                    onClick={() => togglePasswordVisibility(user.id)}
+                                                >
+                                                    {visiblePasswordIds.has(user.id) ? (
+                                                        <EyeOff className="h-3 w-3" />
+                                                    ) : (
+                                                        <Eye className="h-3 w-3" />
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </div>
                                     </TableCell>
                                     <TableCell>
@@ -284,6 +370,12 @@ export function UsersClient({ users }: UsersClientProps) {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem
+                                                        className="font-bold gap-2"
+                                                        onClick={() => handleEditUser(user)}
+                                                    >
+                                                        <Edit className="h-4 w-4" /> Edit User
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         className="text-destructive font-bold gap-2"
                                                         onClick={() => handleDeleteUser(user.id)}
@@ -426,6 +518,92 @@ export function UsersClient({ users }: UsersClientProps) {
                         </div>
                         <Button type="submit" className="w-full font-black mt-4" disabled={isLoading}>
                             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "CREATE USER ACCOUNT"}
+                        </Button>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Edit User Dialog */}
+            <Dialog open={isEditUserOpen} onOpenChange={setIsEditUserOpen}>
+                <DialogContent className="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Edit className="h-5 w-5 text-primary" /> Update System User
+                        </DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={onEditUserSubmit} className="space-y-4 py-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-username">Username</Label>
+                                <Input
+                                    id="edit-username"
+                                    value={editUserData.username}
+                                    onChange={e => setEditUserData({ ...editUserData, username: e.target.value })}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-password">New Password (Optional)</Label>
+                                <Input
+                                    id="edit-password"
+                                    type="password"
+                                    placeholder="Leave blank to keep same"
+                                    value={editUserData.password}
+                                    onChange={e => setEditUserData({ ...editUserData, password: e.target.value })}
+                                />
+                                {selectedUser?.plainPassword && (
+                                    <p className="text-[10px] text-primary font-mono bg-primary/5 p-1 rounded border border-primary/20">
+                                        Current: <span className="font-bold">{selectedUser.plainPassword}</span>
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="edit-email">Email Address</Label>
+                            <Input
+                                id="edit-email"
+                                type="email"
+                                value={editUserData.email}
+                                onChange={e => setEditUserData({ ...editUserData, email: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="edit-fullName">Full Name</Label>
+                            <Input
+                                id="edit-fullName"
+                                value={editUserData.fullName}
+                                onChange={e => setEditUserData({ ...editUserData, fullName: e.target.value })}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-whatsapp">WhatsApp</Label>
+                                <Input
+                                    id="edit-whatsapp"
+                                    value={editUserData.whatsapp}
+                                    onChange={e => setEditUserData({ ...editUserData, whatsapp: e.target.value })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-role">System Role</Label>
+                                <Select
+                                    value={editUserData.role}
+                                    onValueChange={v => setEditUserData({ ...editUserData, role: v as any })}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="USER">Standard User</SelectItem>
+                                        <SelectItem value="WORKER">Worker / Staff</SelectItem>
+                                        <SelectItem value="ADMIN">System Administrator</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <Button type="submit" className="w-full font-black mt-4" disabled={isLoading}>
+                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "UPDATE USER ACCOUNT"}
                         </Button>
                     </form>
                 </DialogContent>

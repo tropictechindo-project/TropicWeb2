@@ -42,6 +42,11 @@ export async function middleware(request: NextRequest) {
 
         // 3. Role Validation
         if (isAdminPath && jwtPayload.role !== 'ADMIN') {
+            // Allow workers to see deliveries for their operations
+            const isDeliveriesApi = pathname.startsWith('/api/admin/deliveries')
+            if (isDeliveriesApi && jwtPayload.role === 'WORKER') {
+                return NextResponse.next()
+            }
             return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
         }
 

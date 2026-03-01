@@ -25,7 +25,7 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProps) {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -53,14 +53,14 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
         e.preventDefault()
         setIsLoading(true)
 
-        const success = await login(username, password)
+        const success = await login(email, password)
 
         if (success) {
             toast.success('Login successful!')
             onClose()
-            router.push('/') // Optional: redirect or just close modal
+            router.refresh() // Ensure header updates with auth state
         } else {
-            toast.error('Invalid username or password')
+            toast.error('Invalid email or password')
         }
 
         setIsLoading(false)
@@ -105,13 +105,13 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
 
                 <form onSubmit={handleSubmit} className="space-y-4 py-4">
                     <div className="space-y-2">
-                        <Label htmlFor="username">Username</Label>
+                        <Label htmlFor="email">Email Account</Label>
                         <Input
-                            id="username"
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your email"
                             required
                             disabled={isLoading}
                         />

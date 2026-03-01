@@ -219,7 +219,7 @@ export default function Reviews() {
 
           <Button
             size="lg"
-            className="rounded-full px-12 h-14 text-lg font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all overflow-hidden group relative"
+            className="rounded-lg px-12 h-14 text-lg font-semibold shadow-md hover:shadow-lg transition-all overflow-hidden group relative"
             onClick={() => window.open('https://maps.app.goo.gl/tNWoeabkn14KRLxx5', '_blank')}
           >
             <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />

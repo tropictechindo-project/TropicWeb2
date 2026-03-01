@@ -9,6 +9,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function FAQ() {
   const { t } = useLanguage()
@@ -45,7 +47,7 @@ export default function FAQ() {
     },
   ]
 
-  const faqs = faqData || defaultFaqs
+  const faqs = (faqData && faqData.length > 0) ? faqData : defaultFaqs
 
   const [mounted, setMounted] = useState(false)
 
@@ -70,6 +72,14 @@ export default function FAQ() {
                 <div className="font-medium">{faq.question}</div>
               </div>
             ))}
+          </div>
+
+          <div className="mt-16 flex justify-center">
+            <Button asChild size="lg" className="rounded-lg px-12 h-14 text-lg font-semibold shadow-md hover:shadow-lg transition-all">
+              <Link href="/faq">
+                See All FAQ
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -99,6 +109,14 @@ export default function FAQ() {
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+
+        <div className="mt-16 flex justify-center">
+          <Button asChild size="lg" className="rounded-lg px-12 h-14 text-lg font-semibold shadow-md hover:shadow-lg transition-all">
+            <Link href="/faq">
+              See All FAQ
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

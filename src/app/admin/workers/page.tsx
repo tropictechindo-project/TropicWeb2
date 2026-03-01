@@ -202,7 +202,7 @@ export default function WorkersPage() {
                         <div>
                             <p className="text-sm text-muted-foreground">Pending Jobs</p>
                             <p className="text-2xl font-bold">
-                                {workers.reduce((sum, w) => sum + w.stats.pendingJobs, 0)}
+                                {workers.reduce((sum, w) => sum + (w.stats?.pendingJobs || 0), 0)}
                             </p>
                         </div>
                     </div>
@@ -213,7 +213,7 @@ export default function WorkersPage() {
                         <div>
                             <p className="text-sm text-muted-foreground">Avg Attendance</p>
                             <p className="text-2xl font-bold">
-                                {Math.round(workers.reduce((sum, w) => sum + w.stats.attendanceRate, 0) / workers.length || 0)}%
+                                {Math.round(workers.reduce((sum, w) => sum + (w.stats?.attendanceRate || 0), 0) / workers.length || 0)}%
                             </p>
                         </div>
                     </div>
@@ -256,21 +256,21 @@ export default function WorkersPage() {
                                         <div className="w-full sm:w-32 h-2 bg-muted rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-green-600"
-                                                style={{ width: `${(worker.stats.completedJobs / worker.stats.totalJobs) * 100 || 0}%` }}
+                                                style={{ width: `${((worker.stats?.completedJobs || 0) / (worker.stats?.totalJobs || 1)) * 100}%` }}
                                             />
                                         </div>
                                         <span className="text-sm shrink-0">
-                                            {Math.round((worker.stats.completedJobs / worker.stats.totalJobs) * 100 || 0)}% Completion
+                                            {Math.round(((worker.stats?.completedJobs || 0) / (worker.stats?.totalJobs || 1)) * 100)}% Completion
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-full sm:w-32 h-2 bg-muted rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-blue-600"
-                                                style={{ width: `${worker.stats.attendanceRate}%` }}
+                                                style={{ width: `${worker.stats?.attendanceRate || 0}%` }}
                                             />
                                         </div>
-                                        <span className="text-sm shrink-0">{worker.stats.attendanceRate}% Attendance</span>
+                                        <span className="text-sm shrink-0">{worker.stats?.attendanceRate || 0}% Attendance</span>
                                     </div>
                                 </div>
 

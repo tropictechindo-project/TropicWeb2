@@ -290,6 +290,7 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
   password: 'password',
+  plainPassword: 'plainPassword',
   email: 'email',
   fullName: 'fullName',
   whatsapp: 'whatsapp',
@@ -548,6 +549,17 @@ exports.Prisma.SpecialOfferScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ContactMessageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  subject: 'subject',
+  message: 'message',
+  source: 'source',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -721,7 +733,8 @@ exports.Prisma.ModelName = {
   DeliveryItem: 'DeliveryItem',
   DeliveryLog: 'DeliveryLog',
   DeliveryEditLog: 'DeliveryEditLog',
-  SpecialOffer: 'SpecialOffer'
+  SpecialOffer: 'SpecialOffer',
+  ContactMessage: 'ContactMessage'
 };
 
 /**

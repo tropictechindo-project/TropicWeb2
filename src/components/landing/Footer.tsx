@@ -38,11 +38,11 @@ export default function Footer() {
               </a>
               <a href="https://wa.me/6282266574860" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Chat with us on WhatsApp">
                 <Phone className="h-4 w-4" />
-                +62 82266574860
+                +62 822 6657 4860
               </a>
               <a href="https://maps.app.goo.gl/oaQhpew78fnHjmkB8" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="View our location on Google Maps">
                 <MapPin className="h-4 w-4" />
-                Jl. Tunjungsari No.8, Bali
+                Jl. Tunjungsari No.8, Denpasar - Bali 80117
               </a>
               <a href="https://www.instagram.com/tropictechs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Follow us on Instagram">
                 <Instagram className="h-4 w-4" />
@@ -73,6 +73,16 @@ export default function Footer() {
                   {t('refundPolicy')}
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="text-sm hover:text-primary transition-colors">
+                  {t('ContactUs')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/affiliate" className="text-sm hover:text-primary transition-colors">
+                  {t('Affiliate')}
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -94,15 +104,18 @@ export default function Footer() {
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
-              <a href="mailto:contact@tropictech.online" className="hover:text-primary hover:underline transition-colors">
-                contact@tropictech.online
-              </a>
               <a href="mailto:info@tropictech.online" className="hover:text-primary hover:underline transition-colors">
                 info@tropictech.online
               </a>
               <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors">
                 support@tropictech.online
               </a>
+            </div>
+
+            <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
+              <Link href="/products" className="text-primary font-bold hover:underline transition-colors">
+                Pricing / Download Catalog
+              </Link>
             </div>
           </div>
         </div>

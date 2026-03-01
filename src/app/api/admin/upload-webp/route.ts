@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
         const { data, error } = await supabase
             .storage
-            .from('website-assets')
+            .from('product-images')
             .upload(filePath, optimizedBuffer, {
                 contentType: 'image/webp',
                 upsert: true
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
         const { data: { publicUrl } } = supabase
             .storage
-            .from('website-assets')
+            .from('product-images')
             .getPublicUrl(filePath)
 
         return NextResponse.json({ url: publicUrl })

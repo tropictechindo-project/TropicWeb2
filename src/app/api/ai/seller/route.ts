@@ -71,8 +71,13 @@ export async function POST(request: NextRequest) {
             1. Recommend specific products based on the query.
             2. If looking for a setup, suggest a "bundle" approach.
             3. Highlight that we offer delivery across Bali.
-            4. You CANNOT mutate data. Use read access ONLY.
-            5. Return your response as a JSON object with a "message" field.
+            4. COMPANY LINKS TO RECOMMEND WHEN APPROPRIATE:
+               - Full Service & Catalog: https://tropictech.online/services
+               - Frequently Asked Questions: https://tropictech.online/faq
+               - About Us: https://tropictech.online/about
+               - Contact / Support: https://tropictech.online/contact
+            5. You CANNOT mutate data. Use read access ONLY.
+            6. Return your response as a JSON object with a "message" field.
         `
 
         const response = await openai.chat.completions.create({

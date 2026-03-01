@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dialog"
 
 import { useSiteSettings } from '@/hooks/useSiteSettings'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function AboutUs() {
   const { t } = useLanguage()
@@ -177,6 +179,14 @@ export default function AboutUs() {
               )
             })}
           </div>
+        </div>
+
+        <div className="mt-16 flex justify-center">
+          <Button asChild size="lg" className="rounded-lg px-12 h-14 text-lg font-semibold shadow-md hover:shadow-lg transition-all">
+            <Link href="/about">
+              All About Us
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

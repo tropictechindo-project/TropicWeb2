@@ -25,8 +25,46 @@ export async function POST(request: NextRequest) {
       password,
     })
 
-    if (authError || !authData.user) {
-      // Handle unverified email specifically if Supabase returns that error
+    let supabaseUser = authData.user
+
+    if (authError || !supabaseUser) {
+      // Fallback: Check Prisma for manual/admin users
+      const prismaUser = await db.user.findFirst({
+        where: {
+          OR: [
+            { email },
+            { username: email },
+          ],
+        },
+      })
+
+      if (prismaUser && prismaUser.password) {
+        const bcrypt = await import('bcryptjs')
+        const isMatch = await bcrypt.compare(password, prismaUser.password)
+        if (isMatch) {
+          // Verify success! Generate token manually
+          const token = await generateToken({
+            userId: prismaUser.id,
+            username: prismaUser.username,
+            email: prismaUser.email,
+            role: prismaUser.role,
+          })
+
+          return NextResponse.json({
+            token,
+            user: {
+              id: prismaUser.id,
+              username: prismaUser.username,
+              email: prismaUser.email,
+              fullName: prismaUser.fullName,
+              role: prismaUser.role,
+              isVerified: prismaUser.isVerified
+            }
+          })
+        }
+      }
+
+      // If both fail:
       if (authError?.message.includes('Email not confirmed')) {
         return NextResponse.json(
           { error: 'Please verify your email address to log in.' },
@@ -35,7 +73,7 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json(
-        { error: authError?.message || 'Invalid credentials' },
+        { error: 'Invalid credentials' },
         { status: 401 }
       )
     }

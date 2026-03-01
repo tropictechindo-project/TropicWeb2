@@ -78,6 +78,47 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         setIsCustomCategory(false)
     }
 
+    const handlePdfUpload = async (key: string, file: File) => {
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+
+            toast.loading(`Uploading ${file.name}...`)
+
+            const token = localStorage.getItem('token') || ''
+            const uploadRes = await fetch('/api/admin/upload-file', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            })
+
+            if (!uploadRes.ok) throw new Error(await uploadRes.text())
+            const uploadData = await uploadRes.json()
+
+            // Save to SiteSettings
+            const settingsRes = await fetch('/api/admin/site-settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    key,
+                    value: uploadData.url,
+                    section: 'marketing'
+                })
+            })
+
+            if (!settingsRes.ok) throw new Error(await settingsRes.text())
+
+            toast.dismiss()
+            toast.success(`Successfully uploaded and saved to website!`)
+        } catch (err: any) {
+            toast.dismiss()
+            toast.error(`Upload Error: ${err.message}`)
+        }
+    }
+
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open)
         if (!open) resetForm()
@@ -163,7 +204,22 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
 
     return (
         <>
-            <div className="flex justify-end mb-4">
+            <div className="flex flex-col md:flex-row justify-between mb-4 items-center bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 md:mb-0">
+                    <h2 className="font-bold text-gray-700 mr-2 text-sm uppercase tracking-wider">Global Catalogs (PDF)</h2>
+                    <Button variant="outline" size="sm" onClick={() => document.getElementById('company-catalog-upload')?.click()} className="text-blue-600 border-blue-200 hover:bg-blue-50">
+                        Update Company Catalog
+                        <input id="company-catalog-upload" type="file" className="hidden" accept="application/pdf" onChange={(e) => {
+                            if (e.target.files?.[0]) handlePdfUpload('company_catalog_url', e.target.files[0])
+                        }} />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => document.getElementById('product-catalog-upload')?.click()} className="text-green-600 border-green-200 hover:bg-green-50">
+                        Update Product Catalog
+                        <input id="product-catalog-upload" type="file" className="hidden" accept="application/pdf" onChange={(e) => {
+                            if (e.target.files?.[0]) handlePdfUpload('product_catalog_url', e.target.files[0])
+                        }} />
+                    </Button>
+                </div>
                 <Button onClick={() => setIsOpen(true)}>
                     <Plus className="mr-2 h-4 w-4" /> Add Product
                 </Button>

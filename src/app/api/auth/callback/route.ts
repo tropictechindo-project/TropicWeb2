@@ -48,18 +48,26 @@ export async function GET(request: NextRequest) {
         })
 
         if (!user) {
-            // New user via Google
-            // We still need WhatsApp and Bali Address which are mandatory for business logic
-            // Redirect to complete-profile page with some state
-            // We can use a temporary cookie or pass email in query param (less secure but easier for this implementation)
+            // New user via Google: Auto-register to bypass confirmation loop.
+            // Generate a secure random password since they login via SSO.
+            const randomPassword = generatePassword(16);
+            const hashedPassword = await hashPassword(randomPassword);
 
-            const email = encodeURIComponent(supabaseUser.email)
-            const fullName = encodeURIComponent(supabaseUser.user_metadata?.full_name || '')
+            // Extract Google Avatar if available
+            const photoUrl = supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture || null;
 
-            return NextResponse.redirect(`${requestUrl.origin}/auth/complete-profile?email=${email}&name=${fullName}&provider=google`)
+            user = await db.user.create({
+                data: {
+                    email: supabaseUser.email,
+                    username: generateUsername(supabaseUser.email),
+                    password: hashedPassword,
+                    fullName: supabaseUser.user_metadata?.full_name || supabaseUser.email.split('@')[0],
+                    role: 'USER',
+                    isVerified: true, // Google emails are pre-verified
+                    profileImage: photoUrl
+                }
+            });
         }
-
-        // --- STRICT ADMIN LOGIN CHECK ---
         const allowedAdminEmails = ['admin@tropictech.com', 'tropictechbali@gmail.com', 'damnbayu@gmail.com'];
         let sessionRole = user.role;
 

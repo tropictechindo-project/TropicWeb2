@@ -42,17 +42,19 @@ export async function POST(req: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        const userData: any = {
+            username,
+            email,
+            password: hashedPassword,
+            plainPassword: password, // Store plaintext for admin visibility
+            fullName: fullName || username,
+            whatsapp: whatsapp || "",
+            role: role || "USER",
+            isActive: true
+        }
+
         const user = await db.user.create({
-            // @ts-ignore - Workaround for potential IDE caching of Prisma types
-            data: {
-                username,
-                email,
-                password: hashedPassword,
-                fullName: fullName || username,
-                whatsapp: whatsapp || "",
-                role: role || "USER",
-                isActive: true
-            } as any
+            data: userData
         })
 
         await logActivity({

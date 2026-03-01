@@ -15,7 +15,7 @@ import { ShoppingCart, User, Globe, Menu, X, FileText, Trash2, LayoutDashboard, 
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { LoginModal } from '@/components/auth/LoginModal'
-import { SignupModal } from '@/components/auth/SignupModal'
+import { ContactModal } from '@/components/landing/ContactModal'
 import { useTheme } from 'next-themes'
 import { useCart } from '@/contexts/CartContext'
 import {
@@ -42,7 +42,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [globeOpen, setGlobeOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [showSignupModal, setShowSignupModal] = useState(false)
+  const [showContactModal, setShowContactModal] = useState(false)
   const [showGlobeTooltip, setShowGlobeTooltip] = useState(false)
   const { theme, setTheme } = useTheme()
   const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -305,11 +305,14 @@ export default function Header() {
                     </>
                   ) : (
                     <>
-                      <Button variant="ghost" onClick={() => setShowSignupModal(true)}>
-                        {t('signUp')}
-                      </Button>
-                      <Button onClick={() => setShowLoginModal(true)}>
+                      <Button variant="ghost" onClick={() => setShowLoginModal(true)}>
                         {t('login')}
+                      </Button>
+                      <Button
+                        onClick={() => setShowContactModal(true)}
+                        className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 backdrop-blur-md shadow-lg"
+                      >
+                        Contact Us
                       </Button>
 
                       {/* Globe with Tooltip and Hover-to-Language */}
@@ -456,14 +459,13 @@ export default function Header() {
                       {t('login')}
                     </Button>
                     <Button
-                      variant="ghost"
-                      className="w-full h-11 text-base"
+                      className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/10 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 backdrop-blur-md"
                       onClick={() => {
                         setMobileMenuOpen(false);
-                        setShowSignupModal(true);
+                        setShowContactModal(true);
                       }}
                     >
-                      {t('signUp')}
+                      Contact Us
                     </Button>
                   </div>
                 )}
@@ -478,16 +480,14 @@ export default function Header() {
         onClose={() => setShowLoginModal(false)}
         onSwitchToSignup={() => {
           setShowLoginModal(false)
-          setShowSignupModal(true)
+          // Fallback if the login modal tries to switch to signup:
+          // We route them to Contact Us instead since public signup is disabled.
+          setShowContactModal(true)
         }}
       />
-      <SignupModal
-        isOpen={showSignupModal}
-        onClose={() => setShowSignupModal(false)}
-        onSwitchToLogin={() => {
-          setShowSignupModal(false)
-          setShowLoginModal(true)
-        }}
+      <ContactModal
+        isOpen={showContactModal}
+        onClose={() => setShowContactModal(false)}
       />
     </>
   )

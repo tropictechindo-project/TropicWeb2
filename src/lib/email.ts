@@ -185,3 +185,31 @@ export async function sendVerificationEmail(to: string, verificationLink: string
     return false
   }
 }
+
+export async function sendEmail(data: {
+  to: string,
+  subject: string,
+  html: string
+}) {
+  const mailOptions = {
+    from: `"Tropic Tech Contact" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'contact@tropictech.online'}>`,
+    to: data.to,
+    subject: data.subject,
+    html: data.html,
+  }
+
+  try {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.log('--- DEVELOPMENT MOCK CONTACT EMAIL ---')
+      console.log(`To: ${data.to}`)
+      console.log(`Subject: ${data.subject}`)
+      console.log('------------------------------------')
+      return true
+    }
+    await transporter.sendMail(mailOptions)
+    return true
+  } catch (error) {
+    console.error('Error sending generic email:', error)
+    return false
+  }
+}

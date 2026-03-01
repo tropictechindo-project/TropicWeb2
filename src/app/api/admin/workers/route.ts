@@ -63,11 +63,22 @@ export async function GET(request: NextRequest) {
         const workersWithStats = workers.map(worker => {
             const totalJobs = worker.claimedDeliveries.length
             const completedJobs = worker.claimedDeliveries.filter(s => s.status === 'COMPLETED').length
-            const pendingJobs = worker.claimedDeliveries.filter(s => s.status === 'CLAIMED' || s.status === 'OUT_FOR_DELIVERY' || s.status === 'PAUSED' || s.status === 'DELAYED').length
+            const pendingJobs = worker.claimedDeliveries.filter(s => ['CLAIMED', 'OUT_FOR_DELIVERY', 'PAUSED', 'DELAYED'].includes(s.status)).length
             const attendanceRate = calculateAttendanceRate(worker.workerAttendance)
+
+            // Map claimedDeliveries to workerSchedules for frontend compatibility
+            const workerSchedules = worker.claimedDeliveries.map(d => ({
+                id: d.id,
+                status: d.status,
+                scheduledDate: d.eta, // Map eta to scheduledDate
+                order: {
+                    orderNumber: d.invoice?.invoiceNumber || 'N/A' // Map invoiceNumber to orderNumber
+                }
+            }))
 
             return {
                 ...worker,
+                workerSchedules, // Inject the mapped array
                 stats: {
                     totalJobs,
                     completedJobs,

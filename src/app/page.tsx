@@ -30,12 +30,15 @@ const AboutUs = dynamic(() => import('@/components/landing/AboutUs'), {
 const Reviews = dynamic(() => import('@/components/landing/Reviews'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
+const ContactLandingSection = dynamic(() => import('@/components/landing/ContactLandingSection'), {
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
 const Footer = dynamic(() => import('@/components/landing/Footer'))
 const SellerChatBubble = dynamic(() =>
   import('@/components/ai/SellerChatBubble').then(m => ({ default: m.SellerChatBubble }))
 )
 
-export const revalidate = 60
+export const revalidate = 0
 
 // ─── Data fetching ──────────────────────────────────────────────────────────
 async function getHeroSettings() {
@@ -158,6 +161,10 @@ export default async function Home() {
 
         <Suspense fallback={null}>
           <Reviews />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <ContactLandingSection />
         </Suspense>
       </main>
 

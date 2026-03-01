@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import ProductCard from './ProductCard'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import {
   Carousel,
   CarouselContent,
@@ -183,6 +184,18 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
             <CarouselNext className="-right-12" />
           </div>
         </Carousel>
+
+        <div className="mt-16 flex justify-center">
+          <Button
+            asChild
+            variant="ghost"
+            className="h-auto p-0 bg-transparent hover:bg-transparent hover:text-primary text-xl font-bold transition-all duration-300 drop-shadow-sm hover:drop-shadow-md"
+          >
+            <Link href="/products">
+              See All Products
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   )
