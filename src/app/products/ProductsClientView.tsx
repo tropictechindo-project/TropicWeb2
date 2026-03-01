@@ -374,6 +374,17 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             margin: 0 !important;
                             text-align: left !important;
                         }
+                        .print-category-group {
+                            break-inside: avoid-page !important;
+                            page-break-inside: avoid !important;
+                            margin-bottom: 8mm !important;
+                            display: block !important;
+                            width: 100% !important;
+                        }
+                        .category-header {
+                            break-after: avoid !important;
+                            page-break-after: avoid !important;
+                        }
                         .card {
                             break-inside: avoid !important;
                             page-break-inside: avoid !important;
@@ -515,8 +526,8 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                     {/* Categorized Brochure - Print Version Only */}
                     <div className="hidden print-only space-y-8">
                         {printCategories.map(category => (
-                            <div key={category.id} className="space-y-4">
-                                <h2 className="text-lg font-black text-slate-900 border-b-2 border-slate-200 pb-1 uppercase tracking-wider">
+                            <div key={category.id} className="print-category-group">
+                                <h2 className="text-lg font-black text-slate-900 border-b-2 border-slate-200 pb-1 uppercase tracking-wider category-header mb-4">
                                     {category.title}
                                 </h2>
                                 <div className="grid grid-cols-6 gap-3 catalog-grid">
