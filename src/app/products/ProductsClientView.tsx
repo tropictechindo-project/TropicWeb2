@@ -193,7 +193,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                 <style jsx global>{`
                     @page {
                         size: A3 landscape;
-                        margin: 5mm; /* Reduced margin for maximum coverage */
+                        margin: 0mm 4mm 8mm 4mm; /* ZERO top margin for maximum vertical usage */
                     }
                     @media print {
                         .no-print, 
@@ -202,8 +202,17 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         nav,
                         .category-nav,
                         .action-bar,
-                        button:not(.print-only) {
+                        [role="button"],
+                        button,
+                        [data-sonner-toast],
+                        .sonner-toast,
+                        [class*="toast"] {
                             display: none !important;
+                            opacity: 0 !important;
+                            visibility: hidden !important;
+                            height: 0 !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
                         }
                         .print-only {
                             display: block !important;
@@ -211,10 +220,11 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         body {
                             background: white !important;
                             color: black !important;
-                            font-size: 7.5pt !important;
+                            font-size: 8pt !important;
                             font-family: 'Inter', sans-serif !important;
                             margin: 0 !important;
                             padding: 0 !important;
+                            line-height: 1.2 !important;
                         }
                         .container {
                             max-width: 100% !important;
@@ -222,117 +232,125 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             padding: 0 !important;
                             margin: 0 !important;
                         }
-                        .bg-muted\/20 {
-                            background-color: white !important;
-                        }
                         .grid {
                             display: grid !important;
-                            grid-template-columns: repeat(8, 1fr) !important; /* ULTRA DENSITY: 8 columns */
-                            gap: 6px !important;
+                            grid-template-columns: repeat(6, 1fr) !important;
+                            gap: 10px 6px !important; /* Managed vertical gap to prevent overlap */
+                            padding: 0 !important;
                         }
                         .card {
-                            break-inside: avoid;
-                            border: 0.2px solid #e2e8f0 !important;
+                            break-inside: avoid !important;
+                            page-break-inside: avoid !important;
+                            border: 0.5px solid #e2e8f0 !important;
                             box-shadow: none !important;
                             padding: 4px !important;
-                            border-radius: 4px !important;
-                            height: 100% !important;
+                            border-radius: 6px !important;
+                            height: auto !important;
+                            min-height: 110px !important; /* Radically lower card height */
                             display: flex !important;
                             flex-direction: column !important;
+                            position: relative !important;
                         }
                         .card-image-container {
-                            height: 70px !important; /* Micro images */
-                            padding: 2px !important;
+                            height: 60px !important; /* Very short image height */
+                            min-height: 60px !important;
+                            padding: 0 !important;
                             margin-bottom: 2px !important;
+                            background: white !important;
                         }
                         .card img {
                             height: 100% !important;
+                            width: 100% !important;
                             object-fit: contain !important;
                         }
                         h3 {
-                            font-size: 7pt !important;
+                            font-size: 8pt !important;
                             font-weight: 800 !important;
                             margin-bottom: 1px !important;
                             color: #0f172a !important;
-                            line-height: 1.1 !important;
+                            line-height: 1.05 !important;
                         }
                         p.description {
-                            font-size: 6pt !important;
-                            color: #64748b !important;
+                            font-size: 6.5pt !important;
+                            color: #475569 !important;
                             line-height: 1 !important;
-                            margin-bottom: 2px !important;
+                            margin-bottom: 3px !important;
                             display: -webkit-box !important;
                             -webkit-line-clamp: 2 !important;
                             -webkit-box-orient: vertical !important;
                             overflow: hidden !important;
                         }
                         .price-block {
-                            padding-top: 2px !important;
+                            padding-top: 3px !important;
                             margin-top: auto !important;
-                            border-top: 0.2px solid #f1f5f9 !important;
+                            border-top: 0.5px solid #f1f5f9 !important;
                         }
                         .price-total {
-                            font-size: 8pt !important;
+                            font-size: 9pt !important;
                             font-weight: 900 !important;
-                            color: #2563eb !important;
+                            color: #1e40af !important;
                         }
                         .print-header {
-                            margin-top: 0 !important;
-                            padding-top: 5mm !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                            margin-top: -8mm !important; /* Force pull to the absolute top */
+                            margin-bottom: 4mm !important;
                         }
                         .catalog-main-title {
-                            font-size: 14pt !important;
-                            font-weight: 900 !important;
+                            font-size: 15pt !important;
+                            font-weight: 950 !important;
+                            letter-spacing: -0.05em !important;
                         }
                         .contact-item {
-                            font-size: 6pt !important;
+                            font-size: 7.5pt !important;
+                            font-weight: 800 !important;
+                        }
+                        .print-footer {
+                            margin-top: 5mm !important;
+                            border-top: 1px solid #e2e8f0 !important;
+                            padding-top: 4mm !important;
+                            width: 100% !important;
                         }
                     }
                 `}</style>
 
-                {/* Print-Only Professional Header */}
-                <div className="hidden print-only mb-6 print-header">
-                    <div className="flex justify-between items-center border-b-2 border-slate-900 pb-4">
-                        <div className="flex items-center gap-4">
-                            <Image
-                                src="/LogoTropicTech.webp"
-                                alt="Logo"
-                                width={120}
-                                height={40}
-                                className="object-contain"
-                            />
-                            <div>
-                                <h1 className="catalog-main-title tracking-tight text-slate-900">PT TROPIC TECH INTERNATIONAL</h1>
-                                <div className="space-y-0.5 mt-1">
-                                    <p className="font-black text-[7pt] text-blue-600 uppercase tracking-widest">{heroSubtitle || 'Workstation Rental Company'}</p>
-                                    <p className="text-[6.5pt] text-slate-600 font-medium">{heroSubtitle2 || 'Premium monitors, ergonomic desks, and accessories - delivered same day in Bali.'}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-right space-y-0.5 text-slate-500 text-[6pt]">
-                            <p className="font-bold text-slate-900 text-[7pt]">OPERATIONAL HQ</p>
-                            <p>Jl. Tunjungsari No.8, Padangsambian Kaja,</p>
-                            <p>Denpasar Barat, Bali 80117, Indonesia</p>
-                            <p className="font-black text-blue-600 mt-1">www.tropictech.online</p>
+                {/* Ultra-Premium Centered Header */}
+                <div className="hidden print-only print-header">
+                    <div className="flex flex-col items-center text-center border-b-[2px] border-slate-900 pb-3 w-full">
+                        <Image
+                            src="/LogoTropicTech.webp"
+                            alt="Logo"
+                            width={150}
+                            height={48}
+                            className="object-contain mb-2"
+                        />
+                        <h1 className="catalog-main-title tracking-tighter text-slate-950 leading-none">PT TROPIC TECH INTERNATIONAL</h1>
+                        <div className="mt-2 text-center">
+                            <p className="font-black text-[9.5pt] text-blue-700 uppercase tracking-[0.25em]">{heroSubtitle || 'Workstation Rental Company'}</p>
+                            <p className="text-[8.5pt] text-slate-500 font-bold max-w-3xl mx-auto mt-1 italic">{heroSubtitle2 || 'Premium monitors, ergonomic desks, and accessories - delivered same day in Bali.'}</p>
                         </div>
                     </div>
-                    <div className="grid grid-cols-4 gap-4 mt-3 text-center border-b border-slate-100 pb-3">
-                        <div className="flex flex-col">
-                            <span className="text-[5pt] text-slate-400 uppercase font-black tracking-tighter">Email Support</span>
-                            <span className="font-bold text-slate-800 contact-item">contact@tropictech.online</span>
+
+                    <div className="flex justify-center flex-wrap gap-x-14 gap-y-1 mt-3 text-center border-b border-slate-200 pb-3 w-full">
+                        <div className="flex items-center gap-3">
+                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Email :</span>
+                            <span className="font-black text-slate-950 contact-item">contact@tropictech.online</span>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-[5pt] text-slate-400 uppercase font-black tracking-tighter">Fast WhatsApp</span>
-                            <span className="font-bold text-slate-800 contact-item">+62 822 6657 4860</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Whatsapp :</span>
+                            <span className="font-black text-slate-950 contact-item">+62 822 6657 4860</span>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-[5pt] text-slate-400 uppercase font-black tracking-tighter">Web Portal</span>
-                            <span className="font-bold text-slate-800 contact-item">tropictech.online</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Web :</span>
+                            <span className="font-black text-slate-950 contact-item">www.tropictech.online</span>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-[5pt] text-slate-400 uppercase font-black tracking-tighter">Catalog Version</span>
-                            <span className="font-bold text-slate-800 contact-item">April 2026 Edition</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-[6.5pt] text-slate-400 uppercase font-black tracking-widest">Catalog :</span>
+                            <span className="font-black text-slate-950 contact-item">Edition April 2026</span>
                         </div>
+                    </div>
+                    <div className="text-center mt-2">
+                        <p className="text-[7.5pt] text-slate-500 font-bold uppercase tracking-widest">Address : Jl. Tunjung Sari No.08, Padangsambian Kaja, Denpasar Barat, Bali 80117</p>
                     </div>
                 </div>
 
@@ -393,14 +411,13 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                                 </div>
 
                                 {/* Content Box */}
-                                <CardContent className="flex-1 flex flex-col p-6 space-y-4">
+                                <div className="flex-1 flex flex-col p-6 space-y-4 no-print">
                                     <div className="flex-1">
                                         <Link href={itemLink} className="no-print">
                                             <h3 className="font-bold text-xl line-clamp-2 hover:text-primary transition-colors leading-tight mb-2">
                                                 {item.name}
                                             </h3>
                                         </Link>
-                                        <h3 className="hidden print-only font-bold leading-tight mb-1">{item.name}</h3>
                                         <p className="text-sm text-muted-foreground line-clamp-2 description">
                                             {item.description}
                                         </p>
@@ -440,7 +457,20 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                                             </Button>
                                         </div>
                                     </div>
-                                </CardContent>
+                                </div>
+
+                                {/* Print-Only Content Box - TOTAL CTA REMOVAL */}
+                                <div className="hidden print-only flex-1 flex flex-col p-0 space-y-1">
+                                    <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
+                                    <p className="text-[6.5pt] text-slate-500 line-clamp-2 description leading-tight">
+                                        {item.description}
+                                    </p>
+                                    <div className="pt-1.5 border-t border-slate-100 mt-auto price-block">
+                                        <span className="text-[9pt] font-black text-blue-800 price-total">
+                                            Rp {discountedPrice.toLocaleString('id-ID')}
+                                        </span>
+                                    </div>
+                                </div>
                             </Card>
                         )
                     })}
@@ -454,17 +484,17 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         <Button variant="link" onClick={() => { setSearchQuery(''); setActiveTab('All') }} className="mt-4 font-bold text-primary">Clear all filters</Button>
                     </div>
                 )}
-                {/* Print-Only Professional Footer */}
-                <div className="hidden print-only mt-10 pt-8 border-t-2 border-slate-100">
-                    <div className="flex justify-between items-center text-slate-500 text-xs">
-                        <div className="flex gap-8">
-                            <p>© 2026 PT Tropic Tech International. All rights reserved.</p>
+                {/* Print-Only Professional Footer - Perfectly Centered */}
+                <div className="hidden print-only print-footer">
+                    <div className="flex flex-col items-center justify-center text-center">
+                        <p className="text-slate-950 text-[9pt] font-black uppercase tracking-[0.1em]">PT Tropic Tech International</p>
+                        <div className="flex justify-center gap-6 mt-1 text-slate-500 text-[7.5pt] font-bold">
+                            <p>© 2026 All rights reserved.</p>
                             <p>Prices are subject to rental duration and availability.</p>
                         </div>
-                        <div className="flex items-center gap-2 font-bold text-blue-600">
-                            <LinkIcon className="h-3 w-3" />
-                            <span>Access full digital catalog: www.tropictech.online/products</span>
-                        </div>
+                        <p className="mt-2 font-black text-blue-700 text-[8.5pt] tracking-tight">
+                            Access full digital catalog: www.tropictech.online/products
+                        </p>
                     </div>
                 </div>
             </div>
