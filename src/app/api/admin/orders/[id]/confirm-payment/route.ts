@@ -4,6 +4,7 @@ import { verifyToken } from '@/lib/auth/utils'
 import { createInvoiceForOrder, getInvoiceRecipients } from '@/lib/invoice-utils'
 import { sendInvoiceEmail } from '@/lib/email'
 import { logActivity } from '@/lib/logger'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 /**
  * Confirm payment for an order
@@ -82,6 +83,19 @@ export async function POST(
         })
 
         const { order, invoice } = result
+
+        // Execute reporting background task WITHOUT returning it or blocking response
+        sendGoogleReport('ORDER', {
+            orderId: order.id,
+            date: order.createdAt?.toISOString() || new Date().toISOString(),
+            customerName: order.user?.fullName || 'Guest',
+            subtotal: invoice.subtotal,
+            tax: invoice.tax,
+            deliveryFee: invoice.deliveryFee,
+            totalAmount: order.totalAmount,
+            paymentMethod: order.paymentMethod || 'UNKNOWN',
+            status: 'PAID'
+        }).catch(err => console.error("Google Reporter Error:", err));
 
         // Get all recipients
         const recipients = await getInvoiceRecipients(invoice)

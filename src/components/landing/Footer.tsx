@@ -91,10 +91,6 @@ export default function Footer() {
               <a href="https://balihelp.id" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Bali Help website">
                 balihelp.id
               </a>
-              {' | '}
-              <a href="https://mybisnis.app" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit MyBisnis app website">
-                mybisnis.app
-              </a>
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
 import { verifyAuth } from '@/lib/auth/auth-helper'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 /**
  * Get worker's attendance records
@@ -75,6 +76,17 @@ export async function POST(request: NextRequest) {
                 details: 'Checked out'
             })
 
+            // Execute reporting background task WITHOUT returning it or blocking response
+            sendGoogleReport('ATTENDANCE', {
+                recordId: updated.id,
+                workerId: workerId,
+                workerName: user.username || 'Unknown Worker',
+                date: updated.date.toISOString().split('T')[0],
+                checkInTime: updated.checkInTime?.toISOString() || null,
+                checkOutTime: updated.checkOutTime?.toISOString() || null,
+                status: updated.status
+            }).catch(err => console.error("Google Reporter Error:", err));
+
             return NextResponse.json({ success: true, attendance: updated, action: 'checkout' })
         }
 
@@ -100,6 +112,17 @@ export async function POST(request: NextRequest) {
             entity: 'WORKER_ATTENDANCE',
             details: `Checked in at ${now.toLocaleTimeString()}`
         })
+
+        // Execute reporting background task WITHOUT returning it or blocking response
+        sendGoogleReport('ATTENDANCE', {
+            recordId: attendance.id,
+            workerId: workerId,
+            workerName: user.username || 'Unknown Worker',
+            date: attendance.date.toISOString().split('T')[0],
+            checkInTime: attendance.checkInTime?.toISOString() || null,
+            checkOutTime: attendance.checkOutTime?.toISOString() || null,
+            status: attendance.status
+        }).catch(err => console.error("Google Reporter Error:", err));
 
         return NextResponse.json({ success: true, attendance, action: 'checkin' })
     } catch (error) {

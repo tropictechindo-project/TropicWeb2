@@ -56,21 +56,13 @@ export class RealtimePoller {
 
         const poll = async () => {
             try {
-                const [schedulesRes, notificationsRes] = await Promise.all([
-                    fetch('/api/worker/schedules', {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    }),
-                    fetch('/api/worker/notifications', {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    })
-                ])
+                const notificationsRes = await fetch('/api/worker/notifications', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
 
-                if (schedulesRes.ok && notificationsRes.ok) {
-                    const [schedules, notifications] = await Promise.all([
-                        schedulesRes.json(),
-                        notificationsRes.json()
-                    ])
-                    this.config.onUpdate?.({ schedules, notifications })
+                if (notificationsRes.ok) {
+                    const notifications = await notificationsRes.json()
+                    this.config.onUpdate?.({ notifications })
                 }
             } catch (error) {
                 this.config.onError?.(error as Error)

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { verifyToken } from '@/lib/auth/utils'
 import { logActivity } from '@/lib/logger'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,6 +41,8 @@ export async function POST(
         const delivery = await db.delivery.findUnique({
             where: { id },
             include: {
+                claimedByWorker: true,
+                invoice: true,
                 items: {
                     include: {
                         rentalItem: true
@@ -119,6 +122,16 @@ export async function POST(
 
             return updated
         })
+
+        // Execute reporting background task WITHOUT returning it or blocking response
+        sendGoogleReport('DELIVERY', {
+            deliveryId: updatedDelivery.id,
+            orderId: delivery.invoice?.orderId || updatedDelivery.invoiceId || 'unknown',
+            workerId: workerId,
+            workerName: delivery.claimedByWorker?.fullName || delivery.claimedByWorker?.username || 'Unknown Worker',
+            completedAt: updatedDelivery.completedAt?.toISOString() || new Date().toISOString(),
+            notes: notes || "Completed cleanly"
+        }).catch(err => console.error("Google Reporter Error:", err));
 
         await logActivity({
             userId: workerId,

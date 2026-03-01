@@ -20,9 +20,12 @@ const ENDPOINTS: ApiEndpoint[] = [
     { name: 'Users List', url: '/api/users?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Products List', url: '/api/products?limit=1', method: 'GET', requiresAuth: false },
     { name: 'Orders List', url: '/api/admin/orders?limit=1', method: 'GET', requiresAuth: true },
-    { name: 'Worker Schedules', url: '/api/admin/workers/schedules', method: 'GET', requiresAuth: true },
+    { name: 'Workers List', url: '/api/admin/workers?limit=1', method: 'GET', requiresAuth: true },
+    { name: 'Worker Attendance', url: '/api/worker/attendance?limit=1', method: 'GET', requiresAuth: true },
+    { name: 'Deliveries List', url: '/api/worker/deliveries?limit=1', method: 'GET', requiresAuth: true },
+    { name: 'Admin Deliveries', url: '/api/admin/deliveries?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Messages (Unread)', url: '/api/messages/unread-count', method: 'GET', requiresAuth: true },
-    { name: 'Activity Logs', url: '/api/admin/logs', method: 'GET', requiresAuth: true },
+    { name: 'Activity Logs', url: '/api/admin/logs?limit=1', method: 'GET', requiresAuth: true },
 ]
 
 interface ApiStatus {
