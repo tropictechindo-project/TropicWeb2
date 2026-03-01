@@ -15,6 +15,7 @@ import { ShoppingCart, User, Globe, Menu, X, FileText, Trash2, LayoutDashboard, 
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { LoginModal } from '@/components/auth/LoginModal'
+import { SignupModal } from '@/components/auth/SignupModal'
 import { ContactModal } from '@/components/landing/ContactModal'
 import { useTheme } from 'next-themes'
 import { useCart } from '@/contexts/CartContext'
@@ -42,6 +43,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [globeOpen, setGlobeOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showSignupModal, setShowSignupModal] = useState(false)
   const [showContactModal, setShowContactModal] = useState(false)
   const [showGlobeTooltip, setShowGlobeTooltip] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -480,9 +482,15 @@ export default function Header() {
         onClose={() => setShowLoginModal(false)}
         onSwitchToSignup={() => {
           setShowLoginModal(false)
-          // Fallback if the login modal tries to switch to signup:
-          // We route them to Contact Us instead since public signup is disabled.
-          setShowContactModal(true)
+          setShowSignupModal(true)
+        }}
+      />
+      <SignupModal
+        isOpen={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        onSwitchToLogin={() => {
+          setShowSignupModal(false)
+          setShowLoginModal(true)
         }}
       />
       <ContactModal
