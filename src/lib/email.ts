@@ -32,7 +32,7 @@ export async function sendInvoiceEmail(data: {
   }
 
   const mailOptions = {
-    from: `"Tropic Tech Invoices" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@tropictech.com'}>`,
+    from: `"Tropic Tech Invoices" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'contact@tropictech.online'}>`,
     to: customerEmail,
     bcc: bcc,
     subject: `Invoice ${data.invoiceNumber} - Tropic Tech International`,
@@ -97,7 +97,7 @@ export async function sendInvoiceEmail(data: {
 
 export async function sendResetPasswordEmail(to: string, resetLink: string) {
   const mailOptions = {
-    from: `"Tropic Tech Security" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@tropictech.com'}>`,
+    from: `"Tropic Tech Security" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'contact@tropictech.online'}>`,
     to: to,
     subject: `Password Reset Request - Tropic Tech`,
     html: `
@@ -141,7 +141,7 @@ export async function sendResetPasswordEmail(to: string, resetLink: string) {
 
 export async function sendVerificationEmail(to: string, verificationLink: string) {
   const mailOptions = {
-    from: `"Tropic Tech Registration" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@tropictech.com'}>`,
+    from: `"Tropic Tech Registration" <${process.env.SMTP_FROM || process.env.SMTP_USER || 'contact@tropictech.online'}>`,
     to: to,
     subject: `Verify your email address - Tropic Tech`,
     html: `
