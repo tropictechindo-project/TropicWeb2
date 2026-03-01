@@ -535,6 +535,19 @@ exports.Prisma.DeliveryEditLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SpecialOfferScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  badgeText: 'badgeText',
+  discountPercentage: 'discountPercentage',
+  originalPrice: 'originalPrice',
+  finalPrice: 'finalPrice',
+  images: 'images',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -707,7 +720,8 @@ exports.Prisma.ModelName = {
   Delivery: 'Delivery',
   DeliveryItem: 'DeliveryItem',
   DeliveryLog: 'DeliveryLog',
-  DeliveryEditLog: 'DeliveryEditLog'
+  DeliveryEditLog: 'DeliveryEditLog',
+  SpecialOffer: 'SpecialOffer'
 };
 
 /**

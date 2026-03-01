@@ -3,6 +3,13 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import PackageCard from './PackageCard'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 
 
 interface PackagesProps {
@@ -38,10 +45,26 @@ export default function Packages({ initialPackages = [] }: PackagesProps) {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">{t('packages')}</h2>
 
         {packages.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {packages.map((pkg) => (
-              <PackageCard key={pkg.id} package={pkg} />
-            ))}
+          <div className="relative w-full max-w-6xl mx-auto px-12 mt-12">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: false,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {packages.map((pkg) => (
+                  <CarouselItem key={pkg.id} className="pl-4 basis-[85%] md:basis-1/2 lg:basis-1/3">
+                    <div className="h-full pt-4 pb-8">
+                      <PackageCard package={pkg} />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute -left-4 md:-left-12 lg:-left-16 h-12 w-12 border-2 bg-background/80 hover:bg-background shadow-lg" />
+              <CarouselNext className="absolute -right-4 md:-right-12 lg:-right-16 h-12 w-12 border-2 bg-background/80 hover:bg-background shadow-lg" />
+            </Carousel>
           </div>
         ) : (
           <div className="text-center py-12">

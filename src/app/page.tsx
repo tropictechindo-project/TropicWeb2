@@ -15,6 +15,9 @@ const Products = dynamic(() => import('@/components/landing/Products'), {
 const Packages = dynamic(() => import('@/components/landing/Packages'), {
   loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
+const SpecialOffers = dynamic(() => import('@/components/landing/SpecialOffers'), {
+  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
 const Services = dynamic(() => import('@/components/landing/Services'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
@@ -71,7 +74,6 @@ async function getPackages() {
   try {
     const packages = await db.rentalPackage.findMany({
       orderBy: { price: 'desc' },
-      take: 3,
       include: { rentalPackageItems: { include: { product: true } } }
     })
     return packages.map(pkg => ({
@@ -102,10 +104,19 @@ async function getServiceSettings() {
   } catch { return {} }
 }
 
+async function getSpecialOffersSettings() {
+  try {
+    const settings = await db.siteSetting.findMany({
+      where: { key: { in: ['special_offers_title', 'special_offers_description'] } }
+    })
+    return settings.reduce((acc, curr) => { acc[curr.key] = curr.value; return acc }, {} as any)
+  } catch { return {} }
+}
+
 // ─── Page ───────────────────────────────────────────────────────────────────
 export default async function Home() {
-  const [heroSettings, products, packages, serviceSettings] = await Promise.all([
-    getHeroSettings(), getProducts(), getPackages(), getServiceSettings()
+  const [heroSettings, products, packages, serviceSettings, specialOffersSettings] = await Promise.all([
+    getHeroSettings(), getProducts(), getPackages(), getServiceSettings(), getSpecialOffersSettings()
   ])
   const serializedProducts = JSON.parse(JSON.stringify(products))
   const serializedPackages = JSON.parse(JSON.stringify(packages))
@@ -127,6 +138,10 @@ export default async function Home() {
             <Products initialProducts={serializedProducts} />
             <Packages initialPackages={serializedPackages} />
           </LandingClient>
+        </Suspense>
+
+        <Suspense fallback={<div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+          <SpecialOffers initialSettings={specialOffersSettings} />
         </Suspense>
 
         <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>

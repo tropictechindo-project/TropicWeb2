@@ -9,6 +9,7 @@ import { useCart } from '@/contexts/CartContext'
 import { toast } from 'sonner'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { SharePopover } from '@/components/landing/SharePopover'
+import { ImageLightboxViewer } from '@/components/ui/ImageLightboxViewer'
 
 // Simple type definition based on what we expect
 type Item = {
@@ -40,6 +41,7 @@ export default function ProductDetailPage() {
     const [loading, setLoading] = useState(true)
     const [displayImages, setDisplayImages] = useState<string[]>([])
     const [activeImage, setActiveImage] = useState(0)
+    const [lightboxOpen, setLightboxOpen] = useState(false)
 
     useEffect(() => {
         async function fetchItem() {
@@ -57,17 +59,42 @@ export default function ProductDetailPage() {
                     const resPkg = await fetch(`/api/packages/${params.id}`)
                     if (resPkg.ok) {
                         res = resPkg
+                    } else {
+                        // 3. Try fetching as Special Offer
+                        const resOffer = await fetch(`/api/special-offers/${params.id}`)
+                        if (resOffer.ok) {
+                            res = resOffer
+                        }
                     }
                 }
 
                 if (res.ok) {
                     const data = await res.json()
-                    const actualItem = data.product || data.package
+                    const actualItem = data.product || data.package || data.offer
                     if (actualItem) {
-                        setItem(actualItem)
-                        const imgs = (actualItem.images && actualItem.images.length > 0)
-                            ? actualItem.images
-                            : [actualItem.imageUrl || actualItem.image_url || '/MyAi.webp']
+                        // Mapping special offer properties for compatibility
+                        const formattedItem = {
+                            ...actualItem,
+                            name: actualItem.name || actualItem.title,
+                            monthlyPrice: actualItem.monthlyPrice || actualItem.price || actualItem.finalPrice,
+                            description: actualItem.description,
+                            category: data.offer ? null : actualItem.category, // Helps determine it's a package
+                        }
+
+                        setItem(formattedItem)
+
+                        // Handle image extraction safely matching the arrays or legacy scalar urls
+                        let imgs: string[] = []
+                        if (actualItem.images && Array.isArray(actualItem.images) && actualItem.images.length > 0) {
+                            imgs = actualItem.images
+                        } else if (actualItem.imageUrl) {
+                            imgs = [actualItem.imageUrl]
+                        } else if (actualItem.image_url) {
+                            imgs = [actualItem.image_url]
+                        } else {
+                            imgs = ['/LogoTropicTech.webp']
+                        }
+
                         setDisplayImages(imgs)
                     }
                 }
@@ -110,7 +137,10 @@ export default function ProductDetailPage() {
                 <div className="grid md:grid-cols-2 gap-10">
                     {/* Images */}
                     <div className="space-y-4">
-                        <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-muted border">
+                        <div
+                            className="relative aspect-video w-full rounded-xl overflow-hidden bg-muted border cursor-pointer hover:opacity-90 transition-opacity"
+                            onClick={() => setLightboxOpen(true)}
+                        >
                             <Image
                                 src={displayImages[activeImage]}
                                 alt={item.name || "Product Image"}
@@ -133,6 +163,13 @@ export default function ProductDetailPage() {
                             </div>
                         )}
                     </div>
+
+                    <ImageLightboxViewer
+                        images={displayImages}
+                        initialIndex={activeImage}
+                        open={lightboxOpen}
+                        onOpenChange={setLightboxOpen}
+                    />
 
                     {/* Details */}
                     <div className="space-y-8">

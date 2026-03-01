@@ -85,6 +85,11 @@ const items = [
         icon: Package,
     },
     {
+        title: "Special Offers",
+        url: "/admin/special-offers",
+        icon: Package,
+    },
+    {
         title: "Inventory (Units)",
         url: "/admin/inventory",
         icon: Warehouse,

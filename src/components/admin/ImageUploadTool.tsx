@@ -54,8 +54,12 @@ export function ImageUploadTool({ value = [], onChange, maxImages = 6 }: ImageUp
                 const formData = new FormData()
                 formData.append('file', file)
 
+                const token = localStorage.getItem('token')
                 const res = await fetch('/api/admin/upload-webp', {
                     method: 'POST',
+                    headers: token ? {
+                        'Authorization': `Bearer ${token}`
+                    } : {},
                     body: formData
                 })
 

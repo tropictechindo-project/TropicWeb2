@@ -163,22 +163,28 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
             const url = editingId ? `/api/packages/${editingId}` : '/api/packages'
             const method = editingId ? 'PUT' : 'POST'
 
+            const finalImages = formData.images.length > 0 ? formData.images : ['/LogoTropicTech.webp']
+
+            const packageItems = selectedItems.map(i => ({
+                productId: i.productId,
+                quantity: i.quantity
+            }))
+
+            const packageData = {
+                name: formData.name,
+                description: formData.description,
+                price: parseFloat(formData.price),
+                duration: parseInt(formData.duration),
+                discountPercentage: parseInt(formData.discountPercentage) || 0,
+                imageUrl: finalImages[0],
+                images: finalImages,
+                items: packageItems
+            }
+
             const res = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: formData.name,
-                    description: formData.description,
-                    price: parseFloat(formData.price),
-                    duration: parseInt(formData.duration),
-                    imageUrl: formData.images[0] || formData.imageUrl,
-                    images: formData.images,
-                    discountPercentage: parseInt(formData.discountPercentage),
-                    items: selectedItems.map(i => ({
-                        productId: i.productId,
-                        quantity: i.quantity
-                    }))
-                })
+                body: JSON.stringify(packageData)
             })
 
             if (!res.ok) throw new Error("Failed to save")

@@ -194,6 +194,11 @@ export type DeliveryLog = $Result.DefaultSelection<Prisma.$DeliveryLogPayload>
  * 
  */
 export type DeliveryEditLog = $Result.DefaultSelection<Prisma.$DeliveryEditLogPayload>
+/**
+ * Model SpecialOffer
+ * 
+ */
+export type SpecialOffer = $Result.DefaultSelection<Prisma.$SpecialOfferPayload>
 
 /**
  * Enums
@@ -908,6 +913,16 @@ export class PrismaClient<
     * ```
     */
   get deliveryEditLog(): Prisma.DeliveryEditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.specialOffer`: Exposes CRUD operations for the **SpecialOffer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SpecialOffers
+    * const specialOffers = await prisma.specialOffer.findMany()
+    * ```
+    */
+  get specialOffer(): Prisma.SpecialOfferDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1384,7 +1399,8 @@ export namespace Prisma {
     Delivery: 'Delivery',
     DeliveryItem: 'DeliveryItem',
     DeliveryLog: 'DeliveryLog',
-    DeliveryEditLog: 'DeliveryEditLog'
+    DeliveryEditLog: 'DeliveryEditLog',
+    SpecialOffer: 'SpecialOffer'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1403,7 +1419,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4071,6 +4087,80 @@ export namespace Prisma {
           }
         }
       }
+      SpecialOffer: {
+        payload: Prisma.$SpecialOfferPayload<ExtArgs>
+        fields: Prisma.SpecialOfferFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SpecialOfferFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SpecialOfferFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          findFirst: {
+            args: Prisma.SpecialOfferFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SpecialOfferFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          findMany: {
+            args: Prisma.SpecialOfferFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>[]
+          }
+          create: {
+            args: Prisma.SpecialOfferCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          createMany: {
+            args: Prisma.SpecialOfferCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SpecialOfferCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>[]
+          }
+          delete: {
+            args: Prisma.SpecialOfferDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          update: {
+            args: Prisma.SpecialOfferUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          deleteMany: {
+            args: Prisma.SpecialOfferDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SpecialOfferUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SpecialOfferUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>[]
+          }
+          upsert: {
+            args: Prisma.SpecialOfferUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpecialOfferPayload>
+          }
+          aggregate: {
+            args: Prisma.SpecialOfferAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpecialOffer>
+          }
+          groupBy: {
+            args: Prisma.SpecialOfferGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpecialOfferGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SpecialOfferCountArgs<ExtArgs>
+            result: $Utils.Optional<SpecialOfferCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4203,6 +4293,7 @@ export namespace Prisma {
     deliveryItem?: DeliveryItemOmit
     deliveryLog?: DeliveryLogOmit
     deliveryEditLog?: DeliveryEditLogOmit
+    specialOffer?: SpecialOfferOmit
   }
 
   /* Types for Logging */
@@ -46633,6 +46724,1104 @@ export namespace Prisma {
 
 
   /**
+   * Model SpecialOffer
+   */
+
+  export type AggregateSpecialOffer = {
+    _count: SpecialOfferCountAggregateOutputType | null
+    _avg: SpecialOfferAvgAggregateOutputType | null
+    _sum: SpecialOfferSumAggregateOutputType | null
+    _min: SpecialOfferMinAggregateOutputType | null
+    _max: SpecialOfferMaxAggregateOutputType | null
+  }
+
+  export type SpecialOfferAvgAggregateOutputType = {
+    discountPercentage: number | null
+    originalPrice: Decimal | null
+    finalPrice: Decimal | null
+  }
+
+  export type SpecialOfferSumAggregateOutputType = {
+    discountPercentage: number | null
+    originalPrice: Decimal | null
+    finalPrice: Decimal | null
+  }
+
+  export type SpecialOfferMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    badgeText: string | null
+    discountPercentage: number | null
+    originalPrice: Decimal | null
+    finalPrice: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type SpecialOfferMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    badgeText: string | null
+    discountPercentage: number | null
+    originalPrice: Decimal | null
+    finalPrice: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type SpecialOfferCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    badgeText: number
+    discountPercentage: number
+    originalPrice: number
+    finalPrice: number
+    images: number
+    isActive: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SpecialOfferAvgAggregateInputType = {
+    discountPercentage?: true
+    originalPrice?: true
+    finalPrice?: true
+  }
+
+  export type SpecialOfferSumAggregateInputType = {
+    discountPercentage?: true
+    originalPrice?: true
+    finalPrice?: true
+  }
+
+  export type SpecialOfferMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    badgeText?: true
+    discountPercentage?: true
+    originalPrice?: true
+    finalPrice?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type SpecialOfferMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    badgeText?: true
+    discountPercentage?: true
+    originalPrice?: true
+    finalPrice?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type SpecialOfferCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    badgeText?: true
+    discountPercentage?: true
+    originalPrice?: true
+    finalPrice?: true
+    images?: true
+    isActive?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SpecialOfferAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpecialOffer to aggregate.
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpecialOffers to fetch.
+     */
+    orderBy?: SpecialOfferOrderByWithRelationInput | SpecialOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SpecialOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpecialOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpecialOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SpecialOffers
+    **/
+    _count?: true | SpecialOfferCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SpecialOfferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SpecialOfferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpecialOfferMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpecialOfferMaxAggregateInputType
+  }
+
+  export type GetSpecialOfferAggregateType<T extends SpecialOfferAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpecialOffer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpecialOffer[P]>
+      : GetScalarType<T[P], AggregateSpecialOffer[P]>
+  }
+
+
+
+
+  export type SpecialOfferGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpecialOfferWhereInput
+    orderBy?: SpecialOfferOrderByWithAggregationInput | SpecialOfferOrderByWithAggregationInput[]
+    by: SpecialOfferScalarFieldEnum[] | SpecialOfferScalarFieldEnum
+    having?: SpecialOfferScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpecialOfferCountAggregateInputType | true
+    _avg?: SpecialOfferAvgAggregateInputType
+    _sum?: SpecialOfferSumAggregateInputType
+    _min?: SpecialOfferMinAggregateInputType
+    _max?: SpecialOfferMaxAggregateInputType
+  }
+
+  export type SpecialOfferGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    badgeText: string | null
+    discountPercentage: number
+    originalPrice: Decimal
+    finalPrice: Decimal
+    images: string[]
+    isActive: boolean
+    createdAt: Date
+    _count: SpecialOfferCountAggregateOutputType | null
+    _avg: SpecialOfferAvgAggregateOutputType | null
+    _sum: SpecialOfferSumAggregateOutputType | null
+    _min: SpecialOfferMinAggregateOutputType | null
+    _max: SpecialOfferMaxAggregateOutputType | null
+  }
+
+  type GetSpecialOfferGroupByPayload<T extends SpecialOfferGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpecialOfferGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpecialOfferGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpecialOfferGroupByOutputType[P]>
+            : GetScalarType<T[P], SpecialOfferGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SpecialOfferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    badgeText?: boolean
+    discountPercentage?: boolean
+    originalPrice?: boolean
+    finalPrice?: boolean
+    images?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["specialOffer"]>
+
+  export type SpecialOfferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    badgeText?: boolean
+    discountPercentage?: boolean
+    originalPrice?: boolean
+    finalPrice?: boolean
+    images?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["specialOffer"]>
+
+  export type SpecialOfferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    badgeText?: boolean
+    discountPercentage?: boolean
+    originalPrice?: boolean
+    finalPrice?: boolean
+    images?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["specialOffer"]>
+
+  export type SpecialOfferSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    badgeText?: boolean
+    discountPercentage?: boolean
+    originalPrice?: boolean
+    finalPrice?: boolean
+    images?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }
+
+  export type SpecialOfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "badgeText" | "discountPercentage" | "originalPrice" | "finalPrice" | "images" | "isActive" | "createdAt", ExtArgs["result"]["specialOffer"]>
+
+  export type $SpecialOfferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SpecialOffer"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      badgeText: string | null
+      discountPercentage: number
+      originalPrice: Prisma.Decimal
+      finalPrice: Prisma.Decimal
+      images: string[]
+      isActive: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["specialOffer"]>
+    composites: {}
+  }
+
+  type SpecialOfferGetPayload<S extends boolean | null | undefined | SpecialOfferDefaultArgs> = $Result.GetResult<Prisma.$SpecialOfferPayload, S>
+
+  type SpecialOfferCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SpecialOfferFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SpecialOfferCountAggregateInputType | true
+    }
+
+  export interface SpecialOfferDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SpecialOffer'], meta: { name: 'SpecialOffer' } }
+    /**
+     * Find zero or one SpecialOffer that matches the filter.
+     * @param {SpecialOfferFindUniqueArgs} args - Arguments to find a SpecialOffer
+     * @example
+     * // Get one SpecialOffer
+     * const specialOffer = await prisma.specialOffer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SpecialOfferFindUniqueArgs>(args: SelectSubset<T, SpecialOfferFindUniqueArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SpecialOffer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SpecialOfferFindUniqueOrThrowArgs} args - Arguments to find a SpecialOffer
+     * @example
+     * // Get one SpecialOffer
+     * const specialOffer = await prisma.specialOffer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SpecialOfferFindUniqueOrThrowArgs>(args: SelectSubset<T, SpecialOfferFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpecialOffer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferFindFirstArgs} args - Arguments to find a SpecialOffer
+     * @example
+     * // Get one SpecialOffer
+     * const specialOffer = await prisma.specialOffer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SpecialOfferFindFirstArgs>(args?: SelectSubset<T, SpecialOfferFindFirstArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpecialOffer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferFindFirstOrThrowArgs} args - Arguments to find a SpecialOffer
+     * @example
+     * // Get one SpecialOffer
+     * const specialOffer = await prisma.specialOffer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SpecialOfferFindFirstOrThrowArgs>(args?: SelectSubset<T, SpecialOfferFindFirstOrThrowArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SpecialOffers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SpecialOffers
+     * const specialOffers = await prisma.specialOffer.findMany()
+     * 
+     * // Get first 10 SpecialOffers
+     * const specialOffers = await prisma.specialOffer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const specialOfferWithIdOnly = await prisma.specialOffer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SpecialOfferFindManyArgs>(args?: SelectSubset<T, SpecialOfferFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SpecialOffer.
+     * @param {SpecialOfferCreateArgs} args - Arguments to create a SpecialOffer.
+     * @example
+     * // Create one SpecialOffer
+     * const SpecialOffer = await prisma.specialOffer.create({
+     *   data: {
+     *     // ... data to create a SpecialOffer
+     *   }
+     * })
+     * 
+     */
+    create<T extends SpecialOfferCreateArgs>(args: SelectSubset<T, SpecialOfferCreateArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SpecialOffers.
+     * @param {SpecialOfferCreateManyArgs} args - Arguments to create many SpecialOffers.
+     * @example
+     * // Create many SpecialOffers
+     * const specialOffer = await prisma.specialOffer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SpecialOfferCreateManyArgs>(args?: SelectSubset<T, SpecialOfferCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SpecialOffers and returns the data saved in the database.
+     * @param {SpecialOfferCreateManyAndReturnArgs} args - Arguments to create many SpecialOffers.
+     * @example
+     * // Create many SpecialOffers
+     * const specialOffer = await prisma.specialOffer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SpecialOffers and only return the `id`
+     * const specialOfferWithIdOnly = await prisma.specialOffer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SpecialOfferCreateManyAndReturnArgs>(args?: SelectSubset<T, SpecialOfferCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SpecialOffer.
+     * @param {SpecialOfferDeleteArgs} args - Arguments to delete one SpecialOffer.
+     * @example
+     * // Delete one SpecialOffer
+     * const SpecialOffer = await prisma.specialOffer.delete({
+     *   where: {
+     *     // ... filter to delete one SpecialOffer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SpecialOfferDeleteArgs>(args: SelectSubset<T, SpecialOfferDeleteArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SpecialOffer.
+     * @param {SpecialOfferUpdateArgs} args - Arguments to update one SpecialOffer.
+     * @example
+     * // Update one SpecialOffer
+     * const specialOffer = await prisma.specialOffer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SpecialOfferUpdateArgs>(args: SelectSubset<T, SpecialOfferUpdateArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SpecialOffers.
+     * @param {SpecialOfferDeleteManyArgs} args - Arguments to filter SpecialOffers to delete.
+     * @example
+     * // Delete a few SpecialOffers
+     * const { count } = await prisma.specialOffer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SpecialOfferDeleteManyArgs>(args?: SelectSubset<T, SpecialOfferDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpecialOffers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SpecialOffers
+     * const specialOffer = await prisma.specialOffer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SpecialOfferUpdateManyArgs>(args: SelectSubset<T, SpecialOfferUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpecialOffers and returns the data updated in the database.
+     * @param {SpecialOfferUpdateManyAndReturnArgs} args - Arguments to update many SpecialOffers.
+     * @example
+     * // Update many SpecialOffers
+     * const specialOffer = await prisma.specialOffer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SpecialOffers and only return the `id`
+     * const specialOfferWithIdOnly = await prisma.specialOffer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SpecialOfferUpdateManyAndReturnArgs>(args: SelectSubset<T, SpecialOfferUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SpecialOffer.
+     * @param {SpecialOfferUpsertArgs} args - Arguments to update or create a SpecialOffer.
+     * @example
+     * // Update or create a SpecialOffer
+     * const specialOffer = await prisma.specialOffer.upsert({
+     *   create: {
+     *     // ... data to create a SpecialOffer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SpecialOffer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SpecialOfferUpsertArgs>(args: SelectSubset<T, SpecialOfferUpsertArgs<ExtArgs>>): Prisma__SpecialOfferClient<$Result.GetResult<Prisma.$SpecialOfferPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SpecialOffers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferCountArgs} args - Arguments to filter SpecialOffers to count.
+     * @example
+     * // Count the number of SpecialOffers
+     * const count = await prisma.specialOffer.count({
+     *   where: {
+     *     // ... the filter for the SpecialOffers we want to count
+     *   }
+     * })
+    **/
+    count<T extends SpecialOfferCountArgs>(
+      args?: Subset<T, SpecialOfferCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpecialOfferCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SpecialOffer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpecialOfferAggregateArgs>(args: Subset<T, SpecialOfferAggregateArgs>): Prisma.PrismaPromise<GetSpecialOfferAggregateType<T>>
+
+    /**
+     * Group by SpecialOffer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpecialOfferGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SpecialOfferGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SpecialOfferGroupByArgs['orderBy'] }
+        : { orderBy?: SpecialOfferGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SpecialOfferGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpecialOfferGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SpecialOffer model
+   */
+  readonly fields: SpecialOfferFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SpecialOffer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SpecialOfferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SpecialOffer model
+   */
+  interface SpecialOfferFieldRefs {
+    readonly id: FieldRef<"SpecialOffer", 'String'>
+    readonly title: FieldRef<"SpecialOffer", 'String'>
+    readonly description: FieldRef<"SpecialOffer", 'String'>
+    readonly badgeText: FieldRef<"SpecialOffer", 'String'>
+    readonly discountPercentage: FieldRef<"SpecialOffer", 'Int'>
+    readonly originalPrice: FieldRef<"SpecialOffer", 'Decimal'>
+    readonly finalPrice: FieldRef<"SpecialOffer", 'Decimal'>
+    readonly images: FieldRef<"SpecialOffer", 'String[]'>
+    readonly isActive: FieldRef<"SpecialOffer", 'Boolean'>
+    readonly createdAt: FieldRef<"SpecialOffer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SpecialOffer findUnique
+   */
+  export type SpecialOfferFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter, which SpecialOffer to fetch.
+     */
+    where: SpecialOfferWhereUniqueInput
+  }
+
+  /**
+   * SpecialOffer findUniqueOrThrow
+   */
+  export type SpecialOfferFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter, which SpecialOffer to fetch.
+     */
+    where: SpecialOfferWhereUniqueInput
+  }
+
+  /**
+   * SpecialOffer findFirst
+   */
+  export type SpecialOfferFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter, which SpecialOffer to fetch.
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpecialOffers to fetch.
+     */
+    orderBy?: SpecialOfferOrderByWithRelationInput | SpecialOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpecialOffers.
+     */
+    cursor?: SpecialOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpecialOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpecialOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpecialOffers.
+     */
+    distinct?: SpecialOfferScalarFieldEnum | SpecialOfferScalarFieldEnum[]
+  }
+
+  /**
+   * SpecialOffer findFirstOrThrow
+   */
+  export type SpecialOfferFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter, which SpecialOffer to fetch.
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpecialOffers to fetch.
+     */
+    orderBy?: SpecialOfferOrderByWithRelationInput | SpecialOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpecialOffers.
+     */
+    cursor?: SpecialOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpecialOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpecialOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpecialOffers.
+     */
+    distinct?: SpecialOfferScalarFieldEnum | SpecialOfferScalarFieldEnum[]
+  }
+
+  /**
+   * SpecialOffer findMany
+   */
+  export type SpecialOfferFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter, which SpecialOffers to fetch.
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpecialOffers to fetch.
+     */
+    orderBy?: SpecialOfferOrderByWithRelationInput | SpecialOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SpecialOffers.
+     */
+    cursor?: SpecialOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpecialOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpecialOffers.
+     */
+    skip?: number
+    distinct?: SpecialOfferScalarFieldEnum | SpecialOfferScalarFieldEnum[]
+  }
+
+  /**
+   * SpecialOffer create
+   */
+  export type SpecialOfferCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SpecialOffer.
+     */
+    data: XOR<SpecialOfferCreateInput, SpecialOfferUncheckedCreateInput>
+  }
+
+  /**
+   * SpecialOffer createMany
+   */
+  export type SpecialOfferCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SpecialOffers.
+     */
+    data: SpecialOfferCreateManyInput | SpecialOfferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpecialOffer createManyAndReturn
+   */
+  export type SpecialOfferCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * The data used to create many SpecialOffers.
+     */
+    data: SpecialOfferCreateManyInput | SpecialOfferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpecialOffer update
+   */
+  export type SpecialOfferUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SpecialOffer.
+     */
+    data: XOR<SpecialOfferUpdateInput, SpecialOfferUncheckedUpdateInput>
+    /**
+     * Choose, which SpecialOffer to update.
+     */
+    where: SpecialOfferWhereUniqueInput
+  }
+
+  /**
+   * SpecialOffer updateMany
+   */
+  export type SpecialOfferUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SpecialOffers.
+     */
+    data: XOR<SpecialOfferUpdateManyMutationInput, SpecialOfferUncheckedUpdateManyInput>
+    /**
+     * Filter which SpecialOffers to update
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * Limit how many SpecialOffers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpecialOffer updateManyAndReturn
+   */
+  export type SpecialOfferUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * The data used to update SpecialOffers.
+     */
+    data: XOR<SpecialOfferUpdateManyMutationInput, SpecialOfferUncheckedUpdateManyInput>
+    /**
+     * Filter which SpecialOffers to update
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * Limit how many SpecialOffers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpecialOffer upsert
+   */
+  export type SpecialOfferUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SpecialOffer to update in case it exists.
+     */
+    where: SpecialOfferWhereUniqueInput
+    /**
+     * In case the SpecialOffer found by the `where` argument doesn't exist, create a new SpecialOffer with this data.
+     */
+    create: XOR<SpecialOfferCreateInput, SpecialOfferUncheckedCreateInput>
+    /**
+     * In case the SpecialOffer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SpecialOfferUpdateInput, SpecialOfferUncheckedUpdateInput>
+  }
+
+  /**
+   * SpecialOffer delete
+   */
+  export type SpecialOfferDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+    /**
+     * Filter which SpecialOffer to delete.
+     */
+    where: SpecialOfferWhereUniqueInput
+  }
+
+  /**
+   * SpecialOffer deleteMany
+   */
+  export type SpecialOfferDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpecialOffers to delete
+     */
+    where?: SpecialOfferWhereInput
+    /**
+     * Limit how many SpecialOffers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpecialOffer without action
+   */
+  export type SpecialOfferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpecialOffer
+     */
+    select?: SpecialOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpecialOffer
+     */
+    omit?: SpecialOfferOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -47166,6 +48355,22 @@ export namespace Prisma {
   };
 
   export type DeliveryEditLogScalarFieldEnum = (typeof DeliveryEditLogScalarFieldEnum)[keyof typeof DeliveryEditLogScalarFieldEnum]
+
+
+  export const SpecialOfferScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    badgeText: 'badgeText',
+    discountPercentage: 'discountPercentage',
+    originalPrice: 'originalPrice',
+    finalPrice: 'finalPrice',
+    images: 'images',
+    isActive: 'isActive',
+    createdAt: 'createdAt'
+  };
+
+  export type SpecialOfferScalarFieldEnum = (typeof SpecialOfferScalarFieldEnum)[keyof typeof SpecialOfferScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -50341,6 +51546,85 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"DeliveryEditLog"> | Date | string
   }
 
+  export type SpecialOfferWhereInput = {
+    AND?: SpecialOfferWhereInput | SpecialOfferWhereInput[]
+    OR?: SpecialOfferWhereInput[]
+    NOT?: SpecialOfferWhereInput | SpecialOfferWhereInput[]
+    id?: UuidFilter<"SpecialOffer"> | string
+    title?: StringFilter<"SpecialOffer"> | string
+    description?: StringFilter<"SpecialOffer"> | string
+    badgeText?: StringNullableFilter<"SpecialOffer"> | string | null
+    discountPercentage?: IntFilter<"SpecialOffer"> | number
+    originalPrice?: DecimalFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    images?: StringNullableListFilter<"SpecialOffer">
+    isActive?: BoolFilter<"SpecialOffer"> | boolean
+    createdAt?: DateTimeFilter<"SpecialOffer"> | Date | string
+  }
+
+  export type SpecialOfferOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    badgeText?: SortOrderInput | SortOrder
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+    images?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SpecialOfferWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SpecialOfferWhereInput | SpecialOfferWhereInput[]
+    OR?: SpecialOfferWhereInput[]
+    NOT?: SpecialOfferWhereInput | SpecialOfferWhereInput[]
+    title?: StringFilter<"SpecialOffer"> | string
+    description?: StringFilter<"SpecialOffer"> | string
+    badgeText?: StringNullableFilter<"SpecialOffer"> | string | null
+    discountPercentage?: IntFilter<"SpecialOffer"> | number
+    originalPrice?: DecimalFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    images?: StringNullableListFilter<"SpecialOffer">
+    isActive?: BoolFilter<"SpecialOffer"> | boolean
+    createdAt?: DateTimeFilter<"SpecialOffer"> | Date | string
+  }, "id">
+
+  export type SpecialOfferOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    badgeText?: SortOrderInput | SortOrder
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+    images?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    _count?: SpecialOfferCountOrderByAggregateInput
+    _avg?: SpecialOfferAvgOrderByAggregateInput
+    _max?: SpecialOfferMaxOrderByAggregateInput
+    _min?: SpecialOfferMinOrderByAggregateInput
+    _sum?: SpecialOfferSumOrderByAggregateInput
+  }
+
+  export type SpecialOfferScalarWhereWithAggregatesInput = {
+    AND?: SpecialOfferScalarWhereWithAggregatesInput | SpecialOfferScalarWhereWithAggregatesInput[]
+    OR?: SpecialOfferScalarWhereWithAggregatesInput[]
+    NOT?: SpecialOfferScalarWhereWithAggregatesInput | SpecialOfferScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"SpecialOffer"> | string
+    title?: StringWithAggregatesFilter<"SpecialOffer"> | string
+    description?: StringWithAggregatesFilter<"SpecialOffer"> | string
+    badgeText?: StringNullableWithAggregatesFilter<"SpecialOffer"> | string | null
+    discountPercentage?: IntWithAggregatesFilter<"SpecialOffer"> | number
+    originalPrice?: DecimalWithAggregatesFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalWithAggregatesFilter<"SpecialOffer"> | Decimal | DecimalJsLike | number | string
+    images?: StringNullableListFilter<"SpecialOffer">
+    isActive?: BoolWithAggregatesFilter<"SpecialOffer"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SpecialOffer"> | Date | string
+  }
+
   export type InvoiceCreateInput = {
     id?: string
     invoiceNumber: string
@@ -53380,6 +54664,97 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SpecialOfferCreateInput = {
+    id?: string
+    title: string
+    description: string
+    badgeText?: string | null
+    discountPercentage: number
+    originalPrice: Decimal | DecimalJsLike | number | string
+    finalPrice: Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferCreateimagesInput | string[]
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type SpecialOfferUncheckedCreateInput = {
+    id?: string
+    title: string
+    description: string
+    badgeText?: string | null
+    discountPercentage: number
+    originalPrice: Decimal | DecimalJsLike | number | string
+    finalPrice: Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferCreateimagesInput | string[]
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type SpecialOfferUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    discountPercentage?: IntFieldUpdateOperationsInput | number
+    originalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferUpdateimagesInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecialOfferUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    discountPercentage?: IntFieldUpdateOperationsInput | number
+    originalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferUpdateimagesInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecialOfferCreateManyInput = {
+    id?: string
+    title: string
+    description: string
+    badgeText?: string | null
+    discountPercentage: number
+    originalPrice: Decimal | DecimalJsLike | number | string
+    finalPrice: Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferCreateimagesInput | string[]
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type SpecialOfferUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    discountPercentage?: IntFieldUpdateOperationsInput | number
+    originalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferUpdateimagesInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpecialOfferUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    badgeText?: NullableStringFieldUpdateOperationsInput | string | null
+    discountPercentage?: IntFieldUpdateOperationsInput | number
+    originalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    finalPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    images?: SpecialOfferUpdateimagesInput | string[]
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -55800,6 +57175,55 @@ export namespace Prisma {
     newValue?: SortOrder
     reason?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type SpecialOfferCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    badgeText?: SortOrder
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+    images?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SpecialOfferAvgOrderByAggregateInput = {
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+  }
+
+  export type SpecialOfferMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    badgeText?: SortOrder
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SpecialOfferMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    badgeText?: SortOrder
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SpecialOfferSumOrderByAggregateInput = {
+    discountPercentage?: SortOrder
+    originalPrice?: SortOrder
+    finalPrice?: SortOrder
   }
 
   export type OrderCreateNestedOneWithoutInvoicesInput = {
@@ -58600,6 +60024,15 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutDeliveryEditLogsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeliveryEditLogsInput, UserUpdateWithoutDeliveryEditLogsInput>, UserUncheckedUpdateWithoutDeliveryEditLogsInput>
+  }
+
+  export type SpecialOfferCreateimagesInput = {
+    set: string[]
+  }
+
+  export type SpecialOfferUpdateimagesInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {

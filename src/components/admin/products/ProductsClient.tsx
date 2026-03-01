@@ -132,6 +132,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
 
             const method = editingProduct ? 'PUT' : 'POST'
 
+            const finalImages = formData.images.length > 0 ? formData.images : ['/LogoTropicTech.webp']
+
             const res = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
@@ -140,8 +142,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     category: formData.category,
                     monthlyPrice: parseFloat(formData.price),
                     description: formData.description,
-                    imageUrl: formData.images[0] || formData.imageUrl,
-                    images: formData.images,
+                    imageUrl: finalImages[0],
+                    images: finalImages,
                     discountPercentage: parseInt(formData.discountPercentage),
                     variants: formData.variants
                 })

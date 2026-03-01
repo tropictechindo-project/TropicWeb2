@@ -8,18 +8,26 @@ export async function POST(request: NextRequest) {
     try {
         const { message, history } = await request.json()
 
-        // Fetch products and variants for context with stock counts
-        const productsRaw = await db.product.findMany({
-            include: {
-                variants: {
-                    include: {
-                        units: {
-                            where: { status: 'AVAILABLE' }
+        // Fetch products, packages, and special offers for context
+        const [productsRaw, packagesRaw, specialOffersRaw] = await Promise.all([
+            db.product.findMany({
+                include: {
+                    variants: {
+                        include: {
+                            units: {
+                                where: { status: 'AVAILABLE' }
+                            }
                         }
                     }
                 }
-            }
-        })
+            }),
+            db.rentalPackage.findMany({
+                include: { rentalPackageItems: { include: { product: true } } }
+            }),
+            db.specialOffer.findMany({
+                where: { isActive: true }
+            })
+        ])
 
         const products = productsRaw.map(p => ({
             id: p.id,
@@ -29,11 +37,35 @@ export async function POST(request: NextRequest) {
             availableStock: p.variants.reduce((acc, v) => acc + v.units.length, 0)
         }))
 
+        const packages = packagesRaw.map(pkg => ({
+            id: pkg.id,
+            name: pkg.name,
+            description: pkg.description,
+            price: Number(pkg.price),
+            duration: pkg.duration,
+            items: pkg.rentalPackageItems.map(item => `${item.quantity}x ${item.product.name}`)
+        }))
+
+        const specialOffers = specialOffersRaw.map(offer => ({
+            id: offer.id,
+            title: offer.title,
+            description: offer.description,
+            originalPrice: Number(offer.originalPrice),
+            discountedPrice: Number(offer.finalPrice),
+            discountPercentage: offer.discountPercentage,
+            badge: offer.badgeText
+        }))
+
         const systemPrompt = `
             ${getBaseSystemPrompt('SELLER')}
             
             CURRENT CATALOG:
+            --- PRODUCTS ---
             ${JSON.stringify(products, null, 2)}
+            --- RENTAL PACKAGES ---
+            ${JSON.stringify(packages, null, 2)}
+            --- SPECIAL OFFERS & FLASH SALES ---
+            ${JSON.stringify(specialOffers, null, 2)}
             
             USER ASSISTANCE GUIDELINES:
             1. Recommend specific products based on the query.
