@@ -147,9 +147,14 @@ The website operates through three distinct entry points based on user roles:
   - Verified a **100% Successful Production Build** with `npm run build`.
   - Staged and committed **13 major architectural updates** to the local `main` branch.
 - [x] **Workspace Cleanliness**: Purged all temporary logs (`tsc.log`) and scratch files to ensure a lean production-ready codebase.
+- [x] **Special Offers Ecosystem**: 
+  - Shipped the entire `SpecialOffer` database architecture with integrated `/api/special-offers` CRUD pipelines.
+  - Injected an active Carousel node to the Landing Page featuring centered, perfectly-widened cards and dynamic modal breakouts.
+- [x] **AI Seller Pipeline Integration**: Expanded the OpenAI seller prompt to dynamically query and stream all Rental Packages and Special Offers into the active ChatGPT `CURRENT CATALOG` context. The bot is now fully aware of bundled deals.
+- [x] **UI Layout Calibrations**: Forcefully widened desktop visibility for Rental Packages (`Max-W: 400px`, `xl:basis-[30%]`) and guarded the Navigation Cart Context from math `TypeError` serialization bugs on initial renders.
 
 > [!IMPORTANT]
-> **Production Note**: The local repository is currently 13 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.
+> **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.
 
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.

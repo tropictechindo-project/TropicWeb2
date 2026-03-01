@@ -162,3 +162,12 @@
 6. Integrate real-time polling
 7. Run database migration
 8. Test all workflows end-to-end
+
+## 🌟 Latest Visual & AI Enhancements
+- ✅ **Packages Slider Upgrade**: Adjusted mobile and desktop CSS breakpoints (`basis-[85%] xl:basis-[30%]`) inside `Packages.tsx` to horizontally widen individual package items to ensure maximum product emphasis.
+- ✅ **Special Offers Landing Module**:
+  - Implemented the `SpecialOffers.tsx` module dynamically feeding off `/api/special-offers`.
+  - Configured center-alignment rules dynamically targeting single-card setups for the active `Nyepi` bundle.
+  - Attached robust Modal integrations, allowing users to drill into Special Offer gallery specs seamlessly upon click.
+- ✅ **AI Sales Catalog Integration**: Completely overhauled `/api/ai/seller/route.ts` to actively funnel all Database Products, Packages, and Special Offers dynamically into the underlying prompt string, unlocking instant responsive upsells across all product groups via the AI Assistant.
+- ✅ **Cart Pricing Hardening**: Injected standard fallback logic (`Number(item.price) || 0`) across both `<Header />` cart visualizers and `<CartContext />` reducers to guarantee no frontend runtime TypeErrors ever occur on improperly cast cart data variables.
