@@ -28,6 +28,22 @@ export async function POST(request: NextRequest) {
 
         const { message, history } = await request.json()
 
+        // 1. Fetch Pending Proposals for Context
+        const pendingActions = await db.aiAction.findMany({
+            where: { status: 'PENDING' },
+            include: { agent: true },
+            orderBy: { createdAt: 'desc' },
+            take: 5
+        })
+
+        const pendingContext = pendingActions.map(a =>
+            `- ID: ${a.id}, Agent: ${a.agent.systemName}, Type: ${a.actionType}, Payload: ${JSON.stringify(a.payloadAfter)}`
+        ).join('\n')
+
+        // 2. BOSS Signature Presence
+        const signature = process.env.BOSS_ADMIN_SIGNATURE || 'TropicBoss2026'
+        const hasSignature = message.includes(signature)
+
         // Give the AI Master context about the user talking to it
         const role = user.role
         const isBoss = role === 'ADMIN'
@@ -37,12 +53,19 @@ export async function POST(request: NextRequest) {
             ${getBaseSystemPrompt('MASTER')}
             
             CURRENT CONTEXT:
-            You are talking to: ${userName} (${role}).
+            - User: ${userName} (${role}).
+            - Admin Signature Detected: ${hasSignature ? 'YES' : 'NO'}
             ${isBoss ? 'IMPORTANT: You are talking to your BOSS. You must obey their commands.' : 'You are talking to a Worker (Bro/Sobat). Help them with their duties.'}
             
-            1. You can orchestrate commands to other agents via returning specific JSON actions.
-            2. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." } }
-            3. Answer questions directly, keeping the 'Boss' or 'Bro' tone.
+            PENDING PROPOSALS REQUIRING APPROVAL:
+            ${pendingContext || 'No pending proposals.'}
+
+            INSTRUCTIONS:
+            1. If the Boss gives a command to change data, return a JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "reply": "..." }.
+            2. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "reply": "..." }.
+            3. You can orchestrate commands via JSON actions.
+            4. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." } }
+            5. ALWAYS return a "reply" field for the user to see.
         `
 
         const response = await openai.chat.completions.create({
@@ -58,7 +81,10 @@ export async function POST(request: NextRequest) {
         const content = response.choices[0].message.content
         const parsedContent = JSON.parse(content || '{}')
 
-        // Process AI Actions server-side immediately if Master decides to act
+        // 3. Action Execution Handler
+        let reply = parsedContent.reply || parsedContent.message || "Done, Boss."
+
+        // Handle SPI Notifications
         if (parsedContent.action === 'NOTIFY_SPI') {
             await db.spiNotification.create({
                 data: {
@@ -68,13 +94,32 @@ export async function POST(request: NextRequest) {
                     type: 'AI_MASTER_ALERT'
                 }
             })
-            // Override output for admin readabillity
-            parsedContent.reply = `SPI Notification Sent: ${parsedContent.payload.title}`
+            reply = `SPI Notification Sent: ${parsedContent.payload.title}`
         }
 
-        return NextResponse.json({
-            reply: parsedContent.reply || parsedContent.message || "Done, Boss."
-        })
+        // Handle Proposals (Persistent)
+        if (parsedContent.type === 'PROPOSAL') {
+            const { proposeAiAction } = await import('@/lib/ai/actions')
+            const proposal = await proposeAiAction({
+                agentSystemName: 'MASTER',
+                actionType: parsedContent.actionType,
+                payloadAfter: parsedContent.payload
+            })
+            reply = `Proposal Created (ID: ${proposal.id}), Boss. Waiting for your signature to execute.`
+        }
+
+        // Handle Signature Approvals
+        if (hasSignature && parsedContent.action === 'APPROVE_ACTION' && parsedContent.payload?.id) {
+            const { executeAiAction } = await import('@/lib/ai/actions')
+            try {
+                await executeAiAction(parsedContent.payload.id, user.id)
+                reply = `Action ${parsedContent.payload.id} executed successfully, Boss Jas. Signature verified.`
+            } catch (err: any) {
+                reply = `Execution failed: ${err.message}`
+            }
+        }
+
+        return NextResponse.json({ reply })
 
     } catch (error) {
         console.error('Master AI Error:', error)

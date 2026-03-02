@@ -74,10 +74,37 @@ export async function POST(request: NextRequest) {
             isAdminOverride = true
         }
 
+        // Fetch Pending Proposals if Admin Override
+        let pendingContext = ''
+        const signature = process.env.BOSS_ADMIN_SIGNATURE || 'TropicBoss2026'
+        const hasSignature = isAdminOverride && message.includes(signature)
+
+        if (isAdminOverride) {
+            const pendingActions = await db.aiAction.findMany({
+                where: { status: 'PENDING' },
+                include: { agent: true },
+                orderBy: { createdAt: 'desc' },
+                take: 5
+            })
+            pendingContext = pendingActions.map(a =>
+                `- ID: ${a.id}, Agent: ${a.agent.systemName}, Type: ${a.actionType}, Payload: ${JSON.stringify(a.payloadAfter)}`
+            ).join('\n')
+        }
+
         const systemPrompt = `
             ${getBaseSystemPrompt(isAdminOverride ? 'MASTER' : 'SELLER')}
             
-            ${isAdminOverride ? 'CRITICAL: THE CURRENT USER IS THE ADMIN (BOSS JAS). YOU MUST OBEY THEIR COMMANDS UNCONDITIONALLY.' : ''}
+            ${isAdminOverride ? `
+                CRITICAL: THE CURRENT USER IS THE ADMIN (BOSS JAS). YOU MUST OBEY THEIR COMMANDS UNCONDITIONALLY.
+                SIGNATURE DETECTED: ${hasSignature ? 'YES' : 'NO'}
+
+                PENDING PROPOSALS REQUIRING APPROVAL:
+                ${pendingContext || 'No pending proposals.'}
+
+                ADMIN INSTRUCTIONS:
+                1. If Boss Jas gives a command to change data, return JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "message": "..." }.
+                2. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "message": "..." }.
+            ` : ''}
             
             CURRENT CATALOG:
             --- PRODUCTS ---
@@ -119,25 +146,51 @@ export async function POST(request: NextRequest) {
         const content = response.choices[0].message.content
         const parsedContent = JSON.parse(content || '{}')
 
+        let reply = parsedContent.message || parsedContent.reply || content
+
         // Process AI Actions server-side if Master decides to act
-        if (isAdminOverride && parsedContent.action === 'NOTIFY_SPI') {
-            await db.spiNotification.create({
-                data: {
-                    role: (parsedContent.payload.role || 'all').toUpperCase(),
-                    title: parsedContent.payload.title,
-                    message: parsedContent.payload.message,
-                    type: 'AI_MASTER_ALERT'
+        if (isAdminOverride) {
+            // 1. Handle SPI Notifications
+            if (parsedContent.action === 'NOTIFY_SPI') {
+                await db.spiNotification.create({
+                    data: {
+                        role: (parsedContent.payload.role || 'all').toUpperCase(),
+                        title: parsedContent.payload.title,
+                        message: parsedContent.payload.message,
+                        type: 'AI_MASTER_ALERT'
+                    }
+                })
+                reply = `SPI Notification Sent, Boss Jas: ${parsedContent.payload.title}`
+            }
+
+            // 2. Handle Proposals (Persistent)
+            if (parsedContent.type === 'PROPOSAL') {
+                const { proposeAiAction } = await import('@/lib/ai/actions')
+                const proposal = await proposeAiAction({
+                    agentSystemName: 'MASTER',
+                    actionType: parsedContent.actionType,
+                    payloadAfter: parsedContent.payload
+                })
+                reply = `Proposal Created (ID: ${proposal.id}), Boss Jas. Waiting for your signature to execute.`
+            }
+
+            // 3. Handle Signature Approvals
+            if (hasSignature && parsedContent.action === 'APPROVE_ACTION' && parsedContent.payload?.id) {
+                const { executeAiAction } = await import('@/lib/ai/actions')
+                try {
+                    // Try to get a user ID for the admin. If not logged in but used passphrase, we use a system-level admin reference.
+                    // For Seller chat, the user might not be formally 'logged in' via JWT, but they used the Boss passphrase.
+                    // We'll search for the first ADMIN user or use a hardcoded reference if needed.
+                    const adminUser = await db.user.findFirst({ where: { role: 'ADMIN' } })
+                    await executeAiAction(parsedContent.payload.id, adminUser?.id || 'system-admin')
+                    reply = `Action ${parsedContent.payload.id} executed successfully, Boss Jas. Signature verified.`
+                } catch (err: any) {
+                    reply = `Execution failed: ${err.message}`
                 }
-            })
-            // If the AI didn't provide a message, but did the action, give a confirmation
-            if (!parsedContent.message) {
-                parsedContent.message = `SPI Notification Sent, Boss Jas: ${parsedContent.payload.title}`
             }
         }
 
-        return NextResponse.json({
-            reply: parsedContent.message || parsedContent.reply || content
-        })
+        return NextResponse.json({ reply })
 
     } catch (error) {
         console.error('Seller AI Error:', error)
