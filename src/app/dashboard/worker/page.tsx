@@ -32,6 +32,8 @@ import { DirectMessagesList } from '@/components/chat/DirectMessagesList'
 import { MessageSquare, Users, MessageCircle } from 'lucide-react'
 import { RealtimePoller } from '@/lib/realtime'
 import { GroupChatDialog } from '@/components/chat/GroupChatDialog'
+import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
+import { BotMessageSquare } from 'lucide-react'
 
 export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
@@ -506,6 +508,15 @@ export default function WorkerDashboard() {
                   )}
                 </CardContent>
               </Card>
+
+              {/* AI Master Panel */}
+              <AiDashboardPanel
+                title="AI Master Controls"
+                agentName="AI Master"
+                welcomeMessage="Sup Bro! I am the Master AI. Need me to check any invoices, deliveries, or stats for you?"
+                apiRoute="/api/ai/master"
+                icon={<BotMessageSquare className="w-5 h-5" />}
+              />
             </div>
 
             {/* Right Column: Deliveries */}

@@ -1,81 +1,118 @@
 import { NextResponse } from 'next/server'
-import { db as prisma } from '@/lib/db'
+import { db } from '@/lib/db'
+import { openai, getBaseSystemPrompt } from '@/lib/ai/client'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
     try {
         const issues: string[] = []
 
         // 1. Check for unresolved inventory conflicts
-        const conflicts = await prisma.inventorySyncLog.count({
+        const conflicts = await db.inventorySyncLog.count({
             where: { conflict: true, resolved: false }
         })
-        if (conflicts > 0) {
-            issues.push(`${conflicts} unresolved inventory conflicts.`)
-        }
 
-        // 2. Check for pending orders older than 2 days
-        const twoDaysAgo = new Date()
-        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-        const staleOrders = await prisma.order.count({
-            where: { status: 'PENDING', createdAt: { lt: twoDaysAgo } }
+        // 2. Check for pending orders older than 24 hours
+        const oneDayAgo = new Date()
+        oneDayAgo.setDate(oneDayAgo.getDate() - 1)
+        const staleOrders = await db.order.findMany({
+            where: { status: 'PENDING', createdAt: { lt: oneDayAgo } },
+            select: { id: true, createdAt: true }
         })
-        if (staleOrders > 0) {
-            issues.push(`${staleOrders} orders pending for > 48h.`)
-        }
 
-        // 3. Database connection check (implicit by doing these queries)
-
-        // Log job
-        await prisma.systemJobLog.create({
-            data: {
-                jobName: 'SMART_CHECK',
-                status: 'SUCCESS',
-                message: issues.length > 0 ? issues.join(' ') : 'System healthy'
+        // 3. Check Orders without Invoices
+        // (Assuming completed or processing orders should have invoices)
+        const ordersWithoutInvoices = await db.order.count({
+            where: {
+                status: { in: ['PROCESSING', 'COMPLETED'] },
+                invoices: { none: {} }
             }
         })
 
-        // Create notification if issues found or just a daily health check ok
-        const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } })
+        // Prepare context for AI Audit
+        const auditContext = `
+        CURRENT SYSTEM STATUS:
+        - Unresolved Inventory Conflicts: ${conflicts}
+        - Stale Pending Orders (>24h): ${staleOrders.length}
+        - Processed Orders Missing Invoices: ${ordersWithoutInvoices}
+        `
 
-        if (admin) {
-            await prisma.systemNotification.create({
+        const systemPrompt = `
+        ${getBaseSystemPrompt('AUDIT')}
+
+        You are performing a scheduled Smart Check.
+        Analyze the CURRENT SYSTEM STATUS provided by the system.
+        If there are ANY anomalies (conflicts > 0, stale orders > 0, or missing invoices > 0), you MUST trigger an SPI Notification to the ADMIN immediately to warn Boss Jas.
+        If everything is 0, report that the system is healthy.
+
+        Return your response in this EXACT JSON structure:
+        {
+            "status": "HEALTHY" | "WARNING" | "CRITICAL",
+            "message": "A short, punchy summary of your findings addressing Boss Jas.",
+            "action": "NOTIFY_SPI" | "NONE",
+            "spiPayload": {
+                "role": "ADMIN",
+                "title": "AI Audit Report",
+                "message": "The short notification message"
+            }
+        }
+        `
+
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: auditContext }
+            ],
+            response_format: { type: "json_object" }
+        })
+
+        const content = response.choices[0].message.content
+        const parsedContent = JSON.parse(content || '{}')
+
+        // Log job
+        await db.systemJobLog.create({
+            data: {
+                jobName: 'AI_AUDIT_SMART_CHECK',
+                status: parsedContent.status === 'CRITICAL' ? 'FAILED' : 'SUCCESS',
+                message: parsedContent.message || 'System health check completed.'
+            }
+        })
+
+        // Create SPI Notification if AI requested it
+        if (parsedContent.action === 'NOTIFY_SPI' && parsedContent.spiPayload) {
+            await db.spiNotification.create({
                 data: {
-                    // @ts-ignore
-                    userId: admin.id,
-                    entityId: '00000000-0000-0000-0000-000000000000', // Dummy UUID for mandatory field
-                    entityType: 'SYSTEM',
-                    type: issues.length > 0 ? 'WARNING' : 'SUCCESS',
-                    title: 'System Smart Check',
-                    message: issues.length > 0 ? `Issues detected: ${issues.join(' ')}` : 'All systems operational. Database healthy. No critical delays.',
-                    relatedType: 'CRON'
+                    role: parsedContent.spiPayload.role,
+                    title: parsedContent.spiPayload.title,
+                    message: parsedContent.spiPayload.message,
+                    type: parsedContent.status === 'CRITICAL' ? 'ERROR' : (parsedContent.status === 'WARNING' ? 'WARNING' : 'INFO')
                 }
             })
         }
 
-        return NextResponse.json({ success: true, issues })
+        return NextResponse.json({ success: true, ai_audit: parsedContent })
     } catch (error: any) {
         console.error('Smart check error:', error)
-        await prisma.systemJobLog.create({
+        await db.systemJobLog.create({
             data: {
-                jobName: 'SMART_CHECK',
+                jobName: 'AI_AUDIT_SMART_CHECK',
                 status: 'FAILED',
                 message: error.message
             }
         })
-        // Try to notify failure
-        const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } })
-        if (admin) {
-            await prisma.systemNotification.create({
-                data: {
-                    // @ts-ignore
-                    userId: admin.id,
-                    type: 'ERROR',
-                    title: 'Smart Check Failed',
-                    message: `System check failed: ${error.message}`,
-                    relatedType: 'CRON'
-                }
-            })
-        }
+
+        // Notify SPI as fallback
+        await db.spiNotification.create({
+            data: {
+                role: 'ADMIN',
+                title: 'Audit System Error',
+                message: `AI Audit check failed: ${error.message}`,
+                type: 'ERROR'
+            }
+        })
+
         return new NextResponse('Internal Server Error', { status: 500 })
     }
 }

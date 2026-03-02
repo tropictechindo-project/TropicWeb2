@@ -301,6 +301,7 @@ model User {
   verifiedTransactions   PaymentTransaction[]    @relation("VerifiedTransactions")
   unitActions            UnitHistory[]           @relation("AdminUnitActions")
   aiActionApprovals      AiAction[]              @relation("AiActionApprovals")
+  spiNotifications       SpiNotification[]       @relation("UserSpiNotifications")
 
   @@map("users")
 }
@@ -507,6 +508,25 @@ model CronLock {
   @@map("cron_locks")
 }
 
+model SpiNotification {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?   @map("user_id") @db.Uuid
+  role      String // 'ADMIN', 'WORKER', 'USER'
+  type      String // e.g. 'NEW_USER', 'ORDER_CREATED', 'DELIVERY_UPDATE'
+  title     String
+  message   String
+  link      String? // Optional URL to redirect to when clicked
+  isRead    Boolean   @default(false) @map("is_read")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  expiresAt DateTime? @map("expires_at") @db.Timestamptz(6) // Auto delete after time
+
+  user User? @relation("UserSpiNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([role, isRead])
+  @@index([userId, isRead])
+  @@map("spi_notifications")
+}
+
 enum OrderStatus {
   DRAFT
   AWAITING_PAYMENT
@@ -562,7 +582,7 @@ enum UnitCondition {
 }
 
 enum AiAgentSystemName {
-  SALES
+  AUDIT
   WORKER
   RISK
   SELLER

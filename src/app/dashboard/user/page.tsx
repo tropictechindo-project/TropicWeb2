@@ -37,6 +37,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { SupportChatHub } from '@/components/chat/SupportChatHub'
 import { useNotification } from '@/contexts/NotificationContext'
+import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
+import { Bot } from 'lucide-react'
 
 import {
   Select,
@@ -721,29 +723,39 @@ export default function UserDashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* Support CTA */}
-      <Card className="border-none bg-primary text-primary-foreground shadow-2xl shadow-primary/20 rounded-3xl overflow-hidden">
-        <CardContent className="p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-5 text-center md:text-left">
-            <div className="h-16 w-16 bg-white/20 rounded-2xl flex items-center justify-center shrink-0">
-              <Headset className="h-8 w-8" />
+      {/* Support CTA and AI Panel */}
+      <div className="grid md:grid-cols-2 gap-8">
+        <AiDashboardPanel
+          title="Tropic Tech AI Assistant"
+          agentName="Sunny"
+          welcomeMessage="Hi! I am Sunny, your Tropic Tech assistant. Need help with your rentals, packages, or general Bali info?"
+          apiRoute="/api/ai/seller"
+          icon={<Bot className="w-5 h-5 text-primary" />}
+        />
+
+        <Card className="border-none bg-primary text-primary-foreground shadow-2xl shadow-primary/20 rounded-3xl overflow-hidden h-fit">
+          <CardContent className="p-8 flex flex-col items-center justify-between gap-6 text-center">
+            <div className="flex flex-col items-center gap-5">
+              <div className="h-20 w-20 bg-white/20 rounded-3xl flex items-center justify-center shrink-0">
+                <Headset className="h-10 w-10" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-black uppercase tracking-widest">Need Human Assistance?</h3>
+                <p className="opacity-90 font-medium text-sm">Our support team and workers are ready to help with your rental Gear in real-time.</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xl font-black uppercase tracking-widest">Need Assistance?</h3>
-              <p className="opacity-90 font-medium text-sm">Our support team and workers are ready to help with your rental Gear.</p>
-            </div>
-          </div>
-          <Button
-            className="bg-white text-primary hover:bg-zinc-100 font-black rounded-xl px-10 py-7 shadow-xl"
-            onClick={() => {
-              if (supportGroup) setDefaultSupportGroup(supportGroup.id)
-              setShowSupportHub(true)
-            }}
-          >
-            OPEN CHAT HUB
-          </Button>
-        </CardContent>
-      </Card>
+            <Button
+              className="w-full bg-white text-primary hover:bg-zinc-100 font-black rounded-xl px-10 py-7 shadow-xl mt-4"
+              onClick={() => {
+                if (supportGroup) setDefaultSupportGroup(supportGroup.id)
+                setShowSupportHub(true)
+              }}
+            >
+              OPEN CHAT HUB
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Support Chat Hub */}
       <SupportChatHub

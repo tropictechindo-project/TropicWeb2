@@ -127,11 +127,11 @@ export default async function Home() {
   const SITE_URL = 'https://tropictech.online'
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" suppressHydrationWarning>
       {/* ── Critical: Header NOT lazy loaded per user requirement ── */}
       <Header />
 
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="flex-1" suppressHydrationWarning>
         {/* ── LCP: Hero above fold, eager ── */}
         <Hero initialSettings={heroSettings} />
 

@@ -130,6 +130,37 @@ export class RealtimePoller {
             this.intervalId = null
         }
     }
+
+    /**
+     * Poll for Sticky Panel Information (SPI) notifications
+     */
+    pollSpiNotifications() {
+        this.stop()
+
+        const poll = async () => {
+            try {
+                const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+                if (!token) return // Halt polling completely if unauthenticated
+
+                const headers: HeadersInit = {
+                    'Authorization': `Bearer ${token}`
+                }
+
+                // Fetch SPI notifications for the currently logged in user
+                const res = await fetch('/api/spi/notifications', { headers })
+                if (res.ok) {
+                    const data = await res.json()
+                    this.config.onUpdate?.({ spiNotifications: data })
+                }
+            } catch (error) {
+                this.config.onError?.(error as Error)
+            }
+        }
+
+        poll()
+        // SPI requires faster polling, override config interval to 5s if not explicitly set 
+        this.intervalId = setInterval(poll, 5000)
+    }
 }
 
 // Export singleton instance for easy use

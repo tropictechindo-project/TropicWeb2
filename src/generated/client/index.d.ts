@@ -150,6 +150,11 @@ export type JobQueue = $Result.DefaultSelection<Prisma.$JobQueuePayload>
  */
 export type CronLock = $Result.DefaultSelection<Prisma.$CronLockPayload>
 /**
+ * Model SpiNotification
+ * 
+ */
+export type SpiNotification = $Result.DefaultSelection<Prisma.$SpiNotificationPayload>
+/**
  * Model AiAgent
  * 
  */
@@ -300,7 +305,7 @@ export type UnitCondition = (typeof UnitCondition)[keyof typeof UnitCondition]
 
 
 export const AiAgentSystemName: {
-  SALES: 'SALES',
+  AUDIT: 'AUDIT',
   WORKER: 'WORKER',
   RISK: 'RISK',
   SELLER: 'SELLER',
@@ -828,6 +833,16 @@ export class PrismaClient<
     * ```
     */
   get cronLock(): Prisma.CronLockDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.spiNotification`: Exposes CRUD operations for the **SpiNotification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SpiNotifications
+    * const spiNotifications = await prisma.spiNotification.findMany()
+    * ```
+    */
+  get spiNotification(): Prisma.SpiNotificationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.aiAgent`: Exposes CRUD operations for the **AiAgent** model.
@@ -1406,6 +1421,7 @@ export namespace Prisma {
     IdempotencyKey: 'IdempotencyKey',
     JobQueue: 'JobQueue',
     CronLock: 'CronLock',
+    SpiNotification: 'SpiNotification',
     AiAgent: 'AiAgent',
     AiPermission: 'AiPermission',
     AiAction: 'AiAction',
@@ -1435,7 +1451,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3437,6 +3453,80 @@ export namespace Prisma {
           }
         }
       }
+      SpiNotification: {
+        payload: Prisma.$SpiNotificationPayload<ExtArgs>
+        fields: Prisma.SpiNotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SpiNotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SpiNotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.SpiNotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SpiNotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          findMany: {
+            args: Prisma.SpiNotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>[]
+          }
+          create: {
+            args: Prisma.SpiNotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          createMany: {
+            args: Prisma.SpiNotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SpiNotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.SpiNotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          update: {
+            args: Prisma.SpiNotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.SpiNotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SpiNotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SpiNotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.SpiNotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpiNotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.SpiNotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpiNotification>
+          }
+          groupBy: {
+            args: Prisma.SpiNotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpiNotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SpiNotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<SpiNotificationCountAggregateOutputType> | number
+          }
+        }
+      }
       AiAgent: {
         payload: Prisma.$AiAgentPayload<ExtArgs>
         fields: Prisma.AiAgentFieldRefs
@@ -4374,6 +4464,7 @@ export namespace Prisma {
     idempotencyKey?: IdempotencyKeyOmit
     jobQueue?: JobQueueOmit
     cronLock?: CronLockOmit
+    spiNotification?: SpiNotificationOmit
     aiAgent?: AiAgentOmit
     aiPermission?: AiPermissionOmit
     aiAction?: AiActionOmit
@@ -4793,6 +4884,7 @@ export namespace Prisma {
     verifiedTransactions: number
     unitActions: number
     aiActionApprovals: number
+    spiNotifications: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4817,6 +4909,7 @@ export namespace Prisma {
     verifiedTransactions?: boolean | UserCountOutputTypeCountVerifiedTransactionsArgs
     unitActions?: boolean | UserCountOutputTypeCountUnitActionsArgs
     aiActionApprovals?: boolean | UserCountOutputTypeCountAiActionApprovalsArgs
+    spiNotifications?: boolean | UserCountOutputTypeCountSpiNotificationsArgs
   }
 
   // Custom InputTypes
@@ -4975,6 +5068,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAiActionApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AiActionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSpiNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpiNotificationWhereInput
   }
 
 
@@ -20106,6 +20206,7 @@ export namespace Prisma {
     verifiedTransactions?: boolean | User$verifiedTransactionsArgs<ExtArgs>
     unitActions?: boolean | User$unitActionsArgs<ExtArgs>
     aiActionApprovals?: boolean | User$aiActionApprovalsArgs<ExtArgs>
+    spiNotifications?: boolean | User$spiNotificationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -20195,6 +20296,7 @@ export namespace Prisma {
     verifiedTransactions?: boolean | User$verifiedTransactionsArgs<ExtArgs>
     unitActions?: boolean | User$unitActionsArgs<ExtArgs>
     aiActionApprovals?: boolean | User$aiActionApprovalsArgs<ExtArgs>
+    spiNotifications?: boolean | User$spiNotificationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -20224,6 +20326,7 @@ export namespace Prisma {
       verifiedTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
       unitActions: Prisma.$UnitHistoryPayload<ExtArgs>[]
       aiActionApprovals: Prisma.$AiActionPayload<ExtArgs>[]
+      spiNotifications: Prisma.$SpiNotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20659,6 +20762,7 @@ export namespace Prisma {
     verifiedTransactions<T extends User$verifiedTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$verifiedTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     unitActions<T extends User$unitActionsArgs<ExtArgs> = {}>(args?: Subset<T, User$unitActionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnitHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     aiActionApprovals<T extends User$aiActionApprovalsArgs<ExtArgs> = {}>(args?: Subset<T, User$aiActionApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    spiNotifications<T extends User$spiNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$spiNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21595,6 +21699,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AiActionScalarFieldEnum | AiActionScalarFieldEnum[]
+  }
+
+  /**
+   * User.spiNotifications
+   */
+  export type User$spiNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    where?: SpiNotificationWhereInput
+    orderBy?: SpiNotificationOrderByWithRelationInput | SpiNotificationOrderByWithRelationInput[]
+    cursor?: SpiNotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpiNotificationScalarFieldEnum | SpiNotificationScalarFieldEnum[]
   }
 
   /**
@@ -36514,6 +36642,1148 @@ export namespace Prisma {
 
 
   /**
+   * Model SpiNotification
+   */
+
+  export type AggregateSpiNotification = {
+    _count: SpiNotificationCountAggregateOutputType | null
+    _min: SpiNotificationMinAggregateOutputType | null
+    _max: SpiNotificationMaxAggregateOutputType | null
+  }
+
+  export type SpiNotificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    type: string | null
+    title: string | null
+    message: string | null
+    link: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+    expiresAt: Date | null
+  }
+
+  export type SpiNotificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    role: string | null
+    type: string | null
+    title: string | null
+    message: string | null
+    link: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+    expiresAt: Date | null
+  }
+
+  export type SpiNotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    role: number
+    type: number
+    title: number
+    message: number
+    link: number
+    isRead: number
+    createdAt: number
+    expiresAt: number
+    _all: number
+  }
+
+
+  export type SpiNotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    type?: true
+    title?: true
+    message?: true
+    link?: true
+    isRead?: true
+    createdAt?: true
+    expiresAt?: true
+  }
+
+  export type SpiNotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    type?: true
+    title?: true
+    message?: true
+    link?: true
+    isRead?: true
+    createdAt?: true
+    expiresAt?: true
+  }
+
+  export type SpiNotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    role?: true
+    type?: true
+    title?: true
+    message?: true
+    link?: true
+    isRead?: true
+    createdAt?: true
+    expiresAt?: true
+    _all?: true
+  }
+
+  export type SpiNotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpiNotification to aggregate.
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpiNotifications to fetch.
+     */
+    orderBy?: SpiNotificationOrderByWithRelationInput | SpiNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SpiNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpiNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpiNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SpiNotifications
+    **/
+    _count?: true | SpiNotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpiNotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpiNotificationMaxAggregateInputType
+  }
+
+  export type GetSpiNotificationAggregateType<T extends SpiNotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpiNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpiNotification[P]>
+      : GetScalarType<T[P], AggregateSpiNotification[P]>
+  }
+
+
+
+
+  export type SpiNotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpiNotificationWhereInput
+    orderBy?: SpiNotificationOrderByWithAggregationInput | SpiNotificationOrderByWithAggregationInput[]
+    by: SpiNotificationScalarFieldEnum[] | SpiNotificationScalarFieldEnum
+    having?: SpiNotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpiNotificationCountAggregateInputType | true
+    _min?: SpiNotificationMinAggregateInputType
+    _max?: SpiNotificationMaxAggregateInputType
+  }
+
+  export type SpiNotificationGroupByOutputType = {
+    id: string
+    userId: string | null
+    role: string
+    type: string
+    title: string
+    message: string
+    link: string | null
+    isRead: boolean
+    createdAt: Date
+    expiresAt: Date | null
+    _count: SpiNotificationCountAggregateOutputType | null
+    _min: SpiNotificationMinAggregateOutputType | null
+    _max: SpiNotificationMaxAggregateOutputType | null
+  }
+
+  type GetSpiNotificationGroupByPayload<T extends SpiNotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpiNotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpiNotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpiNotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], SpiNotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SpiNotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    link?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }, ExtArgs["result"]["spiNotification"]>
+
+  export type SpiNotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    link?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }, ExtArgs["result"]["spiNotification"]>
+
+  export type SpiNotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    link?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }, ExtArgs["result"]["spiNotification"]>
+
+  export type SpiNotificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    role?: boolean
+    type?: boolean
+    title?: boolean
+    message?: boolean
+    link?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+    expiresAt?: boolean
+  }
+
+  export type SpiNotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "role" | "type" | "title" | "message" | "link" | "isRead" | "createdAt" | "expiresAt", ExtArgs["result"]["spiNotification"]>
+  export type SpiNotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }
+  export type SpiNotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }
+  export type SpiNotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | SpiNotification$userArgs<ExtArgs>
+  }
+
+  export type $SpiNotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SpiNotification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string | null
+      role: string
+      type: string
+      title: string
+      message: string
+      link: string | null
+      isRead: boolean
+      createdAt: Date
+      expiresAt: Date | null
+    }, ExtArgs["result"]["spiNotification"]>
+    composites: {}
+  }
+
+  type SpiNotificationGetPayload<S extends boolean | null | undefined | SpiNotificationDefaultArgs> = $Result.GetResult<Prisma.$SpiNotificationPayload, S>
+
+  type SpiNotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SpiNotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SpiNotificationCountAggregateInputType | true
+    }
+
+  export interface SpiNotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SpiNotification'], meta: { name: 'SpiNotification' } }
+    /**
+     * Find zero or one SpiNotification that matches the filter.
+     * @param {SpiNotificationFindUniqueArgs} args - Arguments to find a SpiNotification
+     * @example
+     * // Get one SpiNotification
+     * const spiNotification = await prisma.spiNotification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SpiNotificationFindUniqueArgs>(args: SelectSubset<T, SpiNotificationFindUniqueArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SpiNotification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SpiNotificationFindUniqueOrThrowArgs} args - Arguments to find a SpiNotification
+     * @example
+     * // Get one SpiNotification
+     * const spiNotification = await prisma.spiNotification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SpiNotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, SpiNotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpiNotification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationFindFirstArgs} args - Arguments to find a SpiNotification
+     * @example
+     * // Get one SpiNotification
+     * const spiNotification = await prisma.spiNotification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SpiNotificationFindFirstArgs>(args?: SelectSubset<T, SpiNotificationFindFirstArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpiNotification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationFindFirstOrThrowArgs} args - Arguments to find a SpiNotification
+     * @example
+     * // Get one SpiNotification
+     * const spiNotification = await prisma.spiNotification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SpiNotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, SpiNotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SpiNotifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SpiNotifications
+     * const spiNotifications = await prisma.spiNotification.findMany()
+     * 
+     * // Get first 10 SpiNotifications
+     * const spiNotifications = await prisma.spiNotification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const spiNotificationWithIdOnly = await prisma.spiNotification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SpiNotificationFindManyArgs>(args?: SelectSubset<T, SpiNotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SpiNotification.
+     * @param {SpiNotificationCreateArgs} args - Arguments to create a SpiNotification.
+     * @example
+     * // Create one SpiNotification
+     * const SpiNotification = await prisma.spiNotification.create({
+     *   data: {
+     *     // ... data to create a SpiNotification
+     *   }
+     * })
+     * 
+     */
+    create<T extends SpiNotificationCreateArgs>(args: SelectSubset<T, SpiNotificationCreateArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SpiNotifications.
+     * @param {SpiNotificationCreateManyArgs} args - Arguments to create many SpiNotifications.
+     * @example
+     * // Create many SpiNotifications
+     * const spiNotification = await prisma.spiNotification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SpiNotificationCreateManyArgs>(args?: SelectSubset<T, SpiNotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SpiNotifications and returns the data saved in the database.
+     * @param {SpiNotificationCreateManyAndReturnArgs} args - Arguments to create many SpiNotifications.
+     * @example
+     * // Create many SpiNotifications
+     * const spiNotification = await prisma.spiNotification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SpiNotifications and only return the `id`
+     * const spiNotificationWithIdOnly = await prisma.spiNotification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SpiNotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, SpiNotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SpiNotification.
+     * @param {SpiNotificationDeleteArgs} args - Arguments to delete one SpiNotification.
+     * @example
+     * // Delete one SpiNotification
+     * const SpiNotification = await prisma.spiNotification.delete({
+     *   where: {
+     *     // ... filter to delete one SpiNotification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SpiNotificationDeleteArgs>(args: SelectSubset<T, SpiNotificationDeleteArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SpiNotification.
+     * @param {SpiNotificationUpdateArgs} args - Arguments to update one SpiNotification.
+     * @example
+     * // Update one SpiNotification
+     * const spiNotification = await prisma.spiNotification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SpiNotificationUpdateArgs>(args: SelectSubset<T, SpiNotificationUpdateArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SpiNotifications.
+     * @param {SpiNotificationDeleteManyArgs} args - Arguments to filter SpiNotifications to delete.
+     * @example
+     * // Delete a few SpiNotifications
+     * const { count } = await prisma.spiNotification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SpiNotificationDeleteManyArgs>(args?: SelectSubset<T, SpiNotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpiNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SpiNotifications
+     * const spiNotification = await prisma.spiNotification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SpiNotificationUpdateManyArgs>(args: SelectSubset<T, SpiNotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpiNotifications and returns the data updated in the database.
+     * @param {SpiNotificationUpdateManyAndReturnArgs} args - Arguments to update many SpiNotifications.
+     * @example
+     * // Update many SpiNotifications
+     * const spiNotification = await prisma.spiNotification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SpiNotifications and only return the `id`
+     * const spiNotificationWithIdOnly = await prisma.spiNotification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SpiNotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, SpiNotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SpiNotification.
+     * @param {SpiNotificationUpsertArgs} args - Arguments to update or create a SpiNotification.
+     * @example
+     * // Update or create a SpiNotification
+     * const spiNotification = await prisma.spiNotification.upsert({
+     *   create: {
+     *     // ... data to create a SpiNotification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SpiNotification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SpiNotificationUpsertArgs>(args: SelectSubset<T, SpiNotificationUpsertArgs<ExtArgs>>): Prisma__SpiNotificationClient<$Result.GetResult<Prisma.$SpiNotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SpiNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationCountArgs} args - Arguments to filter SpiNotifications to count.
+     * @example
+     * // Count the number of SpiNotifications
+     * const count = await prisma.spiNotification.count({
+     *   where: {
+     *     // ... the filter for the SpiNotifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends SpiNotificationCountArgs>(
+      args?: Subset<T, SpiNotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpiNotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SpiNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpiNotificationAggregateArgs>(args: Subset<T, SpiNotificationAggregateArgs>): Prisma.PrismaPromise<GetSpiNotificationAggregateType<T>>
+
+    /**
+     * Group by SpiNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpiNotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SpiNotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SpiNotificationGroupByArgs['orderBy'] }
+        : { orderBy?: SpiNotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SpiNotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpiNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SpiNotification model
+   */
+  readonly fields: SpiNotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SpiNotification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SpiNotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends SpiNotification$userArgs<ExtArgs> = {}>(args?: Subset<T, SpiNotification$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SpiNotification model
+   */
+  interface SpiNotificationFieldRefs {
+    readonly id: FieldRef<"SpiNotification", 'String'>
+    readonly userId: FieldRef<"SpiNotification", 'String'>
+    readonly role: FieldRef<"SpiNotification", 'String'>
+    readonly type: FieldRef<"SpiNotification", 'String'>
+    readonly title: FieldRef<"SpiNotification", 'String'>
+    readonly message: FieldRef<"SpiNotification", 'String'>
+    readonly link: FieldRef<"SpiNotification", 'String'>
+    readonly isRead: FieldRef<"SpiNotification", 'Boolean'>
+    readonly createdAt: FieldRef<"SpiNotification", 'DateTime'>
+    readonly expiresAt: FieldRef<"SpiNotification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SpiNotification findUnique
+   */
+  export type SpiNotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which SpiNotification to fetch.
+     */
+    where: SpiNotificationWhereUniqueInput
+  }
+
+  /**
+   * SpiNotification findUniqueOrThrow
+   */
+  export type SpiNotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which SpiNotification to fetch.
+     */
+    where: SpiNotificationWhereUniqueInput
+  }
+
+  /**
+   * SpiNotification findFirst
+   */
+  export type SpiNotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which SpiNotification to fetch.
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpiNotifications to fetch.
+     */
+    orderBy?: SpiNotificationOrderByWithRelationInput | SpiNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpiNotifications.
+     */
+    cursor?: SpiNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpiNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpiNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpiNotifications.
+     */
+    distinct?: SpiNotificationScalarFieldEnum | SpiNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * SpiNotification findFirstOrThrow
+   */
+  export type SpiNotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which SpiNotification to fetch.
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpiNotifications to fetch.
+     */
+    orderBy?: SpiNotificationOrderByWithRelationInput | SpiNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SpiNotifications.
+     */
+    cursor?: SpiNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpiNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpiNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SpiNotifications.
+     */
+    distinct?: SpiNotificationScalarFieldEnum | SpiNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * SpiNotification findMany
+   */
+  export type SpiNotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which SpiNotifications to fetch.
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SpiNotifications to fetch.
+     */
+    orderBy?: SpiNotificationOrderByWithRelationInput | SpiNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SpiNotifications.
+     */
+    cursor?: SpiNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SpiNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SpiNotifications.
+     */
+    skip?: number
+    distinct?: SpiNotificationScalarFieldEnum | SpiNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * SpiNotification create
+   */
+  export type SpiNotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SpiNotification.
+     */
+    data: XOR<SpiNotificationCreateInput, SpiNotificationUncheckedCreateInput>
+  }
+
+  /**
+   * SpiNotification createMany
+   */
+  export type SpiNotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SpiNotifications.
+     */
+    data: SpiNotificationCreateManyInput | SpiNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpiNotification createManyAndReturn
+   */
+  export type SpiNotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many SpiNotifications.
+     */
+    data: SpiNotificationCreateManyInput | SpiNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SpiNotification update
+   */
+  export type SpiNotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SpiNotification.
+     */
+    data: XOR<SpiNotificationUpdateInput, SpiNotificationUncheckedUpdateInput>
+    /**
+     * Choose, which SpiNotification to update.
+     */
+    where: SpiNotificationWhereUniqueInput
+  }
+
+  /**
+   * SpiNotification updateMany
+   */
+  export type SpiNotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SpiNotifications.
+     */
+    data: XOR<SpiNotificationUpdateManyMutationInput, SpiNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which SpiNotifications to update
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * Limit how many SpiNotifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpiNotification updateManyAndReturn
+   */
+  export type SpiNotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update SpiNotifications.
+     */
+    data: XOR<SpiNotificationUpdateManyMutationInput, SpiNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which SpiNotifications to update
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * Limit how many SpiNotifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SpiNotification upsert
+   */
+  export type SpiNotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SpiNotification to update in case it exists.
+     */
+    where: SpiNotificationWhereUniqueInput
+    /**
+     * In case the SpiNotification found by the `where` argument doesn't exist, create a new SpiNotification with this data.
+     */
+    create: XOR<SpiNotificationCreateInput, SpiNotificationUncheckedCreateInput>
+    /**
+     * In case the SpiNotification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SpiNotificationUpdateInput, SpiNotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * SpiNotification delete
+   */
+  export type SpiNotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+    /**
+     * Filter which SpiNotification to delete.
+     */
+    where: SpiNotificationWhereUniqueInput
+  }
+
+  /**
+   * SpiNotification deleteMany
+   */
+  export type SpiNotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpiNotifications to delete
+     */
+    where?: SpiNotificationWhereInput
+    /**
+     * Limit how many SpiNotifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpiNotification.user
+   */
+  export type SpiNotification$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * SpiNotification without action
+   */
+  export type SpiNotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpiNotification
+     */
+    select?: SpiNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpiNotification
+     */
+    omit?: SpiNotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpiNotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AiAgent
    */
 
@@ -49367,6 +50637,22 @@ export namespace Prisma {
   export type CronLockScalarFieldEnum = (typeof CronLockScalarFieldEnum)[keyof typeof CronLockScalarFieldEnum]
 
 
+  export const SpiNotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    role: 'role',
+    type: 'type',
+    title: 'title',
+    message: 'message',
+    link: 'link',
+    isRead: 'isRead',
+    createdAt: 'createdAt',
+    expiresAt: 'expiresAt'
+  };
+
+  export type SpiNotificationScalarFieldEnum = (typeof SpiNotificationScalarFieldEnum)[keyof typeof SpiNotificationScalarFieldEnum]
+
+
   export const AiAgentScalarFieldEnum: {
     id: 'id',
     systemName: 'systemName',
@@ -51025,6 +52311,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionListRelationFilter
     unitActions?: UnitHistoryListRelationFilter
     aiActionApprovals?: AiActionListRelationFilter
+    spiNotifications?: SpiNotificationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -51067,6 +52354,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionOrderByRelationAggregateInput
     unitActions?: UnitHistoryOrderByRelationAggregateInput
     aiActionApprovals?: AiActionOrderByRelationAggregateInput
+    spiNotifications?: SpiNotificationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -51112,6 +52400,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionListRelationFilter
     unitActions?: UnitHistoryListRelationFilter
     aiActionApprovals?: AiActionListRelationFilter
+    spiNotifications?: SpiNotificationListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -52018,6 +53307,86 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"CronLock"> | string
     lockedAt?: DateTimeWithAggregatesFilter<"CronLock"> | Date | string
     lockedBy?: StringNullableWithAggregatesFilter<"CronLock"> | string | null
+  }
+
+  export type SpiNotificationWhereInput = {
+    AND?: SpiNotificationWhereInput | SpiNotificationWhereInput[]
+    OR?: SpiNotificationWhereInput[]
+    NOT?: SpiNotificationWhereInput | SpiNotificationWhereInput[]
+    id?: UuidFilter<"SpiNotification"> | string
+    userId?: UuidNullableFilter<"SpiNotification"> | string | null
+    role?: StringFilter<"SpiNotification"> | string
+    type?: StringFilter<"SpiNotification"> | string
+    title?: StringFilter<"SpiNotification"> | string
+    message?: StringFilter<"SpiNotification"> | string
+    link?: StringNullableFilter<"SpiNotification"> | string | null
+    isRead?: BoolFilter<"SpiNotification"> | boolean
+    createdAt?: DateTimeFilter<"SpiNotification"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"SpiNotification"> | Date | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type SpiNotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    link?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SpiNotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SpiNotificationWhereInput | SpiNotificationWhereInput[]
+    OR?: SpiNotificationWhereInput[]
+    NOT?: SpiNotificationWhereInput | SpiNotificationWhereInput[]
+    userId?: UuidNullableFilter<"SpiNotification"> | string | null
+    role?: StringFilter<"SpiNotification"> | string
+    type?: StringFilter<"SpiNotification"> | string
+    title?: StringFilter<"SpiNotification"> | string
+    message?: StringFilter<"SpiNotification"> | string
+    link?: StringNullableFilter<"SpiNotification"> | string | null
+    isRead?: BoolFilter<"SpiNotification"> | boolean
+    createdAt?: DateTimeFilter<"SpiNotification"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"SpiNotification"> | Date | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type SpiNotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    role?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    link?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    _count?: SpiNotificationCountOrderByAggregateInput
+    _max?: SpiNotificationMaxOrderByAggregateInput
+    _min?: SpiNotificationMinOrderByAggregateInput
+  }
+
+  export type SpiNotificationScalarWhereWithAggregatesInput = {
+    AND?: SpiNotificationScalarWhereWithAggregatesInput | SpiNotificationScalarWhereWithAggregatesInput[]
+    OR?: SpiNotificationScalarWhereWithAggregatesInput[]
+    NOT?: SpiNotificationScalarWhereWithAggregatesInput | SpiNotificationScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"SpiNotification"> | string
+    userId?: UuidNullableWithAggregatesFilter<"SpiNotification"> | string | null
+    role?: StringWithAggregatesFilter<"SpiNotification"> | string
+    type?: StringWithAggregatesFilter<"SpiNotification"> | string
+    title?: StringWithAggregatesFilter<"SpiNotification"> | string
+    message?: StringWithAggregatesFilter<"SpiNotification"> | string
+    link?: StringNullableWithAggregatesFilter<"SpiNotification"> | string | null
+    isRead?: BoolWithAggregatesFilter<"SpiNotification"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SpiNotification"> | Date | string
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"SpiNotification"> | Date | string | null
   }
 
   export type AiAgentWhereInput = {
@@ -54093,6 +55462,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -54135,6 +55505,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -54177,6 +55548,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -54219,6 +55591,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -55165,6 +56538,96 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     lockedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lockedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SpiNotificationCreateInput = {
+    id?: string
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+    user?: UserCreateNestedOneWithoutSpiNotificationsInput
+  }
+
+  export type SpiNotificationUncheckedCreateInput = {
+    id?: string
+    userId?: string | null
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+  }
+
+  export type SpiNotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneWithoutSpiNotificationsNestedInput
+  }
+
+  export type SpiNotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SpiNotificationCreateManyInput = {
+    id?: string
+    userId?: string | null
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+  }
+
+  export type SpiNotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SpiNotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiAgentCreateInput = {
@@ -57377,6 +58840,12 @@ export namespace Prisma {
     none?: AiActionWhereInput
   }
 
+  export type SpiNotificationListRelationFilter = {
+    every?: SpiNotificationWhereInput
+    some?: SpiNotificationWhereInput
+    none?: SpiNotificationWhereInput
+  }
+
   export type ActivityLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -57422,6 +58891,10 @@ export namespace Prisma {
   }
 
   export type AiActionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SpiNotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57983,6 +59456,45 @@ export namespace Prisma {
     id?: SortOrder
     lockedAt?: SortOrder
     lockedBy?: SortOrder
+  }
+
+  export type SpiNotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    link?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type SpiNotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    link?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
+  }
+
+  export type SpiNotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    link?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    expiresAt?: SortOrder
   }
 
   export type EnumAiAgentSystemNameFilter<$PrismaModel = never> = {
@@ -59834,6 +61346,13 @@ export namespace Prisma {
     connect?: AiActionWhereUniqueInput | AiActionWhereUniqueInput[]
   }
 
+  export type SpiNotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput> | SpiNotificationCreateWithoutUserInput[] | SpiNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SpiNotificationCreateOrConnectWithoutUserInput | SpiNotificationCreateOrConnectWithoutUserInput[]
+    createMany?: SpiNotificationCreateManyUserInputEnvelope
+    connect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+  }
+
   export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -59979,6 +61498,13 @@ export namespace Prisma {
     connectOrCreate?: AiActionCreateOrConnectWithoutApproverInput | AiActionCreateOrConnectWithoutApproverInput[]
     createMany?: AiActionCreateManyApproverInputEnvelope
     connect?: AiActionWhereUniqueInput | AiActionWhereUniqueInput[]
+  }
+
+  export type SpiNotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput> | SpiNotificationCreateWithoutUserInput[] | SpiNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SpiNotificationCreateOrConnectWithoutUserInput | SpiNotificationCreateOrConnectWithoutUserInput[]
+    createMany?: SpiNotificationCreateManyUserInputEnvelope
+    connect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
   }
 
   export type ActivityLogUpdateManyWithoutUserNestedInput = {
@@ -60275,6 +61801,20 @@ export namespace Prisma {
     deleteMany?: AiActionScalarWhereInput | AiActionScalarWhereInput[]
   }
 
+  export type SpiNotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput> | SpiNotificationCreateWithoutUserInput[] | SpiNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SpiNotificationCreateOrConnectWithoutUserInput | SpiNotificationCreateOrConnectWithoutUserInput[]
+    upsert?: SpiNotificationUpsertWithWhereUniqueWithoutUserInput | SpiNotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SpiNotificationCreateManyUserInputEnvelope
+    set?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    disconnect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    delete?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    connect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    update?: SpiNotificationUpdateWithWhereUniqueWithoutUserInput | SpiNotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SpiNotificationUpdateManyWithWhereWithoutUserInput | SpiNotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SpiNotificationScalarWhereInput | SpiNotificationScalarWhereInput[]
+  }
+
   export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -60569,6 +62109,20 @@ export namespace Prisma {
     deleteMany?: AiActionScalarWhereInput | AiActionScalarWhereInput[]
   }
 
+  export type SpiNotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput> | SpiNotificationCreateWithoutUserInput[] | SpiNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SpiNotificationCreateOrConnectWithoutUserInput | SpiNotificationCreateOrConnectWithoutUserInput[]
+    upsert?: SpiNotificationUpsertWithWhereUniqueWithoutUserInput | SpiNotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SpiNotificationCreateManyUserInputEnvelope
+    set?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    disconnect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    delete?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    connect?: SpiNotificationWhereUniqueInput | SpiNotificationWhereUniqueInput[]
+    update?: SpiNotificationUpdateWithWhereUniqueWithoutUserInput | SpiNotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SpiNotificationUpdateManyWithWhereWithoutUserInput | SpiNotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SpiNotificationScalarWhereInput | SpiNotificationScalarWhereInput[]
+  }
+
   export type ChatGroupMemberCreateNestedManyWithoutGroupInput = {
     create?: XOR<ChatGroupMemberCreateWithoutGroupInput, ChatGroupMemberUncheckedCreateWithoutGroupInput> | ChatGroupMemberCreateWithoutGroupInput[] | ChatGroupMemberUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: ChatGroupMemberCreateOrConnectWithoutGroupInput | ChatGroupMemberCreateOrConnectWithoutGroupInput[]
@@ -60861,6 +62415,22 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutNotificationDismissalsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationDismissalsInput, UserUpdateWithoutNotificationDismissalsInput>, UserUncheckedUpdateWithoutNotificationDismissalsInput>
+  }
+
+  export type UserCreateNestedOneWithoutSpiNotificationsInput = {
+    create?: XOR<UserCreateWithoutSpiNotificationsInput, UserUncheckedCreateWithoutSpiNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpiNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutSpiNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutSpiNotificationsInput, UserUncheckedCreateWithoutSpiNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSpiNotificationsInput
+    upsert?: UserUpsertWithoutSpiNotificationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSpiNotificationsInput, UserUpdateWithoutSpiNotificationsInput>, UserUncheckedUpdateWithoutSpiNotificationsInput>
   }
 
   export type AiPermissionCreateNestedOneWithoutAgentInput = {
@@ -62169,6 +63739,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -62210,6 +63781,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -62371,6 +63943,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -62412,6 +63985,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceCreateWithoutOrderInput = {
@@ -62551,6 +64125,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -62592,6 +64167,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -62638,6 +64214,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -62679,6 +64256,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -62880,6 +64458,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -62921,6 +64500,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -62973,6 +64553,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -63014,6 +64595,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RentalItemUpsertWithWhereUniqueWithoutOrderInput = {
@@ -63175,6 +64757,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerifiedTransactionsInput = {
@@ -63216,6 +64799,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerifiedTransactionsInput = {
@@ -63336,6 +64920,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerifiedTransactionsInput = {
@@ -63377,6 +64962,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutProductRelationsInput = {
@@ -64616,6 +66202,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUnitActionsInput = {
@@ -64657,6 +66244,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUnitActionsInput = {
@@ -64753,6 +66341,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUnitActionsInput = {
@@ -64794,6 +66383,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSystemNotificationsInput = {
@@ -64835,6 +66425,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSystemNotificationsInput = {
@@ -64876,6 +66467,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSystemNotificationsInput = {
@@ -64933,6 +66525,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSystemNotificationsInput = {
@@ -64974,6 +66567,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderCreateWithoutRentalItemsInput = {
@@ -66100,6 +67694,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SpiNotificationCreateWithoutUserInput = {
+    id?: string
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+  }
+
+  export type SpiNotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+  }
+
+  export type SpiNotificationCreateOrConnectWithoutUserInput = {
+    where: SpiNotificationWhereUniqueInput
+    create: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type SpiNotificationCreateManyUserInputEnvelope = {
+    data: SpiNotificationCreateManyUserInput | SpiNotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -66607,6 +68235,38 @@ export namespace Prisma {
     executedAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
   }
 
+  export type SpiNotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: SpiNotificationWhereUniqueInput
+    update: XOR<SpiNotificationUpdateWithoutUserInput, SpiNotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<SpiNotificationCreateWithoutUserInput, SpiNotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type SpiNotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: SpiNotificationWhereUniqueInput
+    data: XOR<SpiNotificationUpdateWithoutUserInput, SpiNotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SpiNotificationUpdateManyWithWhereWithoutUserInput = {
+    where: SpiNotificationScalarWhereInput
+    data: XOR<SpiNotificationUpdateManyMutationInput, SpiNotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SpiNotificationScalarWhereInput = {
+    AND?: SpiNotificationScalarWhereInput | SpiNotificationScalarWhereInput[]
+    OR?: SpiNotificationScalarWhereInput[]
+    NOT?: SpiNotificationScalarWhereInput | SpiNotificationScalarWhereInput[]
+    id?: UuidFilter<"SpiNotification"> | string
+    userId?: UuidNullableFilter<"SpiNotification"> | string | null
+    role?: StringFilter<"SpiNotification"> | string
+    type?: StringFilter<"SpiNotification"> | string
+    title?: StringFilter<"SpiNotification"> | string
+    message?: StringFilter<"SpiNotification"> | string
+    link?: StringNullableFilter<"SpiNotification"> | string | null
+    isRead?: BoolFilter<"SpiNotification"> | boolean
+    createdAt?: DateTimeFilter<"SpiNotification"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"SpiNotification"> | Date | string | null
+  }
+
   export type ChatGroupMemberCreateWithoutGroupInput = {
     id?: string
     role?: string
@@ -66749,6 +68409,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatGroupMembershipsInput = {
@@ -66790,6 +68451,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatGroupMembershipsInput = {
@@ -66876,6 +68538,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatGroupMembershipsInput = {
@@ -66917,6 +68580,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatGroupCreateWithoutMessagesInput = {
@@ -66981,6 +68645,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGroupMessagesInput = {
@@ -67022,6 +68687,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGroupMessagesInput = {
@@ -67108,6 +68774,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGroupMessagesInput = {
@@ -67149,6 +68816,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -67190,6 +68858,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -67231,6 +68900,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -67288,6 +68958,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -67329,6 +69000,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWorkerAttendanceInput = {
@@ -67370,6 +69042,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkerAttendanceInput = {
@@ -67411,6 +69084,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkerAttendanceInput = {
@@ -67468,6 +69142,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkerAttendanceInput = {
@@ -67509,6 +69184,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutInventorySyncLogsInput = {
@@ -67589,6 +69265,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryResolutionsInput = {
@@ -67630,6 +69307,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryResolutionsInput = {
@@ -67676,6 +69354,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryUpdatesInput = {
@@ -67717,6 +69396,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryUpdatesInput = {
@@ -67819,6 +69499,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryResolutionsInput = {
@@ -67860,6 +69541,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutInventoryUpdatesInput = {
@@ -67912,6 +69594,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryUpdatesInput = {
@@ -67953,6 +69636,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -67994,6 +69678,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -68035,6 +69720,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -68081,6 +69767,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -68122,6 +69809,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -68179,6 +69867,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -68220,6 +69909,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -68272,6 +69962,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -68313,6 +70004,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -68354,6 +70046,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -68395,6 +70088,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -68441,6 +70135,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -68482,6 +70177,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -68539,6 +70235,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -68580,6 +70277,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -68632,6 +70330,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -68673,6 +70372,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationDismissalsInput = {
@@ -68714,6 +70414,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationDismissalsInput = {
@@ -68755,6 +70456,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationDismissalsInput = {
@@ -68812,6 +70514,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationDismissalsInput = {
@@ -68849,6 +70552,191 @@ export namespace Prisma {
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSpiNotificationsInput = {
+    id?: string
+    username: string
+    password: string
+    plainPassword?: string | null
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserUncheckedCreateWithoutSpiNotificationsInput = {
+    id?: string
+    username: string
+    password: string
+    plainPassword?: string | null
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+  }
+
+  export type UserCreateOrConnectWithoutSpiNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSpiNotificationsInput, UserUncheckedCreateWithoutSpiNotificationsInput>
+  }
+
+  export type UserUpsertWithoutSpiNotificationsInput = {
+    update: XOR<UserUpdateWithoutSpiNotificationsInput, UserUncheckedUpdateWithoutSpiNotificationsInput>
+    create: XOR<UserCreateWithoutSpiNotificationsInput, UserUncheckedCreateWithoutSpiNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSpiNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSpiNotificationsInput, UserUncheckedUpdateWithoutSpiNotificationsInput>
+  }
+
+  export type UserUpdateWithoutSpiNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSpiNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
@@ -69137,6 +71025,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiActionApprovalsInput = {
@@ -69178,6 +71067,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiActionApprovalsInput = {
@@ -69270,6 +71160,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiActionApprovalsInput = {
@@ -69311,6 +71202,7 @@ export namespace Prisma {
     systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiAgentCreateWithoutTrainingDataInput = {
@@ -69570,6 +71462,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimedDeliveriesInput = {
@@ -69611,6 +71504,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimedDeliveriesInput = {
@@ -69844,6 +71738,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimedDeliveriesInput = {
@@ -69885,6 +71780,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryItemUpsertWithWhereUniqueWithoutDeliveryInput = {
@@ -70195,6 +72091,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryLogsInput = {
@@ -70236,6 +72133,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryLogsInput = {
@@ -70352,6 +72250,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryLogsInput = {
@@ -70393,6 +72292,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryCreateWithoutEditLogsInput = {
@@ -70487,6 +72387,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryEditLogsInput = {
@@ -70528,6 +72429,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryEditLogsInput = {
@@ -70644,6 +72546,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryEditLogsInput = {
@@ -70685,6 +72588,7 @@ export namespace Prisma {
     verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryCreateManyInvoiceInput = {
@@ -71734,6 +73638,18 @@ export namespace Prisma {
     executedAt?: Date | string | null
   }
 
+  export type SpiNotificationCreateManyUserInput = {
+    id?: string
+    role: string
+    type: string
+    title: string
+    message: string
+    link?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+    expiresAt?: Date | string | null
+  }
+
   export type ActivityLogUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -72533,6 +74449,42 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SpiNotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SpiNotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SpiNotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberCreateManyGroupInput = {

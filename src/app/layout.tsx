@@ -7,6 +7,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ThemeProvider } from "@/components/theme-provider";
+import { StickyPanelInfo } from "@/components/StickyPanelInfo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -147,6 +148,7 @@ export default function RootLayout({
             <AuthProvider>
               <NotificationProvider>
                 <CartProvider>
+                  <StickyPanelInfo />
                   {children}
                 </CartProvider>
               </NotificationProvider>

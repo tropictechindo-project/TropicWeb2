@@ -1,5 +1,4 @@
-
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../src/generated/client/index.js'
 
 const prisma = new PrismaClient()
 
@@ -420,6 +419,91 @@ async function main() {
                 console.warn(`  ! Item not found: ${itemName}`)
             }
         }
+    }
+
+    // AI AGENTS
+    const aiAgents = [
+        {
+            systemName: 'MASTER',
+            displayName: 'AI Master',
+            canMutateData: true,
+            permissions: {
+                canModifyProducts: true,
+                canModifyPackages: true,
+                canModifyOrders: true,
+                requiresAdminConfirmation: true
+            }
+        },
+        {
+            systemName: 'SELLER',
+            displayName: 'AI Seller',
+            canMutateData: false,
+            permissions: {
+                canModifyProducts: false,
+                canModifyPackages: false,
+                canModifyOrders: false,
+                requiresAdminConfirmation: true
+            }
+        },
+        {
+            systemName: 'AUDIT',
+            displayName: 'AI Audit',
+            canMutateData: false,
+            permissions: {
+                canModifyProducts: false,
+                canModifyPackages: false,
+                canModifyOrders: false,
+                requiresAdminConfirmation: true
+            }
+        },
+        {
+            systemName: 'RISK',
+            displayName: 'AI Risk',
+            canMutateData: false,
+            permissions: {
+                canModifyProducts: false,
+                canModifyPackages: false,
+                canModifyOrders: false,
+                requiresAdminConfirmation: true
+            }
+        },
+        {
+            systemName: 'WORKER',
+            displayName: 'AI Worker',
+            canMutateData: false,
+            permissions: {
+                canModifyProducts: false,
+                canModifyPackages: false,
+                canModifyOrders: true,
+                requiresAdminConfirmation: true
+            }
+        }
+    ]
+
+    for (const agent of aiAgents) {
+        // Upsert to ensure we don't duplicate on re-runs
+        await prisma.aiAgent.upsert({
+            where: { systemName: agent.systemName as any },
+            update: {
+                displayName: agent.displayName,
+                canMutateData: agent.canMutateData,
+                permissions: {
+                    upsert: {
+                        create: agent.permissions,
+                        update: agent.permissions
+                    }
+                }
+            },
+            create: {
+                systemName: agent.systemName as any,
+                displayName: agent.displayName,
+                canMutateData: agent.canMutateData,
+                permissions: {
+                    create: agent.permissions
+                }
+            }
+        })
+        console.log(`Ensured AI Agent: ${agent.displayName}`)
     }
 
     console.log('Seeding finished.')

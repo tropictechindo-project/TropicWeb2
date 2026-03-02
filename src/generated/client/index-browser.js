@@ -434,6 +434,19 @@ exports.Prisma.CronLockScalarFieldEnum = {
   lockedBy: 'lockedBy'
 };
 
+exports.Prisma.SpiNotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  role: 'role',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  link: 'link',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt'
+};
+
 exports.Prisma.AiAgentScalarFieldEnum = {
   id: 'id',
   systemName: 'systemName',
@@ -644,7 +657,7 @@ exports.inventory_source = exports.$Enums.inventory_source = {
 };
 
 exports.AiAgentSystemName = exports.$Enums.AiAgentSystemName = {
-  SALES: 'SALES',
+  AUDIT: 'AUDIT',
   WORKER: 'WORKER',
   RISK: 'RISK',
   SELLER: 'SELLER',
@@ -724,6 +737,7 @@ exports.Prisma.ModelName = {
   IdempotencyKey: 'IdempotencyKey',
   JobQueue: 'JobQueue',
   CronLock: 'CronLock',
+  SpiNotification: 'SpiNotification',
   AiAgent: 'AiAgent',
   AiPermission: 'AiPermission',
   AiAction: 'AiAction',

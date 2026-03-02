@@ -17,12 +17,12 @@ interface ApiEndpoint {
 
 const ENDPOINTS: ApiEndpoint[] = [
     { name: 'Auth Check (Me)', url: '/api/auth/me', method: 'GET', requiresAuth: true },
+    { name: 'SPI Realtime Stream', url: '/api/spi/notifications', method: 'GET', requiresAuth: true },
+    { name: 'AI Audit Cron', url: '/api/cron/smart-check', method: 'GET', requiresAuth: false },
     { name: 'Users List', url: '/api/users?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Products List', url: '/api/products?limit=1', method: 'GET', requiresAuth: false },
     { name: 'Orders List', url: '/api/admin/orders?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Workers List', url: '/api/admin/workers?limit=1', method: 'GET', requiresAuth: true },
-    { name: 'Worker Attendance', url: '/api/worker/attendance?limit=1', method: 'GET', requiresAuth: true },
-    { name: 'Deliveries List', url: '/api/worker/deliveries?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Admin Deliveries', url: '/api/admin/deliveries?limit=1', method: 'GET', requiresAuth: true },
     { name: 'Messages (Unread)', url: '/api/messages/unread-count', method: 'GET', requiresAuth: true },
     { name: 'Activity Logs', url: '/api/admin/logs?limit=1', method: 'GET', requiresAuth: true },
