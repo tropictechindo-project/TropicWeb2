@@ -475,7 +475,8 @@ exports.Prisma.AiActionScalarFieldEnum = {
   status: 'status',
   approvedBy: 'approvedBy',
   createdAt: 'createdAt',
-  executedAt: 'executedAt'
+  executedAt: 'executedAt',
+  expiresAt: 'expiresAt'
 };
 
 exports.Prisma.AiTrainingDataScalarFieldEnum = {
@@ -668,7 +669,8 @@ exports.AiActionStatus = exports.$Enums.AiActionStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
-  EXECUTED: 'EXECUTED'
+  EXECUTED: 'EXECUTED',
+  EXPIRED: 'EXPIRED'
 };
 
 exports.VehicleType = exports.$Enums.VehicleType = {

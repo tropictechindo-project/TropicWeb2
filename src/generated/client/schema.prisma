@@ -537,6 +537,7 @@ model AiAction {
   approvedBy    String?        @map("approved_by") @db.Uuid
   createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
   executedAt    DateTime?      @map("executed_at") @db.Timestamptz(6)
+  expiresAt     DateTime?      @map("expires_at") @db.Timestamptz(6)
   agent         AiAgent        @relation(fields: [agentId], references: [id], onDelete: Cascade)
   approver      User?          @relation("AiActionApprovals", fields: [approvedBy], references: [id])
 
@@ -752,6 +753,7 @@ enum AiActionStatus {
   APPROVED
   REJECTED
   EXECUTED
+  EXPIRED
 }
 
 enum VehicleType {

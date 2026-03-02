@@ -319,7 +319,8 @@ export const AiActionStatus: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
-  EXECUTED: 'EXECUTED'
+  EXECUTED: 'EXECUTED',
+  EXPIRED: 'EXPIRED'
 };
 
 export type AiActionStatus = (typeof AiActionStatus)[keyof typeof AiActionStatus]
@@ -40019,6 +40020,7 @@ export namespace Prisma {
     approvedBy: string | null
     createdAt: Date | null
     executedAt: Date | null
+    expiresAt: Date | null
   }
 
   export type AiActionMaxAggregateOutputType = {
@@ -40029,6 +40031,7 @@ export namespace Prisma {
     approvedBy: string | null
     createdAt: Date | null
     executedAt: Date | null
+    expiresAt: Date | null
   }
 
   export type AiActionCountAggregateOutputType = {
@@ -40041,6 +40044,7 @@ export namespace Prisma {
     approvedBy: number
     createdAt: number
     executedAt: number
+    expiresAt: number
     _all: number
   }
 
@@ -40053,6 +40057,7 @@ export namespace Prisma {
     approvedBy?: true
     createdAt?: true
     executedAt?: true
+    expiresAt?: true
   }
 
   export type AiActionMaxAggregateInputType = {
@@ -40063,6 +40068,7 @@ export namespace Prisma {
     approvedBy?: true
     createdAt?: true
     executedAt?: true
+    expiresAt?: true
   }
 
   export type AiActionCountAggregateInputType = {
@@ -40075,6 +40081,7 @@ export namespace Prisma {
     approvedBy?: true
     createdAt?: true
     executedAt?: true
+    expiresAt?: true
     _all?: true
   }
 
@@ -40160,6 +40167,7 @@ export namespace Prisma {
     approvedBy: string | null
     createdAt: Date
     executedAt: Date | null
+    expiresAt: Date | null
     _count: AiActionCountAggregateOutputType | null
     _min: AiActionMinAggregateOutputType | null
     _max: AiActionMaxAggregateOutputType | null
@@ -40189,6 +40197,7 @@ export namespace Prisma {
     approvedBy?: boolean
     createdAt?: boolean
     executedAt?: boolean
+    expiresAt?: boolean
     agent?: boolean | AiAgentDefaultArgs<ExtArgs>
     approver?: boolean | AiAction$approverArgs<ExtArgs>
   }, ExtArgs["result"]["aiAction"]>
@@ -40203,6 +40212,7 @@ export namespace Prisma {
     approvedBy?: boolean
     createdAt?: boolean
     executedAt?: boolean
+    expiresAt?: boolean
     agent?: boolean | AiAgentDefaultArgs<ExtArgs>
     approver?: boolean | AiAction$approverArgs<ExtArgs>
   }, ExtArgs["result"]["aiAction"]>
@@ -40217,6 +40227,7 @@ export namespace Prisma {
     approvedBy?: boolean
     createdAt?: boolean
     executedAt?: boolean
+    expiresAt?: boolean
     agent?: boolean | AiAgentDefaultArgs<ExtArgs>
     approver?: boolean | AiAction$approverArgs<ExtArgs>
   }, ExtArgs["result"]["aiAction"]>
@@ -40231,9 +40242,10 @@ export namespace Prisma {
     approvedBy?: boolean
     createdAt?: boolean
     executedAt?: boolean
+    expiresAt?: boolean
   }
 
-  export type AiActionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agentId" | "actionType" | "payloadBefore" | "payloadAfter" | "status" | "approvedBy" | "createdAt" | "executedAt", ExtArgs["result"]["aiAction"]>
+  export type AiActionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agentId" | "actionType" | "payloadBefore" | "payloadAfter" | "status" | "approvedBy" | "createdAt" | "executedAt" | "expiresAt", ExtArgs["result"]["aiAction"]>
   export type AiActionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     agent?: boolean | AiAgentDefaultArgs<ExtArgs>
     approver?: boolean | AiAction$approverArgs<ExtArgs>
@@ -40263,6 +40275,7 @@ export namespace Prisma {
       approvedBy: string | null
       createdAt: Date
       executedAt: Date | null
+      expiresAt: Date | null
     }, ExtArgs["result"]["aiAction"]>
     composites: {}
   }
@@ -40697,6 +40710,7 @@ export namespace Prisma {
     readonly approvedBy: FieldRef<"AiAction", 'String'>
     readonly createdAt: FieldRef<"AiAction", 'DateTime'>
     readonly executedAt: FieldRef<"AiAction", 'DateTime'>
+    readonly expiresAt: FieldRef<"AiAction", 'DateTime'>
   }
     
 
@@ -50687,7 +50701,8 @@ export namespace Prisma {
     status: 'status',
     approvedBy: 'approvedBy',
     createdAt: 'createdAt',
-    executedAt: 'executedAt'
+    executedAt: 'executedAt',
+    expiresAt: 'expiresAt'
   };
 
   export type AiActionScalarFieldEnum = (typeof AiActionScalarFieldEnum)[keyof typeof AiActionScalarFieldEnum]
@@ -53533,6 +53548,7 @@ export namespace Prisma {
     approvedBy?: UuidNullableFilter<"AiAction"> | string | null
     createdAt?: DateTimeFilter<"AiAction"> | Date | string
     executedAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
     agent?: XOR<AiAgentScalarRelationFilter, AiAgentWhereInput>
     approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
@@ -53547,6 +53563,7 @@ export namespace Prisma {
     approvedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     executedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
     agent?: AiAgentOrderByWithRelationInput
     approver?: UserOrderByWithRelationInput
   }
@@ -53564,6 +53581,7 @@ export namespace Prisma {
     approvedBy?: UuidNullableFilter<"AiAction"> | string | null
     createdAt?: DateTimeFilter<"AiAction"> | Date | string
     executedAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
     agent?: XOR<AiAgentScalarRelationFilter, AiAgentWhereInput>
     approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
@@ -53578,6 +53596,7 @@ export namespace Prisma {
     approvedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     executedAt?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
     _count?: AiActionCountOrderByAggregateInput
     _max?: AiActionMaxOrderByAggregateInput
     _min?: AiActionMinOrderByAggregateInput
@@ -53596,6 +53615,7 @@ export namespace Prisma {
     approvedBy?: UuidNullableWithAggregatesFilter<"AiAction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AiAction"> | Date | string
     executedAt?: DateTimeNullableWithAggregatesFilter<"AiAction"> | Date | string | null
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"AiAction"> | Date | string | null
   }
 
   export type AiTrainingDataWhereInput = {
@@ -56782,6 +56802,7 @@ export namespace Prisma {
     status?: $Enums.AiActionStatus
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
     agent: AiAgentCreateNestedOneWithoutActionsInput
     approver?: UserCreateNestedOneWithoutAiActionApprovalsInput
   }
@@ -56796,6 +56817,7 @@ export namespace Prisma {
     approvedBy?: string | null
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type AiActionUpdateInput = {
@@ -56806,6 +56828,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     agent?: AiAgentUpdateOneRequiredWithoutActionsNestedInput
     approver?: UserUpdateOneWithoutAiActionApprovalsNestedInput
   }
@@ -56820,6 +56843,7 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiActionCreateManyInput = {
@@ -56832,6 +56856,7 @@ export namespace Prisma {
     approvedBy?: string | null
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type AiActionUpdateManyMutationInput = {
@@ -56842,6 +56867,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiActionUncheckedUpdateManyInput = {
@@ -56854,6 +56880,7 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiTrainingDataCreateInput = {
@@ -59608,6 +59635,7 @@ export namespace Prisma {
     approvedBy?: SortOrder
     createdAt?: SortOrder
     executedAt?: SortOrder
+    expiresAt?: SortOrder
   }
 
   export type AiActionMaxOrderByAggregateInput = {
@@ -59618,6 +59646,7 @@ export namespace Prisma {
     approvedBy?: SortOrder
     createdAt?: SortOrder
     executedAt?: SortOrder
+    expiresAt?: SortOrder
   }
 
   export type AiActionMinOrderByAggregateInput = {
@@ -59628,6 +59657,7 @@ export namespace Prisma {
     approvedBy?: SortOrder
     createdAt?: SortOrder
     executedAt?: SortOrder
+    expiresAt?: SortOrder
   }
 
   export type EnumAiActionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -66976,6 +67006,7 @@ export namespace Prisma {
     status?: $Enums.AiActionStatus
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
     agent: AiAgentCreateNestedOneWithoutActionsInput
   }
 
@@ -66988,6 +67019,7 @@ export namespace Prisma {
     status?: $Enums.AiActionStatus
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type AiActionCreateOrConnectWithoutApproverInput = {
@@ -67785,6 +67817,7 @@ export namespace Prisma {
     approvedBy?: UuidNullableFilter<"AiAction"> | string | null
     createdAt?: DateTimeFilter<"AiAction"> | Date | string
     executedAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
+    expiresAt?: DateTimeNullableFilter<"AiAction"> | Date | string | null
   }
 
   export type ChatGroupMemberUpsertWithWhereUniqueWithoutUserInput = {
@@ -70751,6 +70784,7 @@ export namespace Prisma {
     status?: $Enums.AiActionStatus
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
     approver?: UserCreateNestedOneWithoutAiActionApprovalsInput
   }
 
@@ -70763,6 +70797,7 @@ export namespace Prisma {
     approvedBy?: string | null
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type AiActionCreateOrConnectWithoutAgentInput = {
@@ -73396,6 +73431,7 @@ export namespace Prisma {
     status?: $Enums.AiActionStatus
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type ChatGroupMemberCreateManyUserInput = {
@@ -73682,6 +73718,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     agent?: AiAgentUpdateOneRequiredWithoutActionsNestedInput
   }
 
@@ -73694,6 +73731,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiActionUncheckedUpdateManyWithoutApproverInput = {
@@ -73705,6 +73743,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberUpdateWithoutUserInput = {
@@ -74552,6 +74591,7 @@ export namespace Prisma {
     approvedBy?: string | null
     createdAt?: Date | string
     executedAt?: Date | string | null
+    expiresAt?: Date | string | null
   }
 
   export type AiTrainingDataCreateManyAgentInput = {
@@ -74570,6 +74610,7 @@ export namespace Prisma {
     status?: EnumAiActionStatusFieldUpdateOperationsInput | $Enums.AiActionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approver?: UserUpdateOneWithoutAiActionApprovalsNestedInput
   }
 
@@ -74582,6 +74623,7 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiActionUncheckedUpdateManyWithoutAgentInput = {
@@ -74593,6 +74635,7 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AiTrainingDataUpdateWithoutAgentInput = {
