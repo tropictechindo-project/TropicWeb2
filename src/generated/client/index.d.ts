@@ -52662,6 +52662,7 @@ export namespace Prisma {
 
   export type SiteSettingWhereUniqueInput = Prisma.AtLeast<{
     key?: string
+    section_key?: SiteSettingSection_keyCompoundUniqueInput
     AND?: SiteSettingWhereInput | SiteSettingWhereInput[]
     OR?: SiteSettingWhereInput[]
     NOT?: SiteSettingWhereInput | SiteSettingWhereInput[]
@@ -52669,7 +52670,7 @@ export namespace Prisma {
     section?: StringNullableFilter<"SiteSetting"> | string | null
     created_at?: DateTimeFilter<"SiteSetting"> | Date | string
     updated_at?: DateTimeFilter<"SiteSetting"> | Date | string
-  }, "key">
+  }, "key" | "section_key">
 
   export type SiteSettingOrderByWithAggregationInput = {
     key?: SortOrder
@@ -59068,6 +59069,11 @@ export namespace Prisma {
     senderId?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type SiteSettingSection_keyCompoundUniqueInput = {
+    section: string
+    key: string
   }
 
   export type SiteSettingCountOrderByAggregateInput = {
