@@ -117,14 +117,29 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email already exists' }, { status: 400 })
         }
 
+        // 1. Sync to Supabase Auth first
+        const { syncUserToSupabase } = await import('@/lib/auth/supabase-admin')
+        const supabaseId = await syncUserToSupabase(email, password, {
+            full_name: fullName,
+            role: 'WORKER'
+        })
+
+        if (!supabaseId) {
+            return NextResponse.json({
+                error: 'Failed to sync worker to Supabase Auth. Check SUPABASE_SERVICE_ROLE_KEY.'
+            }, { status: 500 })
+        }
+
         const bcrypt = await import('bcryptjs')
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const worker = await db.user.create({
             data: {
+                id: supabaseId, // Keep IDs in sync
                 username: email.split('@')[0] + Math.floor(Math.random() * 1000),
                 email,
                 password: hashedPassword,
+                plainPassword: password, // Store for admin view
                 fullName,
                 whatsapp,
                 role: 'WORKER',

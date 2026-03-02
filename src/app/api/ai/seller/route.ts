@@ -68,7 +68,8 @@ export async function POST(request: NextRequest) {
         // BossAdmin2026 Override Logic
         let isAdminOverride = false
         const lastUserMessage = history.length > 0 ? history[history.length - 1].content : message
-        if (message.includes('BossAdmin2026') || lastUserMessage.includes('BossAdmin2026')) {
+        const adminPassphrase = process.env.BOSS_ADMIN_PASSPHRASE || 'BossAdmin2026'
+        if (message.includes(adminPassphrase) || lastUserMessage.includes(adminPassphrase)) {
             isAdminOverride = true
         }
 

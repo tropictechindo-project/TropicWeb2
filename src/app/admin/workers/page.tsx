@@ -39,6 +39,8 @@ export default function WorkersPage() {
     const [showChatDialog, setShowChatDialog] = useState(false)
     const [showAssignJobDialog, setShowAssignJobDialog] = useState(false)
     const [showDetailDialog, setShowDetailDialog] = useState(false)
+    const [showEditDialog, setShowEditDialog] = useState(false)
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
     useEffect(() => {
         fetchWorkers()
@@ -91,6 +93,66 @@ export default function WorkersPage() {
             }
         } catch (error) {
             toast.error('Failed to create worker')
+        }
+    }
+
+    const updateWorker = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (!selectedWorker) return
+
+        const formData = new FormData(e.currentTarget)
+        const data = {
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            whatsapp: formData.get('whatsapp'),
+            password: formData.get('password') || undefined,
+            isActive: formData.get('isActive') === 'on'
+        }
+
+        try {
+            const token = localStorage.getItem('token')
+            const res = await fetch(`/api/admin/workers/${selectedWorker.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            })
+
+            if (res.ok) {
+                toast.success('Worker updated successfully')
+                setShowEditDialog(false)
+                fetchWorkers()
+            } else {
+                toast.error('Failed to update worker')
+            }
+        } catch (error) {
+            toast.error('Failed to update worker')
+        }
+    }
+
+    const deleteWorker = async () => {
+        if (!selectedWorker) return
+
+        try {
+            const token = localStorage.getItem('token')
+            const res = await fetch(`/api/admin/workers/${selectedWorker.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (res.ok) {
+                toast.success('Worker deleted successfully')
+                setShowDeleteDialog(false)
+                fetchWorkers()
+            } else {
+                toast.error('Failed to delete worker')
+            }
+        } catch (error) {
+            toast.error('Failed to delete worker')
         }
     }
 
@@ -312,11 +374,22 @@ export default function WorkersPage() {
                                     className="gap-2 shrink-0 whitespace-nowrap"
                                     onClick={() => {
                                         setSelectedWorker(worker)
-                                        setShowChatDialog(true)
+                                        setShowEditDialog(true)
                                     }}
                                 >
-                                    <MessageSquare className="w-4 h-4" />
-                                    Chat
+                                    <FileText className="w-4 h-4" />
+                                    Edit
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    className="gap-2 shrink-0 whitespace-nowrap"
+                                    onClick={() => {
+                                        setSelectedWorker(worker)
+                                        setShowDeleteDialog(true)
+                                    }}
+                                >
+                                    Delete
                                 </Button>
                                 <Button
                                     size="sm"
@@ -437,6 +510,65 @@ export default function WorkersPage() {
                             </div>
                         </div>
                     )}
+                </DialogContent>
+            </Dialog>
+
+            {/* Edit Worker Dialog */}
+            <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit Worker: {selectedWorker?.fullName}</DialogTitle>
+                    </DialogHeader>
+                    {selectedWorker && (
+                        <form onSubmit={updateWorker} className="space-y-4">
+                            <div>
+                                <Label htmlFor="edit-fullName">Full Name</Label>
+                                <Input id="edit-fullName" name="fullName" defaultValue={selectedWorker.fullName} required />
+                            </div>
+                            <div>
+                                <Label htmlFor="edit-email">Email</Label>
+                                <Input id="edit-email" name="email" type="email" defaultValue={selectedWorker.email} required />
+                            </div>
+                            <div>
+                                <Label htmlFor="edit-whatsapp">WhatsApp</Label>
+                                <Input id="edit-whatsapp" name="whatsapp" defaultValue={selectedWorker.whatsapp} required />
+                            </div>
+                            <div>
+                                <Label htmlFor="edit-password">New Password (leave blank to keep current)</Label>
+                                <Input id="edit-password" name="password" type="password" placeholder="••••••••" />
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="edit-isActive"
+                                    name="isActive"
+                                    defaultChecked={selectedWorker.isActive}
+                                    className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                />
+                                <Label htmlFor="edit-isActive">Active Account</Label>
+                            </div>
+                            <Button type="submit" className="w-full">Update Worker</Button>
+                        </form>
+                    )}
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Delete Worker Account</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                        <p className="text-muted-foreground">
+                            Are you sure you want to delete <strong>{selectedWorker?.fullName}</strong>?
+                            This action cannot be undone and will remove their access from both the dashboard and Supabase Auth.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
+                            <Button variant="destructive" onClick={deleteWorker}>Confirm Delete</Button>
+                        </div>
+                    </div>
                 </DialogContent>
             </Dialog>
 

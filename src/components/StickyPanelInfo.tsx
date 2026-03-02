@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { realtimePoller } from '@/lib/realtime'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 import { X, ExternalLink, Bell, User as UserIcon, Truck, ShoppingCart } from 'lucide-react'
 
 interface SpiNotification {
@@ -16,6 +17,7 @@ interface SpiNotification {
 }
 
 export function StickyPanelInfo() {
+    const { isAuthenticated } = useAuth()
     const [notifications, setNotifications] = useState<SpiNotification[]>([])
     const router = useRouter()
 
@@ -66,7 +68,7 @@ export function StickyPanelInfo() {
         }
     }
 
-    if (notifications.length === 0) return null
+    if (!isAuthenticated || notifications.length === 0) return null
 
     return (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 max-w-sm w-full px-4">

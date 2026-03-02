@@ -131,19 +131,19 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   total: 'total',
   currency: 'currency',
   createdAt: 'createdAt',
-  userId: 'userId',
-  status: 'status',
+  deliveryFeeOverride: 'deliveryFeeOverride',
+  emailSent: 'emailSent',
+  emailSentAt: 'emailSentAt',
+  guestAddress: 'guestAddress',
   guestEmail: 'guestEmail',
   guestName: 'guestName',
   guestWhatsapp: 'guestWhatsapp',
-  guestAddress: 'guestAddress',
-  deliveryFeeOverride: 'deliveryFeeOverride',
-  taxRate: 'taxRate',
-  discountPercentage: 'discountPercentage',
-  discountAmount: 'discountAmount',
   shareableToken: 'shareableToken',
-  emailSent: 'emailSent',
-  emailSentAt: 'emailSentAt'
+  status: 'status',
+  taxRate: 'taxRate',
+  userId: 'userId',
+  discountAmount: 'discountAmount',
+  discountPercentage: 'discountPercentage'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -157,16 +157,16 @@ exports.Prisma.OrderScalarFieldEnum = {
   subtotal: 'subtotal',
   tax: 'tax',
   deliveryFee: 'deliveryFee',
-  discountPercentage: 'discountPercentage',
-  discountAmount: 'discountAmount',
   currency: 'currency',
   paymentMethod: 'paymentMethod',
   createdAt: 'createdAt',
-  userId: 'userId',
-  paymentStatus: 'paymentStatus',
-  paymentConfirmedBy: 'paymentConfirmedBy',
+  deliveryAddress: 'deliveryAddress',
   paymentConfirmedAt: 'paymentConfirmedAt',
-  deliveryAddress: 'deliveryAddress'
+  paymentConfirmedBy: 'paymentConfirmedBy',
+  paymentStatus: 'paymentStatus',
+  userId: 'userId',
+  discountAmount: 'discountAmount',
+  discountPercentage: 'discountPercentage'
 };
 
 exports.Prisma.PaymentTransactionScalarFieldEnum = {
@@ -208,11 +208,11 @@ exports.Prisma.RentalPackageScalarFieldEnum = {
   description: 'description',
   imageUrl: 'imageUrl',
   price: 'price',
-  discountPercentage: 'discountPercentage',
   duration: 'duration',
   createdAt: 'createdAt',
   images: 'images',
-  specs: 'specs'
+  specs: 'specs',
+  discountPercentage: 'discountPercentage'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -221,11 +221,11 @@ exports.Prisma.ProductScalarFieldEnum = {
   description: 'description',
   category: 'category',
   monthlyPrice: 'monthlyPrice',
-  discountPercentage: 'discountPercentage',
   imageUrl: 'imageUrl',
   createdAt: 'createdAt',
   images: 'images',
-  specs: 'specs'
+  specs: 'specs',
+  discountPercentage: 'discountPercentage'
 };
 
 exports.Prisma.ProductVariantScalarFieldEnum = {
@@ -279,10 +279,10 @@ exports.Prisma.SystemNotificationScalarFieldEnum = {
 exports.Prisma.RentalItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
-  variantId: 'variantId',
   packageId: 'packageId',
   quantity: 'quantity',
   createdAt: 'createdAt',
+  variantId: 'variantId',
   unitId: 'unitId'
 };
 
@@ -290,7 +290,6 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
   password: 'password',
-  plainPassword: 'plainPassword',
   email: 'email',
   fullName: 'fullName',
   whatsapp: 'whatsapp',
@@ -304,7 +303,8 @@ exports.Prisma.UserScalarFieldEnum = {
   isActive: 'isActive',
   profileImage: 'profileImage',
   identityFile: 'identityFile',
-  identityType: 'identityType'
+  identityType: 'identityType',
+  plainPassword: 'plainPassword'
 };
 
 exports.Prisma.ChatGroupScalarFieldEnum = {

@@ -40,17 +40,32 @@ export async function POST(req: Request) {
             return new NextResponse("Missing fields", { status: 400 })
         }
 
+        // 1. Sync to Supabase Auth first
+        const { syncUserToSupabase } = await import('@/lib/auth/supabase-admin')
+        const supabaseId = await syncUserToSupabase(email, password, {
+            full_name: fullName || username,
+            username: username
+        })
+
+        if (!supabaseId) {
+            return NextResponse.json({
+                error: 'Failed to sync user to Supabase Auth. Check SUPABASE_SERVICE_ROLE_KEY.'
+            }, { status: 500 })
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const userData: any = {
+            id: supabaseId, // Keep IDs in sync
             username,
             email,
             password: hashedPassword,
-            plainPassword: password, // Store plaintext for admin visibility
+            plainPassword: password,
             fullName: fullName || username,
             whatsapp: whatsapp || "",
             role: role || "USER",
-            isActive: true
+            isActive: true,
+            isVerified: true // Admin created users are pre-verified
         }
 
         const user = await db.user.create({
@@ -61,7 +76,7 @@ export async function POST(req: Request) {
             userId: adminId,
             action: 'CREATE_USER',
             entity: 'USER',
-            details: `Created user ${user.username} with role ${user.role}`
+            details: `Created user ${user.username} with role ${user.role} and synced to Supabase`
         })
 
         return NextResponse.json(user)

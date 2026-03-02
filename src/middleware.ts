@@ -33,6 +33,9 @@ export async function middleware(request: NextRequest) {
         : request.cookies.get('token')?.value
 
     if (!token) {
+        if (isDashboardPath) {
+            return NextResponse.redirect(new URL('/', request.url))
+        }
         return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 

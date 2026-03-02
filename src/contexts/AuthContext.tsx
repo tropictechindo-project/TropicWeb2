@@ -33,6 +33,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth()
   }, [])
 
+  const setCookie = (name: string, value: string, days: number = 7) => {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString()
+    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`
+  }
+
+  const deleteCookie = (name: string) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+  }
+
   const checkAuth = async () => {
     try {
       // Check for bridge_token in URL (from Google Auth callback)
@@ -41,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (bridgeToken) {
         localStorage.setItem('token', bridgeToken)
+        setCookie('token', bridgeToken)
         // Clean URL without reloading
         const newUrl = window.location.pathname + window.location.hash
         window.history.replaceState({}, '', newUrl)
@@ -51,6 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
+
+      // Ensure cookie is in sync with localStorage
+      setCookie('token', token)
 
       const response = await fetch('/api/auth/me', {
         headers: {
@@ -63,10 +76,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(userData.user)
       } else {
         localStorage.removeItem('token')
+        deleteCookie('token')
       }
     } catch (error) {
       console.error('Auth check failed:', error)
       localStorage.removeItem('token')
+      deleteCookie('token')
     } finally {
       setIsLoading(false)
     }
@@ -83,6 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (response.ok) {
         const data = await response.json()
         localStorage.setItem('token', data.token)
+        setCookie('token', data.token)
         setUser(data.user)
         return true
       }
@@ -95,6 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem('token')
+    deleteCookie('token')
     setUser(null)
     window.location.href = '/'
   }

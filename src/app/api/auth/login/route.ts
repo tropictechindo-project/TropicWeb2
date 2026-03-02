@@ -97,11 +97,32 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user) {
-      // User exists in Supabase but not Prisma (shouldn't happen with our new signup, but just in case)
-      return NextResponse.json(
-        { error: 'User profile not found in database.' },
-        { status: 404 }
-      )
+      // 2b. Auto-sync if user exists in Supabase but not Prisma
+      const username = supabaseUser.user_metadata?.username || supabaseUser.email?.split('@')[0] || `user_${supabaseUser.id.substring(0, 5)}`
+      const fullName = supabaseUser.user_metadata?.full_name || username
+
+      const newUser = await db.user.create({
+        data: {
+          id: supabaseUser.id,
+          email: supabaseUser.email!,
+          username,
+          fullName,
+          whatsapp: '+628000000000', // Default
+          role: 'USER',
+          isVerified: true, // If they can login, they are verified
+          password: await (await import('@/lib/auth/utils')).hashPassword(password) // Sync password hash
+        }
+      })
+
+      return NextResponse.json({
+        token: await (await import('@/lib/auth/utils')).generateToken({
+          userId: newUser.id,
+          username: newUser.username,
+          email: newUser.email,
+          role: newUser.role,
+        }),
+        user: newUser
+      })
     }
 
     // 3. Optional: Sync isVerified if Supabase auth succeeded

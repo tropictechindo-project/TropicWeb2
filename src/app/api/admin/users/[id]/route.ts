@@ -34,9 +34,20 @@ export async function PATCH(
             updateData.plainPassword = password // Store plaintext for admin visibility
         }
 
+        const userBefore = await db.user.findUnique({ where: { id } })
+        if (!userBefore) return new NextResponse("Not Found", { status: 404 })
+
         const user = await db.user.update({
             where: { id },
             data: updateData
+        })
+
+        // 1. Sync to Supabase Auth
+        const { syncUserToSupabase } = await import('@/lib/auth/supabase-admin')
+        await syncUserToSupabase(user.email, password, {
+            full_name: user.fullName,
+            username: user.username,
+            role: user.role
         })
 
         await logActivity({
@@ -81,7 +92,13 @@ export async function DELETE(
         }
 
         const deletedUsername = user.username
+        const userId = user.id
+
         await db.user.delete({ where: { id } })
+
+        // 1. Sync to Supabase Auth (Delete)
+        const { deleteUserFromSupabase } = await import('@/lib/auth/supabase-admin')
+        await deleteUserFromSupabase(userId)
 
         await logActivity({
             userId: adminId,
