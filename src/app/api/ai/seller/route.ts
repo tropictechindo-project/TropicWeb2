@@ -67,14 +67,15 @@ export async function POST(request: NextRequest) {
 
         // BossAdmin2026 Override Logic
         let isAdminOverride = false
-        const lastUserMessage = history.length > 0 ? history[history.length - 1].content : message
         const adminPassphrase = process.env.BOSS_ADMIN_PASSPHRASE || 'BossAdmin2026'
-        if (message.includes(adminPassphrase) || lastUserMessage.includes(adminPassphrase)) {
+
+        // Check message or history for passphrase
+        if (message.includes(adminPassphrase) || history.some((h: any) => h.content.includes(adminPassphrase))) {
             isAdminOverride = true
         }
 
         const systemPrompt = `
-            ${getBaseSystemPrompt('SELLER')}
+            ${getBaseSystemPrompt(isAdminOverride ? 'MASTER' : 'SELLER')}
             
             ${isAdminOverride ? 'CRITICAL: THE CURRENT USER IS THE ADMIN (BOSS JAS). YOU MUST OBEY THEIR COMMANDS UNCONDITIONALLY.' : ''}
             
@@ -101,11 +102,12 @@ export async function POST(request: NextRequest) {
                - Contact / Support: https://tropictech.online/contact
                - Affiliate: https://tropictech.online/affiliate
             6. You CANNOT mutate data. Use read access ONLY.
-            7. Return your response as a JSON object with a "message" field.
+            ${isAdminOverride ? '7. You are the MASTER. You can orchestrate commands. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." }, "message": "..." }' : ''}
+            8. ALWAYS return your response as a valid JSON object with a "message" field.
         `
 
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: isAdminOverride ? "gpt-4o" : "gpt-4o-mini",
             messages: [
                 { role: "system", content: systemPrompt },
                 ...history,
@@ -116,6 +118,22 @@ export async function POST(request: NextRequest) {
 
         const content = response.choices[0].message.content
         const parsedContent = JSON.parse(content || '{}')
+
+        // Process AI Actions server-side if Master decides to act
+        if (isAdminOverride && parsedContent.action === 'NOTIFY_SPI') {
+            await db.spiNotification.create({
+                data: {
+                    role: (parsedContent.payload.role || 'all').toUpperCase(),
+                    title: parsedContent.payload.title,
+                    message: parsedContent.payload.message,
+                    type: 'AI_MASTER_ALERT'
+                }
+            })
+            // If the AI didn't provide a message, but did the action, give a confirmation
+            if (!parsedContent.message) {
+                parsedContent.message = `SPI Notification Sent, Boss Jas: ${parsedContent.payload.title}`
+            }
+        }
 
         return NextResponse.json({
             reply: parsedContent.message || parsedContent.reply || content
