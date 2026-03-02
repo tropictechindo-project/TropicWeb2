@@ -199,3 +199,8 @@
     - Creating a manual invoice now atomically triggers `Order`, `Delivery` (Drop-off), and `SpiNotification`.
     - Integrated automated **Inventory Status Transitions**: Units automatically move between `RESERVED` → `RENTED` → `AVAILABLE` based on delivery/pickup completion.
 - ✅ **Session Persistence Hardening**: Extended session cookies to **365 days** ("Never logout" behavior) and resolved Supabase code challenge loops in the registration flow.
+- ✅ **AI Master Persona Logic (v1.2.1)**:
+    - Implemented **Dynamic Addressing Rules**: AI now fetches its "Boss/Worker" addressing style from `SiteSetting` (Database).
+    - Added **UPDATE_ADDRESSING_RULES** action: Admins can now change AI personas using "normal human wording" in chat.
+    - **UI Polish**: Darkened chat text for 100% legibility and added **Agent Identity Labels** (Master AI, Seller AI, etc.) to all chat bubbles.
+    - **Prisma Hardening**: Resolved `expiresAt` validation issues with full schema/client synchronization.

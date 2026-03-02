@@ -75,8 +75,13 @@ export function SellerChatBubble() {
                                     <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-[85%] p-3 rounded-2xl text-xs ${m.role === 'user'
                                             ? 'bg-primary text-primary-foreground rounded-tr-none'
-                                            : 'bg-muted/50 border border-border/50 rounded-tl-none font-medium'
+                                            : 'bg-muted/50 border border-border/50 rounded-tl-none font-medium text-foreground/90'
                                             }`}>
+                                            {m.role === 'assistant' && (
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 mb-1">
+                                                    Sunny (AI Assistant)
+                                                </p>
+                                            )}
                                             {m.content}
                                         </div>
                                     </div>

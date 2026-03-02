@@ -105,8 +105,8 @@ export function AiConsole({ agents }: any) {
                             key={agent.id}
                             onClick={() => setSelectedAgent(agent.systemName)}
                             className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all border ${selectedAgent === agent.systemName
-                                    ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-[1.02]'
-                                    : 'bg-background hover:bg-primary/10 border-border/50'
+                                ? 'bg-primary text-primary-foreground border-primary shadow-lg scale-[1.02]'
+                                : 'bg-background hover:bg-primary/10 border-border/50'
                                 }`}
                         >
                             <Bot className={`h-4 w-4 ${selectedAgent === agent.systemName ? 'text-white' : 'text-primary'}`} />
@@ -145,9 +145,16 @@ export function AiConsole({ agents }: any) {
                                         </Avatar>
                                         <div className="space-y-2">
                                             <div className={`p-4 rounded-2xl text-sm shadow-sm border ${m.role === 'user'
-                                                    ? 'bg-primary text-primary-foreground border-primary/50 rounded-tr-none'
-                                                    : 'bg-muted/30 border-border/50 rounded-tl-none font-medium text-zinc-300'
+                                                ? 'bg-primary text-primary-foreground border-primary/50 rounded-tr-none'
+                                                : 'bg-muted/30 border-border/50 rounded-tl-none font-medium text-foreground'
                                                 }`}>
+                                                {m.role === 'assistant' && (
+                                                    <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 mb-2 border-b border-primary/10 pb-1">
+                                                        {m.agent === 'MASTER' ? 'Master AI' :
+                                                            m.agent === 'SELLER' ? 'Seller AI' :
+                                                                m.agent === 'SYSTEM' ? 'System' : m.agent}
+                                                    </p>
+                                                )}
                                                 {m.content}
                                             </div>
 

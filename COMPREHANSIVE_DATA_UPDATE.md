@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-02 13:30:00 (WITA/GMT+8)
-**System Version**: 1.2.0-stable
-**Environment**: Production Ready (Auth & Dispatch Overhaul)
+**Last Updated**: 2026-03-02 14:15:00 (WITA/GMT+8)
+**System Version**: 1.2.1-stable
+**Environment**: Production Ready (AI Mastery & UI Polish)
 
 ---
 
@@ -157,6 +157,11 @@ The website operates through three distinct entry points based on user roles:
   - Automated **Pickup Task Generation**: Drop-off completion now automatically queues the return pickup.
   - Automated **Inventory Status**: Units flip between `Reserved`, `Rented`, and `Available` automatically based on delivery lifecycle events.
 - [x] **Session Hardening**: Extended session persistence to **365 days** and fixed registration email redirects.
+- [x] **AI Mastery & UI Polish (v1.2.1)**:
+  - Implemented **Dynamic Addressing Rules** stored in `SiteSetting`.
+  - Added **Natural Language Rule Updates**: AI now proposes `UPDATE_ADDRESSING_RULES` when asked to change its "persona" or greeting behavior.
+  - **Legibility Upgrade**: Darkened AI chat text and added floating **Identity Labels** to distinguish between different AI agents in the console.
+  - **Database Sync**: Finalized `expiresAt` implementation for 7-day proposal pruning.
 
 > [!IMPORTANT]
 > **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.

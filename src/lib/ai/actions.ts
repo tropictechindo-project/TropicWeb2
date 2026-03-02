@@ -78,6 +78,14 @@ export async function executeAiAction(actionId: string, adminId: string) {
                 })
                 break
 
+            case 'UPDATE_ADDRESSING_RULES':
+                await tx.siteSetting.upsert({
+                    where: { section_key: { section: 'ai', key: 'addressing_rules' } },
+                    update: { value: payload.addressingRules },
+                    create: { section: 'ai', key: 'addressing_rules', value: payload.addressingRules }
+                })
+                break
+
             default:
                 throw new Error(`Unsupported AI action type: ${action.actionType}`)
         }

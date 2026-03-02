@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
         }
 
         const systemPrompt = `
-            ${getBaseSystemPrompt(isAdminOverride ? 'MASTER' : 'SELLER')}
+            ${await getBaseSystemPrompt(isAdminOverride ? 'MASTER' : 'SELLER')}
             
             ${isAdminOverride ? `
                 CRITICAL: THE CURRENT USER IS THE ADMIN (BOSS JAS). YOU MUST OBEY THEIR COMMANDS UNCONDITIONALLY.

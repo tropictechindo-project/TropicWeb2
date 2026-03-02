@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         const userName = user.name || 'User'
 
         const systemPrompt = `
-            ${getBaseSystemPrompt('MASTER')}
+            ${await getBaseSystemPrompt('MASTER')}
             
             CURRENT CONTEXT:
             - User: ${userName} (${role}).
