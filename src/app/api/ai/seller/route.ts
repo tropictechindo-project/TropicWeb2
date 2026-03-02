@@ -80,8 +80,15 @@ export async function POST(request: NextRequest) {
         const hasSignature = isAdminOverride && message.includes(signature)
 
         if (isAdminOverride) {
+            const now = new Date()
             const pendingActions = await db.aiAction.findMany({
-                where: { status: 'PENDING' },
+                where: {
+                    status: 'PENDING',
+                    OR: [
+                        { expiresAt: null },
+                        { expiresAt: { gt: now } }
+                    ]
+                },
                 include: { agent: true },
                 orderBy: { createdAt: 'desc' },
                 take: 5

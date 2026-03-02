@@ -26,6 +26,9 @@ export async function proposeAiAction(data: AiProposalPayload) {
         throw new Error(`Agent ${data.agentSystemName} does not have permission to modify products`)
     }
 
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 7)
+
     return await db.aiAction.create({
         data: {
             agentId: agent.id,
@@ -33,6 +36,7 @@ export async function proposeAiAction(data: AiProposalPayload) {
             payloadBefore: data.payloadBefore || null,
             payloadAfter: data.payloadAfter,
             status: 'PENDING' as AiActionStatus,
+            expiresAt,
         },
     })
 }
