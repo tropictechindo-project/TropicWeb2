@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useCart } from '@/contexts/CartContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -48,6 +48,8 @@ export default function CheckoutPage() {
     })
     const [paymentMethod, setPaymentMethod] = useState('WISE')
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [breakdown, setBreakdown] = useState<any>(null)
+    const [isCalculating, setIsCalculating] = useState(false)
 
     // Check if any item is out of stock
     const hasOutOfStockItems = items.some(item => (item as any).stock === 0)
@@ -56,6 +58,46 @@ export default function CheckoutPage() {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
     }
+
+    const fetchBreakdown = async () => {
+        const lat = localStorage.getItem('user_lat')
+        const lng = localStorage.getItem('user_lng')
+
+        setIsCalculating(true)
+        try {
+            const res = await fetch('/api/checkout/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    subtotal: totalPrice,
+                    latitude: lat,
+                    longitude: lng
+                })
+            })
+            if (res.ok) {
+                const data = await res.json()
+                setBreakdown(data)
+            }
+        } catch (error) {
+            console.error('Failed to fetch breakdown:', error)
+        } finally {
+            setIsCalculating(false)
+        }
+    }
+
+    // Recalculate breakdown when items change or location is detected
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const checkLocation = setInterval(() => {
+                const lat = localStorage.getItem('user_lat')
+                if (lat && !breakdown && !isCalculating) {
+                    fetchBreakdown()
+                    clearInterval(checkLocation)
+                }
+            }, 2000)
+            return () => clearInterval(checkLocation)
+        }
+    }, [items, breakdown, isCalculating])
 
     const handleWhatsAppRedirect = () => {
         const adminNumber = '6282266574860'
@@ -123,7 +165,7 @@ export default function CheckoutPage() {
                 body: JSON.stringify({
                     orderId,
                     provider: paymentMethod,
-                    amount: totalPrice
+                    amount: orderData.order.totalAmount
                 })
             })
 
@@ -282,14 +324,36 @@ export default function CheckoutPage() {
                             <Separator className="my-6" />
 
                             <div className="space-y-2">
-                                <div className="flex justify-between text-muted-foreground">
-                                    <span>Subtotal</span>
+                                <div className="flex justify-between text-muted-foreground text-sm">
+                                    <span>Equipment Subtotal</span>
                                     <span>Rp {totalPrice.toLocaleString('id-ID')}</span>
                                 </div>
-                                <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
-                                    <span>Total</span>
-                                    <span className="text-primary">Rp {totalPrice.toLocaleString('id-ID')}</span>
-                                </div>
+                                {breakdown ? (
+                                    <>
+                                        <div className="flex justify-between text-muted-foreground text-sm">
+                                            <span>Tax (2%)</span>
+                                            <span>Rp {breakdown.formattedTax}</span>
+                                        </div>
+                                        <div className="flex justify-between text-muted-foreground text-sm">
+                                            <span>Delivery Fee ({Math.round(breakdown.distanceKm || 0)}km)</span>
+                                            <span>Rp {breakdown.formattedDeliveryFee}</span>
+                                        </div>
+                                        <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
+                                            <span>Total Payment</span>
+                                            <span className="text-primary font-black">Rp {breakdown.formattedTotal}</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
+                                        <span>Total</span>
+                                        <span className="text-primary">Rp {totalPrice.toLocaleString('id-ID')}</span>
+                                    </div>
+                                )}
+                                {!breakdown && (
+                                    <p className="text-[10px] text-muted-foreground text-center mt-2 italic">
+                                        * Tax and Delivery fee will be calculated once location is detected.
+                                    </p>
+                                )}
                             </div>
 
                             {hasOutOfStockItems && (

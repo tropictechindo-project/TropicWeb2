@@ -51,12 +51,12 @@ export default function Hero({ initialSettings }: HeroProps) {
   return (
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
-      aria-label="Workstation Rental Bali — Hero Section"
+      aria-labelledby="hero-title"
     >
-      <div className="absolute inset-0 animate-in fade-in duration-3000 ease-in-out">
+      <div className="absolute inset-0 animate-in fade-in duration-4000 ease-in-out">
         <Image
           src={heroImage}
-          alt="Tropic Tech Bali – Premium Workstation Rental"
+          alt="" // Secondary to aria-labelledby for decorative backgrounds
           fill
           className="object-cover"
           priority
@@ -77,18 +77,18 @@ export default function Hero({ initialSettings }: HeroProps) {
         />
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-in fade-in duration-4000 ease-out">
         {/* h1 is the LCP element — no animation to ensure paint happens immediately */}
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
+        <h1 id="hero-title" className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
           {title}
         </h1>
-        <p className="text-xl md:text-2xl mb-4 text-slate-700 dark:text-slate-300 font-medium animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-100">
+        <p className="text-xl md:text-2xl mb-4 text-slate-700 dark:text-slate-300 font-medium animate-in fade-in slide-in-from-bottom-5 duration-2000 delay-1000">
           {subtitle}
         </p>
-        <p className="text-lg md:text-xl mb-8 text-slate-600 dark:text-slate-400 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
+        <p className="text-lg md:text-xl mb-8 text-slate-600 dark:text-slate-400 animate-in fade-in slide-in-from-bottom-6 duration-2000 delay-1500">
           {subtitle2}
         </p>
-        <div className="flex flex-col items-center gap-4 mt-16 md:mt-32 animate-in fade-in zoom-in duration-1000 delay-300">
+        <div className="flex flex-col items-center gap-4 mt-16 md:mt-32 animate-in fade-in zoom-in duration-2000 delay-2000">
           <Button
             size="lg"
             className="text-lg px-8 py-4 h-auto font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-md overflow-hidden group relative"

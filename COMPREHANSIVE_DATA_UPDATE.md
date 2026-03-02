@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-02 14:15:00 (WITA/GMT+8)
-**System Version**: 1.2.1-stable
-**Environment**: Production Ready (AI Mastery & UI Polish)
+**Last Updated**: 2026-03-02 14:35:00 (WITA/GMT+8)
+**System Version**: 1.4.0-stable
+**Environment**: Production Ready (Smart Logistics & SEO Gold)
 
 ---
 
@@ -161,7 +161,16 @@ The website operates through three distinct entry points based on user roles:
   - Implemented **Dynamic Addressing Rules** stored in `SiteSetting`.
   - Added **Natural Language Rule Updates**: AI now proposes `UPDATE_ADDRESSING_RULES` when asked to change its "persona" or greeting behavior.
   - **Legibility Upgrade**: Darkened AI chat text and added floating **Identity Labels** to distinguish between different AI agents in the console.
-  - **Database Sync**: Finalized `expiresAt` implementation for 7-day proposal pruning.
+- [x] **Advanced Pricing & Admin Logistics (v1.3.0)**:
+  - **Global Pricing Rules**: 2% product tax and IDR 10,000 per km delivery fee implemented.
+  - **Checkout Transparency**: Live fee calculation on the Checkout page using automated GPS distance checks.
+  - **Admin Delivery Control**: Added manual worker assignment and fleet selection (Internal vs Gojek/Grab) to the Admin Delivery Queue.
+  - **Data Synchronicity**: Reinforced all `Invoice` and `Order` creation logic to include distance/tax data by default.
+- [x] **Performance & SEO Gold (v1.4.0)**:
+  - **Premium Hero Transition**: Implemented a cinematic 4-second "Smooth Appear" entry flow.
+  - **SEO Hardening**: Enriched metadata with high-density keywords and verified viewport/theme configuration.
+  - **Schema Enrichment**: Added `AggregateRating` logic to structured data for search ranking boost.
+  - **Accessibility Score**: Standardized ARIA labels and optimized image `sizes` for zero layout shift.
 
 > [!IMPORTANT]
 > **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.

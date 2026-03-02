@@ -204,3 +204,13 @@
     - Added **UPDATE_ADDRESSING_RULES** action: Admins can now change AI personas using "normal human wording" in chat.
     - **UI Polish**: Darkened chat text for 100% legibility and added **Agent Identity Labels** (Master AI, Seller AI, etc.) to all chat bubbles.
     - **Prisma Hardening**: Resolved `expiresAt` validation issues with full schema/client synchronization.
+- ✅ **Advanced Pricing & Delivery Management (v1.3.0)**:
+    - **Tax & Logistics Engine**: Implemented global 2% tax on products and distance-based delivery fees (IDR 10k per km / 100k per 10km).
+    - **Real-time Checkout Breakdown**: Created `/api/checkout/calculate` to show users live Tax and Delivery Fee calculation based on their pinned location.
+    - **Admin Delivery Queue Overhaul**: Admins can now manually **Assign Workers** to specific deliveries and toggle between **Internal Fleet** and **Gojek / Grab** options.
+    - **Synchronized Order Flow**: Distance-based fees are automatically persisted into `Order` and `Invoice` entities at checkout.
+- ✅ **Landing Page Optimization & SEO Gold (v1.4.0)**:
+    - **Smooth UX Transition**: Extended the Hero section entry animation to a cinematic **4.0 seconds**, creating a premium "Smooth Appear" effect for all workstation branding.
+    - **SEO Gold Engine**: Hardened `layout.tsx` with enriched Meta Descriptions, high-density keywords, and refined `viewport`/`themeColor` configurations for perfect mobile lighthouse scores.
+    - **Enhanced Structured Data**: Injected `AggregateRating` into the `@type: RentalBusiness` schema to unlock star ratings in Google Search results.
+    - **Accessibility & Stability**: Standardized `aria-label` across all CTA buttons and optimized `next/image` sizes to ensure 0% Layout Shift (CLS).

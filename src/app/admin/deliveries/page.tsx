@@ -29,6 +29,11 @@ export default async function AdminDeliveriesPage() {
         orderBy: { createdAt: 'desc' }
     })
 
+    const workers = await db.user.findMany({
+        where: { role: 'WORKER', isActive: true },
+        select: { id: true, fullName: true }
+    })
+
     return (
         <div className="space-y-6 max-w-[1600px] mx-auto">
             <div className="flex items-center justify-between">
@@ -38,7 +43,10 @@ export default async function AdminDeliveriesPage() {
                 </div>
             </div>
             {/* Need to pass as JSON parse to prevent date serialization errors from Server React Component to Client */}
-            <DeliveriesClient initialDeliveries={JSON.parse(JSON.stringify(deliveries))} />
+            <DeliveriesClient
+                initialDeliveries={JSON.parse(JSON.stringify(deliveries))}
+                workers={JSON.parse(JSON.stringify(workers))}
+            />
         </div>
     )
 }

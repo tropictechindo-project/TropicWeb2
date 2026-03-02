@@ -81,7 +81,7 @@ export async function PATCH(
                 status: body.status,
                 deliveryMethod: body.deliveryMethod,
                 eta: body.eta ? new Date(body.eta) : undefined,
-                claimedByWorkerId: body.claimedBy,
+                claimedByWorkerId: body.claimedByWorkerId !== undefined ? body.claimedByWorkerId : body.claimedBy,
                 vehicleId: body.vehicleId
             }
         })

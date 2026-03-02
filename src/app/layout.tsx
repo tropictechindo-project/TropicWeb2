@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -23,6 +23,16 @@ const geistMono = Geist_Mono({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://tropictech.online'),
 
@@ -31,20 +41,20 @@ export const metadata: Metadata = {
     default: 'Tropic Tech Bali – #1 Workstation Rental Bali | Monitors, Chairs, Desks',
     template: '%s | Tropic Tech Bali',
   },
-  description: 'Rent premium monitors, ergonomic chairs & standing desks in Bali. Fast island-wide delivery to Canggu, Seminyak & Ubud. Daily, weekly & monthly plans. Trusted by 500+ digital nomads.',
+  description: 'Maximize your productivity. Rent #1 premium monitors, ergonomic chairs & standing desks in Bali. Ultra-fast island-wide delivery. High-performance workstation rental for digital nomads and remote teams in Canggu, Ubud & Seminyak.',
   keywords: [
     'workstation rental bali',
     'monitor rental bali',
     'ergonomic chair rental bali',
     'standing desk rental bali',
     'office equipment rental bali',
-    'digital nomad bali',
-    'remote work setup bali',
-    'canggu workstation rental',
-    'ubud office equipment',
-    'seminyak monitor rental',
-    'tropic tech bali',
-    'laptop desk bali rental',
+    'digital nomad workstation bali',
+    'bali remote work setup',
+    'canggu ergonomic chair rental',
+    'ubud monitor rental',
+    'seminyak standing desk',
+    'tropic tech bali rentals',
+    'laptop workstation bali',
   ],
   applicationName: 'Tropic Tech',
   category: 'Business Equipment Rental',

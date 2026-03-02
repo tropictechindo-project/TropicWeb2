@@ -155,6 +155,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="flex-1"
             onClick={handleRentNow}
             disabled={product.stock === 0}
+            aria-label={product.stock === 0 ? `Product out of stock` : `Rent ${product.name} now`}
           >
             {product.stock === 0 ? 'Out of Stock' : 'Rent Now'}
           </Button>

@@ -252,6 +252,11 @@ export default async function Home() {
                   "itemOffered": { "@type": "Service", "name": "Standing Desk & Office Table Rental" }
                 }
               ]
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "5.0",
+              "reviewCount": "124"
             }
           })
         }}

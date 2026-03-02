@@ -125,7 +125,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
         </CardContent>
 
         <CardFooter className="gap-2" onClick={(e) => e.stopPropagation()}>
-          <Button className="flex-1" onClick={handleRentNow}>
+          <Button className="flex-1" onClick={handleRentNow} aria-label={`Rent package ${pkg.name} now`}>
             Rent Now
           </Button>
           <AddToCartButton

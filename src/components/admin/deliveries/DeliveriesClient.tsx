@@ -56,7 +56,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any[] }) {
+export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialDeliveries: any[], workers?: any[] }) {
     const router = useRouter()
     const [deliveries, setDeliveries] = useState(initialDeliveries)
     const [isLoading, setIsLoading] = useState(false)
@@ -65,6 +65,8 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
     // Form states
     const [selectedDelivery, setSelectedDelivery] = useState<any>(null)
     const [status, setStatus] = useState("")
+    const [deliveryMethod, setDeliveryMethod] = useState("INTERNAL")
+    const [workerId, setWorkerId] = useState<string | null>(null)
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -79,7 +81,11 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ status })
+                body: JSON.stringify({
+                    status,
+                    deliveryMethod,
+                    claimedByWorkerId: workerId === "none" ? null : workerId
+                })
             })
 
             if (!res.ok) {
@@ -230,9 +236,11 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
                                                     <DropdownMenuItem onClick={() => {
                                                         setSelectedDelivery(delivery)
                                                         setStatus(delivery.status)
+                                                        setDeliveryMethod(delivery.deliveryMethod)
+                                                        setWorkerId(delivery.claimedByWorkerId || "none")
                                                         setIsEditOpen(true)
                                                     }}>
-                                                        <Edit className="w-4 h-4 mr-2" /> Override Status
+                                                        <Edit className="w-4 h-4 mr-2" /> Dispatch & Settings
                                                     </DropdownMenuItem>
 
                                                     {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
@@ -264,7 +272,34 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
                     </DialogHeader>
                     <form onSubmit={handleUpdate} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="edit-status">Force Status To:</Label>
+                            <Label htmlFor="edit-method">Delivery Method:</Label>
+                            <Select value={deliveryMethod} onValueChange={setDeliveryMethod}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="INTERNAL">INTERNAL FLEET</SelectItem>
+                                    <SelectItem value="GOJEK">GOJEK / GRAB</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="edit-worker">Assign Worker:</Label>
+                            <Select value={workerId || "none"} onValueChange={setWorkerId}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="none">No Worker (Self-Claim/Pool)</SelectItem>
+                                    {workers.map((w: any) => (
+                                        <SelectItem key={w.id} value={w.id}>{w.fullName}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <p className="text-[10px] text-muted-foreground">Assigning a worker will force-claim the delivery for them.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="edit-status">Status Override:</Label>
                             <Select value={status} onValueChange={setStatus}>
                                 <SelectTrigger>
                                     <SelectValue />
