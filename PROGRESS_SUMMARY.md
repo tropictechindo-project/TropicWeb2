@@ -91,11 +91,17 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-### Global Worker Dispatch System
-- ✅ **Automated Job Creation**: Orders and Invoices now automatically generate `QUEUED` delivery jobs.
-- ✅ **Marketplace Logic**: Workers can see and "Claim" available jobs from the "Pool" in their dashboard.
-- ✅ **1-Hour Claim Monitor**: Background job automatically monitors queued jobs; alerts Admin if unassigned for 60 minutes.
-- ✅ **Vehicle Fleet Lock**: Claiming a job locks a vehicle from the fleet to prevent overlaps.
+- ✅ **Global Worker Dispatch System**:
+    - ✅ **Automated Job Creation**: Orders and Invoices now automatically generate `QUEUED` delivery jobs.
+    - ✅ **Marketplace Logic**: Workers can see and "Claim" available jobs from the "Pool" in their dashboard.
+    - ✅ **1-Hour Claim Monitor**: Background job automatically monitors queued jobs; alerts Admin if unassigned for 60 minutes.
+    - ✅ **Vehicle Fleet Lock**: Claiming a job locks a vehicle from the fleet to prevent overlaps.
+    - ✅ **Automated Pickup Creation**: Completing a DROPOFF delivery now automatically queues a PICKUP delivery for the same order, ensuring total lifecycle automation.
+
+- ✅ **Geolocation & Device Messaging**:
+    - ✅ **Location Capture**: Implemented `LocationPrompt` for precise GPS coordinate capture during high-intent moments (Checkout).
+    - ✅ **Worker Navigation**: Integrated direct "Navigate to Customer" Google Maps links in the worker dashboard.
+    - ✅ **Notification Activation**: Implemented browser-level `NotificationPrompt` for real-time delivery alerts (5-minute delay).
 
 ## 📝 Still To Do (Not Yet Started)
 
@@ -105,10 +111,7 @@
   - Added new vehicle selection dialogs and logic
   - Integrated `OUT_FOR_DELIVERY` and `COMPLETED` action flows
 
-- ✅ Add "Log Out" button to all dashboards:
-  - `/dashboard/user` ✓
-  - `/dashboard/worker` ✓
-  - `/admin/*` - needs adding in sidebar
+- ✅ Add "Log Out" button to all dashboards.
 
 - ⏳ Create public invoice page UI (`/invoice/public/[token]/page.tsx`)
   - Display invoice details
@@ -190,4 +193,9 @@
   - Configured center-alignment rules dynamically targeting single-card setups for the active `Nyepi` bundle.
   - Attached robust Modal integrations, allowing users to drill into Special Offer gallery specs seamlessly upon click.
 - ✅ **AI Sales Catalog Integration**: Completely overhauled `/api/ai/seller/route.ts` to actively funnel all Database Products, Packages, and Special Offers dynamically into the underlying prompt string, unlocking instant responsive upsells across all product groups via the AI Assistant.
-- ✅ **Cart Pricing Hardening**: Injected standard fallback logic (`Number(item.price) || 0`) across both `<Header />` cart visualizers and `<CartContext />` reducers to guarantee no frontend runtime TypeErrors ever occur on improperly cast cart data variables.
+- ✅ **Cart Pricing Hardening**: Injected standard fallback logic (`Number(item.price) || 0`) across both `<Header />` cart visualizers and `<CartContext />` reducers.
+- ✅ **Unified Manual Invoice Workflow**:
+    - Completely redesigned the Admin Invoice form to include **Workflow Automation** toggles.
+    - Creating a manual invoice now atomically triggers `Order`, `Delivery` (Drop-off), and `SpiNotification`.
+    - Integrated automated **Inventory Status Transitions**: Units automatically move between `RESERVED` → `RENTED` → `AVAILABLE` based on delivery/pickup completion.
+- ✅ **Session Persistence Hardening**: Extended session cookies to **365 days** ("Never logout" behavior) and resolved Supabase code challenge loops in the registration flow.

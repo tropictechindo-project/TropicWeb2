@@ -1,7 +1,7 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-02 05:30:00 (WITA/GMT+8)
-**System Version**: 1.1.0-beta
+**Last Updated**: 2026-03-02 13:30:00 (WITA/GMT+8)
+**System Version**: 1.2.0-stable
 **Environment**: Production Ready (Auth & Dispatch Overhaul)
 
 ---
@@ -148,26 +148,15 @@ The website operates through three distinct entry points based on user roles:
   - Verified a **100% Successful Production Build** with `npm run build`.
   - Staged and committed **13 major architectural updates** to the local `main` branch.
 - [x] **Workspace Cleanliness**: Purged all temporary logs (`tsc.log`) and scratch files to ensure a lean production-ready codebase.
-- [x] **Special Offers Ecosystem**: 
-  - Shipped the entire `SpecialOffer` database architecture with integrated `/api/special-offers` CRUD pipelines.
-  - Injected an active Carousel node to the Landing Page featuring centered, perfectly-widened cards and dynamic modal breakouts.
-- [x] **AI Seller Pipeline Integration**: Expanded the OpenAI seller prompt to dynamically query and stream all Rental Packages and Special Offers into the active ChatGPT `CURRENT CATALOG` context. The bot is now fully aware of bundled deals.
-- [x] **Auth System Overhaul (Phase 20)**:
-  - Reset all users and seeded verified Admin accounts.
-  - Implemented role-based Google SSO redirects (Admin/Worker -> Home, User -> Dashboard).
-- [x] **Professional Email Domain (Phase 21)**:
-  - Transitioned all system "From" addresses to `contact@tropictech.online`.
-  - Preserved internal Affiliate routing to `tropictechindo@gmail.com`.
-- [x] **Local Forgot Password Flow (Phase 22)**:
-  - Replaced Supabase's failing email system with a local, highly-reliable token flow.
-  - Reset links now use the professional domain for improved deliverability and brand appearance.
-- [x] **Global Worker Dispatch (Phase 23)**:
-  - Automated `Delivery` creation upon any new Order or manual Invoice.
-  - Market-based job assignment: Workers "Claim" jobs from a global pool in their dashboard.
-  - **Dispatch Watchdog**: Background job automatically alerts admins via email if a job is unclaimed for 60 minutes.
-- [x] **PDF Catalog Polishing**:
-  - Standardized label casing (Normal Case: Email, Whatsapp, Web, Catalog).
-  - Enhanced item spacing in print headers to prevent text overlapping across different OS print engines.
+- [x] **Geolocation Precision (Phase 13)**: Implemented `LocationPrompt` to capture high-intent GPS coordinates at checkout, enabling point-to-point delivery.
+- [x] **Worker Dashboard Renewal (Phase 14)**: Restored worker portal with one-click navigation and real-time status updates.
+- [x] **Device Notification Activation (Phase 15)**: Integrated browser-level `NotificationPrompt` (5-minute delay) to alert users/workers of active order changes.
+- [x] **Unified Manual Workflow (Phase 16)**:
+  - Redesigned Admin Invoices to include **Workflow Automation** toggles.
+  - Manual invoices now atomically trigger the full `Order` -> `Delivery` -> `Notification` lifecycle.
+  - Automated **Pickup Task Generation**: Drop-off completion now automatically queues the return pickup.
+  - Automated **Inventory Status**: Units flip between `Reserved`, `Rented`, and `Available` automatically based on delivery lifecycle events.
+- [x] **Session Hardening**: Extended session persistence to **365 days** and fixed registration email redirects.
 
 > [!IMPORTANT]
 > **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.

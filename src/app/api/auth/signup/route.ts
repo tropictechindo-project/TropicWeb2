@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
         data: {
           full_name: fullName,
         },
+        emailRedirectTo: `${request.nextUrl.origin}/auth/login?verified=true`,
       }
     })
 

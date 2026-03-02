@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth()
   }, [])
 
-  const setCookie = (name: string, value: string, days: number = 7) => {
+  const setCookie = (name: string, value: string, days: number = 365) => {
     const expires = new Date(Date.now() + days * 864e5).toUTCString()
     document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`
   }

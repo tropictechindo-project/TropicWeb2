@@ -546,6 +546,33 @@ export default function WorkerDashboard() {
                                 <p className="text-sm text-muted-foreground font-mono mt-1">
                                   Items: {delivery.items?.length || 0}
                                 </p>
+                                <div className="mt-2">
+                                  {(delivery.latitude && delivery.longitude) ? (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
+                                      }}
+                                    >
+                                      <MapPin className="w-3 h-3" /> GPS PIN
+                                    </Button>
+                                  ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(delivery.invoice.guestAddress, '_blank')
+                                      }}
+                                    >
+                                      <Navigation className="w-3 h-3" /> MAP LINK
+                                    </Button>
+                                  )}
+                                </div>
                               </div>
                               <Badge variant="outline" className="bg-blue-50">AVAILABLE</Badge>
                             </div>
@@ -615,6 +642,33 @@ export default function WorkerDashboard() {
                                 <p className="text-sm text-muted-foreground">
                                   Customer: {delivery.invoice?.order?.user?.fullName}
                                 </p>
+                                <div className="mt-2 mb-3">
+                                  {(delivery.latitude && delivery.longitude) ? (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
+                                      }}
+                                    >
+                                      <MapPin className="w-3 h-3" /> NAVIGATE TO CUSTOMER
+                                    </Button>
+                                  ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(delivery.invoice.guestAddress, '_blank')
+                                      }}
+                                    >
+                                      <Navigation className="w-3 h-3" /> VIEW MAP LINK
+                                    </Button>
+                                  )}
+                                </div>
                                 <p className="text-sm text-muted-foreground">
                                   <Clock className="w-3 h-3 inline mr-1" />
                                   Claimed: {new Date(delivery.updatedAt).toLocaleTimeString()}
@@ -695,10 +749,10 @@ export default function WorkerDashboard() {
             </div>
           </div>
         </div>
-      </main>
+      </main >
 
       {/* Notifications Dialog */}
-      <Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog}>
+      < Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog} >
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Notifications</DialogTitle>
@@ -726,7 +780,7 @@ export default function WorkerDashboard() {
             )}
           </div>
         </DialogContent>
-      </Dialog>
+      </Dialog >
 
       <GroupChatDialog
         open={isGroupChatOpen}

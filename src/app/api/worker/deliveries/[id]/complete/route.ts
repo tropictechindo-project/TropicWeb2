@@ -101,20 +101,77 @@ export async function POST(
                 }
             })
 
-            // D. Atomic Inventory Sync Recording
-            // Note: Detailed stock deduction requires parsing the rental item logic (Product/Variant).
-            // This writes the audit trail for the delivery completion synced event.
+            // D. Atomic Inventory Sync & Unit Status Transition
             for (const item of delivery.items) {
-                if (item.rentalItem?.variantId) {
-                    await tx.inventorySyncLog.create({
+                if (item.rentalItem?.unitId) {
+                    const newStatus = delivery.deliveryType === 'DROPOFF' ? 'RENTED' : 'AVAILABLE';
+
+                    // 1. Update Unit Status
+                    await tx.productUnit.update({
+                        where: { id: item.rentalItem.unitId },
                         data: {
-                            productId: item.rentalItem.variantId, // Fallback logging against variant ID
-                            oldQuantity: item.quantity,
-                            newQuantity: item.quantity,
-                            updatedBy: workerId,
-                            source: 'WORKER',
-                            conflict: false,
-                            resolved: true
+                            status: newStatus as any,
+                            // If pickup, clear the assigned order to make it truly available
+                            ...(delivery.deliveryType === 'PICKUP' ? { assignedOrderId: null } : {})
+                        }
+                    });
+
+                    // 2. Log History
+                    await tx.unitHistory.create({
+                        data: {
+                            unitId: item.rentalItem.unitId,
+                            oldStatus: delivery.deliveryType === 'DROPOFF' ? 'RESERVED' : 'RENTED',
+                            newStatus: newStatus,
+                            details: `Automated status update via ${delivery.deliveryType} completion (Delivery ID: ${id})`,
+                            userId: workerId
+                        }
+                    });
+
+                    // 3. Inventory Log (Audit)
+                    if (item.rentalItem.variantId) {
+                        await tx.inventorySyncLog.create({
+                            data: {
+                                productId: item.rentalItem.variantId,
+                                oldQuantity: item.quantity,
+                                newQuantity: item.quantity,
+                                updatedBy: workerId,
+                                source: 'WORKER',
+                                conflict: false,
+                                resolved: true
+                            }
+                        });
+                    }
+                }
+            }
+
+            // E. Auto-Trigger PICKUP logic if DROPOFF is completed
+            if (delivery.deliveryType === 'DROPOFF' && delivery.invoiceId) {
+                // Check if a PICKUP already exists to avoid duplicates (Crush Logic Protection)
+                const existingPickup = await tx.delivery.findFirst({
+                    where: {
+                        invoiceId: delivery.invoiceId,
+                        deliveryType: 'PICKUP'
+                    }
+                })
+
+                if (!existingPickup) {
+                    await tx.delivery.create({
+                        data: {
+                            invoiceId: delivery.invoiceId,
+                            deliveryMethod: 'INTERNAL',
+                            deliveryType: 'PICKUP',
+                            status: 'QUEUED',
+                        }
+                    })
+
+                    // Notify workers about the upcoming pickup
+                    await tx.spiNotification.create({
+                        data: {
+                            role: 'WORKER',
+                            type: 'DELIVERY_UPDATE',
+                            title: 'New Pickup Task',
+                            message: `A new pickup is now queued for Invoice ${delivery.invoice?.invoiceNumber || 'Manual'}.`,
+                            link: '/dashboard/worker',
                         }
                     })
                 }

@@ -8,6 +8,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { StickyPanelInfo } from "@/components/StickyPanelInfo";
+import { LocationPrompt } from "@/components/location/LocationPrompt";
+import { NotificationPrompt } from "@/components/NotificationPrompt";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -146,6 +148,8 @@ export default function RootLayout({
         >
           <LanguageProvider>
             <AuthProvider>
+              <LocationPrompt />
+              <NotificationPrompt />
               <NotificationProvider>
                 <CartProvider>
                   <StickyPanelInfo />

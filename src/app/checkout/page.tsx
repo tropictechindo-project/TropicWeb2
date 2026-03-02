@@ -77,6 +77,16 @@ export default function CheckoutPage() {
         setIsSubmitting(true)
 
         try {
+            // 0. Get Location if available
+            let lat = localStorage.getItem('user_lat')
+            let lng = localStorage.getItem('user_lng')
+
+            if (!lat || !lng) {
+                // Trigger the prompt and wait a bit or just proceed with address
+                window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
+                window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
+            }
+
             // 1. Create Order
             const orderRes = await fetch('/api/orders', {
                 method: 'POST',
@@ -92,7 +102,9 @@ export default function CheckoutPage() {
                         fullName: formData.name,
                         email: formData.email,
                         whatsapp: formData.whatsapp
-                    }
+                    },
+                    latitude: lat,
+                    longitude: lng
                 })
             })
 

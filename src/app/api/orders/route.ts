@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json()
-        const { item, currency, paymentMethod, deliveryAddress, notes, guestInfo } = body
+        const { item, currency, paymentMethod, deliveryAddress, notes, guestInfo, latitude, longitude } = body
 
         if (!item || !paymentMethod || !deliveryAddress) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -144,6 +144,8 @@ export async function POST(request: Request) {
                     deliveryMethod: 'INTERNAL',
                     deliveryType: 'DROPOFF',
                     status: 'QUEUED',
+                    latitude: latitude ? parseFloat(latitude) : null,
+                    longitude: longitude ? parseFloat(longitude) : null,
                 }
             })
 

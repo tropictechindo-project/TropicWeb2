@@ -169,6 +169,27 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
                                             <div className="flex flex-col gap-1 text-sm">
                                                 <span className="font-medium">{delivery.invoice?.order?.user?.fullName || 'N/A'}</span>
                                                 <span className="text-xs text-muted-foreground">{delivery.invoice?.order?.user?.whatsapp || '-'}</span>
+                                                <div className="flex gap-2 mt-1">
+                                                    {(delivery.latitude && delivery.longitude) ? (
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
+                                                            onClick={() => window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')}
+                                                        >
+                                                            <MapPin className="w-3 h-3 text-primary" /> GPS PIN
+                                                        </Button>
+                                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
+                                                            onClick={() => window.open(delivery.invoice.guestAddress, '_blank')}
+                                                        >
+                                                            <Navigation className="w-3 h-3 text-primary" /> MAP LINK
+                                                        </Button>
+                                                    )}
+                                                </div>
                                             </div>
                                         </TableCell>
                                         <TableCell>
@@ -268,6 +289,6 @@ export function DeliveriesClient({ initialDeliveries }: { initialDeliveries: any
                     </form>
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     )
 }

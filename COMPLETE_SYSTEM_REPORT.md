@@ -22,8 +22,14 @@ We have hardened the entry point of the application to ensure only authorized pe
 The core logistics of TropicTech is now automated via a "Push-Pull" marketplace model.
 - **Auto-Dispatch**: Every new Order or manually created Invoice instantly generates a `Delivery` record in `QUEUED` status.
 - **Worker Marketplace**: Workers view the global "Delivery Pool" in their dashboard. They "Claim" a job, select a vehicle, and lock it to their session.
-- **Automated Watchdog**: A background monitoring service (`CHECK_DELIVERY_CLAIM`) runs every hour. If a job is unclaimed for over 60 minutes, a high-priority alert is sent to the company email for immediate action.
-- **Fleet Management**: Claiming a job now correctly locks the chosen Vehicle (`IN_USE` status), preventing multiple workers from using the same vehicle.
+- **Automated Lifecycle**: Completing a "Drop-off" task now automatically triggers a "Pickup" task for the same invoice, ensuring the rental loop is closed without admin intervention.
+- **Inventory Automation**: Equipment status now transitions automatically between `RESERVED`, `RENTED`, and `AVAILABLE` based on worker completion events, with full audit logs.
+
+## 📍 3. Geolocation & Real-Time Alerts
+We have integrated precise device-level interactions to optimize field operations.
+- **Precision Capture**: User GPS coordinates are now captured during the Checkout stage (with permission), allowing workers to navigate directly to the customer's doorstep.
+- **Worker Navigation**: Added "Navigate to Customer" one-click links in the worker portal, opening Google Maps with the exact arrival PIN.
+- **Device Notifications**: Implemented browser-level notifications to alert users and workers of status changes instantly.
 
 ## 📧 3. Professional Communication Infrastructure
 We have transitioned away from generic Gmail delivery to a branded, high-trust email system.

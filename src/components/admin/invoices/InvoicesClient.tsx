@@ -100,7 +100,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
         endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         sendToCustomer: true,
         sendToWorkers: false,
-        sendToCompany: true
+        sendToCompany: true,
+        activateOrderFlow: true,
+        sendSpiNotifications: true
     })
 
     const filteredInvoices = initialInvoices.filter(inv =>
@@ -155,7 +157,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
             endDate: new Date(invoice.endDate).toISOString().split('T')[0],
             sendToCustomer: false,
             sendToWorkers: false,
-            sendToCompany: false
+            sendToCompany: false,
+            activateOrderFlow: false,
+            sendSpiNotifications: false
         })
         setIsEditOpen(true)
     }
@@ -425,6 +429,22 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                         <div className="space-y-2">
                             <Label>Total Amount (IDR)</Label>
                             <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} required />
+                        </div>
+
+                        <div className="space-y-3 p-4 bg-primary/5 rounded-xl border border-primary/20 border-dashed">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                                <Truck className="h-3 w-3" /> WORKFLOW AUTOMATION
+                            </h4>
+                            <div className="space-y-2">
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="order_flow" checked={formData.activateOrderFlow} onCheckedChange={(v) => setFormData({ ...formData, activateOrderFlow: !!v })} />
+                                    <label htmlFor="order_flow" className="text-xs font-bold cursor-pointer text-primary">Activate Delivery & Pickup Flow</label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="spi_notif" checked={formData.sendSpiNotifications} onCheckedChange={(v) => setFormData({ ...formData, sendSpiNotifications: !!v })} />
+                                    <label htmlFor="spi_notif" className="text-xs font-bold cursor-pointer text-primary">Trigger SPI Real-time Notifications</label>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="space-y-3 p-4 bg-muted/50 rounded-xl border border-dashed">
