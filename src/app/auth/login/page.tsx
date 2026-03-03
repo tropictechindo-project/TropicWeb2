@@ -52,6 +52,8 @@ export default function LoginPage() {
           router.push('/dashboard/admin')
         } else if (data.user.role === 'WORKER') {
           router.push('/dashboard/worker')
+        } else if (data.user.role === 'OPERATOR') {
+          router.push('/dashboard/operator')
         } else {
           router.push('/dashboard/user')
         }

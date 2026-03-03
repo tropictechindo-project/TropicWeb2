@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
             role: prismaUser.role,
           })
 
-          return NextResponse.json({
+          const res = NextResponse.json({
             token,
             user: {
               id: prismaUser.id,
@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
               isVerified: prismaUser.isVerified
             }
           })
+          res.cookies.set('token', token, { path: '/', httpOnly: false, maxAge: 60 * 60 * 24 * 7 })
+          return res
         }
       }
 
@@ -114,15 +116,14 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      return NextResponse.json({
+      const newRes = NextResponse.json({
         token: await (await import('@/lib/auth/utils')).generateToken({
-          userId: newUser.id,
-          username: newUser.username,
-          email: newUser.email,
-          role: newUser.role,
-        }),
-        user: newUser
+          userId: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role,
+        }), user: newUser
       })
+      const newToken = await (await import('@/lib/auth/utils')).generateToken({ userId: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role })
+      newRes.cookies.set('token', newToken, { path: '/', httpOnly: false, maxAge: 60 * 60 * 24 * 7 })
+      return newRes
     }
 
     // 3. Optional: Sync isVerified if Supabase auth succeeded
@@ -144,10 +145,9 @@ export async function POST(request: NextRequest) {
       role: user.role,
     })
 
-    return NextResponse.json({
-      token,
-      user
-    })
+    const finalRes = NextResponse.json({ token, user })
+    finalRes.cookies.set('token', token, { path: '/', httpOnly: false, maxAge: 60 * 60 * 24 * 7 })
+    return finalRes
   } catch (error: any) {
     console.error('Login error:', error)
     return NextResponse.json(
