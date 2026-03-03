@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { verifyAuth } from '@/lib/auth/auth-helper'
 import { sendInvoiceEmail } from '@/lib/email'
+import { logActivity } from '@/lib/logger'
+
 
 export const dynamic = 'force-dynamic'
 
@@ -190,6 +192,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
             }
         }, 0)
 
+        await logActivity(auth.userId, 'CONFIRM_PAYMENT', `Payment confirmed for invoice ${invoice.invoiceNumber}. Order ${result.order.orderNumber} created.`, { invoiceId: invoice.id, orderId: result.order.id });
         return NextResponse.json({
             success: true,
             orderNumber: result.order.orderNumber,
