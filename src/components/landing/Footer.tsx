@@ -90,22 +90,22 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold">Credits</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <a href="https://indodesign.website" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit IndoDesign website">
-                indodesign.website
+              <a href="https://tropictechbali.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Tropic Tech Bali website">
+                tropictechbali.com
               </a>
               {' | '}
-              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Indonesian Visas website">
+              <a href="https://tropic-tech.odoo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Indonesian Visas website">
+                tropic-tech.odoo.com
+              </a>
+              {' | '}
+              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Bali Help website">
                 indonesianvisas.com
-              </a>
-              {' | '}
-              <a href="https://balihelp.id" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Bali Help website">
-                balihelp.id
               </a>
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
-              <a href="mailto:info@tropictech.online" className="hover:text-primary hover:underline transition-colors">
-                info@tropictech.online
+              <a href="mailto:tropictechindo@gmail.com" className="hover:text-primary hover:underline transition-colors">
+                tropictechindo@gmail.com
               </a>
               <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors">
                 support@tropictech.online
