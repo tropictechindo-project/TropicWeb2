@@ -2,29 +2,33 @@ import { NextRequest } from 'next/server'
 import { verifyToken } from './utils'
 
 /**
- * Verify authentication from request headers
+ * Verify authentication from request — checks Authorization header first, then cookie.
  */
 export async function verifyAuth(request: NextRequest) {
     const authHeader = request.headers.get('Authorization') || request.headers.get('authorization')
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        console.log('verifyAuth: No or invalid Authorization header:', authHeader)
-        return null
+    let token: string | undefined
+
+    // 1. Try Authorization: Bearer header
+    if (authHeader?.startsWith('Bearer ')) {
+        token = authHeader.substring(7)
     }
 
-    const token = authHeader.substring(7)
-    console.log('auth-helper: Received token:', token.substring(0, 10) + '...')
+    // 2. Fallback: try token cookie (for server-side rendered pages and cookie-based sessions)
+    if (!token) {
+        token = request.cookies.get('token')?.value
+    }
+
+    if (!token) return null
+
     const payload = await verifyToken(token)
-
-    if (!payload) {
-        console.log('verifyAuth: Token verification failed')
-        return null
-    }
+    if (!payload) return null
 
     return {
-        id: payload.userId,
+        userId: payload.userId,
+        id: payload.userId, // alias for compatibility
         username: payload.username,
         email: payload.email,
-        role: payload.role
+        role: payload.role,
     }
 }

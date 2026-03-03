@@ -9,9 +9,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: NextRequest) {
     try {
         const auth = await verifyAuth(req)
-        if (!auth) return new NextResponse('Unauthorized', { status: 401 })
+        if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         if (auth.role !== 'OPERATOR' && auth.role !== 'ADMIN') {
-            return new NextResponse('Forbidden', { status: 403 })
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
         const { searchParams } = req.nextUrl

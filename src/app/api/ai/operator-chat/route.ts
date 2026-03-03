@@ -9,9 +9,9 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
     try {
         const auth = await verifyAuth(req)
-        if (!auth) return new NextResponse('Unauthorized', { status: 401 })
+        if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         if (auth.role !== 'OPERATOR' && auth.role !== 'ADMIN') {
-            return new NextResponse('Forbidden', { status: 403 })
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
         const { message, context } = await req.json()
@@ -74,7 +74,7 @@ If asked about something outside your context, say so clearly.
             } else if (msg.includes('stock') || msg.includes('inventory')) {
                 response = `📦 Currently **${outOfStockCount} product variants** have zero available units. Go to the Inventory tab to see which specific products need restocking or maintenance units returned.`
             } else if (msg.includes('urgent') || msg.includes('attention') || msg.includes('summary')) {
-                const urgentItems = []
+                const urgentItems: string[] = []
                 if (pendingCount > 0) urgentItems.push(`${pendingCount} pending payments to confirm`)
                 if (queuedDeliveries > 0) urgentItems.push(`${queuedDeliveries} queued deliveries waiting workers`)
                 if (outOfStockCount > 0) urgentItems.push(`${outOfStockCount} out-of-stock variants`)

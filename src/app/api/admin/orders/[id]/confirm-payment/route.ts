@@ -21,7 +21,7 @@ export async function POST(
         }
 
         const payload = await verifyToken(token)
-        if (!payload || payload.role !== 'ADMIN') {
+        if (!payload || (payload.role !== 'ADMIN' && payload.role !== 'OPERATOR')) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 

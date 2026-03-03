@@ -1,26 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { verifyToken } from '@/lib/auth/utils'
 import { verifyAuth } from '@/lib/auth/auth-helper'
+
 
 export const dynamic = 'force-dynamic'
 
 // PATCH /api/orders/[id]/complete
 // Marks an order as COMPLETED.
 // Called by: the customer (confirms they received gear) OR Admin/Operator (force-complete)
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const authHeader = req.headers.get('Authorization')
-        if (!authHeader) return new NextResponse('Unauthorized', { status: 401 })
+        const auth = await verifyAuth(req)
+        if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-        const token = authHeader.split(' ')[1]
-        const payload = await verifyToken(token)
-        if (!payload) return new NextResponse('Invalid token', { status: 401 })
+        const { userId, role } = { userId: auth.userId, role: auth.role }
 
-        const { userId, role } = payload
-
+        const { id } = await params
         const order = await db.order.findUnique({
-            where: { id: params.id },
+            where: { id },
             include: { invoices: { include: { deliveries: true } } }
         })
 
@@ -30,7 +27,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         const isOwner = order.userId === userId
         const isStaff = role === 'ADMIN' || role === 'OPERATOR'
         if (!isOwner && !isStaff) {
-            return new NextResponse('Forbidden', { status: 403 })
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
         if (order.status === 'COMPLETED') {
@@ -40,7 +37,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         await db.$transaction(async (tx) => {
             // Mark order completed
             await tx.order.update({
-                where: { id: params.id },
+                where: { id },
                 data: {
                     status: 'COMPLETED',
                     completedByUserId: userId,
@@ -59,20 +56,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
             // Release reserved units → IN_USE (actively rented)
             const rentalItems = await tx.rentalItem.findMany({
-                where: { orderId: params.id },
+                where: { orderId: id },
                 include: { unit: true }
             })
             for (const item of rentalItems) {
                 if (item.unit && item.unit.status === 'RESERVED') {
                     await tx.productUnit.update({
                         where: { id: item.unit.id },
-                        data: { status: 'IN_USE' }
+                        data: { status: 'RENTED' }
                     })
                     await tx.unitHistory.create({
                         data: {
                             unitId: item.unit.id,
                             oldStatus: 'RESERVED',
-                            newStatus: 'IN_USE',
+                            newStatus: 'RENTED',
                             details: `Order ${order.orderNumber} confirmed complete by ${isOwner ? 'customer' : 'staff'}.`,
                             userId
                         }

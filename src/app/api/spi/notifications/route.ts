@@ -20,7 +20,7 @@ export async function GET(req: Request) {
         }
 
         if (!user) {
-            return new NextResponse('Unauthorized', { status: 401 })
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         // Clean up expired notifications first 
@@ -51,6 +51,6 @@ export async function GET(req: Request) {
         return NextResponse.json(notifications)
     } catch (error) {
         console.error('Error fetching SPI notifications:', error)
-        return new NextResponse('Internal Error', { status: 500 })
+        return NextResponse.json({ error: 'Internal error' }, { status: 500 })
     }
 }

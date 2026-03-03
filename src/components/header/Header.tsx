@@ -87,6 +87,8 @@ export default function Header() {
       router.push('/admin/overview')
     } else if (user?.role === 'WORKER') {
       router.push('/dashboard/worker')
+    } else if (user?.role === 'OPERATOR') {
+      router.push('/dashboard/operator')
     } else {
       router.push('/dashboard/user')
     }
@@ -211,7 +213,6 @@ export default function Header() {
                               onClick={() => {
                                 // Trigger permission prompts before leaving for checkout
                                 window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
-                                window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
                                 router.push('/checkout')
                               }}
                             >

@@ -111,6 +111,6 @@ export async function GET(req: Request) {
             }
         })
 
-        return new NextResponse('Internal Server Error', { status: 500 })
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

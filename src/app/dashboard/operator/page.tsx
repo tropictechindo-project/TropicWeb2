@@ -30,16 +30,57 @@ export default async function OperatorDashboardPage() {
             orderBy: { createdAt: 'desc' },
             take: 20,
             include: {
-                invoice: { include: { user: { select: { fullName: true } } } },
-                claimedByWorker: { select: { fullName: true } },
-                vehicle: { select: { name: true } }
+                invoice: {
+                    select: {
+                        invoiceNumber: true,
+                        guestAddress: true,
+                        order: {
+                            include: { user: { select: { fullName: true, whatsapp: true } } }
+                        }
+                    }
+                },
+                claimedByWorker: { select: { fullName: true, whatsapp: true } },
+                vehicle: true,
+                items: {
+                    include: {
+                        rentalItem: {
+                            include: {
+                                variant: { include: { product: true } },
+                                rentalPackage: true
+                            }
+                        }
+                    }
+                }
             }
         }),
         db.order.findMany({
             where: { status: { in: ['PAID', 'AWAITING_PAYMENT', 'ACTIVE'] } },
             orderBy: { createdAt: 'desc' },
             take: 20,
-            include: { user: { select: { fullName: true, email: true } } }
+            include: {
+                user: {
+                    select: { fullName: true, email: true, whatsapp: true }
+                },
+                rentalItems: {
+                    include: {
+                        unit: true,
+                        variant: {
+                            include: {
+                                product: true
+                            }
+                        },
+                        rentalPackage: {
+                            include: {
+                                rentalPackageItems: {
+                                    include: {
+                                        product: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }),
         db.productVariant.findMany({
             include: {
@@ -49,10 +90,30 @@ export default async function OperatorDashboardPage() {
             take: 50
         }),
         db.user.findMany({
-            where: { role: 'WORKER' },
+            where: { role: 'WORKER', isActive: true },
             select: { id: true, fullName: true, email: true, whatsapp: true }
         })
     ])
+
+    const formattedOrders = allOrders.map(order => ({
+        id: order.id,
+        user: order.user ? (order.user.fullName || order.user.email) : 'Unknown',
+        email: order.user ? order.user.email : '',
+        whatsapp: order.user?.whatsapp || '',
+        period: `${new Date(order.startDate).toLocaleDateString()} - ${new Date(order.endDate).toLocaleDateString()}`,
+        status: order.status,
+        itemCount: order.rentalItems.length,
+        totalAmount: Number(order.totalAmount),
+        createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
+        items: order.rentalItems.map(item => ({
+            id: item.id,
+            name: item.variant?.product?.name || item.rentalPackage?.name || 'Unknown Item',
+            quantity: item.quantity,
+            type: item.variant?.product ? 'PRODUCT' : 'PACKAGE',
+            price: Number(item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0),
+            serialNumber: item.unit?.serialNumber || 'PENDING'
+        }))
+    }))
 
     const overviewStats = {
         pendingPayments: pendingInvoices.length,
@@ -63,11 +124,11 @@ export default async function OperatorDashboardPage() {
 
     return (
         <OperatorDashboardClient
-            operatorName={payload.username || 'Operator'}
+            operatorName={typeof payload.username === 'string' ? payload.username : (typeof (payload as any).fullName === 'string' ? (payload as any).fullName : 'Operator')}
             stats={overviewStats}
             pendingInvoices={JSON.parse(JSON.stringify(pendingInvoices))}
             deliveries={JSON.parse(JSON.stringify(queuedDeliveries))}
-            orders={JSON.parse(JSON.stringify(allOrders))}
+            orders={JSON.parse(JSON.stringify(formattedOrders))}
             variants={JSON.parse(JSON.stringify(lowStockVariants))}
             workers={JSON.parse(JSON.stringify(workers))}
         />

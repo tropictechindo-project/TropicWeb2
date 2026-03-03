@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
                 id: o.id,
                 type: 'INFO',
                 title: 'New Order',
-                message: `Order #${o.orderNumber} placed by ${o.user.fullName}`,
+                message: `Order #${o.orderNumber} placed by ${o.user?.fullName || 'Guest'}`,
                 createdAt: o.createdAt,
                 entityId: o.id,
                 source: 'ORDER'

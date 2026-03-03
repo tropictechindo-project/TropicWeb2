@@ -75,6 +75,12 @@ export function UsersClient({ users }: UsersClientProps) {
     const [isDocsOpen, setIsDocsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [visiblePasswordIds, setVisiblePasswordIds] = useState<Set<string>>(new Set())
+    // Change password modal
+    const [isChangePwOpen, setIsChangePwOpen] = useState(false)
+    const [changePwUser, setChangePwUser] = useState<any>(null)
+    const [newPassword, setNewPassword] = useState('')
+    const [showNewPw, setShowNewPw] = useState(false)
+    const [changePwLoading, setChangePwLoading] = useState(false)
 
     const togglePasswordVisibility = (userId: string) => {
         const newSet = new Set(visiblePasswordIds)
@@ -196,6 +202,34 @@ export function UsersClient({ users }: UsersClientProps) {
             toast.error("Failed to update status")
         } finally {
             setIsLoading(false)
+        }
+    }
+
+    const handleChangePassword = async () => {
+        if (!newPassword || newPassword.length < 6) {
+            toast.error('Password must be at least 6 characters')
+            return
+        }
+        setChangePwLoading(true)
+        try {
+            const token = typeof window !== 'undefined' ? localStorage.getItem('token') : ''
+            const res = await fetch(`/api/admin/users/${changePwUser.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ password: newPassword })
+            })
+            if (!res.ok) {
+                const d = await res.json()
+                throw new Error(d.error || 'Failed')
+            }
+            toast.success(`✅ Password changed for ${changePwUser.fullName || changePwUser.username}`)
+            setIsChangePwOpen(false)
+            setNewPassword('')
+            router.refresh()
+        } catch (err: any) {
+            toast.error(err.message || 'Failed to change password')
+        } finally {
+            setChangePwLoading(false)
         }
     }
 
@@ -422,6 +456,19 @@ export function UsersClient({ users }: UsersClientProps) {
                                                     >
                                                         <Edit className="h-4 w-4" /> Edit User
                                                     </DropdownMenuItem>
+                                                    {(user.role === 'WORKER' || user.role === 'OPERATOR') && (
+                                                        <DropdownMenuItem
+                                                            className="font-bold gap-2 text-orange-600"
+                                                            onClick={() => {
+                                                                setChangePwUser(user)
+                                                                setNewPassword('')
+                                                                setShowNewPw(false)
+                                                                setIsChangePwOpen(true)
+                                                            }}
+                                                        >
+                                                            <Lock className="h-4 w-4" /> Change Password
+                                                        </DropdownMenuItem>
+                                                    )}
                                                     <DropdownMenuItem
                                                         className="font-bold gap-2 text-primary"
                                                         onClick={() => onUpdateRole(user.id, user.role === 'WORKER' ? 'USER' : 'WORKER')}
@@ -722,6 +769,56 @@ export function UsersClient({ users }: UsersClientProps) {
                             {selectedUser?.isVerified ? "ALREADY VERIFIED" : "VERIFY IDENTITY"}
                         </Button>
                     </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* ─── Change Password Dialog ─── */}
+            <Dialog open={isChangePwOpen} onOpenChange={setIsChangePwOpen}>
+                <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                        <DialogTitle className="font-black uppercase tracking-tight flex items-center gap-2">
+                            <Lock className="h-5 w-5 text-orange-500" />
+                            Change Password
+                        </DialogTitle>
+                    </DialogHeader>
+                    {changePwUser && (
+                        <div className="space-y-4 pt-2">
+                            <p className="text-sm text-muted-foreground">
+                                Setting new password for <span className="font-bold text-foreground">{changePwUser.fullName || changePwUser.username}</span>
+                                {' '}<span className={`text-[10px] font-black uppercase px-1.5 py-0.5 rounded ${changePwUser.role === 'OPERATOR' ? 'bg-purple-500/10 text-purple-600' : 'bg-blue-500/10 text-blue-600'}`}>{changePwUser.role}</span>
+                            </p>
+                            <div className="space-y-2">
+                                <Label className="text-xs font-black uppercase tracking-widest">New Password</Label>
+                                <div className="relative">
+                                    <input
+                                        type={showNewPw ? 'text' : 'password'}
+                                        className="w-full rounded-lg border bg-background px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 font-mono"
+                                        placeholder="Min. 6 characters"
+                                        value={newPassword}
+                                        onChange={e => setNewPassword(e.target.value)}
+                                        onKeyDown={e => e.key === 'Enter' && handleChangePassword()}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                        onClick={() => setShowNewPw(v => !v)}
+                                    >
+                                        {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 pt-2">
+                                <Button variant="outline" className="flex-1 font-bold" onClick={() => setIsChangePwOpen(false)}>Cancel</Button>
+                                <Button
+                                    className="flex-1 font-black bg-orange-500 hover:bg-orange-600"
+                                    onClick={handleChangePassword}
+                                    disabled={changePwLoading || newPassword.length < 6}
+                                >
+                                    {changePwLoading ? <><Loader2 className="h-4 w-4 animate-spin mr-1" />Saving...</> : 'Set Password'}
+                                </Button>
+                            </div>
+                        </div>
+                    )}
                 </DialogContent>
             </Dialog>
         </div >

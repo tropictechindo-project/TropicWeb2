@@ -8,9 +8,11 @@ import {
     LayoutDashboard, FileText, Truck, Package, Bot,
     Clock, AlertTriangle, TrendingUp, Send, Loader2,
     ChevronRight, RefreshCw, ArrowRight, BarChart3, Activity,
-    Download
+    Download, ListOrdered
 } from 'lucide-react'
 import { toast } from 'sonner'
+import { OrdersClient } from "@/components/admin/orders/OrdersClient"
+import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 
 interface Props {
     operatorName: string
@@ -22,12 +24,32 @@ interface Props {
     workers: any[]
 }
 
-type Tab = 'overview' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai'
+type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create'
 
 function getToken() {
     if (typeof document === 'undefined') return ''
     const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/)
     return match ? match[1] : ''
+}
+
+/** Safe fetch — always returns JSON or throws an Error. Never crashes on HTML error pages. */
+async function safeFetch(url: string, opts?: RequestInit) {
+    const token = getToken()
+    const res = await fetch(url, {
+        ...opts,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(opts?.headers ?? {}),
+        },
+    })
+    const ct = res.headers.get('content-type') || ''
+    if (!ct.includes('application/json')) {
+        throw new Error(`Server error ${res.status}: ${res.statusText}`)
+    }
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || `Error ${res.status}`)
+    return data
 }
 
 export default function OperatorDashboardClient({
@@ -44,6 +66,15 @@ export default function OperatorDashboardClient({
 
     // Invoice confirmation state
     const [confirmingInvoice, setConfirmingInvoice] = useState<string | null>(null)
+
+    // ─── Create Invoice state ───────────────────────────────────────────────────
+    const [createForm, setCreateForm] = useState({
+        customerName: '', email: '', whatsapp: '', address: '', notes: '', paymentMethod: 'BANK_TRANSFER'
+    })
+    const [createItems, setCreateItems] = useState<{ id: string; name: string; price: number; qty: number }[]>([])
+    const [createLoading, setCreateLoading] = useState(false)
+    const [availableProducts, setAvailableProducts] = useState<any[]>([])
+    const [productsLoaded, setProductsLoaded] = useState(false)
 
     // Report state
     const [report, setReport] = useState<any>(null)
@@ -90,12 +121,10 @@ export default function OperatorDashboardClient({
         setAiMessages(prev => [...prev, { role: 'user', text: userMsg }])
         setAiLoading(true)
         try {
-            const res = await fetch('/api/ai/operator-chat', {
+            const data = await safeFetch('/api/ai/operator-chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
                 body: JSON.stringify({ message: userMsg, context: { stats, pendingInvoicesCount: pendingInvoices.length } })
             })
-            const data = await res.json()
             setAiMessages(prev => [...prev, { role: 'ai', text: data.response || 'I could not process that request.' }])
         } catch {
             setAiMessages(prev => [...prev, { role: 'ai', text: 'Sorry, I had trouble connecting. Please try again.' }])
@@ -107,15 +136,11 @@ export default function OperatorDashboardClient({
     const confirmPayment = async (invoiceId: string, invoiceNumber: string) => {
         setConfirmingInvoice(invoiceId)
         try {
-            const res = await fetch(`/api/invoices/${invoiceId}/confirm-payment`, {
+            const data = await safeFetch(`/api/invoices/${invoiceId}/confirm-payment`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
                 body: JSON.stringify({ invoiceId })
             })
-            const data = await res.json()
-            if (!res.ok) throw new Error(data.error)
             toast.success(`✅ Payment confirmed! Order ${data.orderNumber} created. ${data.itemsReserved} item(s) reserved.`)
-            // Refresh page data after confirmation
             setTimeout(() => window.location.reload(), 1500)
         } catch (err: any) {
             toast.error(err.message || 'Failed to confirm payment')
@@ -127,11 +152,7 @@ export default function OperatorDashboardClient({
     const loadReport = useCallback(async () => {
         setReportLoading(true)
         try {
-            const res = await fetch('/api/operator/report', {
-                headers: { Authorization: `Bearer ${getToken()}` }
-            })
-            if (!res.ok) throw new Error('Failed to load report')
-            setReport(await res.json())
+            setReport(await safeFetch('/api/operator/report'))
         } catch (err: any) {
             toast.error(err.message || 'Could not load report')
         } finally {
@@ -144,11 +165,7 @@ export default function OperatorDashboardClient({
         try {
             const params = new URLSearchParams({ limit: '100' })
             if (entity) params.set('entity', entity)
-            const res = await fetch(`/api/operator/logs?${params}`, {
-                headers: { Authorization: `Bearer ${getToken()}` }
-            })
-            if (!res.ok) throw new Error('Failed to load logs')
-            setLogs(await res.json())
+            setLogs(await safeFetch(`/api/operator/logs?${params}`))
         } catch (err: any) {
             toast.error(err.message || 'Could not load logs')
         } finally {
@@ -182,6 +199,8 @@ export default function OperatorDashboardClient({
 
     const tabs = [
         { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+        { id: 'orders', label: 'Orders', icon: ListOrdered },
+        { id: 'create', label: '+ Create Invoice', icon: FileText },
         { id: 'invoices', label: 'Invoices', icon: FileText },
         { id: 'deliveries', label: 'Deliveries', icon: Truck },
         { id: 'inventory', label: 'Inventory', icon: Package },
@@ -335,31 +354,29 @@ export default function OperatorDashboardClient({
                 {/* ═══ DELIVERIES ═════════════════════════════════════════════════════ */}
                 {activeTab === 'deliveries' && (
                     <div className="space-y-4">
-                        <h2 className="text-lg font-black uppercase tracking-tight">Delivery Control</h2>
-                        <div className="bg-card border rounded-2xl overflow-hidden">
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead className="border-b bg-muted/30">
-                                        <tr>
-                                            {['Tracking', 'Customer', 'Status', 'Worker', 'Vehicle'].map(h => (
-                                                <th key={h} className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-muted-foreground">{h}</th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y">
-                                        {deliveries.map((d: any) => (
-                                            <tr key={d.id} className="hover:bg-muted/20">
-                                                <td className="px-4 py-3 font-mono text-xs font-bold">{d.trackingCode || '—'}</td>
-                                                <td className="px-4 py-3 text-xs">{d.invoice?.user?.fullName || d.invoice?.guestName || 'Guest'}</td>
-                                                <td className="px-4 py-3"><Badge className={`text-[9px] border ${getStatusColor(d.status)}`}>{d.status.replace(/_/g, ' ')}</Badge></td>
-                                                <td className="px-4 py-3 text-xs">{d.claimedByWorker?.fullName || <span className="text-muted-foreground italic">Unassigned</span>}</td>
-                                                <td className="px-4 py-3 text-xs">{d.vehicle?.name || '—'}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                                {deliveries.length === 0 && <div className="p-8 text-center text-muted-foreground text-sm">No active deliveries.</div>}
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h2 className="text-lg font-black uppercase tracking-tight">Delivery Control</h2>
+                                <p className="text-xs text-muted-foreground mt-0.5">Manage dispatch, track couriers, and override statuses.</p>
                             </div>
+                        </div>
+                        <div className="w-full">
+                            <DeliveriesClient initialDeliveries={deliveries} workers={workers} />
+                        </div>
+                    </div>
+                )}
+
+                {/* ═══ ORDERS ═════════════════════════════════════════════════════════ */}
+                {activeTab === 'orders' && (
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h2 className="text-lg font-black uppercase tracking-tight">Orders Management</h2>
+                                <p className="text-xs text-muted-foreground mt-0.5">Confirm payments and manage customer orders like an Admin.</p>
+                            </div>
+                        </div>
+                        <div className="w-full">
+                            <OrdersClient initialOrders={orders} />
                         </div>
                     </div>
                 )}
@@ -606,8 +623,8 @@ export default function OperatorDashboardClient({
                                 {aiMessages.map((msg, i) => (
                                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user'
-                                                ? 'bg-primary text-primary-foreground rounded-br-sm'
-                                                : 'bg-muted rounded-bl-sm'
+                                            ? 'bg-primary text-primary-foreground rounded-br-sm'
+                                            : 'bg-muted rounded-bl-sm'
                                             }`}>
                                             {msg.role === 'ai' && <span className="text-[9px] font-black uppercase tracking-widest text-primary/60 block mb-1">AI OPERATOR</span>}
                                             <span className="whitespace-pre-wrap">{msg.text}</span>
@@ -652,6 +669,177 @@ export default function OperatorDashboardClient({
                         </div>
                     </div>
                 )}
+                {/* ═══ CREATE INVOICE ══════════════════════════════════════════════════ */}
+                {activeTab === 'create' && (() => {
+                    // Load products on tab open
+                    if (!productsLoaded) {
+                        setProductsLoaded(true)
+                        safeFetch('/api/products').then((data: any) => {
+                            setAvailableProducts(Array.isArray(data) ? data : data.products || [])
+                        }).catch(() => { })
+                    }
+
+                    const addItem = (product: any) => {
+                        const existing = createItems.find(i => i.id === product.id)
+                        if (existing) {
+                            setCreateItems(prev => prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i))
+                        } else {
+                            setCreateItems(prev => [...prev, { id: product.id, name: product.name, price: Number(product.monthlyPrice || product.price || 0), qty: 1 }])
+                        }
+                    }
+
+                    const removeItem = (id: string) => setCreateItems(prev => prev.filter(i => i.id !== id))
+
+                    const subtotal = createItems.reduce((s, i) => s + i.price * i.qty, 0)
+
+                    const handleCreateInvoice = async () => {
+                        if (!createForm.customerName || !createForm.email || !createForm.whatsapp || !createForm.address) {
+                            toast.error('Please fill in all customer fields')
+                            return
+                        }
+                        if (createItems.length === 0) {
+                            toast.error('Add at least one product')
+                            return
+                        }
+                        setCreateLoading(true)
+                        try {
+                            const data = await safeFetch('/api/orders', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    items: createItems.flatMap(i => Array(i.qty).fill({ id: i.id, price: i.price, name: i.name })),
+                                    paymentMethod: createForm.paymentMethod,
+                                    deliveryAddress: createForm.address,
+                                    notes: createForm.notes,
+                                    guestInfo: {
+                                        fullName: createForm.customerName,
+                                        email: createForm.email,
+                                        whatsapp: createForm.whatsapp,
+                                    }
+                                })
+                            })
+                            const inv = data.invoice || data
+                            toast.success(`✅ Invoice ${inv.invoiceNumber || inv.id} created successfully!`)
+                            setCreateForm({ customerName: '', email: '', whatsapp: '', address: '', notes: '', paymentMethod: 'BANK_TRANSFER' })
+                            setCreateItems([])
+                            setTimeout(() => window.location.reload(), 1500)
+                        } catch (err: any) {
+                            toast.error(err.message || 'Failed to create invoice')
+                        } finally {
+                            setCreateLoading(false)
+                        }
+                    }
+
+                    return (
+                        <div className="grid lg:grid-cols-2 gap-6">
+                            {/* Left: Customer Info */}
+                            <div className="space-y-4">
+                                <div className="bg-card border rounded-2xl p-5 space-y-4">
+                                    <h2 className="text-sm font-black uppercase tracking-widest text-primary">Customer Info</h2>
+                                    {([
+                                        { key: 'customerName', label: 'Full Name', placeholder: 'John Doe' },
+                                        { key: 'email', label: 'Email', placeholder: 'john@email.com' },
+                                        { key: 'whatsapp', label: 'WhatsApp', placeholder: '+628...' },
+                                        { key: 'address', label: 'Delivery Address', placeholder: 'Jl. Pantai Berawa...' },
+                                    ] as const).map(field => (
+                                        <div key={field.key} className="space-y-1">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{field.label}</label>
+                                            <input
+                                                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                                placeholder={field.placeholder}
+                                                value={createForm[field.key]}
+                                                onChange={e => setCreateForm(f => ({ ...f, [field.key]: e.target.value }))}
+                                            />
+                                        </div>
+                                    ))}
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Payment Method</label>
+                                        <select
+                                            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                            value={createForm.paymentMethod}
+                                            onChange={e => setCreateForm(f => ({ ...f, paymentMethod: e.target.value }))}
+                                        >
+                                            <option value="BANK_TRANSFER">Bank Transfer</option>
+                                            <option value="CASH">Cash</option>
+                                            <option value="QRIS">QRIS</option>
+                                            <option value="CREDIT_CARD">Credit Card</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Notes (optional)</label>
+                                        <textarea
+                                            rows={2}
+                                            className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+                                            placeholder="Special requests..."
+                                            value={createForm.notes}
+                                            onChange={e => setCreateForm(f => ({ ...f, notes: e.target.value }))}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Order Summary */}
+                                <div className="bg-card border rounded-2xl p-5 space-y-3">
+                                    <h2 className="text-sm font-black uppercase tracking-widest text-primary">Order Summary</h2>
+                                    {createItems.length === 0 ? (
+                                        <p className="text-xs text-muted-foreground">No items added yet</p>
+                                    ) : (
+                                        <div className="space-y-2">
+                                            {createItems.map(item => (
+                                                <div key={item.id} className="flex items-center justify-between text-sm">
+                                                    <span className="font-medium">{item.name} ×{item.qty}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-muted-foreground">Rp {(item.price * item.qty).toLocaleString('id-ID')}</span>
+                                                        <button onClick={() => removeItem(item.id)} className="text-destructive hover:text-red-700 text-xs">✕</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div className="border-t pt-2 flex justify-between font-black">
+                                                <span>Subtotal</span>
+                                                <span className="text-primary">Rp {subtotal.toLocaleString('id-ID')}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <Button
+                                        className="w-full font-black rounded-xl"
+                                        disabled={createLoading || createItems.length === 0}
+                                        onClick={handleCreateInvoice}
+                                    >
+                                        {createLoading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Creating...</> : '🧾 Create Invoice'}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* Right: Product Picker */}
+                            <div className="bg-card border rounded-2xl p-5 space-y-3">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">Select Products</h2>
+                                {availableProducts.length === 0 ? (
+                                    <div className="text-center py-8 text-muted-foreground text-sm"><Loader2 className="h-5 w-5 animate-spin mx-auto mb-2" />Loading products...</div>
+                                ) : (
+                                    <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                                        {availableProducts.map((p: any) => (
+                                            <div key={p.id} className="flex items-center justify-between p-3 border rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all">
+                                                <div>
+                                                    <p className="text-sm font-bold">{p.name}</p>
+                                                    <p className="text-xs text-muted-foreground">{p.category} • Rp {Number(p.monthlyPrice || p.price || 0).toLocaleString('id-ID')}/mo</p>
+                                                    {p.stock !== undefined && <p className={`text-[10px] font-bold mt-0.5 ${p.stock === 0 ? 'text-red-500' : 'text-green-600'}`}>{p.stock === 0 ? 'OUT OF STOCK' : `${p.stock} available`}</p>}
+                                                </div>
+                                                <Button
+                                                    size="sm"
+                                                    variant={createItems.find(i => i.id === p.id) ? 'default' : 'outline'}
+                                                    className="shrink-0 text-xs font-black"
+                                                    onClick={() => addItem(p)}
+                                                    disabled={p.stock === 0}
+                                                >
+                                                    {createItems.find(i => i.id === p.id) ? `+1 (${createItems.find(i => i.id === p.id)?.qty})` : '+ Add'}
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )
+                })()}
+
             </div>
         </div>
     )

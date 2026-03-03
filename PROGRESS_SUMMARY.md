@@ -91,9 +91,9 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-**Last Updated**: 2026-03-03 17:45:00 (WITA/GMT+8)
-**System Version**: 1.7.6-stable
-**Environment**: Production Ready (Hydration & Stability Fix)
+**Last Updated**: 2026-03-03 21:26:00 (WITA/GMT+8)
+**System Version**: 1.7.7-stable
+**Environment**: Production Ready (Operator Refinement & UX Polish)
 - ✅ **Global Worker Dispatch System**:
     - ✅ **Automated Job Creation**: Orders and Invoices now automatically generate `QUEUED` delivery jobs.
     - ✅ **Marketplace Logic**: Workers can see and "Claim" available jobs from the "Pool" in their dashboard.
@@ -234,6 +234,10 @@
     - **SEO Hardening**: Enriched metadata with high-density keywords and verified viewport/theme configuration.
     - **Schema Enrichment**: Added `AggregateRating` logic to structured data for search ranking boost.
     - **Accessibility Score**: Standardized ARIA labels and optimized image `sizes` for zero layout shift.
+- [x] **Operator Dashboard Refinement (v1.7.7)**:
+    - **Advanced Admin Operations**: Replaced basic Operator tables with full-featured `<OrdersClient>` and `<DeliveriesClient>`. Operators can now handle order confirmations, manage Gojek dispatch, and fully control deliveries like an Admin.
+    - **Intent-Based Prompts**: Deferred invasive browser location/notification prompts until the user initiates a high-intent action (Checkout or successful Login), greatly enhancing mobile accessibility and fast loading pages.
+    - **React Stability Guard**: Secured the JWT parsing strictly to `typeof string`, completely preventing the Operator Dashboard object-rendering crash.
 - [x] **Hydration & Stability Fix (v1.7.6)**:
     - **Stability**: Implemented `isMounted` guards to fix "Hydration failed" errors across all landing page carousels.
     - **ID Sync**: Synchronized Radix UI IDs by deferring interactive components to client-only mounting.

@@ -67,6 +67,7 @@ export async function GET(
       }),
       subtotal: Number(invoice.subtotal),
       tax: Number(invoice.tax),
+      deliveryFee: Number(invoice.deliveryFee || 0),
       total: Number(invoice.total),
       currency: invoice.currency || 'IDR',
       orderNumber: invoice.order?.orderNumber || '',

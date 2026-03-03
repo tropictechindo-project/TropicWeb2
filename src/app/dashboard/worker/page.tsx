@@ -24,7 +24,8 @@ import {
   Bell,
   Package,
   TrendingUp,
-  ClipboardCheck
+  ClipboardCheck,
+  Navigation
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'

@@ -72,6 +72,11 @@ export async function PATCH(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
+        const payload = await (await import('@/lib/auth/utils')).verifyToken(token)
+        if (!payload || !['ADMIN', 'OPERATOR'].includes(payload.role)) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+        }
+
         const { id } = await params
         const body = await request.json()
 

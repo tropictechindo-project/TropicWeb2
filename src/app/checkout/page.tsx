@@ -168,7 +168,6 @@ export default function CheckoutPage() {
 
             if (!lat || !lng) {
                 window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
-                window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
             }
 
             // Create Invoice (Invoice-first flow)

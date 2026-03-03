@@ -6,13 +6,13 @@ export async function POST(req: NextRequest) {
     try {
         const user = await verifyAuth(req)
         if (!user || user.role !== 'ADMIN') {
-            return new NextResponse('Unauthorized', { status: 401 })
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         const { entityId, entityType } = await req.json()
 
         if (!entityId || !entityType) {
-            return new NextResponse('Missing required fields', { status: 400 })
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
         }
 
         // Create dismissal record
@@ -35,6 +35,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: true })
     } catch (error) {
         console.error('Dismiss notification error:', error)
-        return new NextResponse('Internal Server Error', { status: 500 })
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 }

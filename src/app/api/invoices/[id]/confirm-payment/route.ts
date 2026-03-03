@@ -11,16 +11,17 @@ export const dynamic = 'force-dynamic'
 // Called by Admin or Operator after verifying customer payment.
 // This is the trigger for the full order flow:
 //   Invoice (PAID) → Order → RentalItems (ALL cart items) → ProductUnit reserved → Delivery (QUEUED)
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const auth = await verifyAuth(req)
-        if (!auth) return new NextResponse('Unauthorized', { status: 401 })
+        if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         if (auth.role !== 'ADMIN' && auth.role !== 'OPERATOR') {
-            return new NextResponse('Forbidden', { status: 403 })
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const { invoiceId } = await req.json().catch(() => ({ invoiceId: params.id }))
-        const targetId = params.id || invoiceId
+        const { id } = await params
+        const { invoiceId } = await req.json().catch(() => ({ invoiceId: id }))
+        const targetId = id || invoiceId
 
         const invoice = await db.invoice.findUnique({ where: { id: targetId } })
         if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
@@ -68,7 +69,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
             })
 
             // C. Reserve stock for EVERY line item
-            const rentalItems = []
+            const rentalItems: any[] = []
             for (const item of cartItems) {
                 // Find first available unit for this product's variant
                 const variant = await tx.productVariant.findFirst({

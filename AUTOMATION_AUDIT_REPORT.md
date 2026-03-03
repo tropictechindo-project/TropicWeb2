@@ -1,4 +1,4 @@
-# TropicTech Automation Audit Report (v1.2.0)
+# TropicTech Automation Audit Report (v1.7.7)
 
 This report summarizes the current state of system automation and identifies manual processes that are candidates for future optimization.
 
@@ -18,6 +18,7 @@ The following workflows are fully automated and trigger system-wide changes with
     - Signature-based (`TropicBoss2026`) instant execution of approved actions.
     - Contextual memory of pending proposals across chat sessions.
 6.  **AI Proposal Lifecycle**: Automatic 7-day expiration for unapproved AI proposals.
+7.  **Intent-Based Prompting**: Location and Notification permissions are intelligently delayed (Location at Checkout, Notification at Login) to prevent user drop-off and optimize page load speed.
 
 ---
 
@@ -55,4 +56,4 @@ The system is now hardened against "Crush Logic" (Race Conditions).
 - Atomic Transactions are used for all multi-step lifecycle changes.
 - Duplicate trigger prevention is active for the `PICKUP` automation.
 
-**Final Verdict**: TropicTech v1.2.0 is **90% Automated** on the operational core. The remaining gaps are strictly "Admin Super-Vision" items.
+**Final Verdict**: TropicTech v1.7.7 is **90% Automated** on the operational core. The remaining gaps are strictly "Admin Super-Vision" items.

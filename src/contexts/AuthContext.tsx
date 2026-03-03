@@ -7,7 +7,7 @@ interface User {
   username: string
   email: string
   fullName: string
-  role: 'USER' | 'WORKER' | 'ADMIN'
+  role: 'USER' | 'WORKER' | 'ADMIN' | 'OPERATOR'
   whatsapp?: string
   baliAddress?: string
   profileImage?: string
@@ -23,7 +23,16 @@ interface AuthContextType {
   isAuthenticated: boolean
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+// Safe default — prevents "must be used within AuthProvider" during SSR/static rendering
+const defaultAuth: AuthContextType = {
+  user: null,
+  isLoading: true,
+  isAuthenticated: false,
+  login: async () => false,
+  logout: () => { },
+}
+
+const AuthContext = createContext<AuthContextType>(defaultAuth)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -132,9 +141,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
+  return useContext(AuthContext)
 }

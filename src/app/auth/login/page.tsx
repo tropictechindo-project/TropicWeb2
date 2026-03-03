@@ -46,6 +46,10 @@ export default function LoginPage() {
         const data = await response.json()
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
+
+        // Ask for notifications when they login
+        setTimeout(() => window.dispatchEvent(new CustomEvent('trigger-notification-prompt')), 1000)
+
         toast.success('Logged in successfully')
 
         if (data.user.role === 'ADMIN') {
