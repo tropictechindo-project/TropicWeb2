@@ -1,9 +1,10 @@
 "use client"
 
 import React, { useState, useRef } from 'react'
-import { UploadCloud, X, Loader2, Image as ImageIcon } from 'lucide-react'
+import { UploadCloud, X, Loader2, Image as ImageIcon, List } from 'lucide-react'
 import { toast } from 'sonner'
 import heic2any from 'heic2any'
+import { Badge } from '@/components/ui/badge'
 
 interface ImageUploadToolProps {
     value: string[]
@@ -95,29 +96,46 @@ export function ImageUploadTool({ value = [], onChange, maxImages = 6 }: ImageUp
 
     return (
         <div className="space-y-4">
-            {/* Gallery Grid */}
+            {/* Vertical List View */}
             {value.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="space-y-3">
                     {value.map((url, index) => (
-                        <div key={index} className="group relative aspect-square rounded-xl overflow-hidden border bg-muted shadow-sm">
-                            <img
-                                src={url}
-                                alt={`Upload ${index + 1}`}
-                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                                onError={(e) => (e.currentTarget.style.display = 'none')}
-                            />
-                            {index === 0 && (
-                                <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md z-10">
-                                    MAIN COVER
+                        <div key={index} className="flex items-center gap-4 p-3 bg-card border rounded-xl shadow-sm group hover:border-primary/30 transition-all">
+                            <div className="relative w-20 h-20 rounded-lg overflow-hidden border bg-muted shrink-0">
+                                <img
+                                    src={url}
+                                    alt={`Upload ${index + 1}`}
+                                    className="object-cover w-full h-full"
+                                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                {index === 0 && (
+                                    <div className="absolute bottom-0 left-0 right-0 bg-primary/90 text-[8px] text-white font-black text-center py-0.5">
+                                        COVER
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[10px] font-mono text-muted-foreground truncate">{url.split('/').pop()}</p>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <Badge variant="outline" className="text-[8px] h-4 px-1 uppercase font-bold">
+                                        Image {index + 1}
+                                    </Badge>
+                                    {index === 0 && (
+                                        <Badge className="text-[8px] h-4 px-1 uppercase font-black bg-primary/10 text-primary border-none">
+                                            Main Entry
+                                        </Badge>
+                                    )}
                                 </div>
-                            )}
+                            </div>
+
                             <button
                                 type="button"
                                 onClick={() => removeImage(index)}
-                                className="absolute top-2 right-2 p-1.5 bg-background/80 hover:bg-destructive text-foreground hover:text-destructive-foreground backdrop-blur-sm shadow-md rounded-full opacity-0 group-hover:opacity-100 transition-all z-10"
+                                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors"
                                 title="Remove Image"
                             >
-                                <X className="h-4 w-4" />
+                                <X className="h-5 w-5" />
                             </button>
                         </div>
                     ))}

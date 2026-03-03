@@ -369,9 +369,9 @@ export default function CheckoutPage() {
 
                             {/* Currency Converter Section */}
                             <div className="mb-6 p-4 rounded-xl border bg-primary/5 border-primary/10">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary">Price Preview</h4>
-                                    <div className="flex gap-2">
+                                <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary shrink-0">Price Preview</h4>
+                                    <div className="flex flex-wrap gap-2 justify-end">
                                         {['USD', 'EUR', 'AUD', 'SGD'].map((curr) => (
                                             <Button
                                                 key={curr}

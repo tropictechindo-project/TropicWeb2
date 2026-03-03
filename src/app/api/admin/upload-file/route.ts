@@ -33,20 +33,20 @@ export async function POST(req: NextRequest) {
 
         const { data, error } = await supabase
             .storage
-            .from('Upload File')
+            .from('UploadFile')
             .upload(filePath, buffer, {
                 contentType: file.type || 'application/pdf',
                 upsert: true
             })
 
         if (error) {
-            console.error('Supabase storage error:', error)
-            return new NextResponse(`Storage Error: ${error.message}`, { status: 500 })
+            console.error('[API_UPLOAD_FILE] Supabase storage error:', error)
+            return new NextResponse(`Storage Error: ${error.message}. Ensure bucket 'UploadFile' exists.`, { status: 500 })
         }
 
         const { data: { publicUrl } } = supabase
             .storage
-            .from('Upload File')
+            .from('UploadFile')
             .getPublicUrl(filePath)
 
         return NextResponse.json({ url: publicUrl })

@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
             })
 
         if (error) {
-            console.error('Supabase storage error:', error)
-            return new NextResponse(`Storage Error: ${error.message}`, { status: 500 })
+            console.error('[API_UPLOAD_WEBP] Supabase storage error:', error)
+            return new NextResponse(`Storage Error: ${error.message}. Ensure bucket 'Photos' exists with public access.`, { status: 500 })
         }
 
         const { data: { publicUrl } } = supabase

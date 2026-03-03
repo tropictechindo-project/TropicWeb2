@@ -108,12 +108,18 @@ export function UsersClient({ users }: UsersClientProps) {
         password: "" // Optional for updating
     })
 
-    const filteredUsers = users.filter(user =>
-        (user.fullName?.toLowerCase() || user.username.toLowerCase()).includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.whatsapp.includes(searchTerm)
-    )
+    if (!mounted) {
+        return <div className="w-full h-64 flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>
+    }
 
+    const filteredUsers = (users || []).filter(user => {
+        const searchStr = searchTerm.toLowerCase()
+        return (
+            user.username?.toLowerCase().includes(searchStr) ||
+            user.email?.toLowerCase().includes(searchStr) ||
+            user.fullName?.toLowerCase().includes(searchStr)
+        )
+    })
     const getUserStatus = (user: any) => {
         const hasActiveOrder = user.orders.some((o: any) => o.status === 'ACTIVE')
         return hasActiveOrder ? 'Active Rent' : 'Not Renting'
