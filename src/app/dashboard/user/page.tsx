@@ -233,6 +233,23 @@ export default function UserDashboard() {
     }
   }
 
+  const handleConfirmReceipt = async (orderId: string) => {
+    if (!confirm('Confirm that you have received all your rented items?')) return
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch(`/api/orders/${orderId}/complete`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed')
+      toast.success('✅ Receipt confirmed! Your rental is now active.')
+      fetchOrders()
+    } catch (err: any) {
+      toast.error(err.message || 'Could not confirm receipt')
+    }
+  }
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'COMPLETED':
@@ -421,6 +438,17 @@ export default function UserDashboard() {
                           <p className="text-[10px] font-bold text-green-600 tracking-wider uppercase">VIA {order.paymentMethod}</p>
                         </div>
                         <div className="flex flex-col w-full gap-2">
+                          {/* Confirm Receipt — shown for PAID orders awaiting delivery */}
+                          {(order.status === 'PAID' || order.status === 'ACTIVE') && (
+                            <Button
+                              size="sm"
+                              className="w-full font-black rounded-lg gap-2 bg-green-600 hover:bg-green-700 text-white"
+                              onClick={() => handleConfirmReceipt(order.id)}
+                            >
+                              <CheckCircle className="h-3.5 w-3.5" />
+                              CONFIRM RECEIVED
+                            </Button>
+                          )}
                           <Button size="sm" className="w-full font-black rounded-lg gap-2" onClick={() => handleExtendRental(order.id)}>
                             EXTEND RENTAL
                           </Button>
@@ -444,14 +472,7 @@ export default function UserDashboard() {
                               size="sm"
                               variant="secondary"
                               className="w-full font-black rounded-lg gap-2 text-[10px]"
-                              onClick={() => {
-                                // const worker = order.workerSchedules[0].worker
-                                // Open Chat Hub? Or Direct Chat? 
-                                // Ideally we open the hub and pre-select the user.
-                                // For now, just open the hub.
-                                setShowSupportHub(true)
-                                // In a future iteration, we can pass a specific userId to open directly
-                              }}
+                              onClick={() => setShowSupportHub(true)}
                             >
                               <MessageSquare className="h-3 w-3" />
                               MESSAGE WORKER

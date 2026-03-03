@@ -1,18 +1,28 @@
 "use client"
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Package, ArrowRight, Loader2, MapPin } from 'lucide-react'
+import { Search, Package, ArrowRight, Loader2, MapPin, CheckCircle } from 'lucide-react'
 import { toast } from 'sonner'
 
-export default function TrackingSearchPage() {
+function TrackingSearchPageInner() {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [invoiceNumber, setInvoiceNumber] = useState('')
     const [email, setEmail] = useState('')
     const [isSearching, setIsSearching] = useState(false)
+    const [orderPlaced, setOrderPlaced] = useState(false)
+
+    // Pre-fill from checkout redirect (?invoice=INV-xxx&email=...)
+    useEffect(() => {
+        const inv = searchParams.get('invoice')
+        const em = searchParams.get('email')
+        if (inv) { setInvoiceNumber(inv.toUpperCase()); setOrderPlaced(true) }
+        if (em) setEmail(em)
+    }, [searchParams])
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -125,5 +135,18 @@ export default function TrackingSearchPage() {
                 </div>
             </div>
         </div>
+    )
+}
+
+// Suspense wrapper required because useSearchParams() is used
+export default function TrackingSearchPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            </div>
+        }>
+            <TrackingSearchPageInner />
+        </Suspense>
     )
 }

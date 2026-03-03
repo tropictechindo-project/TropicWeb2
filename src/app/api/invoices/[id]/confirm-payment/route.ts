@@ -192,7 +192,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
             }
         }, 0)
 
-        await logActivity(auth.userId, 'CONFIRM_PAYMENT', `Payment confirmed for invoice ${invoice.invoiceNumber}. Order ${result.order.orderNumber} created.`, { invoiceId: invoice.id, orderId: result.order.id });
+        await logActivity({ userId: auth.userId, action: 'CONFIRM_PAYMENT', entity: 'INVOICE', details: `Invoice ${invoice.invoiceNumber} marked PAID → Order ${result.order.orderNumber} created by ${auth.role}` })
         return NextResponse.json({
             success: true,
             orderNumber: result.order.orderNumber,

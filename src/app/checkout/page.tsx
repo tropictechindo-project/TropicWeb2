@@ -163,25 +163,23 @@ export default function CheckoutPage() {
         setIsSubmitting(true)
 
         try {
-            // 0. Get Location if available
-            let lat = localStorage.getItem('user_lat')
-            let lng = localStorage.getItem('user_lng')
+            const lat = localStorage.getItem('user_lat')
+            const lng = localStorage.getItem('user_lng')
 
             if (!lat || !lng) {
-                // Trigger the prompt and wait a bit or just proceed with address
                 window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
                 window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
             }
 
-            // 1. Create Order
+            // Create Invoice (Invoice-first flow)
             const orderRes = await fetch('/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Standard token retrieval
+                    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
                 },
                 body: JSON.stringify({
-                    items: items.map(item => ({ id: item.id, price: item.price })),
+                    items: items.map(item => ({ id: item.id, price: item.price, name: item.name })),
                     paymentMethod,
                     deliveryAddress: formData.address,
                     guestInfo: {
@@ -197,35 +195,20 @@ export default function CheckoutPage() {
             const orderData = await orderRes.json()
             if (!orderRes.ok) throw new Error(orderData.error || 'Failed to create order')
 
-            const orderId = orderData.order.id
+            // orderData now contains: { invoice: { id, invoiceNumber, total, ... } }
+            const invoiceNumber = orderData.invoice?.invoiceNumber || orderData.invoiceNumber
+            const invoiceId = orderData.invoice?.id || orderData.invoiceId
 
-            // 2. Initiate Payment
-            const payRes = await fetch('/api/payments/initiate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    orderId,
-                    provider: paymentMethod,
-                    amount: orderData.order.totalAmount
-                })
-            })
-
-            const payData = await payRes.json()
-            if (!payRes.ok) throw new Error(payData.error || 'Failed to initiate payment')
-
-            toast.success('Order placed successfully! ' + payData.instructions)
+            toast.success(`✅ Order placed! Invoice ${invoiceNumber} — transfer payment then WhatsApp us your proof.`)
             clearCart()
 
-            // Redirect to order details or success page
+            // Redirect to public tracking page pre-filled with invoice number
             setTimeout(() => {
-                router.push('/')
-            }, 3000)
+                router.push(`/tracking?invoice=${invoiceNumber}&email=${encodeURIComponent(formData.email)}`)
+            }, 2000)
 
         } catch (error: any) {
-            toast.error(error.message || 'Payment initiation failed')
+            toast.error(error.message || 'Order submission failed')
         } finally {
             setIsSubmitting(false)
         }

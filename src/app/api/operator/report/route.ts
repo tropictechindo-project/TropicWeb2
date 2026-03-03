@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
             color: v.color,
             available: v.units.filter(u => u.status === 'AVAILABLE').length,
             reserved: v.units.filter(u => u.status === 'RESERVED').length,
-            inUse: v.units.filter(u => u.status === 'IN_USE' || u.status === 'RENTED').length,
+            inUse: v.units.filter((u: any) => u.status === 'RENTED').length,
             maintenance: v.units.filter(u => u.status === 'MAINTENANCE').length,
             total: v.units.length,
         }))
