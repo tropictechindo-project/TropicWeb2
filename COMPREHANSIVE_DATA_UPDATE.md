@@ -185,3 +185,4 @@ The website operates through three distinct entry points based on user roles:
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
 - [x] **Legal & Compliance Pages**: Built robust Privacy Policy, Terms & Conditions, and Refund Policy pages, matching Tropic Tech's high-end 'Dark Mode Hero' UI and typography, and validated complete integration with the primary Footer.
+- [x] **Legal Pages Editable**: Transformed the built Privacy Policy, Terms & Conditions, and Refund Policy pages into Server Components that dynamically fetch strings via `db.siteSetting.findUnique`. Added a dedicated Tab within the Admin Dashboard &gt; Website settings containing cleanly handled Textareas that hook into the `useSiteSettings` POST endpoint.

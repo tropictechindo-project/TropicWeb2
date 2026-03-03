@@ -142,6 +142,8 @@ export default function WebsiteSettingsPage() {
             keysToSave = ['affiliate_content']
         } else if (section === 'sections') {
             keysToSave = ['about_title', 'about_text', 'services_title', 'services_text', 'reviews_title', 'reviews_text', 'about_stats', 'services_data', 'reviews_data']
+        } else if (section === 'legal') {
+            keysToSave = ['privacy_policy_text', 'terms_conditions_text', 'refund_policy_text']
         }
 
         try {
@@ -197,11 +199,12 @@ export default function WebsiteSettingsPage() {
             </div>
 
             <Tabs defaultValue="hero" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                     <TabsTrigger value="hero">Hero</TabsTrigger>
                     <TabsTrigger value="faq">FAQ</TabsTrigger>
                     <TabsTrigger value="about">About Page</TabsTrigger>
                     <TabsTrigger value="affiliate">Affiliate Page</TabsTrigger>
+                    <TabsTrigger value="legal">Legal Pages</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="hero" className="space-y-4">
@@ -741,6 +744,59 @@ export default function WebsiteSettingsPage() {
                                     {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     <Save className="mr-2 h-4 w-4" />
                                     Save Affiliate Changes
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="legal" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Legal Pages</CardTitle>
+                            <CardDescription>
+                                Edit the content of your site's standard legal documents. Line breaks typed here will be visibly preserved on the live pages.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="privacy_policy_text">Privacy Policy Text</Label>
+                                <Textarea
+                                    id="privacy_policy_text"
+                                    className="min-h-[200px]"
+                                    value={formData.privacy_policy_text || ''}
+                                    onChange={(e) => handleInputChange('privacy_policy_text', e.target.value)}
+                                    placeholder="Enter Privacy Policy content..."
+                                />
+                            </div>
+
+                            <div className="space-y-2 border-t pt-4">
+                                <Label htmlFor="terms_conditions_text">Terms & Conditions Text</Label>
+                                <Textarea
+                                    id="terms_conditions_text"
+                                    className="min-h-[200px]"
+                                    value={formData.terms_conditions_text || ''}
+                                    onChange={(e) => handleInputChange('terms_conditions_text', e.target.value)}
+                                    placeholder="Enter Terms and Conditions content..."
+                                />
+                            </div>
+
+                            <div className="space-y-2 border-t pt-4">
+                                <Label htmlFor="refund_policy_text">Refund Policy Text</Label>
+                                <Textarea
+                                    id="refund_policy_text"
+                                    className="min-h-[200px]"
+                                    value={formData.refund_policy_text || ''}
+                                    onChange={(e) => handleInputChange('refund_policy_text', e.target.value)}
+                                    placeholder="Enter Refund Policy content..."
+                                />
+                            </div>
+
+                            <div className="pt-4 flex justify-end">
+                                <Button onClick={() => handleSave('legal')} disabled={saving}>
+                                    {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    <Save className="mr-2 h-4 w-4" />
+                                    Save Legal Changes
                                 </Button>
                             </div>
                         </CardContent>
