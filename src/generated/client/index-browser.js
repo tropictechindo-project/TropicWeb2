@@ -143,7 +143,14 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   taxRate: 'taxRate',
   userId: 'userId',
   discountAmount: 'discountAmount',
-  discountPercentage: 'discountPercentage'
+  discountPercentage: 'discountPercentage',
+  lineItems: 'lineItems',
+  completedByUserId: 'completedByUserId',
+  completedAt: 'completedAt',
+  locationLatitude: 'locationLatitude',
+  locationLongitude: 'locationLongitude',
+  paymentMethod: 'paymentMethod',
+  deliveryAddress: 'deliveryAddress'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -165,6 +172,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   paymentConfirmedBy: 'paymentConfirmedBy',
   paymentStatus: 'paymentStatus',
   userId: 'userId',
+  completedByUserId: 'completedByUserId',
+  completedAt: 'completedAt',
   locationLatitude: 'locationLatitude',
   locationLongitude: 'locationLongitude',
   discountAmount: 'discountAmount',
@@ -595,15 +604,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.PaymentProvider = exports.$Enums.PaymentProvider = {
   STRIPE: 'STRIPE',
@@ -664,7 +673,8 @@ exports.AiAgentSystemName = exports.$Enums.AiAgentSystemName = {
   WORKER: 'WORKER',
   RISK: 'RISK',
   SELLER: 'SELLER',
-  MASTER: 'MASTER'
+  MASTER: 'MASTER',
+  OPERATOR: 'OPERATOR'
 };
 
 exports.AiActionStatus = exports.$Enums.AiActionStatus = {

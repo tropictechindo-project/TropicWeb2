@@ -34,11 +34,21 @@ model Invoice {
   userId              String?    @map("user_id") @db.Uuid
   discountAmount      Decimal?   @default(0) @map("discount_amount") @db.Decimal(10, 2)
   discountPercentage  Int?       @default(0) @map("discount_percentage")
+  // v1.8.0: Invoice-first order flow fields
+  lineItems           Json?      @map("line_items")           // Stores cart items at time of invoice creation
+  completedByUserId   String?    @map("completed_by_user_id") @db.Uuid // User who confirmed receipt
+  completedAt         DateTime?  @map("completed_at") @db.Timestamptz(6)
+  locationLatitude    Float?     @map("latitude")
+  locationLongitude   Float?     @map("longitude")
+  paymentMethod       String?    @map("payment_method")
+  deliveryAddress     String?    @map("delivery_address")
   deliveries          Delivery[]
   order               Order?     @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user                User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([emailSent], map: "idx_invoices_email_sent")
+  @@index([guestEmail], map: "idx_invoices_guest_email")
+  @@index([status], map: "idx_invoices_status")
   @@map("invoices")
 }
 
@@ -61,19 +71,24 @@ model Order {
   paymentConfirmedAt                       DateTime?            @map("payment_confirmed_at") @db.Timestamptz(6)
   paymentConfirmedBy                       String?              @map("payment_confirmed_by") @db.Uuid
   paymentStatus                            String?              @default("PENDING") @map("payment_status") @db.VarChar(20)
-  userId                                   String               @map("user_id") @db.Uuid
+  // v1.8.0: nullable to support guest orders (no account required)
+  userId                                   String?              @map("user_id") @db.Uuid
+  // v1.8.0: track who confirmed receipt
+  completedByUserId                        String?              @map("completed_by_user_id") @db.Uuid
+  completedAt                              DateTime?            @map("completed_at") @db.Timestamptz(6)
   locationLatitude                         Float?               @map("latitude")
   locationLongitude                        Float?               @map("longitude")
   discountAmount                           Decimal?             @default(0) @map("discount_amount") @db.Decimal(10, 2)
   discountPercentage                       Int?                 @default(0) @map("discount_percentage")
   invoices                                 Invoice[]
   users_orders_payment_confirmed_byTousers User?                @relation("orders_payment_confirmed_byTousers", fields: [paymentConfirmedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user                                     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                                     User?                @relation(fields: [userId], references: [id], onDelete: Cascade)
   paymentTransactions                      PaymentTransaction[]
   assignedUnits                            ProductUnit[]
   rentalItems                              RentalItem[]
 
   @@index([paymentStatus], map: "idx_orders_payment_status")
+  @@index([userId], map: "idx_orders_user_id")
   @@map("orders")
 }
 
@@ -749,6 +764,7 @@ enum AiAgentSystemName {
   RISK
   SELLER
   MASTER
+  OPERATOR
 }
 
 enum AiActionStatus {

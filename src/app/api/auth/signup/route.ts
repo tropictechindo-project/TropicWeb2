@@ -93,6 +93,28 @@ export async function POST(request: NextRequest) {
     const verificationLink = `${request.nextUrl.origin}/auth/verify-email?token=${verificationToken}`
     await sendVerificationEmail(email, verificationLink)
 
+    // 5. Claim any guest invoices/orders created with this email before signup (v1.8.0)
+    try {
+      await db.invoice.updateMany({
+        where: { guestEmail: email, userId: null },
+        data: { userId: user.id }
+      })
+      // Also backfill orders linked to those invoices
+      const claimedInvoices = await db.invoice.findMany({
+        where: { userId: user.id, guestEmail: email },
+        select: { orderId: true }
+      })
+      const orderIds = claimedInvoices.map(i => i.orderId).filter(Boolean) as string[]
+      if (orderIds.length > 0) {
+        await db.order.updateMany({
+          where: { id: { in: orderIds }, userId: null },
+          data: { userId: user.id }
+        })
+      }
+    } catch (claimError) {
+      console.warn('[SIGNUP] Failed to claim guest orders — non-critical:', claimError)
+    }
+
     return NextResponse.json({
       message: 'Account created successfully. Please check your email to verify your account.',
       user: {
@@ -111,3 +133,4 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
