@@ -18,10 +18,11 @@ export async function PATCH(
 
         const { id } = await params
         const body = await req.json()
-        const { isActive, role, fullName, email, whatsapp, username, password } = body
+        const { isActive, role, fullName, email, whatsapp, username, password, isVerified } = body
 
         const updateData: any = {}
         if (isActive !== undefined) updateData.isActive = isActive
+        if (isVerified !== undefined) updateData.isVerified = isVerified
         if (role !== undefined) updateData.role = role
         if (fullName !== undefined) updateData.fullName = fullName
         if (email !== undefined) updateData.email = email

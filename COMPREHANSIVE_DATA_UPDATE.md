@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-02 14:35:00 (WITA/GMT+8)
-**System Version**: 1.4.0-stable
-**Environment**: Production Ready (Smart Logistics & SEO Gold)
+**Last Updated**: 2026-03-03 15:45:00 (WITA/GMT+8)
+**System Version**: 1.5.0-stable
+**Environment**: Production Ready (Financial Intelligence & SEO Gold)
 
 ---
 
@@ -171,6 +171,10 @@ The website operates through three distinct entry points based on user roles:
   - **SEO Hardening**: Enriched metadata with high-density keywords and verified viewport/theme configuration.
   - **Schema Enrichment**: Added `AggregateRating` logic to structured data for search ranking boost.
   - **Accessibility Score**: Standardized ARIA labels and optimized image `sizes` for zero layout shift.
+- [x] **Financial Tooling & Currency Intelligence (v1.5.0)**:
+  - **Real-time Currency Preview**: Added support for USD, EUR, AUD, SGD in checkout with live exchange rate integration.
+  - **Admin Invoice Overrides**: Enabled manual editing of Subtotal, Tax, and Delivery fees in the Admin Dashboard.
+  - **Complete PDF Alignment**: Updated invoice generation engine to reflect manual fee overrides in all paper/PDF documents.
 
 > [!IMPORTANT]
 > **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.

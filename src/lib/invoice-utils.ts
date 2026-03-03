@@ -2,7 +2,7 @@ import { db } from '@/lib/db'
 
 /**
  * Calculate invoice totals with 2% tax (excluding delivery fee)
- * Delivery Fee: IDR 100.000 per 10km (IDR 10.000 per km)
+ * Delivery Fee: IDR 10.000 per KM, with a minimum of IDR 100.000
  */
 export function calculateInvoiceTotals(
     subtotal: number,
@@ -12,9 +12,8 @@ export function calculateInvoiceTotals(
 ) {
     const taxRate = 0.02 // 2%
 
-    // Delivery Fee: 10k per km. Default minimum 100k if distance is 0 but delivery is required?
-    // User said "100k / 10km", so 10k per km.
-    const calculatedDeliveryFee = Math.max(100000, distanceKm * 10000)
+    // Delivery Fee: IDR 100.000 per 10 KM, Minimum IDR 100.000
+    const calculatedDeliveryFee = Math.max(100000, Math.ceil(distanceKm / 10) * 100000)
     const finalDeliveryFee = deliveryFeeOverride !== undefined ? deliveryFeeOverride : calculatedDeliveryFee
 
     const discountAmount = subtotal * (discountPercentage / 100)

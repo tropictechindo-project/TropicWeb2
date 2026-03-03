@@ -148,6 +148,25 @@ export function UsersClient({ users }: UsersClientProps) {
         setIsEditUserOpen(true)
     }
 
+    const handleVerifyUser = async (user: any) => {
+        setIsLoading(true)
+        try {
+            const res = await fetch(`/api/admin/users/${user.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ isVerified: true })
+            })
+            if (!res.ok) throw new Error("Failed")
+            toast.success("User identity verified")
+            setIsDocsOpen(false)
+            router.refresh()
+        } catch {
+            toast.error("Failed to verify user")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     if (!mounted) {
         return (
             <div className="flex items-center justify-center p-20">
@@ -689,7 +708,13 @@ export function UsersClient({ users }: UsersClientProps) {
                     </div>
                     <div className="flex justify-end pt-4 gap-3">
                         <Button variant="outline" className="font-bold px-8 rounded-xl" onClick={() => setIsDocsOpen(false)}>CLOSE VIEW</Button>
-                        <Button className="font-black px-8 rounded-xl shadow-lg shadow-primary/20 bg-emerald-600 hover:bg-emerald-700">VERIFY IDENTITY</Button>
+                        <Button
+                            className="font-black px-8 rounded-xl shadow-lg shadow-primary/20 bg-emerald-600 hover:bg-emerald-700"
+                            onClick={() => handleVerifyUser(selectedUser)}
+                            disabled={isLoading || selectedUser?.isVerified}
+                        >
+                            {selectedUser?.isVerified ? "ALREADY VERIFIED" : "VERIFY IDENTITY"}
+                        </Button>
                     </div>
                 </DialogContent>
             </Dialog>

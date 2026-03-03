@@ -15,6 +15,7 @@ export interface InvoiceData {
   }>
   subtotal: number
   tax: number
+  deliveryFee: number
   total: number
   currency: string
   orderNumber: string
@@ -175,6 +176,12 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   if (data.tax > 0) {
     doc.text(`Tax (${((data.tax / data.subtotal) * 100).toFixed(1)}%):`, totalsX, y)
     doc.text(`${data.currency} ${data.tax.toLocaleString()}`, pageWidth - 30, y)
+    y += 7
+  }
+
+  if (data.deliveryFee > 0) {
+    doc.text(`Delivery Fee:`, totalsX, y)
+    doc.text(`${data.currency} ${data.deliveryFee.toLocaleString()}`, pageWidth - 30, y)
     y += 7
   }
 

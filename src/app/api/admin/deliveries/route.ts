@@ -106,6 +106,18 @@ export async function POST(request: NextRequest) {
                 }
             })
 
+            // 2. Auto-verify the user associated with this invoice (Force Confirmation)
+            const invoice = await tx.invoice.findUnique({
+                where: { id: invoiceId },
+                select: { userId: true }
+            })
+            if (invoice?.userId) {
+                await tx.user.update({
+                    where: { id: invoice.userId },
+                    data: { isVerified: true }
+                })
+            }
+
             return newDelivery
         })
 

@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
         baliAddress,
         mapsAddressLink,
         role: 'USER',
-        isVerified: false, // They must verify via the Supabase email
+        isVerified: !!mapsAddressLink, // Auto-confirm if address link is provided
       },
     })
 

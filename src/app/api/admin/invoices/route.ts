@@ -130,6 +130,14 @@ export async function POST(req: Request) {
                 }
             }
 
+            // 5. Auto-verify the user if registered (Force Confirmation)
+            if (type === 'registered' && userId) {
+                await tx.user.update({
+                    where: { id: userId },
+                    data: { isVerified: true }
+                })
+            }
+
             return { invoice, orderId, deliveryId }
         })
 

@@ -80,7 +80,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { fullName, whatsapp, baliAddress, profileImage, identityFile, identityType } = body
+    const { fullName, whatsapp, baliAddress, mapsAddressLink, profileImage, identityFile, identityType } = body
 
     const updatedUser = await db.user.update({
       where: { id: payload.userId },
@@ -88,9 +88,11 @@ export async function PUT(request: NextRequest) {
         ...(fullName && { fullName }),
         ...(whatsapp && { whatsapp }),
         ...(baliAddress && { baliAddress }),
+        ...(mapsAddressLink && { mapsAddressLink }),
         ...(profileImage && { profileImage }),
         ...(identityFile && { identityFile }),
         ...(identityType && { identityType }),
+        isVerified: !!(identityFile || mapsAddressLink), // Auto-confirm if either provided
       },
       select: {
         id: true,

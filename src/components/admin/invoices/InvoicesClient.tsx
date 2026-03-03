@@ -70,6 +70,9 @@ interface Invoice {
     guestName?: string
     guestEmail?: string
     guestWhatsapp?: string
+    subtotal: number
+    tax: number
+    deliveryFee: number
 }
 
 interface InvoicesClientProps {
@@ -94,6 +97,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
         guestWhatsapp: "",
         guestAddress: "",
         amount: "",
+        subtotal: "",
+        tax: "0",
+        deliveryFee: "100000",
         items: "Standard Rental Package",
         status: "PAID",
         startDate: new Date().toISOString().split('T')[0],
@@ -122,8 +128,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                 startDate: new Date(invoice.startDate).toLocaleDateString(),
                 endDate: new Date(invoice.endDate).toLocaleDateString(),
                 currency: 'Rp',
-                subtotal: invoice.total,
-                tax: 0,
+                subtotal: invoice.subtotal || invoice.total,
+                tax: invoice.tax || 0,
+                deliveryFee: invoice.deliveryFee || 0,
                 total: invoice.total,
                 items: invoice.items,
                 isRegistered: !!invoice.userId
@@ -151,6 +158,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
             guestWhatsapp: invoice.customerWhatsApp || "",
             guestAddress: (invoice as any).guestAddress || "",
             amount: invoice.total.toString(),
+            subtotal: (invoice as any).subtotal?.toString() || invoice.total.toString(),
+            tax: (invoice as any).tax?.toString() || "0",
+            deliveryFee: (invoice as any).deliveryFee?.toString() || "100000",
             items: invoice.items[0]?.name || "Standard Rental Package",
             status: invoice.status,
             startDate: new Date(invoice.startDate).toISOString().split('T')[0],
@@ -217,7 +227,10 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                 body: JSON.stringify({
                     type: invoiceType,
                     ...formData,
-                    amount: parseFloat(formData.amount)
+                    amount: parseFloat(formData.amount),
+                    subtotal: parseFloat(formData.subtotal || formData.amount),
+                    tax: parseFloat(formData.tax),
+                    deliveryFee: parseFloat(formData.deliveryFee)
                 })
             })
 
@@ -245,6 +258,9 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                 body: JSON.stringify({
                     status: formData.status,
                     total: parseFloat(formData.amount),
+                    subtotal: parseFloat(formData.subtotal || formData.amount),
+                    tax: parseFloat(formData.tax),
+                    deliveryFee: parseFloat(formData.deliveryFee),
                     guestName: formData.guestName,
                     guestEmail: formData.guestEmail,
                     guestWhatsapp: formData.guestWhatsapp,
@@ -426,9 +442,26 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                             <Input value={formData.items} onChange={e => setFormData({ ...formData, items: e.target.value })} required />
                         </div>
 
-                        <div className="space-y-2">
-                            <Label>Total Amount (IDR)</Label>
-                            <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} required />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Subtotal (IDR)</Label>
+                                <Input type="number" value={formData.subtotal || formData.amount} onChange={e => setFormData({ ...formData, subtotal: e.target.value })} required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Tax (IDR)</Label>
+                                <Input type="number" value={formData.tax} onChange={e => setFormData({ ...formData, tax: e.target.value })} required />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Delivery Fee (IDR)</Label>
+                                <Input type="number" value={formData.deliveryFee} onChange={e => setFormData({ ...formData, deliveryFee: e.target.value })} required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Total Amount (IDR)</Label>
+                                <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} required />
+                            </div>
                         </div>
 
                         <div className="space-y-3 p-4 bg-primary/5 rounded-xl border border-primary/20 border-dashed">
@@ -513,9 +546,25 @@ export function InvoicesClient({ initialInvoices, users }: InvoicesClientProps) 
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label>Total Amount</Label>
-                                <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} />
+                                <Label>Subtotal</Label>
+                                <Input type="number" value={formData.subtotal || formData.amount} onChange={e => setFormData({ ...formData, subtotal: e.target.value })} />
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Tax</Label>
+                                <Input type="number" value={formData.tax} onChange={e => setFormData({ ...formData, tax: e.target.value })} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Delivery Fee</Label>
+                                <Input type="number" value={formData.deliveryFee} onChange={e => setFormData({ ...formData, deliveryFee: e.target.value })} />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label>Total Amount</Label>
+                            <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} />
                         </div>
 
                         <DialogFooter>

@@ -10,15 +10,29 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Separator } from '@/components/ui/separator'
-import { Trash2, ArrowLeft, Globe, CreditCard, Smartphone, Bitcoin, Terminal, QrCode, Landmark, Banknote } from 'lucide-react'
+import {
+    Trash2,
+    ArrowLeft,
+    Globe,
+    CreditCard,
+    Smartphone,
+    Bitcoin,
+    Terminal,
+    QrCode,
+    Landmark,
+    Banknote,
+    AlertCircle,
+    Loader2
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Header from '@/components/header/Header'
 import Footer from '@/components/landing/Footer'
 import { toast } from 'sonner'
 import { countries, normalizeWhatsApp, getCountryInfo } from '@/lib/utils/whatsapp'
-import { AlertCircle } from 'lucide-react'
 import ProductSuggestions from '@/components/checkout/ProductSuggestions'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 
 const paymentMethods = [
     { id: 'WISE', name: 'Wise', icon: <Globe className="h-6 w-6" />, desc: 'International transfer' },
@@ -50,6 +64,36 @@ export default function CheckoutPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [breakdown, setBreakdown] = useState<any>(null)
     const [isCalculating, setIsCalculating] = useState(false)
+
+    // Currency Conversion State
+    const [selectedCurrency, setSelectedCurrency] = useState('IDR')
+    const [isCheckingPrice, setIsCheckingPrice] = useState(false)
+    const [convertedTotal, setConvertedTotal] = useState<string | null>(null)
+
+    const handleCurrencyCheck = async (currency: string) => {
+        setIsCheckingPrice(true)
+        setSelectedCurrency(currency)
+        try {
+            // Use a public free API for exchange rates
+            const res = await fetch(`https://api.exchangerate-api.com/v4/latest/IDR`)
+            const data = await res.json()
+            const rate = data.rates[currency]
+            if (rate) {
+                const totalIDR = breakdown?.total || totalPrice
+                const converted = (totalIDR * rate).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+                setConvertedTotal(converted)
+                toast.success(`Currency rate updated for ${currency}`)
+            }
+        } catch (error) {
+            console.error('Currency check failed:', error)
+            toast.error('Failed to fetch exchange rate')
+        } finally {
+            setIsCheckingPrice(false)
+        }
+    }
 
     // Check if any item is out of stock
     const hasOutOfStockItems = items.some(item => (item as any).stock === 0)
@@ -323,6 +367,55 @@ export default function CheckoutPage() {
 
                             <Separator className="my-6" />
 
+                            {/* Currency Converter Section */}
+                            <div className="mb-6 p-4 rounded-xl border bg-primary/5 border-primary/10">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary">Price Preview</h4>
+                                    <div className="flex gap-2">
+                                        {['USD', 'EUR', 'AUD', 'SGD'].map((curr) => (
+                                            <Button
+                                                key={curr}
+                                                variant="outline"
+                                                size="sm"
+                                                className={cn(
+                                                    "h-7 px-2 text-[10px] font-bold border-primary/20",
+                                                    selectedCurrency === curr ? "bg-primary text-white" : "bg-white"
+                                                )}
+                                                onClick={() => handleCurrencyCheck(curr)}
+                                                disabled={isCheckingPrice}
+                                            >
+                                                {isCheckingPrice && selectedCurrency === curr ? (
+                                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                                ) : (
+                                                    `Check in ${curr === 'USD' ? '$' : curr === 'EUR' ? '€' : curr === 'AUD' ? 'A$' : 'S$'}`
+                                                )}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+                                {convertedTotal && (
+                                    <div className="flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
+                                        <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                                        <p className="text-sm font-black text-emerald-600">
+                                            Approx. {selectedCurrency} {convertedTotal}
+                                        </p>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-4 p-0 text-[10px] text-muted-foreground underline ml-auto"
+                                            onClick={() => {
+                                                setConvertedTotal(null)
+                                                setSelectedCurrency('IDR')
+                                            }}
+                                        >
+                                            Reset to IDR
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <Separator className="my-6" />
+
                             <div className="space-y-2">
                                 <div className="flex justify-between text-muted-foreground text-sm">
                                     <span>Equipment Subtotal</span>
@@ -331,16 +424,27 @@ export default function CheckoutPage() {
                                 {breakdown ? (
                                     <>
                                         <div className="flex justify-between text-muted-foreground text-sm">
-                                            <span>Tax (2%)</span>
+                                            <div className="flex items-center gap-1.5">
+                                                <span>Tax</span>
+                                                <Badge variant="outline" className="text-[8px] h-3.5 px-1 font-black leading-none bg-emerald-50 border-emerald-200 text-emerald-700">2% AUTO</Badge>
+                                            </div>
                                             <span>Rp {breakdown.formattedTax}</span>
                                         </div>
                                         <div className="flex justify-between text-muted-foreground text-sm">
                                             <span>Delivery Fee ({Math.round(breakdown.distanceKm || 0)}km)</span>
                                             <span>Rp {breakdown.formattedDeliveryFee}</span>
                                         </div>
-                                        <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
-                                            <span>Total Payment</span>
-                                            <span className="text-primary font-black">Rp {breakdown.formattedTotal}</span>
+                                        <div className="flex justify-between font-bold text-lg pt-4 mt-2 border-t border-dashed">
+                                            <div className="flex flex-col">
+                                                <span>Total Payment</span>
+                                                <span className="text-[10px] text-muted-foreground font-normal italic">*Based on IDR</span>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="text-primary font-black text-2xl">Rp {breakdown.formattedTotal}</span>
+                                                {convertedTotal && (
+                                                    <p className="text-xs text-emerald-600 font-bold">≈ {selectedCurrency} {convertedTotal}</p>
+                                                )}
+                                            </div>
                                         </div>
                                     </>
                                 ) : (
@@ -377,14 +481,21 @@ export default function CheckoutPage() {
 
                             <div className="mt-8">
                                 <Button
-                                    className="w-full text-lg py-6"
+                                    className="w-full text-lg py-7 font-black shadow-xl shadow-primary/10 transition-all hover:scale-[1.02] active:scale-[0.98]"
                                     onClick={handleBuy}
                                     disabled={isSubmitting || hasOutOfStockItems}
                                 >
-                                    {isSubmitting ? 'Processing...' : hasOutOfStockItems ? 'Unavailable' : 'Pay Now'}
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                            Processing...
+                                        </>
+                                    ) : hasOutOfStockItems ? 'Unavailable' : 'Process Now'}
                                 </Button>
                                 <p className="text-xs text-center text-muted-foreground mt-4">
-                                    By clicking "Pay Now", you agree to our terms and conditions.
+                                    By clicking "Process Now", you agree to our terms and conditions.
+                                    <br />
+                                    Payments are securely processed in IDR.
                                 </p>
                             </div>
                         </div>

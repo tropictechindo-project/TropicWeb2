@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
                 whatsapp,
                 baliAddress,
                 mapsAddressLink,
+                isVerified: !!(body.identityFile || mapsAddressLink),
                 role: 'USER',
             },
         })
