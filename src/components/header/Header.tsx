@@ -136,7 +136,7 @@ export default function Header() {
               "flex items-center space-x-2 transition-all duration-500",
               mounted && showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
             )}>
-              <Link href="/" className="text-2xl font-bold text-primary">
+              <Link href="/" id="main-header-logo" className="text-2xl font-bold text-primary">
                 Tropic Tech
               </Link>
             </div>

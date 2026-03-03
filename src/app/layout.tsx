@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { StickyPanelInfo } from "@/components/StickyPanelInfo";
 import { LocationPrompt } from "@/components/location/LocationPrompt";
 import { NotificationPrompt } from "@/components/NotificationPrompt";
+import { IslandHub } from "@/components/ui/IslandHub";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -167,6 +168,7 @@ export default function RootLayout({
               <NotificationProvider>
                 <CartProvider>
                   <StickyPanelInfo />
+                  <IslandHub />
                   {children}
                 </CartProvider>
               </NotificationProvider>

@@ -53,7 +53,7 @@ export default function ContactPage() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-white mb-1">Call / WhatsApp</h3>
-                                <a target="_blank" rel="noopener noreferrer" href="https://wa.me/628000000000" className="text-green-400 hover:underline">+62 800 000 0000</a>
+                                <a target="_blank" rel="noopener noreferrer" href="https://wa.me/6282266574860" className="text-green-400 hover:underline">+62 822 6657 4860</a>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">

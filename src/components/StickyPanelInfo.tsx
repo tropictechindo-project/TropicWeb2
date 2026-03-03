@@ -71,7 +71,7 @@ export function StickyPanelInfo() {
     if (!isAuthenticated || notifications.length === 0) return null
 
     return (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 max-w-sm w-full px-4">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-2 max-w-md w-full px-4 pointer-events-none">
             <AnimatePresence>
                 {notifications.slice(0, 3).map((notif, i) => (
                     <motion.div
@@ -82,12 +82,12 @@ export function StickyPanelInfo() {
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         onClick={() => handleClick(notif.link)}
                         className={`
-                w-full bg-slate-900/80 backdrop-blur-md border border-slate-700/50
-                rounded-xl shadow-2xl overflow-hidden cursor-pointer
-                hover:bg-slate-800/90 transition-colors group
-                ${i === 0 ? 'scale-100' : i === 1 ? 'scale-[0.98] -mt-1 opacity-90' : 'scale-[0.95] -mt-2 opacity-80 z-[-1]'}
+                w-full bg-slate-900/95 backdrop-blur-xl border border-slate-700/50
+                rounded-3xl shadow-2xl overflow-hidden cursor-pointer pointer-events-auto
+                hover:bg-slate-800/95 transition-colors group
+                ${i === 0 ? 'scale-100' : i === 1 ? 'scale-[0.98] -mt-2 opacity-90' : 'scale-[0.95] -mt-3 opacity-80 z-[-1]'}
                         `}
-                        style={{ zIndex: 50 - i }}
+                        style={{ zIndex: 100 - i }}
                     >
                         <div className="p-3 flex items-start gap-3 relative">
                             <div className="mt-0.5 bg-slate-800 p-1.5 rounded-lg border border-slate-700">
@@ -111,7 +111,7 @@ export function StickyPanelInfo() {
                         </div>
                         {/* Dynamic Island style connection blob indicator */}
                         {i === 0 && Array.isArray(notifications) && notifications.length > 1 && (
-                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-slate-700/50 rounded-full blur-[1px]"></div>
+                            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-700/50 rounded-full blur-[1px]"></div>
                         )}
                     </motion.div>
                 ))}
