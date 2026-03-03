@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { calculateETA } from '@/lib/google-maps'
 
 /**
  * Calculate invoice totals with 2% tax (excluding delivery fee)
@@ -68,17 +69,24 @@ export async function createInvoiceForOrder(orderId: string, deliveryFeeOverride
 
     // Calculate distance if coordinates are available
     let distanceKm = 0
-    if (order.user?.baliAddress || (order as any).latitude) {
-        // This is a placeholder for actual distance calculation
-        // For now, if we have coords, we'd use calculateETA from google-maps
-        // But since this is a utility, we might need to pass it in or calculate it here
-        // The user.baliAddress or deliveryAddress might be used
+    const lat = (order as any).locationLatitude
+    const lng = (order as any).locationLongitude
+
+    if (lat && lng) {
+        const warehouse = {
+            lat: Number(process.env.MAP_DEFAULT_CENTER_LAT || -8.65),
+            lng: Number(process.env.MAP_DEFAULT_CENTER_LNG || 115.216)
+        }
+        const mapsRes = await calculateETA(warehouse, { lat, lng })
+        if ('distance_meters' in mapsRes && mapsRes.distance_meters) {
+            distanceKm = mapsRes.distance_meters / 1000
+        }
     }
 
     // Calculate totals
     const { subtotal, tax, taxRate, deliveryFee, total, discountAmount, discountPercentage: finalDiscountPct } = calculateInvoiceTotals(
         parseFloat(order.subtotal.toString()),
-        0, // Set to 0 for now, should ideally be calculated or passed
+        distanceKm,
         deliveryFeeOverride,
         discountPercentage
     )

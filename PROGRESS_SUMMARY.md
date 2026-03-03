@@ -91,6 +91,9 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
+**Last Updated**: 2026-03-03 17:45:00 (WITA/GMT+8)
+**System Version**: 1.7.6-stable
+**Environment**: Production Ready (Hydration & Stability Fix)
 - ✅ **Global Worker Dispatch System**:
     - ✅ **Automated Job Creation**: Orders and Invoices now automatically generate `QUEUED` delivery jobs.
     - ✅ **Marketplace Logic**: Workers can see and "Claim" available jobs from the "Pool" in their dashboard.
@@ -231,7 +234,25 @@
     - **SEO Hardening**: Enriched metadata with high-density keywords and verified viewport/theme configuration.
     - **Schema Enrichment**: Added `AggregateRating` logic to structured data for search ranking boost.
     - **Accessibility Score**: Standardized ARIA labels and optimized image `sizes` for zero layout shift.
-- [x] **Financial Tooling & Currency Intelligence (v1.5.0)**:
-    - **Currency Converter**: Embedded real-time exchange rate preview (USD, EUR, AUD, SGD) in Checkout with loading indicators.
-    - **Admin Fee Overrides**: Unlocked complete manual control over `Tax`, `DeliveryFee`, and `Subtotal` in the Admin Invoice Panel.
-    - **Report Alignment**: Ensured PDF invoices and Financial Reports dynamically react to manual fee overrides while maintaining the 2% auto-tax baseline.
+- [x] **Hydration & Stability Fix (v1.7.6)**:
+    - **Stability**: Implemented `isMounted` guards to fix "Hydration failed" errors across all landing page carousels.
+    - **ID Sync**: Synchronized Radix UI IDs by deferring interactive components to client-only mounting.
+- [x] **Mobile UX Overhaul (v1.7.5)**:
+    - **Swipe Experience**: Implemented `dragFree` carousels and pagination dots across all landing page sections.
+    - **Global Interaction**: Added smooth scrolling and touch-scrolling optimizations in `globals.css`.
+- [x] **Performance & Assets Refresh (v1.7.4)**:
+    - **Asset Repair**: Restored missing "Smart Power Board" image with high-tech 16:9 visual.
+    - **SEO Gold**: Refined metadata with localized regions (Uluwatu, Sanur) and optimized product `alt` tags.
+- [x] **Reviews Interaction Polish (v1.7.3)**:
+    - **Read More...**: Implemented character-based truncation (180 chars) for Google Reviews with dynamic toggle components.
+- [x] **Landing Page UI Enhancements (v1.7.2)**:
+    - **Top-Layer Lightbox**: Upgraded image view to `z-index 9999` with "Close" CTA and click-to-exit logic.
+    - **Special Offers Sync**: Standardized "Included Items" style to match Package cards (dot indicators/modern spacing).
+- [x] **UI Layout Refinement (v1.7.1)**:
+    - **Horizontal Aspect Ratio**: Reverted all card images (Products, Packages, Special Offers) to a **16:9 horizontal view** for consistent layout weight.
+- [x] **UI Polish & Auth Hardening (v1.7.0)**:
+    - **Premium Cards**: Updated Product/Package/Offer cards to 3:4 portrait ratios with 1.1x hover zoom effects.
+    - **Intent-Based Permissions**: Moved Location/Notification prompts to trigger ONLY upon clicking "Proceed to Checkout".
+    - **Google Auth Sync**: Unified redirect to landing page (`/`) for all successful OAuth logins.
+    - **Email Deliverability**: Integrated local SMTP verification fallback in the signup flow for 100% email reliability.
+- [x] **Logic Hardening & AI Mastery (v1.6.0)**:

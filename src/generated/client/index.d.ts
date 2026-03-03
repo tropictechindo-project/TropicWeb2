@@ -6678,6 +6678,8 @@ export namespace Prisma {
     subtotal: Decimal | null
     tax: Decimal | null
     deliveryFee: Decimal | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
   }
@@ -6688,6 +6690,8 @@ export namespace Prisma {
     subtotal: Decimal | null
     tax: Decimal | null
     deliveryFee: Decimal | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
   }
@@ -6711,6 +6715,8 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
   }
@@ -6734,6 +6740,8 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
   }
@@ -6757,6 +6765,8 @@ export namespace Prisma {
     paymentConfirmedBy: number
     paymentStatus: number
     userId: number
+    locationLatitude: number
+    locationLongitude: number
     discountAmount: number
     discountPercentage: number
     _all: number
@@ -6769,6 +6779,8 @@ export namespace Prisma {
     subtotal?: true
     tax?: true
     deliveryFee?: true
+    locationLatitude?: true
+    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
   }
@@ -6779,6 +6791,8 @@ export namespace Prisma {
     subtotal?: true
     tax?: true
     deliveryFee?: true
+    locationLatitude?: true
+    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
   }
@@ -6802,6 +6816,8 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
+    locationLatitude?: true
+    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
   }
@@ -6825,6 +6841,8 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
+    locationLatitude?: true
+    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
   }
@@ -6848,6 +6866,8 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
+    locationLatitude?: true
+    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
     _all?: true
@@ -6958,6 +6978,8 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string
+    locationLatitude: number | null
+    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
     _count: OrderCountAggregateOutputType | null
@@ -7000,6 +7022,8 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
@@ -7030,6 +7054,8 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
@@ -7055,6 +7081,8 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
@@ -7080,11 +7108,13 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "currency" | "paymentMethod" | "createdAt" | "deliveryAddress" | "paymentConfirmedAt" | "paymentConfirmedBy" | "paymentStatus" | "userId" | "discountAmount" | "discountPercentage", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "currency" | "paymentMethod" | "createdAt" | "deliveryAddress" | "paymentConfirmedAt" | "paymentConfirmedBy" | "paymentStatus" | "userId" | "locationLatitude" | "locationLongitude" | "discountAmount" | "discountPercentage", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
@@ -7132,6 +7162,8 @@ export namespace Prisma {
       paymentConfirmedBy: string | null
       paymentStatus: string | null
       userId: string
+      locationLatitude: number | null
+      locationLongitude: number | null
       discountAmount: Prisma.Decimal | null
       discountPercentage: number | null
     }, ExtArgs["result"]["order"]>
@@ -7581,6 +7613,8 @@ export namespace Prisma {
     readonly paymentConfirmedBy: FieldRef<"Order", 'String'>
     readonly paymentStatus: FieldRef<"Order", 'String'>
     readonly userId: FieldRef<"Order", 'String'>
+    readonly locationLatitude: FieldRef<"Order", 'Float'>
+    readonly locationLongitude: FieldRef<"Order", 'Float'>
     readonly discountAmount: FieldRef<"Order", 'Decimal'>
     readonly discountPercentage: FieldRef<"Order", 'Int'>
   }
@@ -50304,6 +50338,8 @@ export namespace Prisma {
     paymentConfirmedBy: 'paymentConfirmedBy',
     paymentStatus: 'paymentStatus',
     userId: 'userId',
+    locationLatitude: 'locationLatitude',
+    locationLongitude: 'locationLongitude',
     discountAmount: 'discountAmount',
     discountPercentage: 'discountPercentage'
   };
@@ -50944,6 +50980,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'PaymentProvider'
    */
   export type EnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider'>
@@ -50982,20 +51032,6 @@ export namespace Prisma {
    * Reference to a field of type 'RelationType[]'
    */
   export type ListEnumRelationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RelationType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -51354,6 +51390,8 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidFilter<"Order"> | string
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
     invoices?: InvoiceListRelationFilter
@@ -51383,6 +51421,8 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentStatus?: SortOrderInput | SortOrder
     userId?: SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
     invoices?: InvoiceOrderByRelationAggregateInput
@@ -51415,6 +51455,8 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidFilter<"Order"> | string
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
     invoices?: InvoiceListRelationFilter
@@ -51444,6 +51486,8 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentStatus?: SortOrderInput | SortOrder
     userId?: SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
@@ -51475,6 +51519,8 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableWithAggregatesFilter<"Order"> | string | null
     paymentStatus?: StringNullableWithAggregatesFilter<"Order"> | string | null
     userId?: UuidWithAggregatesFilter<"Order"> | string
+    locationLatitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
     discountAmount?: DecimalNullableWithAggregatesFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableWithAggregatesFilter<"Order"> | number | null
   }
@@ -54434,6 +54480,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -54463,6 +54511,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -54488,6 +54538,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -54517,6 +54569,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -54544,6 +54598,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
   }
@@ -54565,6 +54621,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -54588,6 +54646,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -57938,6 +57998,17 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type InvoiceListRelationFilter = {
     every?: InvoiceWhereInput
     some?: InvoiceWhereInput
@@ -58002,6 +58073,8 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
   }
@@ -58012,6 +58085,8 @@ export namespace Prisma {
     subtotal?: SortOrder
     tax?: SortOrder
     deliveryFee?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
   }
@@ -58035,6 +58110,8 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
   }
@@ -58058,6 +58135,8 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
   }
@@ -58068,6 +58147,8 @@ export namespace Prisma {
     subtotal?: SortOrder
     tax?: SortOrder
     deliveryFee?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
   }
@@ -58100,6 +58181,22 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumPaymentProviderFilter<$PrismaModel = never> = {
@@ -58201,17 +58298,6 @@ export namespace Prisma {
     not?: NestedEnumRelationTypeFilter<$PrismaModel> | $Enums.RelationType
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
@@ -58270,22 +58356,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRelationTypeFilter<$PrismaModel>
     _max?: NestedEnumRelationTypeFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type RentalPackageScalarRelationFilter = {
@@ -60313,6 +60383,14 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type InvoiceUpdateManyWithoutOrderNestedInput = {
     create?: XOR<InvoiceCreateWithoutOrderInput, InvoiceUncheckedCreateWithoutOrderInput> | InvoiceCreateWithoutOrderInput[] | InvoiceUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: InvoiceCreateOrConnectWithoutOrderInput | InvoiceCreateOrConnectWithoutOrderInput[]
@@ -60495,14 +60573,6 @@ export namespace Prisma {
 
   export type EnumRelationTypeFieldUpdateOperationsInput = {
     set?: $Enums.RelationType
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type ProductUpdateOneRequiredWithoutProductRelationsNestedInput = {
@@ -63291,6 +63361,22 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumPaymentProviderFilter<$PrismaModel = never> = {
     equals?: $Enums.PaymentProvider | EnumPaymentProviderFieldRefInput<$PrismaModel>
     in?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
@@ -63340,22 +63426,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRelationTypeFilter<$PrismaModel>
     _max?: NestedEnumRelationTypeFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -63696,6 +63766,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
@@ -63724,6 +63796,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
@@ -63894,6 +63968,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
@@ -63922,6 +63998,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
@@ -64714,6 +64792,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -64742,6 +64822,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -64871,6 +64953,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -64899,6 +64983,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -65894,6 +65980,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -65922,6 +66010,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -66051,6 +66141,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -66079,6 +66171,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -66645,6 +66739,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -66673,6 +66769,8 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -66832,6 +66930,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -66860,6 +66960,8 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -67431,6 +67533,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -67458,6 +67562,8 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -67493,6 +67599,8 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
@@ -67520,6 +67628,8 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
@@ -68114,6 +68224,8 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidFilter<"Order"> | string
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
   }
@@ -73587,6 +73699,8 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
     userId: string
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
   }
@@ -73609,6 +73723,8 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
   }
@@ -74164,6 +74280,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -74191,6 +74309,8 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -74217,6 +74337,8 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -74238,6 +74360,8 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
@@ -74265,6 +74389,8 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
@@ -74291,6 +74417,8 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
   }

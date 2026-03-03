@@ -165,6 +165,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   paymentConfirmedBy: 'paymentConfirmedBy',
   paymentStatus: 'paymentStatus',
   userId: 'userId',
+  locationLatitude: 'locationLatitude',
+  locationLongitude: 'locationLongitude',
   discountAmount: 'discountAmount',
   discountPercentage: 'discountPercentage'
 };

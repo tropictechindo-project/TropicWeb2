@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { generateUsername, hashPassword } from '@/lib/auth/utils'
+import { generateUsername, hashPassword, generateResetToken } from '@/lib/auth/utils'
 import { createClient } from '@supabase/supabase-js'
+import { sendVerificationEmail } from '@/lib/email'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY! || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY! // Fallback to anon if service key not set for this project
@@ -67,11 +68,13 @@ export async function POST(request: NextRequest) {
 
     // 3. Create user in Prisma
     const username = generateUsername(fullName)
-    const hashedPassword = await hashPassword(password) // Still hash it just in case, though Supabase handles auth now
+    const hashedPassword = await hashPassword(password)
+    const verificationToken = generateResetToken()
+    const verificationExpires = new Date(Date.now() + 3600000) // 1 hour
 
     const user = await db.user.create({
       data: {
-        id: authData.user.id, // Keep Prisma ID in sync with Supabase ID
+        id: authData.user.id,
         username,
         password: hashedPassword,
         email,
@@ -80,9 +83,15 @@ export async function POST(request: NextRequest) {
         baliAddress,
         mapsAddressLink,
         role: 'USER',
-        isVerified: !!mapsAddressLink, // Auto-confirm if address link is provided
+        isVerified: !!mapsAddressLink,
+        resetPasswordToken: verificationToken,
+        resetPasswordExpires: verificationExpires,
       },
     })
+
+    // 4. Send local verification email as fallback/primary
+    const verificationLink = `${request.nextUrl.origin}/auth/verify-email?token=${verificationToken}`
+    await sendVerificationEmail(email, verificationLink)
 
     return NextResponse.json({
       message: 'Account created successfully. Please check your email to verify your account.',

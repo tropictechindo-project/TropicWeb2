@@ -29,8 +29,12 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     if (initialProducts.length > 0) {
       // Initialize categories from props
       const uniqueCategories = Array.from(
@@ -43,10 +47,17 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
   }, [initialProducts])
 
   useEffect(() => {
-    if (api) {
-      api.scrollTo(0)
-    }
-  }, [selectedCategory, api])
+    if (!api) return
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+
+    api.scrollTo(0)
+  }, [api, selectedCategory])
 
   const fetchProducts = async () => {
     try {
@@ -140,13 +151,15 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
           setApi={setApi}
           opts={{
             align: "start",
-            loop: false, // Changed to false for better UX when filtering
+            loop: false,
+            dragFree: true,
+            containScroll: "trimSnaps",
           }}
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {filteredProducts.map((product) => (
-              <CarouselItem key={product.id} className="pl-4 basis-[80%] md:basis-1/2 lg:basis-1/4">
+              <CarouselItem key={product.id} className="pl-4 basis-[82%] sm:basis-[45%] lg:basis-1/4">
                 <div className="p-1 h-full">
                   {/* Product Schema Markup */}
                   <script
@@ -174,6 +187,7 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                   />
                   <ProductCard
                     product={product}
+                    isMounted={isMounted}
                   />
                 </div>
               </CarouselItem>
@@ -184,6 +198,23 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
             <CarouselNext className="-right-12" />
           </div>
         </Carousel>
+
+        {/* Pagination Dots */}
+        {isMounted && count > 0 && (
+          <div className="flex justify-center gap-2 mt-4 md:hidden">
+            {Array.from({ length: count }).map((_, i) => (
+              <button
+                key={i}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-all",
+                  current === i ? "bg-primary w-4" : "bg-primary/20"
+                )}
+                onClick={() => api?.scrollTo(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         <div className="mt-16 flex justify-center">
           <Button

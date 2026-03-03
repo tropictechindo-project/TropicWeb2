@@ -208,7 +208,12 @@ export default function Header() {
                           <SheetClose asChild>
                             <Button
                               className="w-full"
-                              onClick={() => router.push('/checkout')}
+                              onClick={() => {
+                                // Trigger permission prompts before leaving for checkout
+                                window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
+                                window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
+                                router.push('/checkout')
+                              }}
                             >
                               Proceed to Checkout
                             </Button>

@@ -9,7 +9,9 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
+    type CarouselApi
 } from '@/components/ui/carousel'
+import { cn } from '@/lib/utils'
 import { SharePopover } from './SharePopover'
 import { useCart } from '@/contexts/CartContext'
 import { useRouter } from 'next/navigation'
@@ -27,8 +29,13 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
     const router = useRouter()
     const [selectedOffer, setSelectedOffer] = useState<any | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [api, setApi] = useState<CarouselApi>()
+    const [current, setCurrent] = useState(0)
+    const [count, setCount] = useState(0)
+    const [isMounted, setIsMounted] = useState(false)
 
     useEffect(() => {
+        setIsMounted(true)
         fetchSpecialOffers()
     }, [])
 
@@ -47,6 +54,17 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
         }
     }
 
+    useEffect(() => {
+        if (!api) return
+
+        setCount(api.scrollSnapList().length)
+        setCurrent(api.selectedScrollSnap())
+
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap())
+        })
+    }, [api, offers])
+
     if (offers.length === 0) return null
 
     return (
@@ -64,9 +82,12 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
 
                 <div className="relative w-full max-w-6xl mx-auto px-12 mt-8">
                     <Carousel
+                        setApi={setApi}
                         opts={{
                             align: "center",
                             loop: false,
+                            dragFree: true,
+                            containScroll: "trimSnaps",
                         }}
                         className="w-full"
                     >
@@ -74,7 +95,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                             {offers.map((offer) => (
                                 <CarouselItem
                                     key={offer.id}
-                                    className={`pl-2 md:pl-4 basis-[95%] sm:basis-[80%] md:basis-[60%] lg:basis-[50%] xl:basis-[40%] max-w-2xl ${offers.length === 1 ? 'mx-auto' : ''}`}
+                                    className={`pl-2 md:pl-4 basis-[92%] sm:basis-[60%] md:basis-[50%] lg:basis-[40%] xl:basis-[35%] max-w-2xl ${offers.length === 1 ? 'mx-auto' : ''}`}
                                 >
                                     <div className="h-full pt-4 pb-8">
                                         <div
@@ -92,7 +113,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                 </div>
                                             )}
 
-                                            <div className="relative h-56 w-full bg-muted overflow-hidden">
+                                            <div className="relative aspect-video w-full bg-muted overflow-hidden">
                                                 {offer.images && offer.images.length > 0 ? (
                                                     <Image
                                                         src={offer.images[0]}
@@ -122,14 +143,23 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                 </p>
 
                                                 {/* Simulated items list rendering for dummy data demonstration */}
-                                                <div className="w-full text-left bg-muted/30 p-3 rounded-lg border border-primary/10 mb-6 flex-grow">
-                                                    <p className="text-xs font-bold uppercase text-muted-foreground mb-2 text-center text-primary">Included setup</p>
-                                                    <ul className="text-sm space-y-1">
+                                                <div className="w-full text-left bg-muted p-4 rounded-xl border border-primary/10 mb-6 flex-grow shadow-inner">
+                                                    <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 text-center">Included setup</p>
+                                                    <ul className="space-y-2 text-sm text-muted-foreground">
                                                         {offer.title.includes("Nyepi") || offer.description.includes("Desk") ? (
                                                             <>
-                                                                <li className="flex justify-between"><span>Herman Miller Aeron Chair</span> <span className="text-muted-foreground">x1</span></li>
-                                                                <li className="flex justify-between"><span>32-inch 4K Dell UltraSharp</span> <span className="text-muted-foreground">x1</span></li>
-                                                                <li className="flex justify-between"><span>Adjustable Standing Desk</span> <span className="text-muted-foreground">x1</span></li>
+                                                                <li className="flex items-center gap-2">
+                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                    <span className="line-clamp-1">Herman Miller Aeron Chair x1</span>
+                                                                </li>
+                                                                <li className="flex items-center gap-2">
+                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                    <span className="line-clamp-1">32-inch 4K Dell UltraSharp x1</span>
+                                                                </li>
+                                                                <li className="flex items-center gap-2">
+                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                    <span className="line-clamp-1">Adjustable Standing Desk x1</span>
+                                                                </li>
                                                             </>
                                                         ) : (
                                                             <li className="text-muted-foreground italic text-center text-xs">Custom premium bundle</li>
@@ -173,6 +203,22 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                 </CarouselItem>
                             ))}
                         </CarouselContent>
+                        {/* Pagination Dots */}
+                        {isMounted && count > 0 && (
+                            <div className="flex justify-center gap-2 mt-4 md:hidden">
+                                {Array.from({ length: count }).map((_, i) => (
+                                    <button
+                                        key={i}
+                                        className={cn(
+                                            "w-2 h-2 rounded-full transition-all",
+                                            current === i ? "bg-primary w-4" : "bg-primary/20"
+                                        )}
+                                        onClick={() => api?.scrollTo(i)}
+                                        aria-label={`Go to slide ${i + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        )}
                         {offers.length > 3 && (
                             <>
                                 <CarouselPrevious className="absolute -left-4 md:-left-12 lg:-left-16 h-12 w-12 border-2 border-primary/20 bg-background/80 hover:bg-background text-primary shadow-lg" />

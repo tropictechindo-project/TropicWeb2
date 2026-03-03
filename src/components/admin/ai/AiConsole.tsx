@@ -146,13 +146,13 @@ export function AiConsole({ agents }: any) {
                                         <div className="space-y-2">
                                             <div className={`p-4 rounded-2xl text-sm shadow-sm border ${m.role === 'user'
                                                 ? 'bg-primary text-primary-foreground border-primary/50 rounded-tr-none'
-                                                : 'bg-muted/30 border-border/50 rounded-tl-none font-medium text-foreground'
+                                                : 'bg-white border-border/70 rounded-tl-none font-medium text-zinc-900'
                                                 }`}>
                                                 {m.role === 'assistant' && (
-                                                    <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 mb-2 border-b border-primary/10 pb-1">
-                                                        {m.agent === 'MASTER' ? 'Master AI' :
+                                                    <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 border-b border-primary/10 pb-1">
+                                                        {m.agent === 'MASTER' ? 'Master AI Orchestrator' :
                                                             m.agent === 'SELLER' ? 'Seller AI' :
-                                                                m.agent === 'SYSTEM' ? 'System' : m.agent}
+                                                                m.agent === 'SYSTEM' ? 'System Entity' : m.agent}
                                                     </p>
                                                 )}
                                                 {m.content}

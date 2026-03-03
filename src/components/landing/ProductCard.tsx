@@ -36,9 +36,10 @@ interface ProductCardProps {
     specs?: any
     discountPercentage?: number
   }
+  isMounted?: boolean
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, isMounted = true }: ProductCardProps) {
   const router = useRouter()
   const { addItem } = useCart()
   const { t } = useLanguage()
@@ -79,7 +80,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         onClick={() => setIsModalOpen(true)}
       >
         <CardHeader className="pb-3">
-          <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted">
+          <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted group">
             {discountPercentage > 0 && (
               <div className="absolute top-2 left-2 z-10">
                 <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-sm shadow-lg">
@@ -89,9 +90,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
             <Image
               src={displayImage}
-              alt={product.name}
+              alt={`${product.name} - Premium Workstation Rental Bali`}
               fill
-              className="object-cover hover:scale-105 transition-transform duration-300"
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             />
           </div>
@@ -171,11 +172,15 @@ export default function ProductCard({ product }: ProductCardProps) {
               stock: product.stock
             }}
           />
-          <SharePopover
-            title={product.name}
-            text={product.description}
-            url={`${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.id}`}
-          />
+          {isMounted ? (
+            <SharePopover
+              title={product.name}
+              text={product.description}
+              url={`${typeof window !== 'undefined' ? window.location.origin : ''}/product/${product.id}`}
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />
+          )}
         </CardFooter>
       </Card>
 

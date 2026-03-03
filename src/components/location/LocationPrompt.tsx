@@ -26,12 +26,6 @@ export function LocationPrompt() {
         } else if (storedPermission === 'denied') {
             setHasPermission(false)
         } else {
-            // Set a timer to show the prompt after 5 minutes (300,000 ms)
-            const timer = setTimeout(() => {
-                setIsOpen(true)
-            }, 300000)
-
-            return () => clearTimeout(timer)
         }
     }, [])
 

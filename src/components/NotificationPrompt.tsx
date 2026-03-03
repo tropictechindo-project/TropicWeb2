@@ -30,12 +30,6 @@ export function NotificationPrompt() {
             const hasAsked = localStorage.getItem('notification_prompt_shown')
 
             if (!hasAsked) {
-                // Show prompt after 5 minutes of browsing
-                const timer = setTimeout(() => {
-                    setIsOpen(true)
-                }, 300000)
-
-                return () => clearTimeout(timer)
             }
         }
     }, [])

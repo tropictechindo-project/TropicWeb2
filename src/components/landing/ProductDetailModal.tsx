@@ -254,10 +254,10 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
             {isLightboxOpen && (
                 <div
-                    className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
+                    className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md cursor-zoom-out"
                     onClick={() => setIsLightboxOpen(false)}
                 >
-                    <div className="relative w-full max-w-5xl h-[80vh]">
+                    <div className="relative w-full max-w-5xl h-[85vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                         <Image
                             src={displayImages[lightboxIndex]}
                             alt={product.name}
@@ -265,12 +265,15 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                             className="object-contain"
                             priority
                         />
-                        <button
-                            className="absolute top-4 right-4 text-white bg-black/50 p-2 rounded-full hover:bg-black/70"
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="absolute -top-12 right-0 text-white hover:bg-white/20 font-bold gap-2"
                             onClick={() => setIsLightboxOpen(false)}
                         >
-                            ✕
-                        </button>
+                            <span>CLOSE</span>
+                            <span className="text-xl">✕</span>
+                        </Button>
                     </div>
 
                     {displayImages.length > 1 && (

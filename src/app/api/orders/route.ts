@@ -102,6 +102,8 @@ export async function POST(request: Request) {
                     endDate,
                     duration,
                     userId: userId as string,
+                    locationLatitude: latitude ? parseFloat(latitude) : null,
+                    locationLongitude: longitude ? parseFloat(longitude) : null,
                 },
             })
 

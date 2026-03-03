@@ -12,7 +12,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel"
+import { cn } from '@/lib/utils'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 
 interface Review {
@@ -75,8 +77,13 @@ export default function Reviews() {
   const [overallRating, setOverallRating] = useState(5.0)
   const [reviewCount, setReviewCount] = useState<number | null>(null)
   const [isFromGoogle, setIsFromGoogle] = useState(false)
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     let cancelled = false
 
     async function fetchGoogleReviews() {
@@ -104,6 +111,17 @@ export default function Reviews() {
     fetchGoogleReviews()
     return () => { cancelled = true }
   }, [])
+
+  useEffect(() => {
+    if (!api) return
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api, reviews])
 
   return (
     <section id="reviews" className="py-20 bg-muted/30 overflow-hidden" aria-label="Customer Reviews">
@@ -138,69 +156,24 @@ export default function Reviews() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-12">
-          <Carousel opts={{ align: "start", loop: true }} className="w-full">
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+              containScroll: "trimSnaps",
+            }}
+            className="w-full"
+          >
             <CarouselContent className="-ml-4 md:-ml-8">
               {reviews.map((review, index) => (
-                <CarouselItem key={index} className="pl-4 md:pl-8 md:basis-1/2 lg:basis-1/3">
-                  <Card className="h-full group relative overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 bg-background">
-                    <CardContent className="pt-8 pb-6 px-7 flex flex-col h-full">
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          {/* Avatar: real photo or initial */}
-                          {review.photoUrl ? (
-                            <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-primary/10 flex-shrink-0">
-                              <Image
-                                src={review.photoUrl}
-                                alt={review.name}
-                                width={48}
-                                height={48}
-                                className="object-cover w-full h-full"
-                                loading="lazy"
-                              />
-                            </div>
-                          ) : (
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary text-xl shadow-inner flex-shrink-0">
-                              {review.name.charAt(0)}
-                            </div>
-                          )}
-                          <div>
-                            <h4 className="font-bold text-base leading-tight flex items-center gap-1.5 flex-wrap">
-                              {review.name}
-                              {review.isLocalGuide && (
-                                <span className="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-medium text-orange-600 ring-1 ring-inset ring-orange-200">
-                                  Local Guide
-                                </span>
-                              )}
-                            </h4>
-                            {(review.ulasanCount || review.reviewCount) && (
-                              <p className="text-xs text-muted-foreground">
-                                {review.ulasanCount || review.reviewCount} reviews
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex text-yellow-500 flex-shrink-0" aria-label={`${review.rating} stars`}>
-                          {[...Array(review.rating)].map((_, i) => (
-                            <Star key={i} className="h-4 w-4 fill-current" />
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="relative flex-1">
-                        <span className="absolute -top-4 -left-2 text-6xl text-primary/5 font-serif select-none pointer-events-none" aria-hidden="true">"</span>
-                        <p className="text-muted-foreground leading-relaxed italic relative z-10 text-[15px] line-clamp-6">
-                          {review.comment}
-                        </p>
-                      </div>
-
-                      <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center">
-                        <span className="text-xs font-medium text-muted-foreground">{review.date}</span>
-                        <div className="flex items-center gap-1 text-[10px] text-green-600 font-bold uppercase tracking-wider bg-green-50 px-2 py-0.5 rounded">
-                          {isFromGoogle ? '✓ Google Review' : 'Verified'}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <CarouselItem key={index} className="pl-4 md:pl-8 basis-[85%] md:basis-1/2 lg:basis-1/3">
+                  {isMounted ? (
+                    <ReviewItem review={review} isFromGoogle={isFromGoogle} />
+                  ) : (
+                    <div className="h-64 w-full bg-muted animate-pulse rounded-xl" />
+                  )}
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -209,6 +182,23 @@ export default function Reviews() {
               <CarouselNext className="-right-12 bg-background border-none shadow-md hover:bg-primary hover:text-white transition-colors h-12 w-12" />
             </div>
           </Carousel>
+
+          {/* Pagination Dots */}
+          {isMounted && count > 0 && (
+            <div className="flex justify-center gap-2 mt-8 md:hidden">
+              {Array.from({ length: count }).map((_, i) => (
+                <button
+                  key={i}
+                  className={cn(
+                    "w-2 h-2 rounded-full transition-all",
+                    current === i ? "bg-primary w-4" : "bg-primary/20"
+                  )}
+                  onClick={() => api?.scrollTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-20 flex flex-col items-center gap-6">
@@ -235,5 +225,84 @@ export default function Reviews() {
         </div>
       </div>
     </section>
+  )
+}
+
+function ReviewItem({ review, isFromGoogle }: { review: Review; isFromGoogle: boolean }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const CHAR_LIMIT = 180
+
+  const shouldTruncate = review.comment.length > CHAR_LIMIT
+  const displayComment = isExpanded || !shouldTruncate
+    ? review.comment
+    : `${review.comment.substring(0, CHAR_LIMIT)}...`
+
+  return (
+    <Card className="h-full group relative overflow-hidden border-none shadow-md hover:shadow-xl transition-all duration-300 bg-background">
+      <CardContent className="pt-8 pb-6 px-7 flex flex-col h-full">
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-3">
+            {review.photoUrl ? (
+              <div className="h-12 w-12 rounded-full overflow-hidden ring-2 ring-primary/10 flex-shrink-0">
+                <Image
+                  src={review.photoUrl}
+                  alt={review.name}
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary text-xl shadow-inner flex-shrink-0">
+                {review.name.charAt(0)}
+              </div>
+            )}
+            <div>
+              <h4 className="font-bold text-base leading-tight flex items-center gap-1.5 flex-wrap">
+                {review.name}
+                {review.isLocalGuide && (
+                  <span className="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-medium text-orange-600 ring-1 ring-inset ring-orange-200">
+                    Local Guide
+                  </span>
+                )}
+              </h4>
+              {(review.ulasanCount || review.reviewCount) && (
+                <p className="text-xs text-muted-foreground">
+                  {review.ulasanCount || review.reviewCount} reviews
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex text-yellow-500 flex-shrink-0" aria-label={`${review.rating} stars`}>
+            {[...Array(review.rating)].map((_, i) => (
+              <Star key={i} className="h-4 w-4 fill-current" />
+            ))}
+          </div>
+        </div>
+
+        <div className="relative flex-1">
+          <span className="absolute -top-4 -left-2 text-6xl text-primary/5 font-serif select-none pointer-events-none" aria-hidden="true">"</span>
+          <p className="text-muted-foreground leading-relaxed italic relative z-10 text-[15px]">
+            {displayComment}
+          </p>
+          {shouldTruncate && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-primary text-[11px] font-black uppercase tracking-widest mt-2 hover:underline relative z-20"
+            >
+              {isExpanded ? 'Show Less' : 'Read More...'}
+            </button>
+          )}
+        </div>
+
+        <div className="mt-6 pt-4 border-t border-border/50 flex justify-between items-center">
+          <span className="text-xs font-medium text-muted-foreground">{review.date}</span>
+          <div className="flex items-center gap-1 text-[10px] text-green-600 font-bold uppercase tracking-wider bg-green-50 px-2 py-0.5 rounded">
+            {isFromGoogle ? '✓ Google Review' : 'Verified'}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }

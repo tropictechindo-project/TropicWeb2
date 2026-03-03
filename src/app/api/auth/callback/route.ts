@@ -91,11 +91,8 @@ export async function GET(request: NextRequest) {
             role: sessionRole,
         })
 
-        // Determine destination based on role as requested
-        let destination = '/dashboard/user';
-        if (sessionRole === 'ADMIN' || sessionRole === 'WORKER') {
-            destination = '/';
-        }
+        // Determine destination: Redirect all to landing page as requested
+        let destination = '/';
 
         if (next) {
             destination = next;

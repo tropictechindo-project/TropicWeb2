@@ -62,6 +62,8 @@ model Order {
   paymentConfirmedBy                       String?              @map("payment_confirmed_by") @db.Uuid
   paymentStatus                            String?              @default("PENDING") @map("payment_status") @db.VarChar(20)
   userId                                   String               @map("user_id") @db.Uuid
+  locationLatitude                         Float?               @map("latitude")
+  locationLongitude                        Float?               @map("longitude")
   discountAmount                           Decimal?             @default(0) @map("discount_amount") @db.Decimal(10, 2)
   discountPercentage                       Int?                 @default(0) @map("discount_percentage")
   invoices                                 Invoice[]
