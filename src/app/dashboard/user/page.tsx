@@ -29,7 +29,8 @@ import {
   CreditCard,
   User as UserIcon,
   MessageSquare,
-  Headset
+  Headset,
+  LogOut
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -50,7 +51,7 @@ import {
 import { countries, normalizeWhatsApp } from '@/lib/utils/whatsapp'
 
 export default function UserDashboard() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const { unreadMessagesCount } = useNotification()
   const [orders, setOrders] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -280,6 +281,18 @@ export default function UserDashboard() {
     <div className="space-y-10">
       {/* CTA Buttons */}
       <div className="flex flex-row gap-2 justify-end mt-8">
+        <Button
+          variant="destructive"
+          className="gap-2"
+          onClick={() => {
+            if (confirm('Are you sure you want to log out?')) {
+              logout()
+            }
+          }}
+        >
+          <LogOut className="w-4 h-4" />
+          Log Out
+        </Button>
         <Button
           variant="default"
           className="gap-2"

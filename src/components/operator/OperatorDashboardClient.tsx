@@ -8,7 +8,7 @@ import {
     LayoutDashboard, FileText, Truck, Package, Bot,
     Clock, AlertTriangle, TrendingUp, Send, Loader2,
     ChevronRight, RefreshCw, ArrowRight, BarChart3, Activity,
-    Download, ListOrdered
+    Download, ListOrdered, LogOut
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { OrdersClient } from "@/components/admin/orders/OrdersClient"
@@ -24,7 +24,7 @@ interface Props {
     workers: any[]
 }
 
-type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create'
+type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout'
 
 function getToken() {
     if (typeof document === 'undefined') return ''
@@ -207,6 +207,7 @@ export default function OperatorDashboardClient({
         { id: 'report', label: 'Report', icon: BarChart3 },
         { id: 'logs', label: 'Activity Log', icon: Activity },
         { id: 'ai', label: 'AI Assistant', icon: Bot },
+        { id: 'logout', label: 'Log Out', icon: LogOut },
     ] as const
 
     const statCards = [
@@ -234,9 +235,19 @@ export default function OperatorDashboardClient({
                 </div>
                 <div className="max-w-7xl mx-auto px-4 flex gap-1 overflow-x-auto pb-0.5 scrollbar-hide">
                     {tabs.map(tab => (
-                        <button key={tab.id} onClick={() => setActiveTab(tab.id as Tab)}
-                            className={`flex items-center gap-1.5 px-3.5 py-2.5 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'
-                                }`}
+                        <button key={tab.id}
+                            onClick={() => {
+                                if (tab.id === 'logout') {
+                                    if (confirm('Are you sure you want to log out?')) {
+                                        localStorage.removeItem('token')
+                                        localStorage.removeItem('user')
+                                        window.location.href = '/'
+                                    }
+                                    return
+                                }
+                                setActiveTab(tab.id as Tab)
+                            }}
+                            className={`flex items-center gap-1.5 px-3.5 py-2.5 text-[10px] font-black uppercase tracking-widest border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'} ${tab.id === 'logout' ? 'text-red-500 hover:text-red-600' : ''}`}
                         >
                             <tab.icon className="h-3 w-3" />{tab.label}
                         </button>
