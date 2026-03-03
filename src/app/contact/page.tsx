@@ -94,7 +94,18 @@ export default function ContactPage() {
                     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex-grow flex flex-col">
                         <div className="p-8 pb-0">
                             <h3 className="text-xl font-bold text-gray-900 mb-2">PT Tropic Tech International</h3>
-                            <p className="text-gray-600 mb-6">Badung Residency, Bali, Indonesia</p>
+                            <a
+                                href="https://maps.app.goo.gl/m4pheSyZsZLaznmc8"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block text-gray-600 mb-6 hover:text-blue-600 transition-colors group flex items-start gap-2"
+                            >
+                                <span>
+                                    Jl. Tunjung Sari No.8, Padangsambian Kaja,<br />
+                                    Kec. Denpasar Bar., Kota Denpasar, Bali 80117
+                                </span>
+                                <svg className="w-4 h-4 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                            </a>
                         </div>
                         <div className="w-full flex-grow min-h-[400px] p-6 pt-0 relative">
                             {/* 

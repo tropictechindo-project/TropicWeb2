@@ -6,7 +6,7 @@ export default function MapPlaceholder() {
     return (
         <div className="w-full h-full min-h-[400px] bg-gray-100 rounded-3xl overflow-hidden shadow-inner relative flex items-center justify-center">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126214.37255476607!2d115.08581335!3d-8.6704581!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2409b0e5e80b9%3A0x5030bfbca831100!2sBadung%20Regency%2C%20Bali!5e0!3m2!1sen!2sid!4v1709400000000!5m2!1sen!2sid"
+                src="https://maps.google.com/maps?q=PT.%20Tropic%20Tech%20International,%20Jl.%20Tunjung%20Sari%20No.8,%20Bali&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: '400px' }}
