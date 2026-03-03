@@ -86,6 +86,20 @@ export async function executeAiAction(actionId: string, adminId: string) {
                 })
                 break
 
+            case 'UPDATE_DELIVERY_STATUS':
+                await tx.delivery.update({
+                    where: { id: payload.deliveryId },
+                    data: { status: payload.status }
+                })
+                break
+
+            case 'UPDATE_DELIVERY_ETA':
+                await tx.delivery.update({
+                    where: { id: payload.deliveryId },
+                    data: { eta: new Date(payload.eta) }
+                })
+                break
+
             default:
                 throw new Error(`Unsupported AI action type: ${action.actionType}`)
         }

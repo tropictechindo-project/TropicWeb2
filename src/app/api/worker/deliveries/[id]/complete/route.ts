@@ -155,25 +155,26 @@ export async function POST(
                 })
 
                 if (!existingPickup) {
+                    // Fetch the original Order End Date to schedule the pickup accurately
+                    const invoiceWithOrder = await tx.invoice.findUnique({
+                        where: { id: delivery.invoiceId },
+                        include: { order: true }
+                    })
+
+                    const scheduledEta = invoiceWithOrder?.order?.endDate || null
+
                     await tx.delivery.create({
                         data: {
                             invoiceId: delivery.invoiceId,
                             deliveryMethod: 'INTERNAL',
                             deliveryType: 'PICKUP',
-                            status: 'QUEUED',
+                            // Put this on ICE. The Cron Job will unlock it to QUEUED exactly 1 day before the ETA.
+                            status: 'PAUSED',
+                            eta: scheduledEta
                         }
                     })
 
-                    // Notify workers about the upcoming pickup
-                    await tx.spiNotification.create({
-                        data: {
-                            role: 'WORKER',
-                            type: 'DELIVERY_UPDATE',
-                            title: 'New Pickup Task',
-                            message: `A new pickup is now queued for Invoice ${delivery.invoice?.invoiceNumber || 'Manual'}.`,
-                            link: '/dashboard/worker',
-                        }
-                    })
+                    // We NO LONGER notify workers immediately. The -1 Day Cron Job handles alerting them.
                 }
             }
 

@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
             INSTRUCTIONS:
             1. If the Boss gives a command to change data, return a JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "reply": "..." }.
             2. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "reply": "..." }.
-            3. You can orchestrate commands via JSON actions.
+            3. You can orchestrate commands via JSON actions. Supported actionTypes include: UPDATE_PRODUCT, UPDATE_ORDER_STATUS, CREATE_PACKAGE, UPDATE_DELIVERY_STATUS (requires deliveryId, status), UPDATE_DELIVERY_ETA (requires deliveryId, eta as ISO string).
             4. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." } }
             5. ALWAYS return a "reply" field for the user to see.
         `

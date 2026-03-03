@@ -55,6 +55,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { format } from "date-fns"
 
 export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialDeliveries: any[], workers?: any[] }) {
     const router = useRouter()
@@ -62,11 +70,14 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
     const [isLoading, setIsLoading] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
 
-    // Form states
     const [selectedDelivery, setSelectedDelivery] = useState<any>(null)
     const [status, setStatus] = useState("")
     const [deliveryMethod, setDeliveryMethod] = useState("INTERNAL")
     const [workerId, setWorkerId] = useState<string | null>(null)
+    const [eta, setEta] = useState<string>("")
+
+    const dropoffs = deliveries.filter(d => d.deliveryType === 'DROPOFF')
+    const pickups = deliveries.filter(d => d.deliveryType === 'PICKUP')
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -84,6 +95,7 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                 body: JSON.stringify({
                     status,
                     deliveryMethod,
+                    eta: eta ? new Date(eta).toISOString() : undefined,
                     claimedByWorkerId: workerId === "none" ? null : workerId
                 })
             })
@@ -140,127 +152,151 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
         }
     }
 
+    const renderTable = (data: any[], emptyMessage: string) => (
+        <Table>
+            <TableHeader className="bg-muted/50">
+                <TableRow>
+                    <TableHead>Delivery / Invoice</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Worker & Vehicle</TableHead>
+                    <TableHead>Items</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {data.length === 0 ? (
+                    <TableRow>
+                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            {emptyMessage}
+                        </TableCell>
+                    </TableRow>
+                ) : data.map((delivery) => (
+                    <TableRow key={delivery.id}>
+                        <TableCell className="font-medium">
+                            <div className="flex flex-col gap-1">
+                                <span className="text-sm font-bold text-primary">#{delivery.invoice?.invoiceNumber || 'N/A'}</span>
+                                <span className="text-xs text-muted-foreground font-mono">ID: {delivery.id.split('-')[0]}</span>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <div className="flex flex-col gap-1 text-sm">
+                                <span className="font-medium">{delivery.invoice?.order?.user?.fullName || 'N/A'}</span>
+                                <span className="text-xs text-muted-foreground">{delivery.invoice?.order?.user?.whatsapp || '-'}</span>
+                                <div className="flex gap-2 mt-1">
+                                    {(delivery.latitude && delivery.longitude) ? (
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
+                                            onClick={() => window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')}
+                                        >
+                                            <MapPin className="w-3 h-3 text-primary" /> GPS PIN
+                                        </Button>
+                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
+                                            onClick={() => window.open(delivery.invoice.guestAddress, '_blank')}
+                                        >
+                                            <Navigation className="w-3 h-3 text-primary" /> MAP LINK
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <div className="flex flex-col gap-1 text-sm">
+                                {delivery.claimedByWorker ? (
+                                    <span className="font-medium flex items-center gap-1 text-blue-600">
+                                        <User className="w-3 h-3" /> {delivery.claimedByWorker.fullName}
+                                    </span>
+                                ) : (
+                                    <span className="text-xs text-muted-foreground italic">Unassigned</span>
+                                )}
+                                {delivery.vehicle ? (
+                                    <span className="text-xs flex items-center gap-1 text-muted-foreground">
+                                        <Truck className="w-3 h-3" /> {delivery.vehicle.name}
+                                    </span>
+                                ) : (
+                                    <span className="text-xs text-muted-foreground italic">No Vehicle</span>
+                                )}
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <div className="flex items-center gap-2">
+                                <Badge variant="secondary"><Package className="w-3 h-3 mr-1" /> {delivery.items?.length || 0} items</Badge>
+                            </div>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(delivery.status)}</TableCell>
+                        <TableCell className="text-right">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" className="h-8 w-8 p-0">
+                                        <span className="sr-only">Open menu</span>
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Admin Overrides</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => {
+                                        setSelectedDelivery(delivery)
+                                        setStatus(delivery.status)
+                                        setDeliveryMethod(delivery.deliveryMethod)
+                                        setWorkerId(delivery.claimedByWorkerId || "none")
+                                        setEta(delivery.eta ? format(new Date(delivery.eta), "yyyy-MM-dd'T'HH:mm") : "")
+                                        setIsEditOpen(true)
+                                    }}>
+                                        <Edit className="w-4 h-4 mr-2" /> Dispatch & Settings
+                                    </DropdownMenuItem>
+
+                                    {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
+                                        <DropdownMenuItem
+                                            className="text-destructive focus:bg-destructive/10"
+                                            onClick={() => handleDelete(delivery.id)}
+                                        >
+                                            <Trash className="w-4 h-4 mr-2" /> Force Cancel
+                                        </DropdownMenuItem>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+
     return (
         <div className="space-y-4">
-            <Card>
-                <CardContent className="p-0">
-                    <div className="rounded-md border-0">
-                        <Table>
-                            <TableHeader className="bg-muted/50">
-                                <TableRow>
-                                    <TableHead>Delivery / Invoice</TableHead>
-                                    <TableHead>Customer</TableHead>
-                                    <TableHead>Worker & Vehicle</TableHead>
-                                    <TableHead>Items</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right">Actions</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {deliveries.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                                            No deliveries found in the system.
-                                        </TableCell>
-                                    </TableRow>
-                                ) : deliveries.map((delivery) => (
-                                    <TableRow key={delivery.id}>
-                                        <TableCell className="font-medium">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="text-sm font-bold text-primary">#{delivery.invoice?.invoiceNumber || 'N/A'}</span>
-                                                <span className="text-xs text-muted-foreground font-mono">ID: {delivery.id.split('-')[0]}</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex flex-col gap-1 text-sm">
-                                                <span className="font-medium">{delivery.invoice?.order?.user?.fullName || 'N/A'}</span>
-                                                <span className="text-xs text-muted-foreground">{delivery.invoice?.order?.user?.whatsapp || '-'}</span>
-                                                <div className="flex gap-2 mt-1">
-                                                    {(delivery.latitude && delivery.longitude) ? (
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
-                                                            onClick={() => window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')}
-                                                        >
-                                                            <MapPin className="w-3 h-3 text-primary" /> GPS PIN
-                                                        </Button>
-                                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
-                                                            onClick={() => window.open(delivery.invoice.guestAddress, '_blank')}
-                                                        >
-                                                            <Navigation className="w-3 h-3 text-primary" /> MAP LINK
-                                                        </Button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex flex-col gap-1 text-sm">
-                                                {delivery.claimedByWorker ? (
-                                                    <span className="font-medium flex items-center gap-1 text-blue-600">
-                                                        <User className="w-3 h-3" /> {delivery.claimedByWorker.fullName}
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-xs text-muted-foreground italic">Unassigned</span>
-                                                )}
-                                                {delivery.vehicle ? (
-                                                    <span className="text-xs flex items-center gap-1 text-muted-foreground">
-                                                        <Truck className="w-3 h-3" /> {delivery.vehicle.name}
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-xs text-muted-foreground italic">No Vehicle</span>
-                                                )}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-2">
-                                                <Badge variant="secondary"><Package className="w-3 h-3 mr-1" /> {delivery.items?.length || 0} items</Badge>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>{getStatusBadge(delivery.status)}</TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Admin Overrides</DropdownMenuLabel>
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem onClick={() => {
-                                                        setSelectedDelivery(delivery)
-                                                        setStatus(delivery.status)
-                                                        setDeliveryMethod(delivery.deliveryMethod)
-                                                        setWorkerId(delivery.claimedByWorkerId || "none")
-                                                        setIsEditOpen(true)
-                                                    }}>
-                                                        <Edit className="w-4 h-4 mr-2" /> Dispatch & Settings
-                                                    </DropdownMenuItem>
+            <Tabs defaultValue="dropoffs" className="w-full">
+                <TabsList className="mb-4 bg-muted/30 p-1 rounded-lg">
+                    <TabsTrigger value="dropoffs" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">Outbound Dropoffs <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-blue-100">{dropoffs.length}</Badge></TabsTrigger>
+                    <TabsTrigger value="pickups" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white rounded-md">Inbound Pickups <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-purple-100">{pickups.length}</Badge></TabsTrigger>
+                </TabsList>
 
-                                                    {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
-                                                        <DropdownMenuItem
-                                                            className="text-destructive focus:bg-destructive/10"
-                                                            onClick={() => handleDelete(delivery.id)}
-                                                        >
-                                                            <Trash className="w-4 h-4 mr-2" /> Force Cancel
-                                                        </DropdownMenuItem>
-                                                    )}
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </CardContent>
-            </Card>
+                <TabsContent value="dropoffs" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Card>
+                        <CardContent className="p-0">
+                            <div className="rounded-md border-0">
+                                {renderTable(dropoffs, "No dropoffs found in the system.")}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="pickups" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Card>
+                        <CardContent className="p-0">
+                            <div className="rounded-md border-0">
+                                {renderTable(pickups, "No pickups found in the system or all pickups are hidden in PAUSED state until Day -1.")}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
 
             <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                 <DialogContent>
@@ -299,6 +335,16 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                             <p className="text-[10px] text-muted-foreground">Assigning a worker will force-claim the delivery for them.</p>
                         </div>
                         <div className="space-y-2">
+                            <Label htmlFor="edit-eta">Scheduled ETA (Local Time):</Label>
+                            <Input
+                                id="edit-eta"
+                                type="datetime-local"
+                                value={eta}
+                                onChange={(e) => setEta(e.target.value)}
+                            />
+                            <p className="text-[10px] text-muted-foreground">Pickups scheduled &gt;1 day away will remain PAUSED until -1 Day threshold.</p>
+                        </div>
+                        <div className="space-y-2">
                             <Label htmlFor="edit-status">Status Override:</Label>
                             <Select value={status} onValueChange={setStatus}>
                                 <SelectTrigger>
@@ -324,6 +370,6 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                     </form>
                 </DialogContent>
             </Dialog>
-        </div >
+        </div>
     )
 }
