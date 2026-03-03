@@ -104,6 +104,7 @@ The website operates through three distinct entry points based on user roles:
 ## 📝 Recent System Updates
 - [x] **Operator UI & Operations Masterclass (v1.7.7)**: Rebuilt the Operator dashboard utilizing natively connected Admin components. Operators can now perform standard admin overrides for deliveries without needing master keys.
 - [x] **Smart Access Prompts (v1.7.7)**: Re-architected `LocationPrompt` and `NotificationPrompt` to bypass standard DOM mount lifecycles, and instead trigger reactively based on Checkout initialization and Auth login resolution. Ensures blazing fast Largest Contentful Paint (LCP).
+- [x] **Unified Log Out Experience (v1.7.7)**: Hardened global authentication UI by injecting explicitly-visible `Log Out` actions across the User, Worker, and Operator dashboards. Integrated robust client-side `localStorage` token clearing prior to home redirection.
 - [x] Implemented 2% tax auto-calc on invoices.
 - [x] Added worker attendance auto-late detection.
 - [X] Deployment of Inventory Sync Conflict UI.
@@ -183,3 +184,4 @@ The website operates through three distinct entry points based on user roles:
 
 > [!NOTE]
 > This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
+- [x] **Legal & Compliance Pages**: Built robust Privacy Policy, Terms & Conditions, and Refund Policy pages, matching Tropic Tech's high-end 'Dark Mode Hero' UI and typography, and validated complete integration with the primary Footer.
