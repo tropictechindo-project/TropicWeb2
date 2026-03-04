@@ -20,6 +20,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useNotification } from "@/contexts/NotificationContext"
+import { LinkedCompanyPanel } from "@/components/shared/LinkedCompanyPanel"
 
 import {
     Sidebar,
@@ -128,6 +129,7 @@ export function UserSidebar({ currentTab, onTabChange, userName, isGuest }: { cu
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+                <LinkedCompanyPanel />
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>

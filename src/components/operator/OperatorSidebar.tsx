@@ -17,6 +17,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useNotification } from "@/contexts/NotificationContext"
+import { LinkedCompanyPanel } from "@/components/shared/LinkedCompanyPanel"
 
 import {
     Sidebar,
@@ -135,6 +136,7 @@ export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: strin
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+                <LinkedCompanyPanel />
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
