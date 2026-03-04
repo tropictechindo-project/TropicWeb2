@@ -28,9 +28,6 @@ export function LinkedCompanyPanel() {
                 <Dialog>
                     <DialogTrigger asChild>
                         <button className="flex items-center gap-3 w-full p-2.5 rounded-xl bg-card border border-border hover:bg-muted/50 transition-all text-left shadow-sm hover:shadow group focus:outline-none focus:ring-2 focus:ring-[#4c1d95]/30">
-                            <div className="w-8 h-8 rounded-lg bg-[#4c1d95] flex items-center justify-center text-white font-black shrink-0 shadow-inner">
-
-                            </div>
                             <div className="flex-1 overflow-hidden">
                                 <p className="font-bold text-sm leading-tight text-foreground group-hover:text-[#4c1d95] transition-colors truncate">Indonesian Visas</p>
                                 <p className="text-[10px] text-muted-foreground truncate uppercase font-bold tracking-widest mt-0.5">Explore Services</p>
