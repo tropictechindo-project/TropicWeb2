@@ -29,7 +29,7 @@ export function LinkedCompanyPanel() {
                     <DialogTrigger asChild>
                         <button className="flex items-center gap-3 w-full p-2.5 rounded-xl bg-card border border-border hover:bg-muted/50 transition-all text-left shadow-sm hover:shadow group focus:outline-none focus:ring-2 focus:ring-[#4c1d95]/30">
                             <div className="w-8 h-8 rounded-lg bg-[#4c1d95] flex items-center justify-center text-white font-black shrink-0 shadow-inner">
-                                IV
+
                             </div>
                             <div className="flex-1 overflow-hidden">
                                 <p className="font-bold text-sm leading-tight text-foreground group-hover:text-[#4c1d95] transition-colors truncate">Indonesian Visas</p>
@@ -41,17 +41,14 @@ export function LinkedCompanyPanel() {
                         </button>
                     </DialogTrigger>
 
-                    <DialogContent className="max-w-5xl w-[95vw] sm:w-full max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0 border-border sm:rounded-2xl">
+                    <DialogContent className="max-w-[1200px] w-[90vw] h-[85vh] overflow-hidden flex flex-col p-0 gap-0 border-border rounded-xl sm:rounded-2xl">
                         <DialogHeader className="p-4 sm:p-6 pb-4 sm:pb-5 border-b border-border bg-muted/20 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#4c1d95]/5 to-transparent rounded-bl-full pointer-events-none" />
-                            <div className="flex items-start sm:items-center gap-4 relative z-10">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[#4c1d95] to-[#3b1575] flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-lg shrink-0 border border-[#4c1d95]/20">
-                                    IV
-                                </div>
-                                <div className="text-left flex-1 pr-6">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10 w-full pr-6">
+                                <div className="text-left max-w-2xl">
                                     <DialogTitle className="text-xl sm:text-2xl font-black text-foreground tracking-tight leading-tight">Indonesian Visas Services</DialogTitle>
-                                    <DialogDescription className="text-xs sm:text-sm mt-1 max-w-xl leading-relaxed">
-                                        Your trusted official visa partner. Select any service below to securely process your travel or residency needs on our main platform.
+                                    <DialogDescription className="text-xs sm:text-sm mt-1 leading-relaxed">
+                                        Your trusted official visa partner. Select any service below to securely process your travel or residency needs on our Linked Company.
                                     </DialogDescription>
                                 </div>
                             </div>
