@@ -106,6 +106,26 @@ export async function POST(request: Request) {
                 })
             }
 
+            // Create SPI notifications for Admin & Operator
+            await tx.notification.createMany({
+                data: [
+                    {
+                        title: 'New Order Received',
+                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${total}.`,
+                        type: 'INFO',
+                        role: 'ADMIN',
+                        link: `/admin/orders`,
+                    },
+                    {
+                        title: 'New Order Received',
+                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${total}.`,
+                        type: 'INFO',
+                        role: 'OPERATOR',
+                        link: `/admin/orders`,
+                    }
+                ]
+            })
+
             return newInvoice
         })
 

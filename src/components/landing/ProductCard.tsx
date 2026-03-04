@@ -78,6 +78,7 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
       <Card
         className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
         onClick={() => setIsModalOpen(true)}
+        suppressHydrationWarning
       >
         <CardHeader className="pb-3">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted group">

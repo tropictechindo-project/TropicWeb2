@@ -105,12 +105,12 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
   return (
     <section id="products" className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
-          {t('products')}
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-8" suppressHydrationWarning>
+          {isMounted ? t('products') : 'Products'}
         </h2>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center items-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center items-center gap-2 mb-8" suppressHydrationWarning>
           <div ref={searchRef} className="relative flex items-center transition-all duration-300 ease-in-out">
             <Button
               variant="ghost"

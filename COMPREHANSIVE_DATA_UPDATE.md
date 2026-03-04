@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-05 03:25:00 (WITA/GMT+8)
-**System Version**: 1.8.0-stable
-**Environment**: Production Ready (Operator Empowered & Global Delivery Trackers)
+**Last Updated**: 2026-03-05 04:15:00 (WITA/GMT+8)
+**System Version**: 1.9.0-stable
+**Environment**: Production Ready (AI Personas & Unified Dashboards)
 
 ---
 
@@ -10,15 +10,15 @@
 TropicTech is a sophisticated rental management and service ecosystem designed for seamless coordination between customers, administrators, and field workers. It features an AI-orchestrated backend, real-time inventory tracking, and an automated invoicing system.
 
 ### 🚀 Technology Stack
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router / Turbopack)
 - **Language**: TypeScript 5, React 19
 - **Styling**: Tailwind CSS 4, Radix UI (Shadcn), Lucide Icons
 - **Database**: PostgreSQL (Supabase) with Prisma ORM
-- **Authentication**: NextAuth.js 4
+- **Authentication**: NextAuth.js 4 & Supabase SSR Bridge
 - **State/Data**: Zustand (Client State), TanStack Query v5 (Server State)
 - **Utilities**: Framer Motion (Animations), Resend.com (Email - Professional Domain), jsPDF (Invoices), Sharp (Images)
-- **Email Infrastructure**: Switched to **Local Transport (Resend.com)** for all auth and system notifications via `contact@tropictech.online`.
-- **AI Engine**: OpenAI Integrated with custom AI Orchestration (Sales, Worker, Risk, Seller, Master agents)
+- **Email Infrastructure**: Switched to **Local Transport (SMTP/Resend)** for all auth and system notifications via `contact@tropictech.online`.
+- **AI Engine**: OpenAI & Google Gemini Integrated with custom AI Orchestration (Sales, Worker, Risk, Seller, Master agents)
 
 ---
 
@@ -28,6 +28,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 The website operates through three distinct entry points based on user roles:
 - **Client Interface**: Browse products, create orders, track rentals, and view invoices.
 - **Admin Panel (`/admin`)**: Central command for managing orders, products, workers, schedules, and site settings.
+- **Operator Panel (`/dashboard/operator`)**: Specialized view for handling orders and deliveries.
 - **Worker Portal (`/dashboard/worker`)**: Mobile-first interface for field workers to check attendance, update job statuses, and sync inventory.
 
 ### 2. Core Business Workflows
@@ -35,13 +36,13 @@ The website operates through three distinct entry points based on user roles:
 1. User creates an order (Draft → Awaiting Payment).
 2. User uploads payment proof or pays via provider.
 3. Admin verifies payment (`/api/admin/orders/[id]/confirm-payment`).
-4. System auto-calculates 2% tax and generates a `Invoice`.
+4. System auto-calculates 2% tax and generates an `Invoice`.
 5. Email notifications sent to User, Workers, and Central Admin.
 
 #### 👷 Worker Management
 - **Scheduling**: Admins assign jobs to workers linked to specific orders.
 - **Attendance**: Workers check-in/out via the portal. System auto-flags "LATE" attendance after 9:00 AM.
-- **Reporting**: Workers submit daily reports including checklist items (Delivered, Damaged, etc.).
+- **Reporting**: Workers submit daily reports including checklist items and **Live Delivery Photos**.
 
 #### 📦 Inventory & Sync
 - **Serial Tracking**: Every product unit is tracked by serial number and condition.
@@ -56,138 +57,47 @@ The website operates through three distinct entry points based on user roles:
 |-------|--------|-------------|
 | `/` | Public | Home page & Product browsing |
 | `/auth/login` | Public | Authentication gateway |
-| `/dashboard` | User | Customer order history & Profile |
+| `/dashboard/user` | User | Customer order history & Profile |
 | `/admin` | Admin | Main administration analytics |
-| `/admin/workers` | Admin | Worker performance & Job assignment |
-| `/admin/orders` | Admin | Order management & Payment verification |
+| `/dashboard/operator`| Operator| Order & Delivery management |
 | `/dashboard/worker` | Worker | Attendance & Active assignments |
 | `/invoice/public/[token]` | Public | View-only shareable invoice |
+| `/tracking/[code]` | Public | Real-time GPS delivery tracking |
 
 ### 🔌 API Endpoints (Core)
 - **Admin**:
   - `POST /api/admin/orders/[id]/confirm-payment`
   - `GET/POST /api/admin/workers`
-  - `POST /api/admin/workers/[id]/message`
 - **Worker**:
   - `POST /api/worker/attendance`
-  - `PATCH /api/worker/schedules/[id]`
-- **System**:
-  - `GET /api/realtime/polling` - Central synchronization endpoint.
+  - `POST /api/worker/upload-proof` - Image upload for delivery.
+- **AI**:
+  - `/api/ai/worker-chat` - Specific Worker persona.
+  - `/api/ai/operator-chat` - Dashboard context AI.
 
 ---
 
-## 📂 Folder Structure Audit
-- `src/app/`: Next.js App Router (Routes & Layouts).
-- `src/components/`:
-  - `ui/`: Base Radix/Shadcn components.
-  - `admin/`: Admin-specific complex components.
-  - `worker/`: Worker portal widgets.
-- `src/lib/`:
-  - `invoice-utils.ts`: Core tax and subtotal logic.
-  - `realtime.ts`: Polling and sync infrastructure.
-  - `email.ts`: Nodemailer templates and transport.
-  - `db.ts`: Prisma Client singleton.
-- `prisma/`:
-  - `schema.prisma`: Master data model (700+ lines).
-  - `seed.ts`: Initial data population.
-
----
-
-## 🛠️ Build & System Operations
-- **Development**: `npm run dev` (Runs on port 3000)
-- **Deployment**: Next.js Standalone build.
-- **Database Push**: `npx prisma db push`
-- **Environment**: Managed via `.env` (Requires `DATABASE_URL`, `NEXTAUTH_SECRET`, `SUPABASE_KEY`).
-
----
-
-## 📝 Recent System Updates
-- [x] **Operator UI & Operations Masterclass (v1.7.7)**: Rebuilt the Operator dashboard utilizing natively connected Admin components. Operators can now perform standard admin overrides for deliveries without needing master keys.
-- [x] **Smart Access Prompts (v1.7.7)**: Re-architected `LocationPrompt` and `NotificationPrompt` to bypass standard DOM mount lifecycles, and instead trigger reactively based on Checkout initialization and Auth login resolution. Ensures blazing fast Largest Contentful Paint (LCP).
-- [x] **Unified Log Out Experience (v1.7.7)**: Hardened global authentication UI by injecting explicitly-visible `Log Out` actions across the User, Worker, and Operator dashboards. Integrated robust client-side `localStorage` token clearing prior to home redirection.
-- [x] Implemented 2% tax auto-calc on invoices.
-- [x] Added worker attendance auto-late detection.
-- [X] Deployment of Inventory Sync Conflict UI.
-- [x] Enhanced Public Invoice sharing (Token-based, No Auth).
-- [x] **Category Management**: Added dynamic "Add New" category creation logic to Admin Dashboard.
-- [x] **Data Cleanup**: Purged duplicate product categories (Chairs, Desks, etc.) and optimized database.
-- [x] **Deployment Fix**: Added `rhel-openssl-3.0.x` binary targets to Prisma schema to resolve deployment engine errors.
-- [x] **UI Connections**: Connected rental packages to their included products in public UI (`ProductDetailPage` and `ProductDetailModal`).
-- [x] **Authentication Flow**: Fixed Supabase PKCE code challenge loop in Password Reset by migrating to `@supabase/ssr` with Next.js cookies. Added Exit (X) buttons to all auth modals.
-- [x] **Delivery Flow Prep**: Added 'Set Delivery' mock CTA to Admin Invoices and documented Google Maps API keys (Directions, Distance Matrix, Places) in `.env` and `MIGRATION_REQUIRED.md`.
-- [x] **New Delivery & Dispatch API Core**: 
-  - Eradicated legacy `WorkerSchedule`, `DailyReport`, and `DeliveryChecklistItem` components to enforce "Clean Slate" system integrity.
-  - Implemented 100% type-safe Prisma schema models (`Vehicle`, `Delivery`, `DeliveryItem`, `DeliveryLog`, `DeliveryEditLog`).
-  - Authored `/api/admin/deliveries/*` and `/api/admin/vehicles/*` REST handlers for queue management, overrides, and cancellations.
-  - Authored highly secure, atomic `/api/worker/deliveries/*` API for Workers containing explicit Transaction models for Claiming (locking vehicle pools), Updating GPS ETA, and fully robust final Delivery Completion with automated `InventorySyncLog` audits.
-- [x] **New Delivery & Dispatch UI Architectures**:
-  - Rebuilt `Admin Dashboard` Server/Client separation for **Deliveries Queue** and **Vehicles Fleet**. Overrides enabled via robust Shadcn modal interfaces.
-  - Rebuilt `Worker Dashboard` by bifurcating classic 'Schedules' into unified **Available Pool** card interactions where Drivers select a targeted Vehicle lock and verify claim.
-  - Rebuilt fully-fledged `Public Tracking` layout module in `/tracking/[code]` visually detailing Couriers, Delivery delays, and interactive event logs utilizing the new REST API outputs.
-  - [x] **Worker Dashboard Optimization**:
-  - Implemented **Complete Delivery Dialog** with integrated photo proof and notes support.
-  - Added **12-Hour Edit Log Window** allowing workers to correct their own delivery logs before finalize.
-- [x] **Next.js 15 & Type Safety Hardening**:
-  - System-wide migration of 15+ API routes to **Asynchronous `params` compliance** for Next.js 15.
-  - Resolved `user?.userId` vs `user?.id` property mismatches across the dashboard layer.
-  - Achieved **Clean `npx tsc` status** for all core application modules.
-- [x] **Supabase Security RLS Hardening**:
-  - Authored `rls_hardening.sql` to resolve "Always True" warnings for `orders`, `invoices`, and `rental_items`.
-  - Implemented role-based access control (RBAC) ensuring users only see their own data while Admins retain full visibility.
-- [x] **Google Maps Infrastructure**:
-  - Finalized server-side geography layer (`src/lib/google-maps.ts`) for secure ETA and route calculation.
-  - Implemented startup environment validation to prevent deployment with missing API keys.
-- [x] **Global Brand Identity Transition (Tropic Tech Bali)**: 
-  - Standardized all UI components, public invoices, and automated notifications to **"Tropic Tech Bali"**.
-  - Transitioned the entire ecosystem from legacy Gmail to professional domain hub: **`contact@tropictech.online`**.
-- [x] **Landing Page & Animation**: 
-  - Implemented cinematic **3-second fade-in** for the Hero background Image.
-  - Optimized image loading with `priority` and `eager` fetch settings for LCP speed.
-- [x] **SEO & Discovery Infrastructure**: 
-  - **Dynamic Sitemap**: Created a dynamic `sitemap.ts` that automatically indexes all Products and Rental Packages with accurate database timestamps.
-  - **Robots Management**: Configured `robots.ts` to guide search crawlers and protect sensitive admin/API paths.
-  - **Schema Markup**: Enhanced JSON-LD structured data for products, FAQs, and business details.
-- [x] **Final Production Build & Commitment**: 
-  - Verified a **100% Successful Production Build** with `npm run build`.
-  - Staged and committed **13 major architectural updates** to the local `main` branch.
-- [x] **Workspace Cleanliness**: Purged all temporary logs (`tsc.log`) and scratch files to ensure a lean production-ready codebase.
-- [x] **Geolocation Precision (Phase 13)**: Implemented `LocationPrompt` to capture high-intent GPS coordinates at checkout, enabling point-to-point delivery.
-- [x] **Worker Dashboard Renewal (Phase 14)**: Restored worker portal with one-click navigation and real-time status updates.
-- [x] **Device Notification Activation (Phase 15)**: Integrated browser-level `NotificationPrompt` (5-minute delay) to alert users/workers of active order changes.
-- [x] **Unified Manual Workflow (Phase 16)**:
-  - Redesigned Admin Invoices to include **Workflow Automation** toggles.
-  - Manual invoices now atomically trigger the full `Order` -> `Delivery` -> `Notification` lifecycle.
-  - Automated **Pickup Task Generation**: Drop-off completion now automatically queues the return pickup.
-  - Automated **Inventory Status**: Units flip between `Reserved`, `Rented`, and `Available` automatically based on delivery lifecycle events.
-- [x] **Session Hardening**: Extended session persistence to **365 days** and fixed registration email redirects.
-- [x] **AI Mastery & UI Polish (v1.2.1)**:
-  - Implemented **Dynamic Addressing Rules** stored in `SiteSetting`.
-  - Added **Natural Language Rule Updates**: AI now proposes `UPDATE_ADDRESSING_RULES` when asked to change its "persona" or greeting behavior.
-  - **Legibility Upgrade**: Darkened AI chat text and added floating **Identity Labels** to distinguish between different AI agents in the console.
-- [x] **Advanced Pricing & Admin Logistics (v1.3.0)**:
-  - **Global Pricing Rules**: 2% product tax and IDR 10,000 per km delivery fee implemented.
-  - **Checkout Transparency**: Live fee calculation on the Checkout page using automated GPS distance checks.
-  - **Admin Delivery Control**: Added manual worker assignment and fleet selection (Internal vs Gojek/Grab) to the Admin Delivery Queue.
-  - **Data Synchronicity**: Reinforced all `Invoice` and `Order` creation logic to include distance/tax data by default.
-- [x] **Performance & SEO Gold (v1.4.0)**:
-  - **Premium Hero Transition**: Implemented a cinematic 4-second "Smooth Appear" entry flow.
-  - **SEO Hardening**: Enriched metadata with high-density keywords and verified viewport/theme configuration.
-  - **Schema Enrichment**: Added `AggregateRating` logic to structured data for search ranking boost.
-  - **Accessibility Score**: Standardized ARIA labels and optimized image `sizes` for zero layout shift.
-- [x] **Financial Tooling & Currency Intelligence (v1.5.0)**:
-  - **Real-time Currency Preview**: Added support for USD, EUR, AUD, SGD in checkout with live exchange rate integration.
-  - **Admin Invoice Overrides**: Enabled manual editing of Subtotal, Tax, and Delivery fees in the Admin Dashboard.
-  - **Complete PDF Alignment**: Updated invoice generation engine to reflect manual fee overrides in all paper/PDF documents.
-
-- [x] **Legal & Compliance Pages**: Built robust Privacy Policy, Terms & Conditions, and Refund Policy pages, matching Tropic Tech's high-end 'Dark Mode Hero' UI and typography, and validated complete integration with the primary Footer.
-- [x] **Legal Pages Editable**: Transformed the built Privacy Policy, Terms & Conditions, and Refund Policy pages into Server Components that dynamically fetch strings via `db.siteSetting.findUnique`. Added a dedicated Tab within the Admin Dashboard > Website settings containing cleanly handled Textareas that hook into the `useSiteSettings` POST endpoint.
-- [x] **Dynamic Island & Global Loading UX**: Rebuilt the StickyPanelInfo notifications to render above headers as an iOS-style Dynamic Island. Added `SystemTimeSync` component to dashboards ticking out a 7s sync clock at session milestones. Added `GlobalClickLoader` to catch all interactive clicks and spin a loading pill instantly to resolve slow API feedback.
-- [x] **Real-Time GPS Tracking Integration (v1.8.0)**: Upgraded the `Delivery` workflow to include live browser `navigator.geolocation` polling. Workers now broadcast their latitude/longitude back to the database continuously while *Out for Delivery*. Built a public `/tracking/[code]` interface integrating `@react-google-maps/api` to render an interactive map layout with a custom Van tracker vector reflecting live positioning.
-- [x] **Lighthouse SEO Overhaul (v1.8.0)**: Systematically refactored the Landing Page Hero animation. Decoupled the textual `<h1>` nodes from CSS fades to force an immediate Largest Contentful Paint (LCP) resulting in massive performance spikes, while reserving the 3-second fade `delay-[3000ms]` explicitly for the decorative decorative background elements.
-- [x] **Dashboard Unification (Phase 8-13)**: Hard-linked the active "Shareable Tracker URL" conditionally deployed to users directly into the Operator and Admin dashboards `/admin/deliveries`. Patched deeply seated routing errors restricting Admin access to Service Requests. Normalized active delivery queues (COMPLETED, RETURNED, and CANCELED properties automatically segregate to the History tabs preventing interface backlog).
+## 📅 Recent System Updates (v1.9.0)
+- [x] **Dashboard Unification (Phase 14)**:
+  - Synchronized `AdminSidebar` and `OperatorSidebar` with real-time notification badges for Orders and Deliveries.
+  - Implemented **SPI Redirection**: Clicking a notification popup now instantly navigates the user to the relevant dashboard panel.
+  - Integrated **Global Tracker Modal**: Accessible from all sidebar roles (Admin, Operator, Worker, User).
+- [x] **AI Persona Integration**: 
+  - Launched specialized AI personas: **Worker AI** (Safety & Ops focused) and **Operator AI** (Analytics & Queue focused).
+  - Standardized AI response handling across all dashboard panels (`data.reply` / `data.response` normalization).
+- [x] **Worker Proof of Delivery (v1.9.0)**:
+  - Successfully migrated from "Image URL" manual input to a robust **File Uploader** component.
+  - Integrated with Supabase Storage for secure persistence of delivery proof photos.
+- [x] **PWA & Mobile Engagement**:
+  - Authored a premium **PWA Install Prompt**: Contextual detection for iOS/Safari and Android/Chrome using glassmorphic UI.
+  - Added "Register UX Hardening": Notification now prompts users to check their "Spam Email" folder.
+- [x] **Auth & Hydration Hardening**:
+  - Unified redirection logic: Both standard and Google login now redirect exclusively to the **Landing Page** as per user request.
+  - Resolved persistent **Hydration Mismatch** errors on the landing page by utilizing `isMounted` guards and `suppressHydrationWarning` on dynamic accessibility nodes.
+- [x] **CTA Intelligence**: Added diagnostic toast notifications for Google Login failures to assist in real-time troubleshooting.
 
 > [!IMPORTANT]
-> **Production Note**: The local repository is fully synchronized with origin `main`. System is prepared for live scaling.
+> **Production Note**: The system is now unified, hardened, and accessible via PWA on mobile devices. AI Agents are role-aware and provide significantly higher contextual utility.
 
 > [!NOTE]
-> This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
+> This file is the **Source of Truth** for TropicTech system state. Version 1.9.0 focus: **Unity, AI Intelligence, and Mobile UX**.

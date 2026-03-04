@@ -52,7 +52,7 @@ export function AiDashboardPanel({ title, agentName, welcomeMessage, apiRoute, i
             })
 
             const data = await response.json()
-            setMessages(prev => [...prev, { role: 'assistant', content: data.reply || data.error || 'No response.' }])
+            setMessages(prev => [...prev, { role: 'assistant', content: data.reply || data.response || data.error || 'No response.' }])
         } catch (error) {
             setMessages(prev => [...prev, { role: 'assistant', content: 'System error connecting to neural network.' }])
         } finally {

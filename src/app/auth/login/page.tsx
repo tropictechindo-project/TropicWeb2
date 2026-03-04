@@ -52,15 +52,8 @@ export default function LoginPage() {
 
         toast.success('Logged in successfully')
 
-        if (data.user.role === 'ADMIN') {
-          router.push('/dashboard/admin')
-        } else if (data.user.role === 'WORKER') {
-          router.push('/dashboard/worker')
-        } else if (data.user.role === 'OPERATOR') {
-          router.push('/dashboard/operator')
-        } else {
-          router.push('/dashboard/user')
-        }
+        // Always redirect to landing page after login as requested
+        router.push('/')
       } else {
         const error = await response.json()
         toast.error(error.error || 'Login failed')
@@ -157,11 +150,17 @@ export default function LoginPage() {
               type="button"
               id="google-signin-button"
               onClick={async () => {
-                const { supabase } = await import('@/lib/supabase')
-                await supabase.auth.signInWithOAuth({
-                  provider: 'google',
-                  options: { redirectTo: `${window.location.origin}/api/auth/callback` }
-                })
+                try {
+                  const { supabase } = await import('@/lib/supabase')
+                  const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: `${window.location.origin}/api/auth/callback` }
+                  })
+                  if (error) throw error
+                } catch (err: any) {
+                  console.error('Google login trigger failed:', err)
+                  toast.error(`Login CTA Error: ${err.message || 'Could not connect to Google'}`)
+                }
               }}
               className="w-full h-12 flex items-center justify-center gap-3 bg-white border-2 border-primary rounded-lg shadow-lg hover:shadow-2xl transition-all group overflow-hidden relative z-50 ring-2 ring-primary/20"
             >

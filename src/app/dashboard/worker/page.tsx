@@ -27,7 +27,10 @@ import {
   Package,
   TrendingUp,
   ClipboardCheck,
-  Navigation
+  Navigation,
+  Camera,
+  Loader2,
+  X
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -78,6 +81,7 @@ export default function WorkerDashboard() {
   const [completionNotes, setCompletionNotes] = useState('')
   const [photoProof, setPhotoProof] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
 
   // State for editing recent logs (12h window)
   const [editLogOpen, setEditLogOpen] = useState(false)
@@ -274,6 +278,39 @@ export default function WorkerDashboard() {
       }
     } catch (error) {
       toast.error('Failed to update status')
+    }
+  }
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploadingPhoto(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch('/api/worker/upload-proof', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setPhotoProof(data.url)
+        toast.success('Photo uploaded successfully!')
+      } else {
+        const err = await res.text()
+        toast.error(`Upload failed: ${err}`)
+      }
+    } catch (error) {
+      toast.error('Failed to upload photo')
+    } finally {
+      setIsUploadingPhoto(false)
     }
   }
 
@@ -525,11 +562,11 @@ export default function WorkerDashboard() {
             {activeTab === 'ai' && (
               <div className="space-y-4 animate-in fade-in duration-500">
                 <AiDashboardPanel
-                  title="AI Master Controls"
-                  agentName="AI Master"
-                  welcomeMessage="Sup Bro! I am the Master AI. Need me to check any invoices, deliveries, or stats for you?"
-                  apiRoute="/api/ai/master"
-                  icon={<BotMessageSquare className="w-5 h-5" />}
+                  title="Worker AI Assistant"
+                  agentName="Operations AI"
+                  welcomeMessage="Hero! I am your Operations AI. Need to check your active jobs, pool deliveries, or daily stats?"
+                  apiRoute="/api/ai/worker-chat"
+                  icon={<BotMessageSquare className="w-5 h-5 text-blue-500" />}
                 />
               </div>
             )}
@@ -852,20 +889,49 @@ export default function WorkerDashboard() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Photo URL (Optional)</Label>
-                <Input
-                  placeholder="Upload URL or Link"
-                  value={photoProof}
-                  onChange={(e) => setPhotoProof(e.target.value)}
-                />
-                <p className="text-[10px] text-muted-foreground italic">Tip: Take a photo for evidence.</p>
+                <Label>Photo Proof (Required)</Label>
+                <div className="flex flex-col gap-2">
+                  {photoProof ? (
+                    <div className="relative w-full aspect-video rounded-xl overflow-hidden border-2 border-green-500/30">
+                      <img src={photoProof} alt="Delivery Proof" className="w-full h-full object-cover" />
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        className="absolute top-2 right-2 h-8 w-8 rounded-full"
+                        onClick={() => setPhotoProof('')}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="grid w-full items-center gap-1.5">
+                      <div className="flex items-center justify-center w-full">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-muted-foreground/25 rounded-xl cursor-copy hover:bg-muted/50 transition-colors">
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6 text-muted-foreground">
+                            {isUploadingPhoto ? (
+                              <Loader2 className="w-8 h-8 mb-2 animate-spin text-primary" />
+                            ) : (
+                              <Camera className="w-8 h-8 mb-2" />
+                            )}
+                            <p className="mb-2 text-sm font-semibold">Click to upload photo</p>
+                            <p className="text-xs">PNG, JPG or HEIC</p>
+                          </div>
+                          <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} disabled={isUploadingPhoto} />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {!photoProof && !isUploadingPhoto && (
+                  <p className="text-[10px] text-red-500 font-medium italic">Required: Snap a photo of the delivery location/items.</p>
+                )}
               </div>
               <Button
-                className="w-full bg-green-600 hover:bg-green-700 h-12 text-lg font-bold"
+                className="w-full bg-green-600 hover:bg-green-700 h-14 text-lg font-black uppercase tracking-tighter"
                 onClick={handleCompleteDelivery}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isUploadingPhoto || !photoProof}
               >
-                {isSubmitting ? "Processing..." : "Finish Delivery"}
+                {isSubmitting ? "Completing Mission..." : "Finish Delivery"}
               </Button>
             </div>
           </DialogContent>

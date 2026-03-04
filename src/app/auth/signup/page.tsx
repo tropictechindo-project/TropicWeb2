@@ -75,7 +75,8 @@ export default function SignupPage() {
       })
       if (error) throw error
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign up with Google')
+      console.error('Google signup CTA failed:', error)
+      toast.error(`Sign Up CTA Error: ${error.message || 'Could not connect to Google'}`)
       setIsGoogleLoading(false)
     }
   }
@@ -99,11 +100,11 @@ export default function SignupPage() {
 
       if (response.ok) {
         const data = await response.json()
-        toast.success(data.message || 'Account created successfully! Please check your email to verify.')
-        // Don't auto-redirect immediately so they can read the message, or redirect with a slight delay
+        toast.success(data.message || 'Account created successfully! Please check your email to verify. (Check your spam folder too!)')
+        // Redirect to Landing Page after 2 seconds as requested
         setTimeout(() => {
-          router.push('/auth/login')
-        }, 2000)
+          router.push('/')
+        }, 3000)
       } else {
         const error = await response.json()
         toast.error(error.error || 'Failed to create account')

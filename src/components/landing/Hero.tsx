@@ -50,29 +50,32 @@ export default function Hero({ initialSettings }: HeroProps) {
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
+      className="relative min-h-screen flex items-center w-full justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
       aria-labelledby="hero-title"
     >
-      <div className="absolute inset-0 animate-in fade-in delay-[3000ms] duration-1000 ease-in-out">
-        <Image
-          src={heroImage}
-          alt="Tropic Tech - Premium Workstation Equipment Bali" // Better SEO alt tag
-          fill
-          className="object-cover"
-          priority
-          loading="eager"
-          fetchPriority="high"
-          sizes="100vw"
-          quality={90}
-        />
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 animate-in fade-in zoom-in-95 delay-[2000ms] duration-1000 ease-in-out fill-mode-both">
+          <Image
+            src={heroImage}
+            alt="Tropic Tech - Premium Workstation Equipment Bali"
+            fill
+            className="object-cover"
+            priority
+            loading="eager"
+            fetchPriority="high"
+            sizes="100vw"
+            quality={90}
+          />
+        </div>
+
         {/* Layer 1: the user's exact "Crystal Clear" baseline (20% or less) */}
         <div
-          className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none"
+          className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none z-0"
           style={{ opacity: imageOpacity <= 20 ? imageOpacity / 20 : 1 }}
         />
         {/* Layer 2: The fill layer for values above 20% */}
         <div
-          className="absolute inset-0 bg-background pointer-events-none"
+          className="absolute inset-0 bg-background pointer-events-none z-0"
           style={{ opacity: imageOpacity > 20 ? (imageOpacity - 20) / 80 : 0 }}
         />
       </div>

@@ -19,6 +19,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useNotification } from "@/contexts/NotificationContext"
 import { LinkedCompanyPanel } from "@/components/shared/LinkedCompanyPanel"
+import { GlobalTrackerModal } from "@/components/shared/GlobalTrackerModal"
 
 import {
     Sidebar,
@@ -127,6 +128,7 @@ export function WorkerSidebar({ currentTab, onTabChange, userName }: { currentTa
                     <SidebarGroupLabel>System</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            <GlobalTrackerModal />
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild tooltip="Back to Home">
                                     <Link href="/">

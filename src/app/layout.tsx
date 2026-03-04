@@ -11,6 +11,7 @@ import { StickyPanelInfo } from "@/components/StickyPanelInfo";
 import { LocationPrompt } from "@/components/location/LocationPrompt";
 import { NotificationPrompt } from "@/components/NotificationPrompt";
 import { IslandHub } from "@/components/ui/IslandHub";
+import { PWAInstallPrompt } from "@/components/shared/PWAInstallPrompt";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -146,7 +147,7 @@ export default function RootLayout({
       <head>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg - background text - foreground`}
       >
         {/* Skip to content - Accessibility (keyboard users & screen readers) */}
         <a
@@ -176,6 +177,7 @@ export default function RootLayout({
           </LanguageProvider>
         </ThemeProvider>
         <Toaster position="top-center" richColors />
+        <PWAInstallPrompt />
       </body>
     </html>
   );

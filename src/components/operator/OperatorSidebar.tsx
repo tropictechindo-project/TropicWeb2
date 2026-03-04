@@ -18,6 +18,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useNotification } from "@/contexts/NotificationContext"
 import { LinkedCompanyPanel } from "@/components/shared/LinkedCompanyPanel"
+import { GlobalTrackerModal } from "@/components/shared/GlobalTrackerModal"
 
 import {
     Sidebar,
@@ -79,7 +80,7 @@ const items = [
 ]
 
 export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: string, onTabChange: (tab: string) => void }) {
-    const { unreadMessagesCount } = useNotification()
+    const { unreadMessagesCount, unreadOrdersCount, unreadDeliveriesCount } = useNotification()
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
 
@@ -119,6 +120,16 @@ export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: strin
                                                     {unreadMessagesCount}
                                                 </Badge>
                                             )}
+                                            {item.title === "Orders / Rentals" && unreadOrdersCount > 0 && (
+                                                <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
+                                                    {unreadOrdersCount}
+                                                </Badge>
+                                            )}
+                                            {item.title === "Deliveries Queue" && unreadDeliveriesCount > 0 && (
+                                                <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
+                                                    {unreadDeliveriesCount}
+                                                </Badge>
+                                            )}
                                         </div>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -130,6 +141,7 @@ export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: strin
                     <SidebarGroupLabel>Navigation</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            <GlobalTrackerModal />
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild tooltip="Back to Home">
                                     <Link href="/">
