@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-03 21:26:00 (WITA/GMT+8)
-**System Version**: 1.7.7-stable
-**Environment**: Production Ready (Operator Empowered & Optimized Loading)
+**Last Updated**: 2026-03-05 03:25:00 (WITA/GMT+8)
+**System Version**: 1.8.0-stable
+**Environment**: Production Ready (Operator Empowered & Global Delivery Trackers)
 
 ---
 
@@ -179,14 +179,15 @@ The website operates through three distinct entry points based on user roles:
   - **Admin Invoice Overrides**: Enabled manual editing of Subtotal, Tax, and Delivery fees in the Admin Dashboard.
   - **Complete PDF Alignment**: Updated invoice generation engine to reflect manual fee overrides in all paper/PDF documents.
 
-> [!IMPORTANT]
-> **Production Note**: The local repository is currently 14 commits ahead of origin. Run `git push origin main` manually to synchronize the cloud repository.
-
-> [!NOTE]
-> This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
 - [x] **Legal & Compliance Pages**: Built robust Privacy Policy, Terms & Conditions, and Refund Policy pages, matching Tropic Tech's high-end 'Dark Mode Hero' UI and typography, and validated complete integration with the primary Footer.
 - [x] **Legal Pages Editable**: Transformed the built Privacy Policy, Terms & Conditions, and Refund Policy pages into Server Components that dynamically fetch strings via `db.siteSetting.findUnique`. Added a dedicated Tab within the Admin Dashboard > Website settings containing cleanly handled Textareas that hook into the `useSiteSettings` POST endpoint.
 - [x] **Dynamic Island & Global Loading UX**: Rebuilt the StickyPanelInfo notifications to render above headers as an iOS-style Dynamic Island. Added `SystemTimeSync` component to dashboards ticking out a 7s sync clock at session milestones. Added `GlobalClickLoader` to catch all interactive clicks and spin a loading pill instantly to resolve slow API feedback.
-- [x] **Real-Time GPS Tracking Integration (v1.6.0)**: Upgraded the `Delivery` workflow to include live browser `navigator.geolocation` polling. Workers now broadcast their latitude/longitude back to the database continuously while *Out for Delivery*. Built a public `/tracking/[code]` interface integrating `@react-google-maps/api` to render an interactive map layout with a custom Van tracker vector reflecting live positioning.
-- [x] **Lighthouse SEO Overhaul (v1.6.5)**: Systematically refactored the Landing Page Hero animation. Decoupled the textual `<h1>` nodes from CSS fades to force an immediate Largest Contentful Paint (LCP) resulting in massive performance spikes, while reserving the 3-second fade `delay-[3000ms]` explicitly for the decorative decorative background elements.
+- [x] **Real-Time GPS Tracking Integration (v1.8.0)**: Upgraded the `Delivery` workflow to include live browser `navigator.geolocation` polling. Workers now broadcast their latitude/longitude back to the database continuously while *Out for Delivery*. Built a public `/tracking/[code]` interface integrating `@react-google-maps/api` to render an interactive map layout with a custom Van tracker vector reflecting live positioning.
+- [x] **Lighthouse SEO Overhaul (v1.8.0)**: Systematically refactored the Landing Page Hero animation. Decoupled the textual `<h1>` nodes from CSS fades to force an immediate Largest Contentful Paint (LCP) resulting in massive performance spikes, while reserving the 3-second fade `delay-[3000ms]` explicitly for the decorative decorative background elements.
 - [x] **Dashboard Unification (Phase 8-13)**: Hard-linked the active "Shareable Tracker URL" conditionally deployed to users directly into the Operator and Admin dashboards `/admin/deliveries`. Patched deeply seated routing errors restricting Admin access to Service Requests. Normalized active delivery queues (COMPLETED, RETURNED, and CANCELED properties automatically segregate to the History tabs preventing interface backlog).
+
+> [!IMPORTANT]
+> **Production Note**: The local repository is fully synchronized with origin `main`. System is prepared for live scaling.
+
+> [!NOTE]
+> This file is the **Source of Truth** for TropicTech system state. All major updates should be logged here before session close.
