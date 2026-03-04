@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import Header from '@/components/header/Header'
 import Footer from '@/components/landing/Footer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { WorkerSidebar } from "@/components/worker/WorkerSidebar"
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -39,6 +41,7 @@ import { BotMessageSquare } from 'lucide-react'
 export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState('overview')
 
   // State for deliveries
   const [myDeliveries, setMyDeliveries] = useState<any[]>([])
@@ -359,513 +362,526 @@ export default function WorkerDashboard() {
   const supportGroups = workerGroups.filter(g => g.type === 'USER_SUPPORT')
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-
-      <main className="flex-1 py-8 px-4 mt-16">
-        <div className="container mx-auto max-w-7xl">
+    <>
+      <SidebarProvider>
+        <WorkerSidebar currentTab={activeTab} onTabChange={setActiveTab} userName={user?.fullName || 'Worker'} />
+        <SidebarInset className="bg-background min-h-screen relative flex w-full flex-col">
           {/* Header */}
-          <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-4xl font-bold text-primary mb-2">Worker Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, {user?.fullName}</p>
+          <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 bg-card/50 backdrop-blur-sm sticky top-0 z-30">
+            <div className="flex items-center gap-2">
+              <SidebarTrigger />
+              <div className="flex flex-col ml-2">
+                <h1 className="text-lg font-black uppercase tracking-tight leading-tight flex items-center gap-2">
+                  <span className="text-primary truncate">Worker Hub</span>
+                </h1>
+              </div>
             </div>
-            <div className="flex flex-row flex-wrap gap-2 mt-4 md:mt-0">
-              <Button
-                variant="outline"
-                className="gap-2"
-                onClick={() => setShowNotificationsDialog(true)}
-              >
-                <Bell className="w-4 h-4" />
-                Notifications
-                {unreadCount > 0 && (
-                  <Badge className="ml-1">{unreadCount}</Badge>
-                )}
-              </Button>
-              <Button
-                variant="destructive"
-                className="gap-2"
-                onClick={logout}
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
-              <Button
-                variant="outline"
-                className="gap-2"
-                onClick={() => router.push('/')}
-              >
-                <Home className="w-4 h-4" />
-                Home
-              </Button>
-              <Button variant="outline" onClick={logout} className="gap-2">
-                <LogOut className="w-4 h-4" />
-                Log Out
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => setShowNotificationsDialog(true)} className="h-8 gap-1.5 flex text-xs">
+                <Bell className="w-3.5 h-3.5" />Notifications
+                {unreadCount > 0 && <Badge className="ml-0.5 h-4 px-1 text-[9px]">{unreadCount}</Badge>}
               </Button>
             </div>
-          </div>
+          </header>
 
-          {/* Stats Cards */}
-          {/* ... (stats cards remain same) */}
+          <main className="flex-1 p-4 lg:p-8 max-w-5xl w-full mx-auto space-y-6">
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            {/* Left Column: Attendance & Chats */}
-            <div className="space-y-8">
-              {/* Attendance Check-in */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ClipboardCheck className="w-5 h-5" />
-                    Daily Attendance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {todayAttendance ? (
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Today's Status</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant={todayAttendance.status === 'PRESENT' ? 'default' : 'secondary'}>
-                            {todayAttendance.status}
-                          </Badge>
-                          <span className="text-sm">
-                            {new Date(todayAttendance.checkInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </div>
-                      </div>
-                      {!todayAttendance.checkOutTime && (
-                        <Button onClick={handleCheckInOut} size="sm">
-                          Check Out
-                        </Button>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between gap-4">
-                      <p className="text-muted-foreground text-sm">Not checked in</p>
-                      <Button onClick={handleCheckInOut} size="sm">
-                        Check In
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+            {activeTab === 'overview' && (
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 relative overflow-hidden">
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-black uppercase tracking-tight text-blue-700 dark:text-blue-400">Mission Brief</h2>
+                    <p className="text-sm font-medium text-blue-600/80 dark:text-blue-300/80 mt-1">Check your active deliveries or jump into the pool.</p>
+                  </div>
+                </div>
 
-              {/* Team Chat Card */}
-              <Card className="border-primary/20 bg-primary/5">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Users className="w-5 h-5" />
-                    Team Chat
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {teamGroup ? (
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Tropic Tech Daily</p>
-                        <p className="text-xs text-muted-foreground truncate max-w-[150px]">
-                          {teamGroup.messages && teamGroup.messages[0]
-                            ? teamGroup.messages[0].content
-                            : 'No messages yet'}
-                        </p>
-                      </div>
-                      <Button size="sm" onClick={() => openGroupChat(teamGroup)}>Open Chat</Button>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Team group not found.</p>
-                  )}
-                </CardContent>
-              </Card>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <Card>
+                    <CardHeader className="pb-2"><CardTitle className="text-sm">Pending Jobs</CardTitle></CardHeader>
+                    <CardContent><p className="text-3xl font-black">{pendingJobs}</p></CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2"><CardTitle className="text-sm text-yellow-600">Active</CardTitle></CardHeader>
+                    <CardContent><p className="text-3xl font-black text-yellow-600">{ongoingJobs}</p></CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2"><CardTitle className="text-sm text-green-600">Completed</CardTitle></CardHeader>
+                    <CardContent><p className="text-3xl font-black text-green-600">{completedJobs}</p></CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2"><CardTitle className="text-sm text-primary">Attendance</CardTitle></CardHeader>
+                    <CardContent><p className="text-3xl font-black text-primary">{attendanceRate}%</p></CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
 
-              {/* Support Tickets / User Groups */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5" />
-                    Support Tickets
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {supportGroups.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No active support tickets.</p>
-                  ) : (
-                    <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
-                      {supportGroups.map(group => (
-                        <div key={group.id} className="flex items-center justify-between p-2 hover:bg-muted rounded-lg border">
-                          <div className="overflow-hidden">
-                            <p className="font-medium text-sm truncate">{group.name.replace('Support - ', '')}</p>
-                            <p className="text-xs text-muted-foreground truncate max-w-[150px]">
-                              {group.messages && group.messages[0]
-                                ? group.messages[0].content
-                                : 'No messages'}
-                            </p>
+            {activeTab === 'attendance' && (
+              <div className="space-y-4 animate-in fade-in duration-500 max-w-xl">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ClipboardCheck className="w-5 h-5" />
+                      Daily Attendance
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {todayAttendance ? (
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Today's Status</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant={todayAttendance.status === 'PRESENT' ? 'default' : 'secondary'}>
+                              {todayAttendance.status}
+                            </Badge>
+                            <span className="text-sm">
+                              {new Date(todayAttendance.checkInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
                           </div>
-                          <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => openGroupChat(group)}>
-                            View
-                          </Button>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* AI Master Panel */}
-              <AiDashboardPanel
-                title="AI Master Controls"
-                agentName="AI Master"
-                welcomeMessage="Sup Bro! I am the Master AI. Need me to check any invoices, deliveries, or stats for you?"
-                apiRoute="/api/ai/master"
-                icon={<BotMessageSquare className="w-5 h-5" />}
-              />
-            </div>
-
-            {/* Right Column: Deliveries */}
-            <div className="lg:col-span-2 space-y-8">
-
-              <Card className="border-blue-200">
-                <CardHeader className="bg-blue-50/50">
-                  <CardTitle className="flex items-center gap-2 text-blue-800">
-                    <MapPin className="w-5 h-5" />
-                    Available Pool
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  {poolDeliveries.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">No open deliveries in queue</p>
-                  ) : (
-                    <div className="space-y-4">
-                      {poolDeliveries.map((delivery) => (
-                        <Card key={delivery.id} className="border-l-4 border-l-blue-500 shadow-sm">
-                          <CardContent className="pt-6">
-                            <div className="flex justify-between items-start mb-4">
-                              <div>
-                                <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                  Customer: {delivery.invoice?.order?.user?.fullName}
-                                </p>
-                                <p className="text-sm text-muted-foreground font-mono mt-1">
-                                  Items: {delivery.items?.length || 0}
-                                </p>
-                                <div className="mt-2">
-                                  {(delivery.latitude && delivery.longitude) ? (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
-                                      }}
-                                    >
-                                      <MapPin className="w-3 h-3" /> GPS PIN
-                                    </Button>
-                                  ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        window.open(delivery.invoice.guestAddress, '_blank')
-                                      }}
-                                    >
-                                      <Navigation className="w-3 h-3" /> MAP LINK
-                                    </Button>
-                                  )}
-                                </div>
-                              </div>
-                              <Badge variant="outline" className="bg-blue-50">AVAILABLE</Badge>
-                            </div>
-
-                            <Dialog open={claimDialogOpen && selectedPoolDelivery?.id === delivery.id} onOpenChange={(open) => {
-                              setClaimDialogOpen(open)
-                              if (!open) setSelectedPoolDelivery(null)
-                            }}>
-                              <DialogTrigger asChild>
-                                <Button size="sm" className="w-full sm:w-auto" onClick={() => setSelectedPoolDelivery(delivery)}>
-                                  Claim Delivery
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Claim Delivery #{delivery.invoice?.invoiceNumber}</DialogTitle>
-                                </DialogHeader>
-                                <div className="space-y-4 py-4">
-                                  <div className="space-y-2">
-                                    <Label>Select Vehicle for this delivery</Label>
-                                    <Select value={selectedVehicleId} onValueChange={setSelectedVehicleId}>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Choose a vehicle..." />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        {availableVehicles.map(v => (
-                                          <SelectItem key={v.id} value={v.id}>{v.name} ({v.type})</SelectItem>
-                                        ))}
-                                        {availableVehicles.length === 0 && (
-                                          <SelectItem value="none" disabled>No available vehicles</SelectItem>
-                                        )}
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  <Button className="w-full" onClick={handleClaim} disabled={!selectedVehicleId || selectedVehicleId === 'none'}>
-                                    Confirm Claim & Lock Vehicle
-                                  </Button>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Package className="w-5 h-5" />
-                    My Active Deliveries
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {myDeliveries.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">You haven't claimed any deliveries</p>
-                  ) : (
-                    <div className="space-y-4">
-                      {myDeliveries.map((delivery) => (
-                        <Card key={delivery.id} className={cn("border-l-4", delivery.status === 'COMPLETED' ? "border-l-green-500 opacity-70" : "border-l-primary shadow-md")}>
-                          <CardContent className="pt-6">
-                            <div className="flex justify-between items-start mb-4">
-                              <div>
-                                <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
-                                <p className="text-sm text-muted-foreground">
-                                  Customer: {delivery.invoice?.order?.user?.fullName}
-                                </p>
-                                <div className="mt-2 mb-3">
-                                  {(delivery.latitude && delivery.longitude) ? (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
-                                      }}
-                                    >
-                                      <MapPin className="w-3 h-3" /> NAVIGATE TO CUSTOMER
-                                    </Button>
-                                  ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        window.open(delivery.invoice.guestAddress, '_blank')
-                                      }}
-                                    >
-                                      <Navigation className="w-3 h-3" /> VIEW MAP LINK
-                                    </Button>
-                                  )}
-                                </div>
-                                <p className="text-sm text-muted-foreground">
-                                  <Clock className="w-3 h-3 inline mr-1" />
-                                  Claimed: {new Date(delivery.updatedAt).toLocaleTimeString()}
-                                </p>
-                              </div>
-                              <Badge variant={
-                                delivery.status === 'COMPLETED' ? 'default' :
-                                  delivery.status === 'OUT_FOR_DELIVERY' ? 'secondary' :
-                                    'outline'
-                              }>
-                                {delivery.status}
-                              </Badge>
-                            </div>
-
-                            {delivery.vehicle && (
-                              <div className="bg-muted p-2 rounded-md mb-4 text-xs font-mono">
-                                Using: {delivery.vehicle.name}
-                              </div>
-                            )}
-
-                            {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
-                              <div className="flex gap-2 flex-wrap">
-                                {delivery.status === 'CLAIMED' && (
-                                  <Button size="sm" onClick={() => updateDeliveryStatus(delivery.id, 'OUT_FOR_DELIVERY')}>
-                                    Start Route
-                                  </Button>
-                                )}
-                                {delivery.status === 'OUT_FOR_DELIVERY' && (
-                                  <>
-                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200" onClick={() => {
-                                      setSelectedDeliveryToComplete(delivery)
-                                      setCompleteDialogOpen(true)
-                                    }}>
-                                      Complete Delivery
-                                    </Button>
-                                    <Button size="sm" variant="outline" onClick={() => updateDeliveryStatus(delivery.id, 'DELAYED')}>
-                                      Mark Delayed
-                                    </Button>
-                                  </>
-                                )}
-                              </div>
-                            )}
-
-                            {/* Recent Logs / Edit Window */}
-                            {delivery.logs && delivery.logs.length > 0 && (
-                              <div className="mt-4 pt-4 border-t border-dashed">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">Recent Timeline</p>
-                                <div className="space-y-2">
-                                  {delivery.logs.slice(0, 2).map((log: any) => {
-                                    const canEdit = (new Date().getTime() - new Date(log.createdAt).getTime()) < 12 * 60 * 60 * 1000;
-                                    return (
-                                      <div key={log.id} className="flex justify-between items-center text-xs">
-                                        <span className="text-muted-foreground">
-                                          {log.eventType}: {log.newValue?.notes || 'No notes'}
-                                        </span>
-                                        {canEdit && log.createdByUserId === user?.id && (
-                                          <Button variant="ghost" size="sm" className="h-5 px-1 text-[10px] text-blue-600" onClick={() => {
-                                            setSelectedLogToEdit(log)
-                                            setEditLogNotes(log.newValue?.notes || '')
-                                            setEditLogOpen(true)
-                                          }}>
-                                            Edit
-                                          </Button>
-                                        )}
-                                      </div>
-                                    )
-                                  })}
-                                </div>
-                              </div>
-                            )}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </main >
-
-      {/* Notifications Dialog */}
-      < Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog} >
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Notifications</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-2">
-            {notifications.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No notifications</p>
-            ) : (
-              notifications.map((notif) => (
-                <Card key={notif.id} className={cn(!notif.isRead && 'border-primary')}>
-                  <CardContent className="pt-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-semibold">{notif.title}</h4>
-                        <p className="text-sm text-muted-foreground mt-1">{notif.message}</p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          {new Date(notif.createdAt).toLocaleString()}
-                        </p>
+                        {!todayAttendance.checkOutTime && (
+                          <Button onClick={handleCheckInOut} size="sm">
+                            Check Out
+                          </Button>
+                        )}
                       </div>
-                      {!notif.isRead && <Badge>New</Badge>}
-                    </div>
+                    ) : (
+                      <div className="flex items-center justify-between gap-4">
+                        <p className="text-muted-foreground text-sm">Not checked in</p>
+                        <Button onClick={handleCheckInOut} size="sm">
+                          Check In
+                        </Button>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
-              ))
+              </div>
             )}
-          </div>
-        </DialogContent>
-      </Dialog >
 
-      <GroupChatDialog
-        open={isGroupChatOpen}
-        onOpenChange={setIsGroupChatOpen}
-        groupId={selectedGroup?.id || ''}
-        groupName={selectedGroup?.name || 'Group Chat'}
-      />
+            {activeTab === 'chat' && (
+              <div className="space-y-4 animate-in fade-in duration-500">
+                <Card className="border-primary/20 bg-primary/5">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-primary">
+                      <Users className="w-5 h-5" />
+                      Team Chat
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {teamGroup ? (
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">Tropic Tech Daily</p>
+                          <p className="text-xs text-muted-foreground truncate max-w-[150px]">
+                            {teamGroup.messages && teamGroup.messages[0]
+                              ? teamGroup.messages[0].content
+                              : 'No messages yet'}
+                          </p>
+                        </div>
+                        <Button size="sm" onClick={() => openGroupChat(teamGroup)}>Open Chat</Button>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Team group not found.</p>
+                    )}
+                  </CardContent>
+                </Card>
 
-      {/* Floating Chat Button - Direct Messages */}
-      <Button
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl bg-primary hover:bg-primary/90 z-50 flex items-center justify-center animate-in fade-in zoom-in duration-300"
-        onClick={() => setShowDMList(true)}
-      >
-        <MessageSquare className="h-6 w-6 text-primary-foreground" />
-      </Button>
+                {/* Support Tickets / User Groups */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5" />
+                      Support Tickets
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {supportGroups.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">No active support tickets.</p>
+                    ) : (
+                      <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+                        {supportGroups.map(group => (
+                          <div key={group.id} className="flex items-center justify-between p-2 hover:bg-muted rounded-lg border">
+                            <div className="overflow-hidden">
+                              <p className="font-medium text-sm truncate">{group.name.replace('Support - ', '')}</p>
+                              <p className="text-xs text-muted-foreground truncate max-w-[150px]">
+                                {group.messages && group.messages[0]
+                                  ? group.messages[0].content
+                                  : 'No messages'}
+                              </p>
+                            </div>
+                            <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => openGroupChat(group)}>
+                              View
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
-      <DirectMessagesList
-        open={showDMList}
-        onOpenChange={setShowDMList}
-      />
+            {activeTab === 'ai' && (
+              <div className="space-y-4 animate-in fade-in duration-500">
+                <AiDashboardPanel
+                  title="AI Master Controls"
+                  agentName="AI Master"
+                  welcomeMessage="Sup Bro! I am the Master AI. Need me to check any invoices, deliveries, or stats for you?"
+                  apiRoute="/api/ai/master"
+                  icon={<BotMessageSquare className="w-5 h-5" />}
+                />
+              </div>
+            )}
 
-      {/* Complete Delivery Dialog */}
-      <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Complete Delivery</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
+            {activeTab === 'pool' && (
+              <div className="space-y-4 animate-in fade-in duration-500">
+                <Card className="border-blue-200">
+                  <CardHeader className="bg-blue-50/50">
+                    <CardTitle className="flex items-center gap-2 text-blue-800">
+                      <MapPin className="w-5 h-5" />
+                      Available Pool
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    {poolDeliveries.length === 0 ? (
+                      <p className="text-center text-muted-foreground py-8">No open deliveries in queue</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {poolDeliveries.map((delivery) => (
+                          <Card key={delivery.id} className="border-l-4 border-l-blue-500 shadow-sm">
+                            <CardContent className="pt-6">
+                              <div className="flex justify-between items-start mb-4">
+                                <div>
+                                  <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
+                                  <p className="text-sm text-muted-foreground">
+                                    Customer: {delivery.invoice?.order?.user?.fullName}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground font-mono mt-1">
+                                    Items: {delivery.items?.length || 0}
+                                  </p>
+                                  <div className="mt-2">
+                                    {(delivery.latitude && delivery.longitude) ? (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
+                                        }}
+                                      >
+                                        <MapPin className="w-3 h-3" /> GPS PIN
+                                      </Button>
+                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          window.open(delivery.invoice.guestAddress, '_blank')
+                                        }}
+                                      >
+                                        <Navigation className="w-3 h-3" /> MAP LINK
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+                                <Badge variant="outline" className="bg-blue-50">AVAILABLE</Badge>
+                              </div>
+
+                              <Dialog open={claimDialogOpen && selectedPoolDelivery?.id === delivery.id} onOpenChange={(open) => {
+                                setClaimDialogOpen(open)
+                                if (!open) setSelectedPoolDelivery(null)
+                              }}>
+                                <DialogTrigger asChild>
+                                  <Button size="sm" className="w-full sm:w-auto" onClick={() => setSelectedPoolDelivery(delivery)}>
+                                    Claim Delivery
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                  <DialogHeader>
+                                    <DialogTitle>Claim Delivery #{delivery.invoice?.invoiceNumber}</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="space-y-4 py-4">
+                                    <div className="space-y-2">
+                                      <Label>Select Vehicle for this delivery</Label>
+                                      <Select value={selectedVehicleId} onValueChange={setSelectedVehicleId}>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Choose a vehicle..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {availableVehicles.map(v => (
+                                            <SelectItem key={v.id} value={v.id}>{v.name} ({v.type})</SelectItem>
+                                          ))}
+                                          {availableVehicles.length === 0 && (
+                                            <SelectItem value="none" disabled>No available vehicles</SelectItem>
+                                          )}
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <Button className="w-full" onClick={handleClaim} disabled={!selectedVehicleId || selectedVehicleId === 'none'}>
+                                      Confirm Claim & Lock Vehicle
+                                    </Button>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {activeTab === 'active' && (
+              <div className="space-y-4 animate-in fade-in duration-500">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Package className="w-5 h-5" />
+                      My Active Deliveries
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {myDeliveries.length === 0 ? (
+                      <p className="text-center text-muted-foreground py-8">You haven't claimed any deliveries</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {myDeliveries.map((delivery) => (
+                          <Card key={delivery.id} className={cn("border-l-4", delivery.status === 'COMPLETED' ? "border-l-green-500 opacity-70" : "border-l-primary shadow-md")}>
+                            <CardContent className="pt-6">
+                              <div className="flex justify-between items-start mb-4">
+                                <div>
+                                  <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
+                                  <p className="text-sm text-muted-foreground">
+                                    Customer: {delivery.invoice?.order?.user?.fullName}
+                                  </p>
+                                  <div className="mt-2 mb-3">
+                                    {(delivery.latitude && delivery.longitude) ? (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          window.open(`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`, '_blank')
+                                        }}
+                                      >
+                                        <MapPin className="w-3 h-3" /> NAVIGATE TO CUSTOMER
+                                      </Button>
+                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1 border-primary/20 text-primary hover:bg-primary/5"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          window.open(delivery.invoice.guestAddress, '_blank')
+                                        }}
+                                      >
+                                        <Navigation className="w-3 h-3" /> VIEW MAP LINK
+                                      </Button>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-muted-foreground">
+                                    <Clock className="w-3 h-3 inline mr-1" />
+                                    Claimed: {new Date(delivery.updatedAt).toLocaleTimeString()}
+                                  </p>
+                                </div>
+                                <Badge variant={
+                                  delivery.status === 'COMPLETED' ? 'default' :
+                                    delivery.status === 'OUT_FOR_DELIVERY' ? 'secondary' :
+                                      'outline'
+                                }>
+                                  {delivery.status}
+                                </Badge>
+                              </div>
+
+                              {delivery.vehicle && (
+                                <div className="bg-muted p-2 rounded-md mb-4 text-xs font-mono">
+                                  Using: {delivery.vehicle.name}
+                                </div>
+                              )}
+
+                              {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
+                                <div className="flex gap-2 flex-wrap">
+                                  {delivery.status === 'CLAIMED' && (
+                                    <Button size="sm" onClick={() => updateDeliveryStatus(delivery.id, 'OUT_FOR_DELIVERY')}>
+                                      Start Route
+                                    </Button>
+                                  )}
+                                  {delivery.status === 'OUT_FOR_DELIVERY' && (
+                                    <>
+                                      <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200" onClick={() => {
+                                        setSelectedDeliveryToComplete(delivery)
+                                        setCompleteDialogOpen(true)
+                                      }}>
+                                        Complete Delivery
+                                      </Button>
+                                      <Button size="sm" variant="outline" onClick={() => updateDeliveryStatus(delivery.id, 'DELAYED')}>
+                                        Mark Delayed
+                                      </Button>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+
+                              {/* Recent Logs / Edit Window */}
+                              {delivery.logs && delivery.logs.length > 0 && (
+                                <div className="mt-4 pt-4 border-t border-dashed">
+                                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">Recent Timeline</p>
+                                  <div className="space-y-2">
+                                    {delivery.logs.slice(0, 2).map((log: any) => {
+                                      const canEdit = (new Date().getTime() - new Date(log.createdAt).getTime()) < 12 * 60 * 60 * 1000;
+                                      return (
+                                        <div key={log.id} className="flex justify-between items-center text-xs">
+                                          <span className="text-muted-foreground">
+                                            {log.eventType}: {log.newValue?.notes || 'No notes'}
+                                          </span>
+                                          {canEdit && log.createdByUserId === user?.id && (
+                                            <Button variant="ghost" size="sm" className="h-5 px-1 text-[10px] text-blue-600" onClick={() => {
+                                              setSelectedLogToEdit(log)
+                                              setEditLogNotes(log.newValue?.notes || '')
+                                              setEditLogOpen(true)
+                                            }}>
+                                              Edit
+                                            </Button>
+                                          )}
+                                        </div>
+                                      )
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+          </main>
+        </SidebarInset>
+
+        {/* Notifications Dialog */}
+        < Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog} >
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Notifications</DialogTitle>
+            </DialogHeader>
             <div className="space-y-2">
-              <Label>Notes / Delivery Proof Message</Label>
-              <Textarea
-                placeholder="e.g. Left with security, Handed to customer..."
-                value={completionNotes}
-                onChange={(e) => setCompletionNotes(e.target.value)}
-                className="min-h-[100px]"
-              />
+              {notifications.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">No notifications</p>
+              ) : (
+                notifications.map((notif) => (
+                  <Card key={notif.id} className={cn(!notif.isRead && 'border-primary')}>
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-semibold">{notif.title}</h4>
+                          <p className="text-sm text-muted-foreground mt-1">{notif.message}</p>
+                          <p className="text-xs text-muted-foreground mt-2">
+                            {new Date(notif.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        {!notif.isRead && <Badge>New</Badge>}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
-            <div className="space-y-2">
-              <Label>Photo URL (Optional)</Label>
-              <Input
-                placeholder="Upload URL or Link"
-                value={photoProof}
-                onChange={(e) => setPhotoProof(e.target.value)}
-              />
-              <p className="text-[10px] text-muted-foreground italic">Tip: Take a photo for evidence.</p>
-            </div>
-            <Button
-              className="w-full bg-green-600 hover:bg-green-700 h-12 text-lg font-bold"
-              onClick={handleCompleteDelivery}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Processing..." : "Finish Delivery"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog >
 
-      {/* Edit Log Dialog */}
-      <Dialog open={editLogOpen} onOpenChange={setEditLogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Log Entry</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label>Notes</Label>
-              <Textarea
-                value={editLogNotes}
-                onChange={(e) => setEditLogNotes(e.target.value)}
-                className="min-h-[100px]"
-              />
-            </div>
-            <Button
-              className="w-full"
-              onClick={handleEditLog}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Updating..." : "Update Log"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+        <GroupChatDialog
+          open={isGroupChatOpen}
+          onOpenChange={setIsGroupChatOpen}
+          groupId={selectedGroup?.id || ''}
+          groupName={selectedGroup?.name || 'Group Chat'}
+        />
 
-      <Footer />
-    </div>
+        <Button
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl bg-primary hover:bg-primary/90 z-50 flex items-center justify-center animate-in fade-in zoom-in duration-300"
+          onClick={() => setShowDMList(true)}
+        >
+          <MessageSquare className="h-6 w-6 text-primary-foreground" />
+        </Button>
+
+        <DirectMessagesList
+          open={showDMList}
+          onOpenChange={setShowDMList}
+        />
+
+        {/* Complete Delivery Dialog */}
+        <Dialog open={completeDialogOpen} onOpenChange={setCompleteDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Complete Delivery</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label>Notes / Delivery Proof Message</Label>
+                <Textarea
+                  placeholder="e.g. Left with security, Handed to customer..."
+                  value={completionNotes}
+                  onChange={(e) => setCompletionNotes(e.target.value)}
+                  className="min-h-[100px]"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Photo URL (Optional)</Label>
+                <Input
+                  placeholder="Upload URL or Link"
+                  value={photoProof}
+                  onChange={(e) => setPhotoProof(e.target.value)}
+                />
+                <p className="text-[10px] text-muted-foreground italic">Tip: Take a photo for evidence.</p>
+              </div>
+              <Button
+                className="w-full bg-green-600 hover:bg-green-700 h-12 text-lg font-bold"
+                onClick={handleCompleteDelivery}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Processing..." : "Finish Delivery"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Log Dialog */}
+        <Dialog open={editLogOpen} onOpenChange={setEditLogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Edit Log Entry</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label>Notes</Label>
+                <Textarea
+                  value={editLogNotes}
+                  onChange={(e) => setEditLogNotes(e.target.value)}
+                  className="min-h-[100px]"
+                />
+              </div>
+              <Button
+                className="w-full"
+                onClick={handleEditLog}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Updating..." : "Update Log"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+      </SidebarProvider>
+    </>
   )
 }

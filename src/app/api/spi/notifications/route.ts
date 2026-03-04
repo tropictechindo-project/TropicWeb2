@@ -38,7 +38,7 @@ export async function GET(req: Request) {
                 isRead: false,
                 OR: [
                     { userId: user.id },
-                    { role: user.role },
+                    { role: user.role, userId: null },
                     { role: 'ALL' }
                 ]
             },

@@ -19,9 +19,46 @@ interface SpiNotification {
 export function StickyPanelInfo() {
     const { isAuthenticated } = useAuth()
     const [notifications, setNotifications] = useState<SpiNotification[]>([])
+    const [isVisible, setIsVisible] = useState(false)
     const router = useRouter()
 
+    // Interval Logic for SPI visibility (5m, 10m, 30m, 1h)
     useEffect(() => {
+        if (!isAuthenticated) return;
+
+        const checkIntervals = () => {
+            const startTimeStr = localStorage.getItem('spi_start_time')
+            if (!startTimeStr) {
+                localStorage.setItem('spi_start_time', Date.now().toString())
+                return
+            }
+
+            const startTime = parseInt(startTimeStr, 10)
+            const elapsedMinutes = (Date.now() - startTime) / (1000 * 60)
+
+            const intervals = [5, 10, 30, 60]
+            for (let i = 0; i < intervals.length; i++) {
+                const limit = intervals[i]
+                const key = `spi_seen_${limit}m`
+
+                if (elapsedMinutes >= limit && !localStorage.getItem(key)) {
+                    // Trigger SPI to show
+                    setIsVisible(true)
+                    localStorage.setItem(key, 'true')
+
+                    // Auto hide after 7 seconds
+                    setTimeout(() => {
+                        setIsVisible(false)
+                    }, 7000)
+                    break; // Only trigger one interval at a time
+                }
+            }
+        }
+
+        // Check immediately and then every minute
+        checkIntervals()
+        const timer = setInterval(checkIntervals, 60000)
+
         // Start polling for SPI notifications
         realtimePoller.pollSpiNotifications()
 
@@ -29,19 +66,24 @@ export function StickyPanelInfo() {
         const originalOnUpdate = (realtimePoller as any).config.onUpdate
             ; (realtimePoller as any).config.onUpdate = (data: any) => {
                 if (originalOnUpdate) originalOnUpdate(data)
-                if (data.spiNotifications) {
+                if (data.spiNotifications && data.spiNotifications.length > 0) {
                     setNotifications(data.spiNotifications)
+                    // If a brand new notification comes in, optionally force show it:
+                    // setIsVisible(true)
+                    // setTimeout(() => setIsVisible(false), 7000)
                 }
             }
 
         return () => {
+            clearInterval(timer)
             realtimePoller.stop()
                 ; (realtimePoller as any).config.onUpdate = originalOnUpdate
         }
-    }, [])
+    }, [isAuthenticated])
 
     const handleDismiss = async (id: string, e: React.MouseEvent) => {
         e.stopPropagation()
+        setIsVisible(false) // immediately hide the panel if they dismiss
         setNotifications(prev => prev.filter(n => n.id !== id))
 
         // Mark as read in DB
@@ -68,10 +110,10 @@ export function StickyPanelInfo() {
         }
     }
 
-    if (!isAuthenticated || notifications.length === 0) return null
+    if (!isAuthenticated || notifications.length === 0 || !isVisible) return null
 
     return (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-2 max-w-md w-full px-4 pointer-events-none">
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[500] flex flex-col items-center gap-2 max-w-md w-full px-4 pointer-events-none">
             <AnimatePresence>
                 {notifications.slice(0, 3).map((notif, i) => (
                     <motion.div
@@ -116,6 +158,6 @@ export function StickyPanelInfo() {
                     </motion.div>
                 ))}
             </AnimatePresence>
-        </div >
+        </div>
     )
 }

@@ -336,10 +336,10 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
             </Dialog>
             {/* Order Details Dialog */}
             <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
-                <DialogContent className="max-w-2xl bg-zinc-950 border-zinc-800 text-white">
+                <DialogContent className="max-w-2xl bg-card border-border text-foreground">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-black uppercase tracking-tighter italic">Order <span className="text-primary text-3xl">Details</span></DialogTitle>
-                        <DialogDescription className="text-zinc-400 font-medium font-mono text-[10px]">
+                        <DialogDescription className="text-muted-foreground font-medium font-mono text-[10px]">
                             {selectedOrder?.id}
                         </DialogDescription>
                     </DialogHeader>
@@ -349,40 +349,40 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                             <div className="grid grid-cols-2 gap-8">
                                 <div className="space-y-4">
                                     <div className="space-y-1">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Customer Info</p>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Customer Info</p>
                                         <p className="font-bold text-lg">{selectedOrder.user}</p>
-                                        <p className="text-xs text-zinc-400">{selectedOrder.email}</p>
-                                        <p className="text-xs text-zinc-400">{selectedOrder.whatsapp}</p>
+                                        <p className="text-xs text-muted-foreground">{selectedOrder.email}</p>
+                                        <p className="text-xs text-muted-foreground">{selectedOrder.whatsapp}</p>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Rental Period</p>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Rental Period</p>
                                         <p className="font-bold text-sm bg-primary/10 text-primary px-3 py-1 rounded-full w-fit">
                                             {selectedOrder.period}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="space-y-1 text-right">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Order Status</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Order Status</p>
                                     <Badge variant={getStatusColor(selectedOrder.status) as any} className="font-black text-xs uppercase px-4 py-1">
                                         {selectedOrder.status}
                                     </Badge>
-                                    <p className="text-[10px] text-zinc-500 mt-2">Placed on {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                                    <p className="text-[10px] text-muted-foreground mt-2">Placed on {new Date(selectedOrder.createdAt).toLocaleString()}</p>
                                 </div>
                             </div>
 
-                            <div className="space-y-2 border-t border-zinc-800 pt-4">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">Order Items</p>
+                            <div className="space-y-2 border-t pt-4">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">Order Items</p>
                                 <div className="space-y-2 max-h-[200px] overflow-y-auto pr-2">
                                     {selectedOrder.items?.map((item: any) => (
-                                        <div key={item.id} className="flex items-center justify-between p-3 bg-zinc-900/50 rounded-xl border border-zinc-800">
+                                        <div key={item.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-xl border">
                                             <div className="flex items-center gap-3">
-                                                <div className="p-2 bg-zinc-800 rounded-lg">
+                                                <div className="p-2 bg-muted rounded-lg">
                                                     <Package className="h-4 w-4 text-primary" />
                                                 </div>
                                                 <div>
                                                     <p className="text-sm font-bold">{item.name}</p>
                                                     <div className="flex gap-2 items-center">
-                                                        <p className="text-[10px] text-zinc-500 uppercase font-black">{item.type}</p>
+                                                        <p className="text-[10px] text-muted-foreground uppercase font-black">{item.type}</p>
                                                         {item.serialNumber && (
                                                             <Badge variant="secondary" className="text-[9px] h-4 font-mono px-1">SN: {item.serialNumber}</Badge>
                                                         )}
@@ -391,16 +391,16 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-sm font-bold">Qty: {item.quantity}</p>
-                                                <p className="text-[10px] text-zinc-500">Rp {item.price.toLocaleString('id-ID')}</p>
+                                                <p className="text-[10px] text-muted-foreground">Rp {item.price.toLocaleString('id-ID')}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 flex justify-between items-center">
+                            <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 flex justify-between items-center">
                                 <div>
-                                    <p className="text-[10px] font-black uppercase text-zinc-500">Total Price</p>
+                                    <p className="text-[10px] font-black uppercase text-muted-foreground">Total Price</p>
                                     <p className="text-2xl font-black text-primary tracking-tighter">
                                         Rp {selectedOrder.totalAmount.toLocaleString('id-ID')}
                                     </p>

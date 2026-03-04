@@ -239,6 +239,35 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={async () => {
+                                        try {
+                                            const token = localStorage.getItem('token')
+                                            // Decode our token to see our ID
+                                            const payload = JSON.parse(atob(token?.split('.')[1] || ''))
+                                            if (!payload.userId) throw new Error("No user ID found")
+
+                                            const res = await fetch(`/api/admin/deliveries/${delivery.id}`, {
+                                                method: 'PATCH',
+                                                headers: {
+                                                    'Authorization': `Bearer ${token}`,
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify({
+                                                    claimedByWorkerId: payload.userId,
+                                                    status: 'CLAIMED'
+                                                })
+                                            })
+                                            if (!res.ok) throw new Error("Failed to claim")
+                                            toast.success("Successfully self-assigned this delivery!")
+                                            window.location.reload()
+                                        } catch (e: any) {
+                                            toast.error(e.message || "Failed to self-assign")
+                                        }
+                                    }}>
+                                        <Truck className="w-4 h-4 mr-2 text-primary" /> Self-Assign (Claim)
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuSeparator />
                                     <DropdownMenuLabel>Admin Overrides</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem onClick={() => {
