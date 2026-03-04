@@ -37,6 +37,7 @@ import { RealtimePoller } from '@/lib/realtime'
 import { GroupChatDialog } from '@/components/chat/GroupChatDialog'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
 import { BotMessageSquare } from 'lucide-react'
+import { DeliveriesClient } from '@/components/admin/deliveries/DeliveriesClient'
 
 export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
@@ -763,6 +764,21 @@ export default function WorkerDashboard() {
                     )}
                   </CardContent>
                 </Card>
+              </div>
+            )}
+
+            {activeTab === 'tracking' && (
+              <div className="animate-in fade-in duration-500 space-y-4">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold">Delivery Tracker (Global)</h2>
+                    <p className="text-sm text-muted-foreground">Monitor the live status of all pool and claimed missions</p>
+                  </div>
+                </div>
+                <DeliveriesClient
+                  userRole="WORKER"
+                  initialDeliveries={[...myDeliveries, ...poolDeliveries]}
+                />
               </div>
             )}
 

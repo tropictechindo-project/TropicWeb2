@@ -45,6 +45,11 @@ const items = [
         icon: ShoppingBag,
     },
     {
+        title: "Delivery Tracker",
+        id: "tracking",
+        icon: Navigation,
+    },
+    {
         title: "Order History",
         id: "history",
         icon: History,

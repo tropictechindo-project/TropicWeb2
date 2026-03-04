@@ -64,7 +64,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { format } from "date-fns"
 
-export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialDeliveries: any[], workers?: any[] }) {
+export function DeliveriesClient({
+    initialDeliveries,
+    workers = [],
+    userRole = 'ADMIN'
+}: {
+    initialDeliveries: any[],
+    workers?: any[],
+    userRole?: 'ADMIN' | 'OPERATOR' | 'WORKER' | 'USER'
+}) {
     const router = useRouter()
     const [deliveries, setDeliveries] = useState(initialDeliveries)
     const [isLoading, setIsLoading] = useState(false)
@@ -161,7 +169,9 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                     <TableHead>Worker & Vehicle</TableHead>
                     <TableHead>Items</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    {(userRole === 'ADMIN' || userRole === 'OPERATOR' || userRole === 'USER') && (
+                        <TableHead className="text-right">Actions</TableHead>
+                    )}
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -230,68 +240,93 @@ export function DeliveriesClient({ initialDeliveries, workers = [] }: { initialD
                             </div>
                         </TableCell>
                         <TableCell>{getStatusBadge(delivery.status)}</TableCell>
-                        <TableCell className="text-right">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">Open menu</span>
-                                        <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onClick={async () => {
-                                        try {
-                                            const token = localStorage.getItem('token')
-                                            // Decode our token to see our ID
-                                            const payload = JSON.parse(atob(token?.split('.')[1] || ''))
-                                            if (!payload.userId) throw new Error("No user ID found")
+                        {(userRole === 'ADMIN' || userRole === 'OPERATOR') && (
+                            <TableCell className="text-right">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                            <span className="sr-only">Open menu</span>
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={async () => {
+                                            try {
+                                                const token = localStorage.getItem('token')
+                                                // Decode our token to see our ID
+                                                const payload = JSON.parse(atob(token?.split('.')[1] || ''))
+                                                if (!payload.userId) throw new Error("No user ID found")
 
-                                            const res = await fetch(`/api/admin/deliveries/${delivery.id}`, {
-                                                method: 'PATCH',
-                                                headers: {
-                                                    'Authorization': `Bearer ${token}`,
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify({
-                                                    claimedByWorkerId: payload.userId,
-                                                    status: 'CLAIMED'
+                                                const res = await fetch(`/api/admin/deliveries/${delivery.id}`, {
+                                                    method: 'PATCH',
+                                                    headers: {
+                                                        'Authorization': `Bearer ${token}`,
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        claimedByWorkerId: payload.userId,
+                                                        status: 'CLAIMED'
+                                                    })
                                                 })
-                                            })
-                                            if (!res.ok) throw new Error("Failed to claim")
-                                            toast.success("Successfully self-assigned this delivery!")
-                                            window.location.reload()
-                                        } catch (e: any) {
-                                            toast.error(e.message || "Failed to self-assign")
-                                        }
-                                    }}>
-                                        <Truck className="w-4 h-4 mr-2 text-primary" /> Self-Assign (Claim)
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuLabel>Admin Overrides</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => {
-                                        setSelectedDelivery(delivery)
-                                        setStatus(delivery.status)
-                                        setDeliveryMethod(delivery.deliveryMethod)
-                                        setWorkerId(delivery.claimedByWorkerId || "none")
-                                        setEta(delivery.eta ? format(new Date(delivery.eta), "yyyy-MM-dd'T'HH:mm") : "")
-                                        setIsEditOpen(true)
-                                    }}>
-                                        <Edit className="w-4 h-4 mr-2" /> Dispatch & Settings
-                                    </DropdownMenuItem>
-
-                                    {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
-                                        <DropdownMenuItem
-                                            className="text-destructive focus:bg-destructive/10"
-                                            onClick={() => handleDelete(delivery.id)}
-                                        >
-                                            <Trash className="w-4 h-4 mr-2" /> Force Cancel
+                                                if (!res.ok) throw new Error("Failed to claim")
+                                                toast.success("Successfully self-assigned this delivery!")
+                                                window.location.reload()
+                                            } catch (e: any) {
+                                                toast.error(e.message || "Failed to self-assign")
+                                            }
+                                        }}>
+                                            <Truck className="w-4 h-4 mr-2 text-primary" /> Self-Assign (Claim)
                                         </DropdownMenuItem>
-                                    )}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </TableCell>
+
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuLabel>Admin Overrides</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem onClick={() => {
+                                            setSelectedDelivery(delivery)
+                                            setStatus(delivery.status)
+                                            setDeliveryMethod(delivery.deliveryMethod)
+                                            setWorkerId(delivery.claimedByWorkerId || "none")
+                                            setEta(delivery.eta ? format(new Date(delivery.eta), "yyyy-MM-dd'T'HH:mm") : "")
+                                            setIsEditOpen(true)
+                                        }}>
+                                            <Edit className="w-4 h-4 mr-2" /> Dispatch & Settings
+                                        </DropdownMenuItem>
+
+                                        {delivery.status !== 'COMPLETED' && delivery.status !== 'CANCELED' && (
+                                            <DropdownMenuItem
+                                                className="text-destructive focus:bg-destructive/10"
+                                                onClick={() => handleDelete(delivery.id)}
+                                            >
+                                                <Trash className="w-4 h-4 mr-2" /> Force Cancel
+                                            </DropdownMenuItem>
+                                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        )}
+                        {(userRole === 'USER' || userRole === 'WORKER') && (
+                            <TableCell className="text-right">
+                                {delivery.trackingCode ? (
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="h-8 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors font-bold text-xs"
+                                        onClick={() => {
+                                            const url = `${window.location.origin}/track/${delivery.trackingCode}`
+                                            navigator.clipboard.writeText(url)
+                                            toast.success('Tracking link copied to clipboard!')
+                                            window.open(`/track/${delivery.trackingCode}`, '_blank')
+                                        }}
+                                    >
+                                        <Navigation className="w-3.5 h-3.5" /> Track & Share
+                                    </Button>
+                                ) : (
+                                    <span className="text-[10px] text-muted-foreground uppercase font-bold pr-2 tracking-widest">
+                                        Preparing Dispatch
+                                    </span>
+                                )}
+                            </TableCell>
+                        )}
                     </TableRow>
                 ))}
             </TableBody>

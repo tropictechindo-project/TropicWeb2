@@ -51,6 +51,7 @@ import {
 import { countries, normalizeWhatsApp } from '@/lib/utils/whatsapp'
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { UserSidebar } from "@/components/user/UserSidebar"
+import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 
 export default function UserDashboard() {
   const { user, logout } = useAuth()
@@ -532,6 +533,26 @@ export default function UserDashboard() {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          )}
+
+          {/* Delivery Tracker Tab */}
+          {activeTab === 'tracking' && (
+            <div className="animate-in fade-in duration-500 space-y-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-lg font-black uppercase tracking-tight">Delivery Tracker</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">Live monitoring of your active dispatches and deliveries.</p>
+                </div>
+              </div>
+              <div className="w-full">
+                <DeliveriesClient
+                  userRole="USER"
+                  initialDeliveries={orders.flatMap((o: any) =>
+                    o.invoices?.flatMap((i: any) => i.deliveries || []) || []
+                  )}
+                />
+              </div>
             </div>
           )}
 
