@@ -151,8 +151,8 @@ export function GroupChatDialog({
     return (
         <>
             <Dialog open={open} onOpenChange={onOpenChange}>
-                <DialogContent className="sm:max-w-[500px] h-[650px] flex flex-col p-0 gap-0 overflow-hidden">
-                    <DialogHeader className="p-4 border-b flex flex-row items-center gap-3 space-y-0">
+                <DialogContent className="max-w-[100vw] sm:max-w-[500px] h-[95dvh] sm:h-[650px] w-full sm:w-auto flex flex-col p-0 gap-0 overflow-hidden rounded-xl sm:rounded-2xl border-none sm:border-solid">
+                    <DialogHeader className="p-4 border-b flex flex-row items-center gap-3 space-y-0 shrink-0">
                         <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
                             <Users className="w-5 h-5 text-primary" />
                         </div>

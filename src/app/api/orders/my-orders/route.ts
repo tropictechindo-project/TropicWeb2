@@ -24,6 +24,10 @@ export async function GET(request: NextRequest) {
                 rentalItems: {
                     include: {
                         variant: { include: { product: true } },
+                        unit: true,
+                        itemRequests: {
+                            orderBy: { createdAt: 'desc' }
+                        },
                         rentalPackage: {
                             include: {
                                 rentalPackageItems: {

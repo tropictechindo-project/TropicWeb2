@@ -585,6 +585,17 @@ exports.Prisma.ContactMessageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ItemRequestScalarFieldEnum = {
+  id: 'id',
+  rentalItemId: 'rentalItemId',
+  userId: 'userId',
+  type: 'type',
+  status: 'status',
+  reason: 'reason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -762,7 +773,8 @@ exports.Prisma.ModelName = {
   DeliveryLog: 'DeliveryLog',
   DeliveryEditLog: 'DeliveryEditLog',
   SpecialOffer: 'SpecialOffer',
-  ContactMessage: 'ContactMessage'
+  ContactMessage: 'ContactMessage',
+  ItemRequest: 'ItemRequest'
 };
 
 /**

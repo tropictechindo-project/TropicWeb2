@@ -62,6 +62,10 @@ export default function UserDashboard() {
   const [isEditing, setIsEditing] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
 
+  // Password Change State
+  const [passwordForm, setPasswordForm] = useState({ current: '', new: '' })
+  const [isChangingPassword, setIsChangingPassword] = useState(false)
+
   // Chat State
   const [showSupportHub, setShowSupportHub] = useState(false)
   const [defaultSupportGroup, setDefaultSupportGroup] = useState<string | undefined>(undefined)
@@ -177,6 +181,46 @@ export default function UserDashboard() {
     }
   }
 
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!passwordForm.current || !passwordForm.new) {
+      toast.error('Both current and new passwords are required')
+      return
+    }
+    if (passwordForm.new.length < 8) {
+      toast.error('New password must be at least 8 characters')
+      return
+    }
+
+    setIsChangingPassword(true)
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordForm.current,
+          newPassword: passwordForm.new,
+        }),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        toast.success(data.message || 'Password updated successfully')
+        setPasswordForm({ current: '', new: '' })
+      } else {
+        toast.error(data.error || 'Failed to update password')
+      }
+    } catch (error) {
+      toast.error('Error changing password')
+    } finally {
+      setIsChangingPassword(false)
+    }
+  }
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'profileImage' | 'identityFile') => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -235,6 +279,34 @@ export default function UserDashboard() {
       }
     } catch (error) {
       toast.error('Failed to extend rental')
+    }
+  }
+
+  const handleItemRequest = async (itemId: string, type: string) => {
+    let reason = ''
+    if (type === 'SWAP') {
+      const input = prompt('Please specify the reason for the equipment swap:')
+      if (input === null) return
+      reason = input
+    } else if (type === 'RETURN') {
+      if (!confirm('Are you sure you want to return this specific item early?')) return
+    } else if (type === 'EXTENSION') {
+      if (!confirm('Request an extension for this specific item?')) return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch(`/api/rental-items/${itemId}/request`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, reason })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed request')
+      toast.success(`${type} request submitted successfully.`)
+      fetchOrders()
+    } catch (err: any) {
+      toast.error(err.message || 'Could not place request')
     }
   }
 
@@ -400,14 +472,53 @@ export default function UserDashboard() {
                             <div className="space-y-2">
                               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Deployed Equipment</label>
                               <div className="grid gap-2">
-                                {order.rentalItems.map((item: any) => (
-                                  <div key={item.id} className="flex items-center gap-3 p-3 bg-muted/20 rounded-xl border border-transparent hover:border-primary/20 transition-colors">
-                                    <div className="p-2 bg-background rounded-lg shrink-0">
-                                      <Package className="h-4 w-4 text-primary" />
+                                {order.rentalItems.map((item: any) => {
+                                  const name = item.variant?.product?.name || item.rentalPackage?.name || "Equipment"
+                                  const activeRequest = item.itemRequests?.find((r: any) => r.status === 'PENDING')
+
+                                  return (
+                                    <div key={item.id} className="flex flex-col gap-3 p-3 bg-muted/20 rounded-xl border border-transparent hover:border-primary/20 transition-colors">
+                                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                        <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-background rounded-lg shrink-0">
+                                            <Package className="h-4 w-4 text-primary" />
+                                          </div>
+                                          <span className="font-bold text-sm tracking-tight truncate border-b border-transparent">
+                                            {name}
+                                            <span className="text-primary ml-1 shrink-0">x{item.quantity}</span>
+                                          </span>
+                                        </div>
+                                        {item.unit && (
+                                          <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground bg-background px-2 py-1 rounded-md border w-fit">
+                                            SN: <span className="font-bold text-foreground">{item.unit.serialNumber.slice(-6)}</span>
+                                          </div>
+                                        )}
+                                      </div>
+
+                                      {/* Item State Machine Engine */}
+                                      {activeRequest ? (
+                                        <div className="flex items-center gap-2 bg-orange-500/10 text-orange-600 p-2 rounded-lg text-[10px] font-black tracking-widest uppercase">
+                                          <Clock className="w-3.5 h-3.5 animate-pulse" />
+                                          {activeRequest.type} REQUEST PENDING
+                                        </div>
+                                      ) : (
+                                        order.status === 'ACTIVE' && (
+                                          <div className="flex gap-2">
+                                            <Button size="sm" variant="outline" className="h-7 text-[10px] font-bold flex-1 bg-background hover:bg-primary/5 hover:text-primary transition-colors" onClick={() => handleItemRequest(item.id, 'EXTENSION')}>
+                                              EXTEND
+                                            </Button>
+                                            <Button size="sm" variant="outline" className="h-7 text-[10px] font-bold flex-1 bg-background" onClick={() => handleItemRequest(item.id, 'SWAP')}>
+                                              SWAP
+                                            </Button>
+                                            <Button size="sm" variant="outline" className="h-7 text-[10px] font-bold flex-1 bg-background text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200" onClick={() => handleItemRequest(item.id, 'RETURN')}>
+                                              RETURN E.T.A
+                                            </Button>
+                                          </div>
+                                        )
+                                      )}
                                     </div>
-                                    <span className="font-bold text-sm tracking-tight truncate">{item.name} <span className="text-primary ml-1 shrink-0">x{item.quantity}</span></span>
-                                  </div>
-                                ))}
+                                  )
+                                })}
                               </div>
                             </div>
                           </div>
@@ -742,6 +853,41 @@ export default function UserDashboard() {
                         </div>
                         <Badge className="bg-primary/10 text-primary border-none font-black text-[9px]">PREMIUM</Badge>
                       </div>
+                    </div>
+
+                    <div className="pt-4 mt-4 border-t border-white/10">
+                      <p className="text-xs font-black uppercase tracking-widest mb-4">Account Security</p>
+                      <form onSubmit={handleChangePassword} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label className="text-[10px] uppercase text-zinc-400">Current Password</Label>
+                          <Input
+                            type="password"
+                            required
+                            value={passwordForm.current}
+                            onChange={e => setPasswordForm(p => ({ ...p, current: e.target.value }))}
+                            className="bg-white/5 border-white/10 text-white focus-visible:ring-primary"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-[10px] uppercase text-zinc-400">New Password (Min 8 Chars)</Label>
+                          <Input
+                            type="password"
+                            required
+                            minLength={8}
+                            value={passwordForm.new}
+                            onChange={e => setPasswordForm(p => ({ ...p, new: e.target.value }))}
+                            className="bg-white/5 border-white/10 text-white focus-visible:ring-primary"
+                          />
+                        </div>
+                        <Button
+                          type="submit"
+                          disabled={isChangingPassword || !passwordForm.current || passwordForm.new.length < 8}
+                          className="w-full text-xs font-bold bg-white/10 hover:bg-white/20 text-white"
+                        >
+                          {isChangingPassword ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
+                          UPDATE PASSWORD
+                        </Button>
+                      </form>
                     </div>
                   </CardContent>
                 </Card>

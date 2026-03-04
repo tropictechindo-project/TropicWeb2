@@ -62,6 +62,11 @@ const items = [
         icon: Package,
     },
     {
+        title: "Service Requests",
+        url: "?tab=requests",
+        icon: ClipboardCheck,
+    },
+    {
         title: "Workers Schedule",
         url: "?tab=schedules",
         icon: ClipboardCheck,

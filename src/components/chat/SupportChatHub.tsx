@@ -223,7 +223,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
             : availableUsers
 
     const renderSidebar = () => (
-        <div className="w-80 border-r flex flex-col bg-muted/10 h-full">
+        <div className={`w-full sm:w-80 border-r flex flex-col bg-muted/10 h-full ${selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
             <div className="p-4 border-b space-y-3">
                 <div className="flex items-center justify-between">
                     <h2 className="font-bold text-lg">Messages</h2>
@@ -461,15 +461,18 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-4xl h-[700px] flex p-0 gap-0 overflow-hidden outline-none">
+            <DialogContent className="max-w-[100vw] sm:max-w-4xl h-[95dvh] sm:h-[700px] flex flex-col sm:flex-row p-0 gap-0 overflow-hidden outline-none w-full sm:w-auto rounded-xl sm:rounded-2xl border-none sm:border-solid">
                 <DialogTitle className="sr-only">Chat Hub</DialogTitle>
                 {renderSidebar()}
-                <div className="flex-1 flex flex-col bg-background h-full">
+                <div className={`flex-1 flex flex-col bg-background h-full ${!selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
                     {selectedConversation ? (
-                        <>
-                            <div className="p-4 border-b flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <Avatar>
+                        <div className="flex flex-col h-full w-full">
+                            <div className="p-2 sm:p-4 border-b flex items-center justify-between shrink-0">
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    <Button variant="ghost" size="icon" className="sm:hidden -ml-2" onClick={() => setSelectedConversation(null)}>
+                                        <X className="h-5 w-5" />
+                                    </Button>
+                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                                         <AvatarImage src={selectedConversation.image || undefined} />
                                         <AvatarFallback>{selectedConversation.type === 'GROUP' ? <Users /> : selectedConversation.name.charAt(0)}</AvatarFallback>
                                     </Avatar>
@@ -479,8 +482,8 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                                             <Badge
                                                 variant="outline"
                                                 className={`text-[8px] h-4 px-1 uppercase font-black ${selectedConversation.type === 'GROUP'
-                                                        ? 'border-indigo-500/20 text-indigo-600 bg-indigo-500/5'
-                                                        : 'border-primary/20 text-primary bg-primary/5'
+                                                    ? 'border-indigo-500/20 text-indigo-600 bg-indigo-500/5'
+                                                    : 'border-primary/20 text-primary bg-primary/5'
                                                     }`}
                                             >
                                                 {selectedConversation.type === 'GROUP' ? 'Group' : 'Individual'}
@@ -507,7 +510,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                                     />
                                 )}
                             </div>
-                        </>
+                        </div>
                     ) : (
                         <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
                             <MessageSquare className="h-16 w-16 mb-4 opacity-20" />

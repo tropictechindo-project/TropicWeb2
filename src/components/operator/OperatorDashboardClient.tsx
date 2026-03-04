@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 import { OrdersClient } from "@/components/admin/orders/OrdersClient"
 import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 import { InventoryClient } from "@/components/admin/inventory/InventoryClient"
+import { ServiceRequestsClient } from "@/components/admin/ServiceRequestsClient"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { OperatorSidebar } from "@/components/operator/OperatorSidebar"
 
@@ -27,7 +28,7 @@ interface Props {
     workers: any[]
 }
 
-type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout'
+type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests'
 
 function getToken() {
     if (typeof document === 'undefined') return ''
@@ -377,11 +378,17 @@ export default function OperatorDashboardClient({
                     )}
 
                     {/* ═══ INVENTORY ══════════════════════════════════════════════════════ */}
-                    {/* ═══ INVENTORY ══════════════════════════════════════════════════════ */}
                     {activeTab === 'inventory' && (
                         <div className="space-y-4">
                             <h2 className="text-lg font-black uppercase tracking-tight">Stock Management</h2>
                             <InventoryClient products={variants.map(v => v.product)} variants={variants} />
+                        </div>
+                    )}
+
+                    {/* ═══ SERVICE REQUESTS ═══════════════════════════════════════════════ */}
+                    {activeTab === 'requests' && (
+                        <div className="space-y-4">
+                            <ServiceRequestsClient />
                         </div>
                     )}
 

@@ -18,7 +18,8 @@ import {
     Globe,
     Bot,
     Truck,
-    Navigation
+    Navigation,
+    ClipboardCheck
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
@@ -98,6 +99,11 @@ const items = [
         title: "Orders / Rentals",
         url: "/admin/orders",
         icon: ShoppingCart,
+    },
+    {
+        title: "Service Requests",
+        url: "/admin/requests",
+        icon: ClipboardCheck,
     },
     {
         title: "Invoices",

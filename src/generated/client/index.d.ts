@@ -209,6 +209,11 @@ export type SpecialOffer = $Result.DefaultSelection<Prisma.$SpecialOfferPayload>
  * 
  */
 export type ContactMessage = $Result.DefaultSelection<Prisma.$ContactMessagePayload>
+/**
+ * Model ItemRequest
+ * 
+ */
+export type ItemRequest = $Result.DefaultSelection<Prisma.$ItemRequestPayload>
 
 /**
  * Enums
@@ -955,6 +960,16 @@ export class PrismaClient<
     * ```
     */
   get contactMessage(): Prisma.ContactMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.itemRequest`: Exposes CRUD operations for the **ItemRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ItemRequests
+    * const itemRequests = await prisma.itemRequest.findMany()
+    * ```
+    */
+  get itemRequest(): Prisma.ItemRequestDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1434,7 +1449,8 @@ export namespace Prisma {
     DeliveryLog: 'DeliveryLog',
     DeliveryEditLog: 'DeliveryEditLog',
     SpecialOffer: 'SpecialOffer',
-    ContactMessage: 'ContactMessage'
+    ContactMessage: 'ContactMessage',
+    ItemRequest: 'ItemRequest'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1453,7 +1469,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage" | "itemRequest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4343,6 +4359,80 @@ export namespace Prisma {
           }
         }
       }
+      ItemRequest: {
+        payload: Prisma.$ItemRequestPayload<ExtArgs>
+        fields: Prisma.ItemRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ItemRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ItemRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.ItemRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ItemRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          findMany: {
+            args: Prisma.ItemRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>[]
+          }
+          create: {
+            args: Prisma.ItemRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          createMany: {
+            args: Prisma.ItemRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ItemRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.ItemRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          update: {
+            args: Prisma.ItemRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.ItemRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ItemRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ItemRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.ItemRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ItemRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.ItemRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateItemRequest>
+          }
+          groupBy: {
+            args: Prisma.ItemRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ItemRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ItemRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<ItemRequestCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4478,6 +4568,7 @@ export namespace Prisma {
     deliveryEditLog?: DeliveryEditLogOmit
     specialOffer?: SpecialOfferOmit
     contactMessage?: ContactMessageOmit
+    itemRequest?: ItemRequestOmit
   }
 
   /* Types for Logging */
@@ -4835,10 +4926,12 @@ export namespace Prisma {
 
   export type RentalItemCountOutputType = {
     deliveryItems: number
+    itemRequests: number
   }
 
   export type RentalItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deliveryItems?: boolean | RentalItemCountOutputTypeCountDeliveryItemsArgs
+    itemRequests?: boolean | RentalItemCountOutputTypeCountItemRequestsArgs
   }
 
   // Custom InputTypes
@@ -4857,6 +4950,13 @@ export namespace Prisma {
    */
   export type RentalItemCountOutputTypeCountDeliveryItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DeliveryItemWhereInput
+  }
+
+  /**
+   * RentalItemCountOutputType without action
+   */
+  export type RentalItemCountOutputTypeCountItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemRequestWhereInput
   }
 
 
@@ -4887,6 +4987,7 @@ export namespace Prisma {
     workerAttendance: number
     sentNotifications: number
     receivedNotifications: number
+    itemRequests: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4912,6 +5013,7 @@ export namespace Prisma {
     workerAttendance?: boolean | UserCountOutputTypeCountWorkerAttendanceArgs
     sentNotifications?: boolean | UserCountOutputTypeCountSentNotificationsArgs
     receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
+    itemRequests?: boolean | UserCountOutputTypeCountItemRequestsArgs
   }
 
   // Custom InputTypes
@@ -5077,6 +5179,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkerNotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemRequestWhereInput
   }
 
 
@@ -19083,6 +19192,7 @@ export namespace Prisma {
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
+    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rentalItem"]>
 
@@ -19131,6 +19241,7 @@ export namespace Prisma {
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
+    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RentalItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19154,6 +19265,7 @@ export namespace Prisma {
       rentalPackage: Prisma.$RentalPackagePayload<ExtArgs> | null
       unit: Prisma.$ProductUnitPayload<ExtArgs> | null
       variant: Prisma.$ProductVariantPayload<ExtArgs> | null
+      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19562,6 +19674,7 @@ export namespace Prisma {
     rentalPackage<T extends RentalItem$rentalPackageArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$rentalPackageArgs<ExtArgs>>): Prisma__RentalPackageClient<$Result.GetResult<Prisma.$RentalPackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     unit<T extends RentalItem$unitArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$unitArgs<ExtArgs>>): Prisma__ProductUnitClient<$Result.GetResult<Prisma.$ProductUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     variant<T extends RentalItem$variantArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$variantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    itemRequests<T extends RentalItem$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20075,6 +20188,30 @@ export namespace Prisma {
   }
 
   /**
+   * RentalItem.itemRequests
+   */
+  export type RentalItem$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    where?: ItemRequestWhereInput
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    cursor?: ItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
    * RentalItem without action
    */
   export type RentalItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20383,6 +20520,7 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -20473,6 +20611,7 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -20503,6 +20642,7 @@ export namespace Prisma {
       workerAttendance: Prisma.$WorkerAttendancePayload<ExtArgs>[]
       sentNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
       receivedNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
+      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20939,6 +21079,7 @@ export namespace Prisma {
     workerAttendance<T extends User$workerAttendanceArgs<ExtArgs> = {}>(args?: Subset<T, User$workerAttendanceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentNotifications<T extends User$sentNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    itemRequests<T extends User$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21899,6 +22040,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkerNotificationScalarFieldEnum | WorkerNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.itemRequests
+   */
+  export type User$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    where?: ItemRequestWhereInput
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    cursor?: ItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
   }
 
   /**
@@ -50419,6 +50584,1111 @@ export namespace Prisma {
 
 
   /**
+   * Model ItemRequest
+   */
+
+  export type AggregateItemRequest = {
+    _count: ItemRequestCountAggregateOutputType | null
+    _min: ItemRequestMinAggregateOutputType | null
+    _max: ItemRequestMaxAggregateOutputType | null
+  }
+
+  export type ItemRequestMinAggregateOutputType = {
+    id: string | null
+    rentalItemId: string | null
+    userId: string | null
+    type: string | null
+    status: string | null
+    reason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItemRequestMaxAggregateOutputType = {
+    id: string | null
+    rentalItemId: string | null
+    userId: string | null
+    type: string | null
+    status: string | null
+    reason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ItemRequestCountAggregateOutputType = {
+    id: number
+    rentalItemId: number
+    userId: number
+    type: number
+    status: number
+    reason: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ItemRequestMinAggregateInputType = {
+    id?: true
+    rentalItemId?: true
+    userId?: true
+    type?: true
+    status?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItemRequestMaxAggregateInputType = {
+    id?: true
+    rentalItemId?: true
+    userId?: true
+    type?: true
+    status?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ItemRequestCountAggregateInputType = {
+    id?: true
+    rentalItemId?: true
+    userId?: true
+    type?: true
+    status?: true
+    reason?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ItemRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemRequest to aggregate.
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemRequests to fetch.
+     */
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ItemRequests
+    **/
+    _count?: true | ItemRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ItemRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ItemRequestMaxAggregateInputType
+  }
+
+  export type GetItemRequestAggregateType<T extends ItemRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateItemRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateItemRequest[P]>
+      : GetScalarType<T[P], AggregateItemRequest[P]>
+  }
+
+
+
+
+  export type ItemRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemRequestWhereInput
+    orderBy?: ItemRequestOrderByWithAggregationInput | ItemRequestOrderByWithAggregationInput[]
+    by: ItemRequestScalarFieldEnum[] | ItemRequestScalarFieldEnum
+    having?: ItemRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ItemRequestCountAggregateInputType | true
+    _min?: ItemRequestMinAggregateInputType
+    _max?: ItemRequestMaxAggregateInputType
+  }
+
+  export type ItemRequestGroupByOutputType = {
+    id: string
+    rentalItemId: string
+    userId: string
+    type: string
+    status: string
+    reason: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ItemRequestCountAggregateOutputType | null
+    _min: ItemRequestMinAggregateOutputType | null
+    _max: ItemRequestMaxAggregateOutputType | null
+  }
+
+  type GetItemRequestGroupByPayload<T extends ItemRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ItemRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ItemRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ItemRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], ItemRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ItemRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentalItemId?: boolean
+    userId?: boolean
+    type?: boolean
+    status?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemRequest"]>
+
+  export type ItemRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentalItemId?: boolean
+    userId?: boolean
+    type?: boolean
+    status?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemRequest"]>
+
+  export type ItemRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    rentalItemId?: boolean
+    userId?: boolean
+    type?: boolean
+    status?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["itemRequest"]>
+
+  export type ItemRequestSelectScalar = {
+    id?: boolean
+    rentalItemId?: boolean
+    userId?: boolean
+    type?: boolean
+    status?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ItemRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rentalItemId" | "userId" | "type" | "status" | "reason" | "createdAt" | "updatedAt", ExtArgs["result"]["itemRequest"]>
+  export type ItemRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ItemRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ItemRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rentalItem?: boolean | RentalItemDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ItemRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ItemRequest"
+    objects: {
+      rentalItem: Prisma.$RentalItemPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      rentalItemId: string
+      userId: string
+      type: string
+      status: string
+      reason: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["itemRequest"]>
+    composites: {}
+  }
+
+  type ItemRequestGetPayload<S extends boolean | null | undefined | ItemRequestDefaultArgs> = $Result.GetResult<Prisma.$ItemRequestPayload, S>
+
+  type ItemRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ItemRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ItemRequestCountAggregateInputType | true
+    }
+
+  export interface ItemRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ItemRequest'], meta: { name: 'ItemRequest' } }
+    /**
+     * Find zero or one ItemRequest that matches the filter.
+     * @param {ItemRequestFindUniqueArgs} args - Arguments to find a ItemRequest
+     * @example
+     * // Get one ItemRequest
+     * const itemRequest = await prisma.itemRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ItemRequestFindUniqueArgs>(args: SelectSubset<T, ItemRequestFindUniqueArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ItemRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ItemRequestFindUniqueOrThrowArgs} args - Arguments to find a ItemRequest
+     * @example
+     * // Get one ItemRequest
+     * const itemRequest = await prisma.itemRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ItemRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, ItemRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestFindFirstArgs} args - Arguments to find a ItemRequest
+     * @example
+     * // Get one ItemRequest
+     * const itemRequest = await prisma.itemRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ItemRequestFindFirstArgs>(args?: SelectSubset<T, ItemRequestFindFirstArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ItemRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestFindFirstOrThrowArgs} args - Arguments to find a ItemRequest
+     * @example
+     * // Get one ItemRequest
+     * const itemRequest = await prisma.itemRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ItemRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, ItemRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ItemRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ItemRequests
+     * const itemRequests = await prisma.itemRequest.findMany()
+     * 
+     * // Get first 10 ItemRequests
+     * const itemRequests = await prisma.itemRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const itemRequestWithIdOnly = await prisma.itemRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ItemRequestFindManyArgs>(args?: SelectSubset<T, ItemRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ItemRequest.
+     * @param {ItemRequestCreateArgs} args - Arguments to create a ItemRequest.
+     * @example
+     * // Create one ItemRequest
+     * const ItemRequest = await prisma.itemRequest.create({
+     *   data: {
+     *     // ... data to create a ItemRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends ItemRequestCreateArgs>(args: SelectSubset<T, ItemRequestCreateArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ItemRequests.
+     * @param {ItemRequestCreateManyArgs} args - Arguments to create many ItemRequests.
+     * @example
+     * // Create many ItemRequests
+     * const itemRequest = await prisma.itemRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ItemRequestCreateManyArgs>(args?: SelectSubset<T, ItemRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ItemRequests and returns the data saved in the database.
+     * @param {ItemRequestCreateManyAndReturnArgs} args - Arguments to create many ItemRequests.
+     * @example
+     * // Create many ItemRequests
+     * const itemRequest = await prisma.itemRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ItemRequests and only return the `id`
+     * const itemRequestWithIdOnly = await prisma.itemRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ItemRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, ItemRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ItemRequest.
+     * @param {ItemRequestDeleteArgs} args - Arguments to delete one ItemRequest.
+     * @example
+     * // Delete one ItemRequest
+     * const ItemRequest = await prisma.itemRequest.delete({
+     *   where: {
+     *     // ... filter to delete one ItemRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ItemRequestDeleteArgs>(args: SelectSubset<T, ItemRequestDeleteArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ItemRequest.
+     * @param {ItemRequestUpdateArgs} args - Arguments to update one ItemRequest.
+     * @example
+     * // Update one ItemRequest
+     * const itemRequest = await prisma.itemRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ItemRequestUpdateArgs>(args: SelectSubset<T, ItemRequestUpdateArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ItemRequests.
+     * @param {ItemRequestDeleteManyArgs} args - Arguments to filter ItemRequests to delete.
+     * @example
+     * // Delete a few ItemRequests
+     * const { count } = await prisma.itemRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ItemRequestDeleteManyArgs>(args?: SelectSubset<T, ItemRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ItemRequests
+     * const itemRequest = await prisma.itemRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ItemRequestUpdateManyArgs>(args: SelectSubset<T, ItemRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ItemRequests and returns the data updated in the database.
+     * @param {ItemRequestUpdateManyAndReturnArgs} args - Arguments to update many ItemRequests.
+     * @example
+     * // Update many ItemRequests
+     * const itemRequest = await prisma.itemRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ItemRequests and only return the `id`
+     * const itemRequestWithIdOnly = await prisma.itemRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ItemRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, ItemRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ItemRequest.
+     * @param {ItemRequestUpsertArgs} args - Arguments to update or create a ItemRequest.
+     * @example
+     * // Update or create a ItemRequest
+     * const itemRequest = await prisma.itemRequest.upsert({
+     *   create: {
+     *     // ... data to create a ItemRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ItemRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ItemRequestUpsertArgs>(args: SelectSubset<T, ItemRequestUpsertArgs<ExtArgs>>): Prisma__ItemRequestClient<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ItemRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestCountArgs} args - Arguments to filter ItemRequests to count.
+     * @example
+     * // Count the number of ItemRequests
+     * const count = await prisma.itemRequest.count({
+     *   where: {
+     *     // ... the filter for the ItemRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends ItemRequestCountArgs>(
+      args?: Subset<T, ItemRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ItemRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ItemRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ItemRequestAggregateArgs>(args: Subset<T, ItemRequestAggregateArgs>): Prisma.PrismaPromise<GetItemRequestAggregateType<T>>
+
+    /**
+     * Group by ItemRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ItemRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ItemRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ItemRequestGroupByArgs['orderBy'] }
+        : { orderBy?: ItemRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ItemRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItemRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ItemRequest model
+   */
+  readonly fields: ItemRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ItemRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ItemRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    rentalItem<T extends RentalItemDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RentalItemDefaultArgs<ExtArgs>>): Prisma__RentalItemClient<$Result.GetResult<Prisma.$RentalItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ItemRequest model
+   */
+  interface ItemRequestFieldRefs {
+    readonly id: FieldRef<"ItemRequest", 'String'>
+    readonly rentalItemId: FieldRef<"ItemRequest", 'String'>
+    readonly userId: FieldRef<"ItemRequest", 'String'>
+    readonly type: FieldRef<"ItemRequest", 'String'>
+    readonly status: FieldRef<"ItemRequest", 'String'>
+    readonly reason: FieldRef<"ItemRequest", 'String'>
+    readonly createdAt: FieldRef<"ItemRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"ItemRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ItemRequest findUnique
+   */
+  export type ItemRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemRequest to fetch.
+     */
+    where: ItemRequestWhereUniqueInput
+  }
+
+  /**
+   * ItemRequest findUniqueOrThrow
+   */
+  export type ItemRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemRequest to fetch.
+     */
+    where: ItemRequestWhereUniqueInput
+  }
+
+  /**
+   * ItemRequest findFirst
+   */
+  export type ItemRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemRequest to fetch.
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemRequests to fetch.
+     */
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemRequests.
+     */
+    cursor?: ItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemRequests.
+     */
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ItemRequest findFirstOrThrow
+   */
+  export type ItemRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemRequest to fetch.
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemRequests to fetch.
+     */
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ItemRequests.
+     */
+    cursor?: ItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ItemRequests.
+     */
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ItemRequest findMany
+   */
+  export type ItemRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which ItemRequests to fetch.
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ItemRequests to fetch.
+     */
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ItemRequests.
+     */
+    cursor?: ItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ItemRequests.
+     */
+    skip?: number
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ItemRequest create
+   */
+  export type ItemRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ItemRequest.
+     */
+    data: XOR<ItemRequestCreateInput, ItemRequestUncheckedCreateInput>
+  }
+
+  /**
+   * ItemRequest createMany
+   */
+  export type ItemRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ItemRequests.
+     */
+    data: ItemRequestCreateManyInput | ItemRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ItemRequest createManyAndReturn
+   */
+  export type ItemRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many ItemRequests.
+     */
+    data: ItemRequestCreateManyInput | ItemRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemRequest update
+   */
+  export type ItemRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ItemRequest.
+     */
+    data: XOR<ItemRequestUpdateInput, ItemRequestUncheckedUpdateInput>
+    /**
+     * Choose, which ItemRequest to update.
+     */
+    where: ItemRequestWhereUniqueInput
+  }
+
+  /**
+   * ItemRequest updateMany
+   */
+  export type ItemRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ItemRequests.
+     */
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemRequests to update
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * Limit how many ItemRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemRequest updateManyAndReturn
+   */
+  export type ItemRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update ItemRequests.
+     */
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which ItemRequests to update
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * Limit how many ItemRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ItemRequest upsert
+   */
+  export type ItemRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ItemRequest to update in case it exists.
+     */
+    where: ItemRequestWhereUniqueInput
+    /**
+     * In case the ItemRequest found by the `where` argument doesn't exist, create a new ItemRequest with this data.
+     */
+    create: XOR<ItemRequestCreateInput, ItemRequestUncheckedCreateInput>
+    /**
+     * In case the ItemRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ItemRequestUpdateInput, ItemRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * ItemRequest delete
+   */
+  export type ItemRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter which ItemRequest to delete.
+     */
+    where: ItemRequestWhereUniqueInput
+  }
+
+  /**
+   * ItemRequest deleteMany
+   */
+  export type ItemRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ItemRequests to delete
+     */
+    where?: ItemRequestWhereInput
+    /**
+     * Limit how many ItemRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ItemRequest without action
+   */
+  export type ItemRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51011,6 +52281,20 @@ export namespace Prisma {
   };
 
   export type ContactMessageScalarFieldEnum = (typeof ContactMessageScalarFieldEnum)[keyof typeof ContactMessageScalarFieldEnum]
+
+
+  export const ItemRequestScalarFieldEnum: {
+    id: 'id',
+    rentalItemId: 'rentalItemId',
+    userId: 'userId',
+    type: 'type',
+    status: 'status',
+    reason: 'reason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ItemRequestScalarFieldEnum = (typeof ItemRequestScalarFieldEnum)[keyof typeof ItemRequestScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -52461,6 +53745,7 @@ export namespace Prisma {
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+    itemRequests?: ItemRequestListRelationFilter
   }
 
   export type RentalItemOrderByWithRelationInput = {
@@ -52476,6 +53761,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageOrderByWithRelationInput
     unit?: ProductUnitOrderByWithRelationInput
     variant?: ProductVariantOrderByWithRelationInput
+    itemRequests?: ItemRequestOrderByRelationAggregateInput
   }
 
   export type RentalItemWhereUniqueInput = Prisma.AtLeast<{
@@ -52494,6 +53780,7 @@ export namespace Prisma {
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
+    itemRequests?: ItemRequestListRelationFilter
   }, "id">
 
   export type RentalItemOrderByWithAggregationInput = {
@@ -52568,6 +53855,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -52611,6 +53899,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceOrderByRelationAggregateInput
     sentNotifications?: WorkerNotificationOrderByRelationAggregateInput
     receivedNotifications?: WorkerNotificationOrderByRelationAggregateInput
+    itemRequests?: ItemRequestOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -52657,6 +53946,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -54481,6 +55771,79 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ContactMessage"> | Date | string
   }
 
+  export type ItemRequestWhereInput = {
+    AND?: ItemRequestWhereInput | ItemRequestWhereInput[]
+    OR?: ItemRequestWhereInput[]
+    NOT?: ItemRequestWhereInput | ItemRequestWhereInput[]
+    id?: UuidFilter<"ItemRequest"> | string
+    rentalItemId?: UuidFilter<"ItemRequest"> | string
+    userId?: UuidFilter<"ItemRequest"> | string
+    type?: StringFilter<"ItemRequest"> | string
+    status?: StringFilter<"ItemRequest"> | string
+    reason?: StringNullableFilter<"ItemRequest"> | string | null
+    createdAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    rentalItem?: XOR<RentalItemScalarRelationFilter, RentalItemWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ItemRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    rentalItemId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    rentalItem?: RentalItemOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ItemRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ItemRequestWhereInput | ItemRequestWhereInput[]
+    OR?: ItemRequestWhereInput[]
+    NOT?: ItemRequestWhereInput | ItemRequestWhereInput[]
+    rentalItemId?: UuidFilter<"ItemRequest"> | string
+    userId?: UuidFilter<"ItemRequest"> | string
+    type?: StringFilter<"ItemRequest"> | string
+    status?: StringFilter<"ItemRequest"> | string
+    reason?: StringNullableFilter<"ItemRequest"> | string | null
+    createdAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    rentalItem?: XOR<RentalItemScalarRelationFilter, RentalItemWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ItemRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    rentalItemId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ItemRequestCountOrderByAggregateInput
+    _max?: ItemRequestMaxOrderByAggregateInput
+    _min?: ItemRequestMinOrderByAggregateInput
+  }
+
+  export type ItemRequestScalarWhereWithAggregatesInput = {
+    AND?: ItemRequestScalarWhereWithAggregatesInput | ItemRequestScalarWhereWithAggregatesInput[]
+    OR?: ItemRequestScalarWhereWithAggregatesInput[]
+    NOT?: ItemRequestScalarWhereWithAggregatesInput | ItemRequestScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"ItemRequest"> | string
+    rentalItemId?: UuidWithAggregatesFilter<"ItemRequest"> | string
+    userId?: UuidWithAggregatesFilter<"ItemRequest"> | string
+    type?: StringWithAggregatesFilter<"ItemRequest"> | string
+    status?: StringWithAggregatesFilter<"ItemRequest"> | string
+    reason?: StringNullableWithAggregatesFilter<"ItemRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ItemRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ItemRequest"> | Date | string
+  }
+
   export type InvoiceCreateInput = {
     id?: string
     invoiceNumber: string
@@ -55700,6 +57063,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateInput = {
@@ -55711,6 +57075,7 @@ export namespace Prisma {
     variantId?: string | null
     unitId?: string | null
     deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUpdateInput = {
@@ -55722,6 +57087,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateInput = {
@@ -55733,6 +57099,7 @@ export namespace Prisma {
     variantId?: NullableStringFieldUpdateOperationsInput | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemCreateManyInput = {
@@ -55802,6 +57169,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -55845,6 +57213,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -55888,6 +57257,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -55931,6 +57301,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -57873,6 +59244,81 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ItemRequestCreateInput = {
+    id?: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rentalItem: RentalItemCreateNestedOneWithoutItemRequestsInput
+    user: UserCreateNestedOneWithoutItemRequestsInput
+  }
+
+  export type ItemRequestUncheckedCreateInput = {
+    id?: string
+    rentalItemId: string
+    userId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rentalItem?: RentalItemUpdateOneRequiredWithoutItemRequestsNestedInput
+    user?: UserUpdateOneRequiredWithoutItemRequestsNestedInput
+  }
+
+  export type ItemRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemRequestCreateManyInput = {
+    id?: string
+    rentalItemId: string
+    userId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -59106,7 +60552,17 @@ export namespace Prisma {
     isNot?: ProductVariantWhereInput | null
   }
 
+  export type ItemRequestListRelationFilter = {
+    every?: ItemRequestWhereInput
+    some?: ItemRequestWhereInput
+    none?: ItemRequestWhereInput
+  }
+
   export type DeliveryItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ItemRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -60476,6 +61932,39 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ItemRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    rentalItemId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItemRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    rentalItemId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ItemRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    rentalItemId?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    status?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type DeliveryCreateNestedManyWithoutInvoiceInput = {
     create?: XOR<DeliveryCreateWithoutInvoiceInput, DeliveryUncheckedCreateWithoutInvoiceInput> | DeliveryCreateWithoutInvoiceInput[] | DeliveryUncheckedCreateWithoutInvoiceInput[]
     connectOrCreate?: DeliveryCreateOrConnectWithoutInvoiceInput | DeliveryCreateOrConnectWithoutInvoiceInput[]
@@ -61521,11 +63010,25 @@ export namespace Prisma {
     connect?: ProductVariantWhereUniqueInput
   }
 
+  export type ItemRequestCreateNestedManyWithoutRentalItemInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+  }
+
   export type DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput = {
     create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
     connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
     createMany?: DeliveryItemCreateManyRentalItemInputEnvelope
     connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
+  }
+
+  export type ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
   }
 
   export type DeliveryItemUpdateManyWithoutRentalItemNestedInput = {
@@ -61580,6 +63083,20 @@ export namespace Prisma {
     update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutRentalItemsInput, ProductVariantUpdateWithoutRentalItemsInput>, ProductVariantUncheckedUpdateWithoutRentalItemsInput>
   }
 
+  export type ItemRequestUpdateManyWithoutRentalItemNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput | ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput | ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutRentalItemInput | ItemRequestUpdateManyWithWhereWithoutRentalItemInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+  }
+
   export type DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput = {
     create?: XOR<DeliveryItemCreateWithoutRentalItemInput, DeliveryItemUncheckedCreateWithoutRentalItemInput> | DeliveryItemCreateWithoutRentalItemInput[] | DeliveryItemUncheckedCreateWithoutRentalItemInput[]
     connectOrCreate?: DeliveryItemCreateOrConnectWithoutRentalItemInput | DeliveryItemCreateOrConnectWithoutRentalItemInput[]
@@ -61592,6 +63109,20 @@ export namespace Prisma {
     update?: DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput[]
     updateMany?: DeliveryItemUpdateManyWithWhereWithoutRentalItemInput | DeliveryItemUpdateManyWithWhereWithoutRentalItemInput[]
     deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput | ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput | ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutRentalItemInput | ItemRequestUpdateManyWithWhereWithoutRentalItemInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type ActivityLogCreateNestedManyWithoutUserInput = {
@@ -61748,6 +63279,13 @@ export namespace Prisma {
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
   }
 
+  export type ItemRequestCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+  }
+
   export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -61900,6 +63438,13 @@ export namespace Prisma {
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutWorkerInput | WorkerNotificationCreateOrConnectWithoutWorkerInput[]
     createMany?: WorkerNotificationCreateManyWorkerInputEnvelope
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
+  }
+
+  export type ItemRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
   }
 
   export type ActivityLogUpdateManyWithoutUserNestedInput = {
@@ -62210,6 +63755,20 @@ export namespace Prisma {
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
   }
 
+  export type ItemRequestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+  }
+
   export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -62516,6 +64075,20 @@ export namespace Prisma {
     update?: WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput | WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput[]
     updateMany?: WorkerNotificationUpdateManyWithWhereWithoutWorkerInput | WorkerNotificationUpdateManyWithWhereWithoutWorkerInput[]
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type ChatGroupMemberCreateNestedManyWithoutGroupInput = {
@@ -63345,6 +64918,34 @@ export namespace Prisma {
     push?: string | string[]
   }
 
+  export type RentalItemCreateNestedOneWithoutItemRequestsInput = {
+    create?: XOR<RentalItemCreateWithoutItemRequestsInput, RentalItemUncheckedCreateWithoutItemRequestsInput>
+    connectOrCreate?: RentalItemCreateOrConnectWithoutItemRequestsInput
+    connect?: RentalItemWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutItemRequestsInput = {
+    create?: XOR<UserCreateWithoutItemRequestsInput, UserUncheckedCreateWithoutItemRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItemRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RentalItemUpdateOneRequiredWithoutItemRequestsNestedInput = {
+    create?: XOR<RentalItemCreateWithoutItemRequestsInput, RentalItemUncheckedCreateWithoutItemRequestsInput>
+    connectOrCreate?: RentalItemCreateOrConnectWithoutItemRequestsInput
+    upsert?: RentalItemUpsertWithoutItemRequestsInput
+    connect?: RentalItemWhereUniqueInput
+    update?: XOR<XOR<RentalItemUpdateToOneWithWhereWithoutItemRequestsInput, RentalItemUpdateWithoutItemRequestsInput>, RentalItemUncheckedUpdateWithoutItemRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutItemRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutItemRequestsInput, UserUncheckedCreateWithoutItemRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutItemRequestsInput
+    upsert?: UserUpsertWithoutItemRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemRequestsInput, UserUpdateWithoutItemRequestsInput>, UserUncheckedUpdateWithoutItemRequestsInput>
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -64143,6 +65744,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -64185,6 +65787,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -64355,6 +65958,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -64397,6 +66001,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceCreateWithoutOrderInput = {
@@ -64513,6 +66118,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -64555,6 +66161,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -64602,6 +66209,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -64644,6 +66252,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -64735,6 +66344,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutOrderInput = {
@@ -64745,6 +66355,7 @@ export namespace Prisma {
     variantId?: string | null
     unitId?: string | null
     deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutOrderInput = {
@@ -64859,6 +66470,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -64901,6 +66513,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -64954,6 +66567,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -64996,6 +66610,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PaymentTransactionUpsertWithWhereUniqueWithoutOrderInput = {
@@ -65198,6 +66813,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerifiedTransactionsInput = {
@@ -65240,6 +66856,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerifiedTransactionsInput = {
@@ -65369,6 +66986,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerifiedTransactionsInput = {
@@ -65411,6 +67029,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutProductRelationsInput = {
@@ -65769,6 +67388,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutRentalPackageInput = {
@@ -65779,6 +67399,7 @@ export namespace Prisma {
     variantId?: string | null
     unitId?: string | null
     deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutRentalPackageInput = {
@@ -66190,6 +67811,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutVariantInput = {
@@ -66200,6 +67822,7 @@ export namespace Prisma {
     createdAt?: Date | string | null
     unitId?: string | null
     deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutVariantInput = {
@@ -66389,6 +68012,7 @@ export namespace Prisma {
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutUnitInput = {
@@ -66399,6 +68023,7 @@ export namespace Prisma {
     createdAt?: Date | string | null
     variantId?: string | null
     deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutUnitInput = {
@@ -66667,6 +68292,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUnitActionsInput = {
@@ -66709,6 +68335,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUnitActionsInput = {
@@ -66806,6 +68433,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUnitActionsInput = {
@@ -66848,6 +68476,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSystemNotificationsInput = {
@@ -66890,6 +68519,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSystemNotificationsInput = {
@@ -66932,6 +68562,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSystemNotificationsInput = {
@@ -66990,6 +68621,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSystemNotificationsInput = {
@@ -67032,6 +68664,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryItemCreateWithoutRentalItemInput = {
@@ -67212,6 +68845,36 @@ export namespace Prisma {
   export type ProductVariantCreateOrConnectWithoutRentalItemsInput = {
     where: ProductVariantWhereUniqueInput
     create: XOR<ProductVariantCreateWithoutRentalItemsInput, ProductVariantUncheckedCreateWithoutRentalItemsInput>
+  }
+
+  export type ItemRequestCreateWithoutRentalItemInput = {
+    id?: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutItemRequestsInput
+  }
+
+  export type ItemRequestUncheckedCreateWithoutRentalItemInput = {
+    id?: string
+    userId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestCreateOrConnectWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestCreateManyRentalItemInputEnvelope = {
+    data: ItemRequestCreateManyRentalItemInput | ItemRequestCreateManyRentalItemInput[]
+    skipDuplicates?: boolean
   }
 
   export type DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput = {
@@ -67420,6 +69083,36 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     units?: ProductUnitUncheckedUpdateManyWithoutVariantNestedInput
+  }
+
+  export type ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    update: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
+    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    data: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestUpdateManyWithWhereWithoutRentalItemInput = {
+    where: ItemRequestScalarWhereInput
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutRentalItemInput>
+  }
+
+  export type ItemRequestScalarWhereInput = {
+    AND?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+    OR?: ItemRequestScalarWhereInput[]
+    NOT?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+    id?: UuidFilter<"ItemRequest"> | string
+    rentalItemId?: UuidFilter<"ItemRequest"> | string
+    userId?: UuidFilter<"ItemRequest"> | string
+    type?: StringFilter<"ItemRequest"> | string
+    status?: StringFilter<"ItemRequest"> | string
+    reason?: StringNullableFilter<"ItemRequest"> | string | null
+    createdAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ItemRequest"> | Date | string
   }
 
   export type ActivityLogCreateWithoutUserInput = {
@@ -68240,6 +69933,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ItemRequestCreateWithoutUserInput = {
+    id?: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rentalItem: RentalItemCreateNestedOneWithoutItemRequestsInput
+  }
+
+  export type ItemRequestUncheckedCreateWithoutUserInput = {
+    id?: string
+    rentalItemId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestCreateOrConnectWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemRequestCreateManyUserInputEnvelope = {
+    data: ItemRequestCreateManyUserInput | ItemRequestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -68784,6 +70507,22 @@ export namespace Prisma {
     data: XOR<WorkerNotificationUpdateManyMutationInput, WorkerNotificationUncheckedUpdateManyWithoutWorkerInput>
   }
 
+  export type ItemRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    update: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    data: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemRequestUpdateManyWithWhereWithoutUserInput = {
+    where: ItemRequestScalarWhereInput
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type ChatGroupMemberCreateWithoutGroupInput = {
     id?: string
     role?: string
@@ -68927,6 +70666,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatGroupMembershipsInput = {
@@ -68969,6 +70709,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatGroupMembershipsInput = {
@@ -69056,6 +70797,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatGroupMembershipsInput = {
@@ -69098,6 +70840,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatGroupCreateWithoutMessagesInput = {
@@ -69163,6 +70906,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGroupMessagesInput = {
@@ -69205,6 +70949,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGroupMessagesInput = {
@@ -69292,6 +71037,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGroupMessagesInput = {
@@ -69334,6 +71080,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -69376,6 +71123,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -69418,6 +71166,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -69476,6 +71225,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -69518,6 +71268,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWorkerAttendanceInput = {
@@ -69560,6 +71311,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkerAttendanceInput = {
@@ -69602,6 +71354,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkerAttendanceInput = {
@@ -69660,6 +71413,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkerAttendanceInput = {
@@ -69702,6 +71456,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutInventorySyncLogsInput = {
@@ -69783,6 +71538,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryResolutionsInput = {
@@ -69825,6 +71581,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryResolutionsInput = {
@@ -69872,6 +71629,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryUpdatesInput = {
@@ -69914,6 +71672,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryUpdatesInput = {
@@ -70017,6 +71776,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryResolutionsInput = {
@@ -70059,6 +71819,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutInventoryUpdatesInput = {
@@ -70112,6 +71873,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryUpdatesInput = {
@@ -70154,6 +71916,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -70196,6 +71959,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -70238,6 +72002,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -70285,6 +72050,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -70327,6 +72093,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -70385,6 +72152,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -70427,6 +72195,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -70480,6 +72249,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -70522,6 +72292,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReceivedMessagesInput = {
@@ -70564,6 +72335,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -70606,6 +72378,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -70653,6 +72426,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -70695,6 +72469,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -70753,6 +72528,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -70795,6 +72571,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutSentMessagesInput = {
@@ -70848,6 +72625,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -70890,6 +72668,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationDismissalsInput = {
@@ -70932,6 +72711,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationDismissalsInput = {
@@ -70974,6 +72754,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationDismissalsInput = {
@@ -71032,6 +72813,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationDismissalsInput = {
@@ -71074,6 +72856,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSpiNotificationsInput = {
@@ -71116,6 +72899,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpiNotificationsInput = {
@@ -71158,6 +72942,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpiNotificationsInput = {
@@ -71216,6 +73001,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpiNotificationsInput = {
@@ -71258,6 +73044,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiActionCreateWithoutAgentInput = {
@@ -71545,6 +73332,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiActionApprovalsInput = {
@@ -71587,6 +73375,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiActionApprovalsInput = {
@@ -71680,6 +73469,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiActionApprovalsInput = {
@@ -71722,6 +73512,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiAgentCreateWithoutTrainingDataInput = {
@@ -71902,6 +73693,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimedDeliveriesInput = {
@@ -71944,6 +73736,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimedDeliveriesInput = {
@@ -72180,6 +73973,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimedDeliveriesInput = {
@@ -72222,6 +74016,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceUpsertWithoutDeliveriesInput = {
@@ -72439,6 +74234,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutDeliveryItemsInput = {
@@ -72449,6 +74245,7 @@ export namespace Prisma {
     createdAt?: Date | string | null
     variantId?: string | null
     unitId?: string | null
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemCreateOrConnectWithoutDeliveryItemsInput = {
@@ -72534,6 +74331,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutDeliveryItemsInput = {
@@ -72544,6 +74342,7 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     variantId?: NullableStringFieldUpdateOperationsInput | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type UserCreateWithoutDeliveryLogsInput = {
@@ -72586,6 +74385,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryLogsInput = {
@@ -72628,6 +74428,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryLogsInput = {
@@ -72739,6 +74540,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryLogsInput = {
@@ -72781,6 +74583,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryUpsertWithoutLogsInput = {
@@ -72935,6 +74738,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryEditLogsInput = {
@@ -72977,6 +74781,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryEditLogsInput = {
@@ -73094,6 +74899,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryEditLogsInput = {
@@ -73119,6 +74925,255 @@ export namespace Prisma {
     aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
     chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
     claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type RentalItemCreateWithoutItemRequestsInput = {
+    id?: string
+    quantity?: number | null
+    createdAt?: Date | string | null
+    deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    order: OrderCreateNestedOneWithoutRentalItemsInput
+    rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
+    unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
+    variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
+  }
+
+  export type RentalItemUncheckedCreateWithoutItemRequestsInput = {
+    id?: string
+    orderId: string
+    packageId?: string | null
+    quantity?: number | null
+    createdAt?: Date | string | null
+    variantId?: string | null
+    unitId?: string | null
+    deliveryItems?: DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput
+  }
+
+  export type RentalItemCreateOrConnectWithoutItemRequestsInput = {
+    where: RentalItemWhereUniqueInput
+    create: XOR<RentalItemCreateWithoutItemRequestsInput, RentalItemUncheckedCreateWithoutItemRequestsInput>
+  }
+
+  export type UserCreateWithoutItemRequestsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    plainPassword?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+  }
+
+  export type UserUncheckedCreateWithoutItemRequestsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    plainPassword?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+  }
+
+  export type UserCreateOrConnectWithoutItemRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutItemRequestsInput, UserUncheckedCreateWithoutItemRequestsInput>
+  }
+
+  export type RentalItemUpsertWithoutItemRequestsInput = {
+    update: XOR<RentalItemUpdateWithoutItemRequestsInput, RentalItemUncheckedUpdateWithoutItemRequestsInput>
+    create: XOR<RentalItemCreateWithoutItemRequestsInput, RentalItemUncheckedCreateWithoutItemRequestsInput>
+    where?: RentalItemWhereInput
+  }
+
+  export type RentalItemUpdateToOneWithWhereWithoutItemRequestsInput = {
+    where?: RentalItemWhereInput
+    data: XOR<RentalItemUpdateWithoutItemRequestsInput, RentalItemUncheckedUpdateWithoutItemRequestsInput>
+  }
+
+  export type RentalItemUpdateWithoutItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
+    rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
+    unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+  }
+
+  export type RentalItemUncheckedUpdateWithoutItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    packageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quantity?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    unitId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+  }
+
+  export type UserUpsertWithoutItemRequestsInput = {
+    update: XOR<UserUpdateWithoutItemRequestsInput, UserUncheckedUpdateWithoutItemRequestsInput>
+    create: XOR<UserCreateWithoutItemRequestsInput, UserUncheckedCreateWithoutItemRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutItemRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutItemRequestsInput, UserUncheckedUpdateWithoutItemRequestsInput>
+  }
+
+  export type UserUpdateWithoutItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
     deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
@@ -73479,6 +75534,7 @@ export namespace Prisma {
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutOrderInput = {
@@ -73489,6 +75545,7 @@ export namespace Prisma {
     variantId?: NullableStringFieldUpdateOperationsInput | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutOrderInput = {
@@ -73545,6 +75602,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutRentalPackageInput = {
@@ -73555,6 +75613,7 @@ export namespace Prisma {
     variantId?: NullableStringFieldUpdateOperationsInput | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutRentalPackageInput = {
@@ -73827,6 +75886,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutVariantInput = {
@@ -73837,6 +75897,7 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     unitId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutVariantInput = {
@@ -73876,6 +75937,7 @@ export namespace Prisma {
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutUnitInput = {
@@ -73886,6 +75948,7 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     variantId?: NullableStringFieldUpdateOperationsInput | string | null
     deliveryItems?: DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateManyWithoutUnitInput = {
@@ -73936,6 +75999,16 @@ export namespace Prisma {
     quantity: number
   }
 
+  export type ItemRequestCreateManyRentalItemInput = {
+    id?: string
+    userId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DeliveryItemUpdateWithoutRentalItemInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
@@ -73952,6 +76025,36 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     deliveryId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ItemRequestUpdateWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutItemRequestsNestedInput
+  }
+
+  export type ItemRequestUncheckedUpdateWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutRentalItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ActivityLogCreateManyUserInput = {
@@ -74239,6 +76342,16 @@ export namespace Prisma {
     message: string
     isRead?: boolean | null
     createdAt?: Date | string | null
+  }
+
+  export type ItemRequestCreateManyUserInput = {
+    id?: string
+    rentalItemId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ActivityLogUpdateWithoutUserInput = {
@@ -75124,6 +77237,36 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     isRead?: NullableBoolFieldUpdateOperationsInput | boolean | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ItemRequestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rentalItem?: RentalItemUpdateOneRequiredWithoutItemRequestsNestedInput
+  }
+
+  export type ItemRequestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ChatGroupMemberCreateManyGroupInput = {
