@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
@@ -90,6 +90,41 @@ export function DeliveriesClient({
     const dropoffs = deliveries.filter(d => d.deliveryType === 'DROPOFF' && activeStatuses.includes(d.status))
     const pickups = deliveries.filter(d => d.deliveryType === 'PICKUP' && activeStatuses.includes(d.status))
     const historyLog = deliveries.filter(d => historyStatuses.includes(d.status))
+
+    // Worker Geolocation Engine
+    useEffect(() => {
+        if (userRole !== 'WORKER') return;
+
+        const activeDeliveries = deliveries.filter(d => d.status === 'OUT_FOR_DELIVERY');
+        if (activeDeliveries.length === 0 || !navigator.geolocation) return;
+
+        const watchId = navigator.geolocation.watchPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                const token = localStorage.getItem('token');
+                if (!token) return;
+
+                for (const d of activeDeliveries) {
+                    try {
+                        await fetch(`/api/worker/deliveries/${d.id}/location`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ latitude, longitude })
+                        });
+                    } catch (err) {
+                        console.error('Failed to sync coordinates tracking', err);
+                    }
+                }
+            },
+            (err) => console.error('Geolocation Error:', err),
+            { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+        );
+
+        return () => navigator.geolocation.clearWatch(watchId);
+    }, [deliveries, userRole]);
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()

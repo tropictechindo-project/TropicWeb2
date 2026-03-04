@@ -1,5 +1,9 @@
 "use client"
 
+import { useState, useEffect } from "react"
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api"
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -16,7 +20,45 @@ import {
 } from "lucide-react"
 
 export default function TrackingClient({ initialDelivery }: { initialDelivery: any }) {
-    const delivery = initialDelivery
+    const [delivery, setDelivery] = useState(initialDelivery)
+    const [showMap, setShowMap] = useState(false)
+
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
+    })
+
+    useEffect(() => {
+        // Only poll if the delivery is currently active
+        if (delivery.status !== 'OUT_FOR_DELIVERY') return;
+
+        const interval = setInterval(async () => {
+            try {
+                const res = await fetch(`/api/tracking/${delivery.trackingCode}`)
+                if (res.ok) {
+                    const data = await res.json()
+                    if (data.delivery) {
+                        setDelivery((prev: any) => ({
+                            ...prev,
+                            status: data.delivery.status,
+                            latitude: data.delivery.latitude,
+                            longitude: data.delivery.longitude,
+                            lastLocationUpdate: data.delivery.lastLocationUpdate
+                        }))
+                    }
+                }
+            } catch (err) {
+                console.error("Polling error", err)
+            }
+        }, 10000) // Poll every 10 seconds
+
+        return () => clearInterval(interval)
+    }, [delivery.trackingCode, delivery.status])
+
+    const mapCenter = {
+        lat: delivery.latitude || -8.650000,
+        lng: delivery.longitude || 115.216667
+    }
 
     const getStatusText = (status: string) => {
         switch (status) {
@@ -57,10 +99,21 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
                                 <CardTitle className="text-2xl font-black">Current Status</CardTitle>
-                                <div className="mt-2 inline-flex">
+                                <div className="mt-2 inline-flex items-center gap-3">
                                     <Badge className={`${getStatusColor(delivery.status)} px-3 py-1 text-sm rounded-full tracking-wide`}>
                                         {getStatusText(delivery.status)}
                                     </Badge>
+                                    {delivery.status === 'OUT_FOR_DELIVERY' && delivery.latitude && delivery.longitude && (
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowMap(true)}
+                                            className="gap-2 rounded-full border-primary hover:bg-primary/10 hover:text-primary transition-all shadow-sm"
+                                        >
+                                            <MapPin className="w-4 h-4 text-primary animate-bounce" />
+                                            Live Map Track
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                             <div className="text-left sm:text-right">
@@ -68,7 +121,7 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                                     <Clock className="w-4 h-4" /> Last Updated
                                 </p>
                                 <p className="font-medium text-sm">
-                                    {new Date(delivery.updatedAt).toLocaleString()}
+                                    {new Date(delivery.lastLocationUpdate || delivery.updatedAt).toLocaleString()}
                                 </p>
                             </div>
                         </div>
@@ -167,6 +220,52 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
 
                     </CardContent>
                 </Card>
+
+                {/* Live Map Dialog */}
+                <Dialog open={showMap} onOpenChange={setShowMap}>
+                    <DialogContent className="max-w-4xl w-[95vw] h-[80vh] p-0 overflow-hidden flex flex-col border-2 border-primary/20">
+                        <DialogHeader className="p-4 border-b bg-muted/30 select-none">
+                            <DialogTitle className="flex items-center gap-2 text-xl font-black">
+                                <MapPin className="text-primary w-6 h-6 animate-pulse" /> Live Courier Tracking
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div className="flex-1 bg-muted/10 relative">
+                            {isLoaded ? (
+                                <GoogleMap
+                                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                                    center={mapCenter}
+                                    zoom={16}
+                                    options={{
+                                        disableDefaultUI: true,
+                                        zoomControl: true,
+                                        mapTypeControl: false,
+                                        streetViewControl: false,
+                                    }}
+                                >
+                                    {/* Van / Courier Marker */}
+                                    <Marker
+                                        position={mapCenter}
+                                        icon={{
+                                            // Material Design Local Shipping SVG path
+                                            path: "M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.1 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z",
+                                            fillColor: "#f97316", // Primary / Orange shade
+                                            fillOpacity: 1,
+                                            strokeWeight: 1,
+                                            strokeColor: "#ffffff",
+                                            scale: 1.5,
+                                            anchor: new window.google.maps.Point(12, 12)
+                                        }}
+                                    />
+                                </GoogleMap>
+                            ) : (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                                </div>
+                            )}
+                        </div>
+                    </DialogContent>
+                </Dialog>
+
             </div>
         </div>
     )
