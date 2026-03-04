@@ -647,11 +647,11 @@ export default function WorkerDashboard() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {myDeliveries.length === 0 ? (
+                    {myDeliveries.filter(d => !['COMPLETED', 'CANCELED', 'RETURNED'].includes(d.status)).length === 0 ? (
                       <p className="text-center text-muted-foreground py-8">You haven't claimed any deliveries</p>
                     ) : (
                       <div className="space-y-4">
-                        {myDeliveries.map((delivery) => (
+                        {myDeliveries.filter(d => !['COMPLETED', 'CANCELED', 'RETURNED'].includes(d.status)).map((delivery) => (
                           <Card key={delivery.id} className={cn("border-l-4", delivery.status === 'COMPLETED' ? "border-l-green-500 opacity-70" : "border-l-primary shadow-md")}>
                             <CardContent className="pt-6">
                               <div className="flex justify-between items-start mb-4">

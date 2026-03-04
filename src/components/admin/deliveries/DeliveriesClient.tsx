@@ -84,8 +84,12 @@ export function DeliveriesClient({
     const [workerId, setWorkerId] = useState<string | null>(null)
     const [eta, setEta] = useState<string>("")
 
-    const dropoffs = deliveries.filter(d => d.deliveryType === 'DROPOFF')
-    const pickups = deliveries.filter(d => d.deliveryType === 'PICKUP')
+    const activeStatuses = ['QUEUED', 'CLAIMED', 'OUT_FOR_DELIVERY', 'PAUSED', 'DELAYED']
+    const historyStatuses = ['COMPLETED', 'RETURNED', 'CANCELED']
+
+    const dropoffs = deliveries.filter(d => d.deliveryType === 'DROPOFF' && activeStatuses.includes(d.status))
+    const pickups = deliveries.filter(d => d.deliveryType === 'PICKUP' && activeStatuses.includes(d.status))
+    const historyLog = deliveries.filter(d => historyStatuses.includes(d.status))
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -339,6 +343,7 @@ export function DeliveriesClient({
                 <TabsList className="mb-4 bg-muted/30 p-1 rounded-lg">
                     <TabsTrigger value="dropoffs" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">Outbound Dropoffs <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-blue-100">{dropoffs.length}</Badge></TabsTrigger>
                     <TabsTrigger value="pickups" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white rounded-md">Inbound Pickups <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-purple-100">{pickups.length}</Badge></TabsTrigger>
+                    <TabsTrigger value="history" className="data-[state=active]:bg-zinc-800 data-[state=active]:text-white rounded-md">History Log <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-zinc-100">{historyLog.length}</Badge></TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="dropoffs" className="m-0 focus-visible:outline-none focus-visible:ring-0">
@@ -356,6 +361,16 @@ export function DeliveriesClient({
                         <CardContent className="p-0">
                             <div className="rounded-md border-0">
                                 {renderTable(pickups, "No pickups found in the system or all pickups are hidden in PAUSED state until Day -1.")}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="history" className="m-0 focus-visible:outline-none focus-visible:ring-0">
+                    <Card>
+                        <CardContent className="p-0">
+                            <div className="rounded-md border-0">
+                                {renderTable(historyLog, "No historical deliveries found in this view.")}
                             </div>
                         </CardContent>
                     </Card>
