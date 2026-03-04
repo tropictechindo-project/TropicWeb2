@@ -53,10 +53,10 @@ export default function Hero({ initialSettings }: HeroProps) {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
       aria-labelledby="hero-title"
     >
-      <div className="absolute inset-0 animate-in fade-in duration-4000 ease-in-out">
+      <div className="absolute inset-0 animate-in fade-in delay-[3000ms] duration-1000 ease-in-out">
         <Image
           src={heroImage}
-          alt="" // Secondary to aria-labelledby for decorative backgrounds
+          alt="Tropic Tech - Premium Workstation Equipment Bali" // Better SEO alt tag
           fill
           className="object-cover"
           priority
@@ -77,7 +77,7 @@ export default function Hero({ initialSettings }: HeroProps) {
         />
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-in fade-in duration-4000 ease-out">
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         {/* h1 is the LCP element — no animation to ensure paint happens immediately */}
         <h1 id="hero-title" className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
           {title}
