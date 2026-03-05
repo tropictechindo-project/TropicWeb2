@@ -179,7 +179,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "RentalBusiness",
+            "@type": ["LocalBusiness", "RentalBusiness"],
             "name": "Tropic Tech Bali - #1 Workstation Rental Bali",
             "description": "Premium workstation and office equipment rental in Bali. High-performance monitors, ergonomic chairs, and desks for digital nomads and remote workers. 5+ years experience with fast island-wide delivery.",
             "url": SITE_URL,
