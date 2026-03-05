@@ -142,7 +142,6 @@ export async function POST(
                                     newQuantity: 1,
                                     updatedBy: workerId,
                                     source: 'WORKER',
-                                    details: `Sync: Unit ${item.rentalItem.unitId} -> ${newStatus}. Delivery: ${delivery.deliveryType} ID ${id}. Invoice: ${delivery.invoice?.invoiceNumber || 'N/A'}.`,
                                     conflict: false,
                                     resolved: true
                                 }

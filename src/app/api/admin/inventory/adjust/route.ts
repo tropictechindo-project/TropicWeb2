@@ -70,7 +70,6 @@ export async function POST(request: Request) {
                         newQuantity: variant._count.units + i + 1,
                         updatedBy: adminId || '00000000-0000-0000-0000-000000000000',
                         source: 'ADMIN',
-                        details: `Reconciliation: Added unit ${serialNumber}.`,
                         conflict: false,
                         resolved: true
                     }

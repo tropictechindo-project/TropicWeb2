@@ -101,9 +101,9 @@ export default function SignupPage() {
       if (response.ok) {
         const data = await response.json()
         toast.success(data.message || 'Account created successfully! Please check your email to verify. (Check your spam folder too!)')
-        // Redirect to Landing Page after 2 seconds as requested
+        // Redirect to Login Page after 3 seconds as requested
         setTimeout(() => {
-          router.push('/')
+          router.push('/auth/login')
         }, 3000)
       } else {
         const error = await response.json()
