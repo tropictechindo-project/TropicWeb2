@@ -40,15 +40,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 2. Sign up with Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    // 2. Sign up with Supabase Auth Admin to bypass their broken email sender
+    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
       email,
       password,
-      options: {
-        data: {
-          full_name: fullName,
-        },
-        emailRedirectTo: `${request.nextUrl.origin}/auth/login?verified=true`,
+      email_confirm: true, // Auto-confirm in Supabase, we will strictly enforce verification using Prisma
+      user_metadata: {
+        full_name: fullName,
       }
     })
 

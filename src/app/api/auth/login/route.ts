@@ -127,15 +127,14 @@ export async function POST(request: NextRequest) {
       return newRes
     }
 
-    // 3. Optional: Sync isVerified if Supabase auth succeeded
-    // Since Supabase requires email confirmation (if enabled in their dashboard),
-    // a successful login means they are verified.
+    // 3. Enforce local Prisma based email Verification
+    // Since Supabase confirmation was bypassed during registration (to avoid their broken SMTP)
+    // We explicitly check if the user verified the email locally.
     if (!user.isVerified) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { isVerified: true }
-      })
-      user.isVerified = true;
+      return NextResponse.json(
+        { error: 'Please verify your email address to log in.' },
+        { status: 403 }
+      )
     }
 
     // Generate our custom application token for session management
