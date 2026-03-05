@@ -21,9 +21,19 @@ export async function GET(request: Request) {
 
     const formattedProducts = products.map(p => {
       const stock = p.variants.reduce((total, v) => total + v.units.filter(u => u.status === 'AVAILABLE').length, 0)
+
+      const mappedVariants = p.variants.map(v => ({
+        id: v.id,
+        color: v.color,
+        sku: v.sku,
+        monthlyPrice: Number(v.monthlyPrice) || Number(p.monthlyPrice),
+        stock: v.units.filter(u => u.status === 'AVAILABLE').length
+      }))
+
       return {
         ...p,
-        stock
+        stock,
+        variants: mappedVariants
       }
     })
 

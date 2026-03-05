@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseAdmin } from "@/lib/auth/supabase-admin"
 import { verifyAuth } from "@/lib/auth/auth-helper"
+import sharp from "sharp"
 
 export async function POST(req: NextRequest) {
     try {
@@ -23,15 +24,20 @@ export async function POST(req: NextRequest) {
         }
 
         const buffer = await file.arrayBuffer()
-        const fileExt = file.name.split('.').pop()
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+
+        // Convert to WebP using sharp in memory
+        const optimizedBuffer = await sharp(Buffer.from(buffer))
+            .webp({ quality: 80, effort: 6 })
+            .toBuffer()
+
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`
         const filePath = `hero/${fileName}`
 
         const { data, error } = await supabaseAdmin
             .storage
             .from('Photos')
-            .upload(filePath, buffer, {
-                contentType: file.type,
+            .upload(filePath, optimizedBuffer, {
+                contentType: 'image/webp',
                 upsert: true
             })
 

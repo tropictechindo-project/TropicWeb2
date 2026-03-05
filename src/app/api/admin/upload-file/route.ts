@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { verifyAuth } from "@/lib/auth/auth-helper"
+import sharp from "sharp"
 
 export async function POST(req: NextRequest) {
     try {
@@ -22,11 +23,18 @@ export async function POST(req: NextRequest) {
         }
 
         const buffer = await file.arrayBuffer()
+        let uploadBuffer: Buffer = Buffer.from(buffer)
+        let contentType = file.type || 'application/pdf'
+        let ext = file.name.split('.').pop() || 'pdf'
 
-        // Extract extension from original filename
-        const originalName = file.name || 'file'
-        const extMatch = originalName.match(/\.([^.]+)$/)
-        const ext = extMatch ? extMatch[1] : 'pdf'
+        // Conditionally convert to WebP if it's an image to save space
+        if (contentType.startsWith('image/')) {
+            uploadBuffer = await sharp(uploadBuffer)
+                .webp({ quality: 80, effort: 6 })
+                .toBuffer()
+            contentType = 'image/webp'
+            ext = 'webp'
+        }
 
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`
         const filePath = `documents/${fileName}`
@@ -34,8 +42,8 @@ export async function POST(req: NextRequest) {
         const { data, error } = await supabase
             .storage
             .from('UploadFile')
-            .upload(filePath, buffer, {
-                contentType: file.type || 'application/pdf',
+            .upload(filePath, uploadBuffer, {
+                contentType: contentType,
                 upsert: true
             })
 

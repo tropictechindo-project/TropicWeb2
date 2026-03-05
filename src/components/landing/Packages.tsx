@@ -58,7 +58,7 @@ export default function Packages({ initialPackages = [] }: PackagesProps) {
 
 
   return (
-    <section id="packages" className="py-16">
+    <section id="packages" className="py-16" suppressHydrationWarning>
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">{t('packages')}</h2>
 

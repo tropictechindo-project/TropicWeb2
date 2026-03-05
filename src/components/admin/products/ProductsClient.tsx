@@ -138,7 +138,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         })
 
         // If the product belongs to a category not in the standard list, open custom mode immediately
-        const defaultCats = ["Chair", "Desk", "Monitor", "Mouse And Keyboard", "Accessories", "Other"]
+        const defaultCats = ["Chair", "Desk", "Monitor", "Mouse and Keyboard", "Accessories", "Other"]
         if (!defaultCats.includes(product.category)) {
             setIsCustomCategory(true)
         } else {
@@ -324,7 +324,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                                 "Chair",
                                                 "Desk",
                                                 "Monitor",
-                                                "Mouse And Keyboard",
+                                                "Mouse and Keyboard",
                                                 "Accessories",
                                                 "Other",
                                                 ...initialProducts.map(p => p.category)

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { supabaseAdmin } from "@/lib/auth/supabase-admin"
 import { verifyAuth } from "@/lib/auth/auth-helper"
+import sharp from "sharp"
 
 export const dynamic = 'force-dynamic'
 
@@ -35,20 +36,20 @@ export async function POST(req: NextRequest) {
 
         const buffer = await file.arrayBuffer()
 
-        // Extract extension from original filename
-        const originalName = file.name || 'delivery-proof.jpg'
-        const extMatch = originalName.match(/\.([^.]+)$/)
-        const ext = extMatch ? extMatch[1] : 'jpg'
+        // Convert to WebP using sharp in memory
+        const optimizedBuffer = await sharp(Buffer.from(buffer))
+            .webp({ quality: 80, effort: 6 })
+            .toBuffer()
 
-        const fileName = `${auth.userId}-${Date.now()}.${ext}`
+        const fileName = `${auth.userId}-${Date.now()}.webp`
         const filePath = `delivery-proofs/${fileName}`
 
-        // Upload to 'UploadFile' bucket (assuming it exists as used in admin routes)
-        const { data, error } = await supabase
+        // Upload to 'UploadFile' bucket bypassing RLS
+        const { data, error } = await supabaseAdmin
             .storage
             .from('UploadFile')
-            .upload(filePath, buffer, {
-                contentType: file.type,
+            .upload(filePath, optimizedBuffer, {
+                contentType: 'image/webp',
                 upsert: true
             })
 
@@ -57,7 +58,7 @@ export async function POST(req: NextRequest) {
             return new NextResponse(`Storage Error: ${error.message}`, { status: 500 })
         }
 
-        const { data: { publicUrl } } = supabase
+        const { data: { publicUrl } } = supabaseAdmin
             .storage
             .from('UploadFile')
             .getPublicUrl(filePath)

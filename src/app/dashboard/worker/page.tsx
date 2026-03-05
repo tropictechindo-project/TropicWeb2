@@ -916,7 +916,7 @@ export default function WorkerDashboard() {
                             <p className="mb-2 text-sm font-semibold">Click to upload photo</p>
                             <p className="text-xs">PNG, JPG or HEIC</p>
                           </div>
-                          <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} disabled={isUploadingPhoto} />
+                          <input type="file" className="hidden" accept="image/*" capture="environment" onChange={handlePhotoUpload} disabled={isUploadingPhoto} />
                         </label>
                       </div>
                     </div>

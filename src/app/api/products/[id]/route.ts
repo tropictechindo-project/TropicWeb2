@@ -25,7 +25,16 @@ export async function GET(
     }
 
     const stock = productRaw.variants.reduce((acc, v) => acc + v.units.filter(u => u.status === 'AVAILABLE').length, 0)
-    const product = { ...productRaw, stock }
+
+    const mappedVariants = productRaw.variants.map(v => ({
+      id: v.id,
+      color: v.color,
+      sku: v.sku,
+      monthlyPrice: Number(v.monthlyPrice) || Number(productRaw.monthlyPrice),
+      stock: v.units.filter(u => u.status === 'AVAILABLE').length
+    }))
+
+    const product = { ...productRaw, stock, variants: mappedVariants }
 
     return NextResponse.json({ product })
   } catch (error) {

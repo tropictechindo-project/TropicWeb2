@@ -35,6 +35,13 @@ interface ProductCardProps {
     images?: string[]
     specs?: any
     discountPercentage?: number
+    variants?: Array<{
+      id: string
+      color: string
+      sku: string
+      monthlyPrice: number
+      stock: number
+    }>
   }
   isMounted?: boolean
 }
@@ -45,8 +52,12 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   const { t } = useLanguage()
   const [duration, setDuration] = useState(30)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
 
-  const price = product.monthlyPrice || product.monthly_price || 0
+  const selectedVariant = product.variants?.find(v => v.id === selectedVariantId)
+
+  // Base price prefers selected variant, otherwise product
+  const price = selectedVariant?.monthlyPrice || product.monthlyPrice || product.monthly_price || 0
   const discountPercentage = product.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? price * (1 - discountPercentage / 100) : price
 
@@ -56,18 +67,32 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   const totalPrice = dailyPrice * duration
   const displayImage = product.imageUrl || product.image_url || (product.images && product.images[0]) || '/MyAi.webp'
 
+  // Calculate total stock if no variant selected, else use variant stock
+  const currentStock = selectedVariant ? selectedVariant.stock : (product.stock || 0)
+  const isOutOfStock = currentStock === 0
+
+  // Only require selection if there are multiple actual colored variants
+  const needsSelection = (product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD') && !selectedVariant
+
 
   const handleRentNow = (e: React.MouseEvent) => {
     e.stopPropagation()
+    if (needsSelection) {
+      toast.error('Please select a color first')
+      return
+    }
+
     const item = {
-      id: product.id,
+      id: selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id,
       type: 'PRODUCT' as const,
-      name: product.name,
+      name: selectedVariant && selectedVariant.color !== 'STANDARD'
+        ? `${product.name} (${selectedVariant.color})`
+        : product.name,
       price: dailyPrice * duration,
       duration: duration,
       image: displayImage,
       quantity: 1,
-      stock: product.stock
+      stock: currentStock
     }
     addItem(item)
     router.push('/checkout')
@@ -141,6 +166,30 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
               />
             </div>
 
+            {/* Variant Selector */}
+            {product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD' && (
+              <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                <label className="text-sm font-medium">Select Color</label>
+                <div className="flex flex-wrap gap-2">
+                  {product.variants.map((variant) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariantId(variant.id)}
+                      className={cn(
+                        "px-3 py-1 text-xs border rounded-md transition-all font-semibold",
+                        selectedVariantId === variant.id
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-muted-foreground/30 hover:border-primary",
+                        variant.stock === 0 && "opacity-50 line-through cursor-not-allowed"
+                      )}
+                    >
+                      {variant.color}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="border-t pt-3">
               <div className="flex justify-between font-semibold">
                 <span>{t('totalPrice')}:</span>
@@ -156,22 +205,26 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
           <Button
             className="flex-1"
             onClick={handleRentNow}
-            disabled={product.stock === 0}
-            aria-label={product.stock === 0 ? `Product out of stock` : `Rent ${product.name} now`}
+            disabled={isOutOfStock || !!needsSelection}
+            aria-label={isOutOfStock ? `Product out of stock` : `Rent ${product.name} now`}
           >
-            {product.stock === 0 ? 'Out of Stock' : 'Rent Now'}
+            {isOutOfStock ? 'Out of Stock' : (needsSelection ? 'Select Color' : 'Rent Now')}
           </Button>
           <AddToCartButton
             item={{
-              id: product.id,
+              id: selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id,
               type: 'PRODUCT',
-              name: product.name,
+              name: selectedVariant && selectedVariant.color !== 'STANDARD'
+                ? `${product.name} (${selectedVariant.color})`
+                : product.name,
               price: dailyPrice * duration,
               duration: duration,
               image: displayImage,
               quantity: 1,
-              stock: product.stock
+              stock: currentStock
             }}
+            disabled={isOutOfStock || !!needsSelection}
+            needsSelection={!!needsSelection}
           />
           {isMounted ? (
             <SharePopover
@@ -194,11 +247,16 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   )
 }
 
-function AddToCartButton({ item }: { item: any }) {
+function AddToCartButton({ item, disabled, needsSelection }: { item: any, disabled?: boolean, needsSelection?: boolean }) {
   const { addItem } = useCart()
   const [isAdded, setIsAdded] = useState(false)
 
-  const handleAdd = () => {
+  const handleAdd = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (needsSelection) {
+      toast.error('Please select a color first')
+      return
+    }
     addItem(item)
     setIsAdded(true)
     setTimeout(() => setIsAdded(false), 2000) // Reset after 2s
@@ -210,6 +268,7 @@ function AddToCartButton({ item }: { item: any }) {
       variant={isAdded ? "default" : "outline"}
       size="icon"
       onClick={handleAdd}
+      disabled={disabled}
       className={cn("transition-colors", isAdded && "bg-green-600 hover:bg-green-700 text-white")}
       title="Add to Cart"
     >

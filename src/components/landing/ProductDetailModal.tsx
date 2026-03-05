@@ -23,6 +23,8 @@ import { useCart } from '@/contexts/CartContext'
 import { toast } from 'sonner'
 import { SharePopover } from './SharePopover'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { cn } from '@/lib/utils'
+import { FullscreenImageModal } from '@/components/ui/FullscreenImageModal'
 
 interface ProductDetailModalProps {
     isOpen: boolean
@@ -39,6 +41,14 @@ interface ProductDetailModalProps {
         imageUrl?: string | null
         specs?: any
         category?: string
+        stock?: number
+        variants?: Array<{
+            id: string
+            color: string
+            sku: string
+            monthlyPrice: number
+            stock: number
+        }>
         items?: Array<{
             id: string
             name?: string
@@ -53,23 +63,37 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
     const { addItem } = useCart()
     const { t } = useLanguage()
     const [isAdded, setIsAdded] = useState(false)
+    const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
+
+    const selectedVariant = product.variants?.find(v => v.id === selectedVariantId)
 
     // Normalize data
-    const price = product.monthlyPrice || product.monthly_price || product.price || 0
+    const price = selectedVariant?.monthlyPrice || product.monthlyPrice || product.monthly_price || product.price || 0
     const images = (product.images && product.images.length > 0)
         ? product.images
         : [product.imageUrl || product.image_url || '/MyAi.webp']
 
     const displayImages = images.length > 0 ? images : ['/MyAi.webp']
+    const currentStock = selectedVariant ? selectedVariant.stock : (product.stock !== undefined ? product.stock : 999)
+    const isOutOfStock = currentStock === 0
+    const needsSelection = (product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD') && !selectedVariant
 
     const handleAddToCart = () => {
+        if (needsSelection) {
+            toast.error('Please select a color first')
+            return
+        }
         addItem({
-            id: product.id,
-            name: product.name,
+            id: selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id,
+            name: selectedVariant && selectedVariant.color !== 'STANDARD'
+                ? `${product.name} (${selectedVariant.color})`
+                : product.name,
             price: price,
             type: product.category ? 'PRODUCT' : 'PACKAGE',
             image: displayImages[0],
-            duration: 30
+            duration: 30,
+            stock: currentStock,
+            quantity: 1
         })
         setIsAdded(true)
         setTimeout(() => setIsAdded(false), 2000)
@@ -77,13 +101,21 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
     }
 
     const handleRentNow = () => {
+        if (needsSelection) {
+            toast.error('Please select a color first')
+            return
+        }
         addItem({
-            id: product.id,
-            name: product.name,
+            id: selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id,
+            name: selectedVariant && selectedVariant.color !== 'STANDARD'
+                ? `${product.name} (${selectedVariant.color})`
+                : product.name,
             price: price,
             type: product.category ? 'PRODUCT' : 'PACKAGE',
             image: displayImages[0],
-            duration: 30
+            duration: 30,
+            stock: currentStock,
+            quantity: 1
         })
         router.push('/checkout')
     }
@@ -146,6 +178,42 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                                 <p className="text-lg font-semibold text-primary">
                                     Rp {price.toLocaleString('id-ID')} / month
                                 </p>
+                            </div>
+
+                            {/* Variant Selector */}
+                            {product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Select Color</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {product.variants.map((variant) => (
+                                            <button
+                                                key={variant.id}
+                                                onClick={() => setSelectedVariantId(variant.id)}
+                                                className={cn(
+                                                    "px-3 py-1 text-sm border rounded-md transition-all font-semibold",
+                                                    selectedVariantId === variant.id
+                                                        ? "border-primary bg-primary text-primary-foreground"
+                                                        : "border-muted-foreground/30 hover:border-primary",
+                                                    variant.stock === 0 && "opacity-50 line-through cursor-not-allowed"
+                                                )}
+                                            >
+                                                {variant.color}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Stock Indicator */}
+                            <div className="flex items-center gap-2">
+                                <span className={cn(
+                                    "px-2 py-1 text-xs font-bold rounded-md",
+                                    isOutOfStock
+                                        ? "bg-destructive/10 text-destructive"
+                                        : "bg-green-100 text-green-700"
+                                )}>
+                                    {isOutOfStock ? 'Out of Stock' : `${currentStock} Available`}
+                                </span>
                             </div>
 
                             {/* Package Items section */}
@@ -226,11 +294,19 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
                             <div className="flex flex-col gap-3 pt-4">
                                 <div className="grid grid-cols-2 gap-3">
-                                    <Button onClick={handleAddToCart} variant={isAdded ? "default" : "outline"} className={isAdded ? "bg-green-600 hover:bg-green-700 text-white" : ""}>
+                                    <Button
+                                        onClick={handleAddToCart}
+                                        variant={isAdded ? "default" : "outline"}
+                                        disabled={isOutOfStock || !!needsSelection}
+                                        className={isAdded ? "bg-green-600 hover:bg-green-700 text-white" : ""}
+                                    >
                                         {isAdded ? "Added" : "Add to Cart"}
                                     </Button>
-                                    <Button onClick={handleRentNow}>
-                                        Rent Now
+                                    <Button
+                                        onClick={handleRentNow}
+                                        disabled={isOutOfStock || !!needsSelection}
+                                    >
+                                        {isOutOfStock ? 'Out of Stock' : (needsSelection ? 'Select Color' : 'Rent Now')}
                                     </Button>
                                 </div>
 
@@ -252,46 +328,12 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                 </DialogContent>
             </Dialog>
 
-            {isLightboxOpen && (
-                <div
-                    className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md cursor-zoom-out"
-                    onClick={() => setIsLightboxOpen(false)}
-                >
-                    <div className="relative w-full max-w-5xl h-[85vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-                        <Image
-                            src={displayImages[lightboxIndex]}
-                            alt={product.name}
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="absolute -top-12 right-0 text-white hover:bg-white/20 font-bold gap-2"
-                            onClick={() => setIsLightboxOpen(false)}
-                        >
-                            <span>CLOSE</span>
-                            <span className="text-xl">✕</span>
-                        </Button>
-                    </div>
-
-                    {displayImages.length > 1 && (
-                        <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-2">
-                            {displayImages.map((_, i) => (
-                                <button
-                                    key={i}
-                                    className={`w-3 h-3 rounded-full ${i === lightboxIndex ? 'bg-white' : 'bg-white/50'}`}
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setLightboxIndex(i)
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            )}
+            <FullscreenImageModal
+                images={displayImages}
+                initialIndex={lightboxIndex}
+                isOpen={isLightboxOpen}
+                onClose={() => setIsLightboxOpen(false)}
+            />
         </>
     )
 }
