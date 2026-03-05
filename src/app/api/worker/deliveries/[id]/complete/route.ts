@@ -67,11 +67,10 @@ export async function POST(
 
         // Atomic Transaction
         const updatedDelivery = await db.$transaction(async (tx) => {
-            // A. Update Delivery
             const updated = await tx.delivery.update({
                 where: { id },
                 data: {
-                    status: 'COMPLETED',
+                    status: 'ARRIVED',
                     completedAt: now
                 }
             })
@@ -129,17 +128,26 @@ export async function POST(
 
                     // 3. Inventory Log (Audit)
                     if (item.rentalItem.variantId) {
-                        await tx.inventorySyncLog.create({
-                            data: {
-                                productId: item.rentalItem.variantId,
-                                oldQuantity: item.quantity,
-                                newQuantity: item.quantity,
-                                updatedBy: workerId,
-                                source: 'WORKER',
-                                conflict: false,
-                                resolved: true
-                            }
+                        // Fetch current variant/product info to get accurate "old" vs "new" (though for units it's usually 1:1)
+                        const variant = await tx.productVariant.findUnique({
+                            where: { id: item.rentalItem.variantId },
+                            select: { productId: true }
                         });
+
+                        if (variant) {
+                            await tx.inventorySyncLog.create({
+                                data: {
+                                    productId: variant.productId,
+                                    oldQuantity: 1, // Unit-level sync
+                                    newQuantity: 1,
+                                    updatedBy: workerId,
+                                    source: 'WORKER',
+                                    details: `Sync: Unit ${item.rentalItem.unitId} -> ${newStatus}. Delivery: ${delivery.deliveryType} ID ${id}. Invoice: ${delivery.invoice?.invoiceNumber || 'N/A'}.`,
+                                    conflict: false,
+                                    resolved: true
+                                }
+                            });
+                        }
                     }
                 }
             }

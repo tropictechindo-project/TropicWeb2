@@ -118,7 +118,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+    } catch (e) {
+      console.error('Logout API call failed', e)
+    }
     localStorage.removeItem('token')
     deleteCookie('token')
     setUser(null)

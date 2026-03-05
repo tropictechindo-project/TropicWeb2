@@ -30,8 +30,26 @@ import {
   User as UserIcon,
   MessageSquare,
   Headset,
-  LogOut
+  LogOut,
+  Bell,
+  ExternalLink,
+  Map,
+  Truck
 } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
@@ -40,6 +58,7 @@ import { SupportChatHub } from '@/components/chat/SupportChatHub'
 import { useNotification } from '@/contexts/NotificationContext'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
 import { Bot } from 'lucide-react'
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import {
   Select,
@@ -55,7 +74,7 @@ import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient
 
 export default function UserDashboard() {
   const { user, logout } = useAuth()
-  const { unreadMessagesCount } = useNotification()
+  const { unreadMessagesCount, spiNotifications } = useNotification()
   const [orders, setOrders] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState('rentals')
   const [isLoading, setIsLoading] = useState(true)
@@ -310,12 +329,12 @@ export default function UserDashboard() {
     }
   }
 
-  const handleConfirmReceipt = async (orderId: string) => {
+  const handleConfirmReceipt = async (deliveryId: string) => {
     if (!confirm('Confirm that you have received all your rented items?')) return
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch(`/api/orders/${orderId}/complete`, {
-        method: 'PATCH',
+      const res = await fetch(`/api/user/deliveries/${deliveryId}/confirm`, {
+        method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
       })
       const data = await res.json()
@@ -326,6 +345,47 @@ export default function UserDashboard() {
       toast.error(err.message || 'Could not confirm receipt')
     }
   }
+
+  const NotificationBell = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative group rounded-full hover:bg-muted">
+          <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          {spiNotifications.length > 0 && (
+            <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-background animate-pulse" />
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-80 p-2">
+        <div className="flex items-center justify-between p-2 pb-1 border-b mb-1">
+          <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">Notifications</h3>
+          {spiNotifications.length > 0 && <Badge variant="secondary" className="text-[9px] h-4 px-1">{spiNotifications.length}</Badge>}
+        </div>
+        <ScrollArea className="h-[300px]">
+          {spiNotifications.length === 0 ? (
+            <div className="p-8 text-center text-muted-foreground text-xs font-medium">No new alerts</div>
+          ) : (
+            spiNotifications.map((notif) => (
+              <DropdownMenuItem
+                key={notif.id}
+                className="p-3 rounded-lg cursor-pointer flex flex-col items-start gap-1 hover:bg-muted/50 focus:bg-muted/50 mb-1"
+                onClick={() => {
+                  if (notif.link) window.location.href = notif.link
+                }}
+              >
+                <div className="flex items-center gap-2 w-full">
+                  <span className="font-bold text-xs truncate flex-1">{notif.title}</span>
+                  {notif.link && <ExternalLink className="h-3 w-3 text-muted-foreground" />}
+                </div>
+                <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">{notif.message}</p>
+                <span className="text-[9px] text-muted-foreground/60 mt-1">{new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+              </DropdownMenuItem>
+            ))
+          )}
+        </ScrollArea>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -367,15 +427,17 @@ export default function UserDashboard() {
               </h1>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => {
-              if (supportGroup) setDefaultSupportGroup(supportGroup.id)
-              setShowSupportHub(true)
-            }} className="h-8 gap-1.5 flex text-xs">
-              <Headset className="w-3.5 h-3.5" />Support
-              {unreadMessagesCount > 0 && <Badge className="ml-0.5 h-4 px-1" variant="destructive">{unreadMessagesCount}</Badge>}
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" onClick={() => window.location.href = '/tracking'} className="h-8 gap-1.5 flex text-xs">
+            <Map className="w-3.5 h-3.5" />Global Tracker
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => {
+            if (supportGroup) setDefaultSupportGroup(supportGroup.id)
+            setShowSupportHub(true)
+          }} className="h-8 gap-1.5 flex text-xs">
+            <Headset className="w-3.5 h-3.5" />Support
+            {unreadMessagesCount > 0 && <Badge className="ml-0.5 h-4 px-1" variant="destructive">{unreadMessagesCount}</Badge>}
+          </Button>
+          <NotificationBell />
         </header>
 
         <main className="flex-1 p-4 lg:p-8 max-w-5xl w-full mx-auto space-y-6">
@@ -399,28 +461,59 @@ export default function UserDashboard() {
             <div className="space-y-6 animate-in fade-in duration-500">
               {/* Quick Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="border-none shadow-sm bg-zinc-900 text-white overflow-hidden group">
-                  <CardContent className="p-6 relative">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
-                      <Package className="h-20 w-20" />
-                    </div>
-                    <div className="space-y-1 relative z-10">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Total Rentals</p>
-                      <div className="flex items-end gap-2">
-                        <span className="text-4xl font-black">{orders.length}</span>
-                        <span className="text-xs text-primary font-bold mb-1">UNITS</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Card className="border-none shadow-sm bg-zinc-900 text-white overflow-hidden group cursor-pointer hover:bg-zinc-800 transition-colors">
+                      <CardContent className="p-6 relative">
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-500">
+                          <Package className="h-20 w-20" />
+                        </div>
+                        <div className="space-y-1 relative z-10">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Total Rentals</p>
+                          <div className="flex items-end gap-2">
+                            <span className="text-4xl font-black">{orders.length}</span>
+                            <span className="text-xs text-primary font-bold mb-1">UNITS</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-black uppercase tracking-tight">Rented Equipment</DialogTitle>
+                      <DialogDescription>Full list of gear currently assigned to your account.</DialogDescription>
+                    </DialogHeader>
+                    <ScrollArea className="max-h-[60vh] pr-4">
+                      <div className="space-y-3">
+                        {orders.length === 0 ? (
+                          <p className="text-center py-8 text-muted-foreground text-sm">No rentals found</p>
+                        ) : (
+                          orders.flatMap(o => o.rentalItems).map((item, idx) => {
+                            const name = item.variant?.product?.name || item.rentalPackage?.name || "Equipment"
+                            return (
+                              <div key={idx} className="flex items-center gap-3 p-3 bg-muted/30 rounded-xl border">
+                                <Package className="h-4 w-4 text-primary" />
+                                <div className="flex-1">
+                                  <p className="font-bold text-sm tracking-tight">{name}</p>
+                                  <p className="text-[10px] font-mono text-muted-foreground">SN: {item.unit?.serialNumber || 'PENDING'}</p>
+                                </div>
+                                <Badge variant="secondary" className="text-[9px] uppercase font-black">{item.status || 'Active'}</Badge>
+                              </div>
+                            )
+                          })
+                        )}
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </ScrollArea>
+                  </DialogContent>
+                </Dialog>
 
                 <Card className="border-none shadow-sm bg-gradient-to-br from-primary/10 to-transparent overflow-hidden">
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 text-zinc-900 dark:text-zinc-100">
                     <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Active Subscriptions</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Island Logistics</p>
                       <div className="flex items-end gap-2">
-                        <span className="text-4xl font-black">{activeOrders.length}</span>
-                        <span className="text-xs text-muted-foreground font-bold mb-1">RUNNING</span>
+                        <span className="text-4xl font-black">{orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).length}</span>
+                        <span className="text-xs text-muted-foreground font-bold mb-1 uppercase">Active Shipments</span>
                       </div>
                     </div>
                   </CardContent>
@@ -529,19 +622,44 @@ export default function UserDashboard() {
                               <p className="text-2xl font-black tracking-tighter">Rp {order.totalAmount.toLocaleString('id-ID')}</p>
                               <p className="text-[10px] font-bold text-green-600 tracking-wider uppercase">VIA {order.paymentMethod}</p>
                             </div>
-                            <div className="flex flex-col w-full gap-2">
-                              {/* Confirm Receipt — shown for PAID orders awaiting delivery */}
-                              {(order.status === 'PAID' || order.status === 'ACTIVE') && (
+                            <div className="grid grid-cols-1 w-full gap-2">
+                              {/* New Delivery Confirmation Logic */}
+                              {order.invoices?.flatMap((i: any) => i.deliveries || []).some((d: any) => d.status === 'ARRIVED') && (
                                 <Button
                                   size="sm"
-                                  className="w-full font-black rounded-lg gap-2 bg-green-600 hover:bg-green-700 text-white"
-                                  onClick={() => handleConfirmReceipt(order.id)}
+                                  className="w-full font-black rounded-lg gap-2 bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/10 animate-pulse"
+                                  onClick={() => {
+                                    const arrivedDelivery = order.invoices?.flatMap((i: any) => i.deliveries || []).find((d: any) => d.status === 'ARRIVED')
+                                    if (arrivedDelivery) handleConfirmReceipt(arrivedDelivery.id)
+                                  }}
                                 >
                                   <CheckCircle className="h-3.5 w-3.5" />
-                                  CONFIRM RECEIVED
+                                  CONFIRM ARRIVAL
                                 </Button>
                               )}
+
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="w-full font-black rounded-lg gap-2 border-primary/20 hover:bg-primary/5 text-primary"
+                                onClick={() => {
+                                  // Use invoice number as fallback for tracking if trackingCode is missing
+                                  const dc = order.invoices?.flatMap((i: any) => i.deliveries || []).find((d: any) => d.status !== 'COMPLETED');
+                                  const trackingRef = dc?.trackingCode || order.invoices?.[0]?.invoiceNumber;
+
+                                  if (trackingRef) {
+                                    window.location.href = `/tracking/${trackingRef}`;
+                                  } else {
+                                    setActiveTab('tracking');
+                                  }
+                                }}
+                              >
+                                <MapPin className="h-3.5 w-3.5" />
+                                LIVE MAP TRACKER
+                              </Button>
+
                               <Button size="sm" className="w-full font-black rounded-lg gap-2" onClick={() => handleExtendRental(order.id)}>
+                                <Clock className="h-3.5 w-3.5" />
                                 EXTEND RENTAL
                               </Button>
                               <Button
@@ -557,19 +675,9 @@ export default function UserDashboard() {
                                   }
                                 }}
                               >
+                                <FileText className="h-3.5 w-3.5 mr-2" />
                                 DOWNLOAD INVOICE
                               </Button>
-                              {order.workerSchedules?.[0]?.worker && (
-                                <Button
-                                  size="sm"
-                                  variant="secondary"
-                                  className="w-full font-black rounded-lg gap-2 text-[10px]"
-                                  onClick={() => setShowSupportHub(true)}
-                                >
-                                  <MessageSquare className="h-3 w-3" />
-                                  MESSAGE WORKER
-                                </Button>
-                              )}
                             </div>
                           </div>
                         </CardContent>

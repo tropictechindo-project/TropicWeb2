@@ -69,16 +69,22 @@ export async function GET(req: Request) {
                             data: { status: 'QUEUED' }
                         })
 
-                        // Alert workers that a pickup is now hot
-                        await db.spiNotification.create({
-                            data: {
-                                role: 'WORKER',
-                                type: 'DELIVERY_UPDATE',
-                                title: 'New Pickup Task',
-                                message: `A scheduled pickup is now QUEUED for tomorrow (Invoice: ${pickup.invoice?.invoiceNumber || 'Manual'}).`,
-                                link: '/dashboard/worker',
-                            }
-                        })
+                        const pickupTime = pickup.scheduledFor ? new Date(pickup.scheduledFor).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'ASAP'
+                        const pickupDate = pickup.scheduledFor ? new Date(pickup.scheduledFor).toLocaleDateString() : 'Tomorrow'
+
+                        // Alert workers, operators, and admins
+                        const rolesToNotify = ['WORKER', 'OPERATOR', 'ADMIN']
+                        for (const role of rolesToNotify) {
+                            await db.spiNotification.create({
+                                data: {
+                                    role,
+                                    type: 'DELIVERY_UPDATE',
+                                    title: 'Incoming Pickup Alert',
+                                    message: `Scheduled pickup (Invoice: ${pickup.invoice?.invoiceNumber || 'Manual'}) is active for ${pickupDate} at ${pickupTime}. Gear readiness check required.`,
+                                    link: role === 'WORKER' ? '/dashboard/worker' : '/admin/deliveries',
+                                }
+                            })
+                        }
                         notificationsCreated.push({ type: 'PICKUP_UNFROZEN', deliveryId: pickup.id })
                     }
                 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { generateToken } from '@/lib/auth/utils'
 import { createClient } from '@supabase/supabase-js'
+import { logActivity } from '@/lib/logger'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -144,6 +145,31 @@ export async function POST(request: NextRequest) {
       email: user.email,
       role: user.role,
     })
+
+    // 4. Admin Logging & Concurrent Session Alert
+    if (user.role === 'ADMIN') {
+      await logActivity({
+        userId: user.id,
+        action: 'LOGIN',
+        entity: 'ADMIN_SESSION',
+        details: `Admin ${user.email} logged in at ${new Date().toISOString()}`
+      })
+
+      // Send SPI Notification to all Admins about this login
+      try {
+        await db.spiNotification.create({
+          data: {
+            role: 'ADMIN',
+            type: 'SECURITY_ALERT',
+            title: 'New Admin Login',
+            message: `Admin ${user.email} has just logged into the system.`,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24) // 24h
+          }
+        })
+      } catch (err) {
+        console.error("Failed to send concurrent login notification", err)
+      }
+    }
 
     const finalRes = NextResponse.json({ token, user })
     finalRes.cookies.set('token', token, { path: '/', httpOnly: false, maxAge: 60 * 60 * 24 * 7 })

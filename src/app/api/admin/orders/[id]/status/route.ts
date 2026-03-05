@@ -55,6 +55,28 @@ export async function POST(
                                 userId: payload.userId
                             }
                         })
+
+                        // Track in Inventory Sync Log
+                        if (unit?.variantId) {
+                            const variant = await tx.productVariant.findUnique({
+                                where: { id: unit.variantId },
+                                select: { productId: true }
+                            })
+                            if (variant) {
+                                await tx.inventorySyncLog.create({
+                                    data: {
+                                        productId: variant.productId,
+                                        oldQuantity: 1,
+                                        newQuantity: 1,
+                                        updatedBy: payload.userId,
+                                        source: 'ADMIN',
+                                        details: `Order #${order.orderNumber} COMPLETED. Unit ${unit.serialNumber} returned to stock.`,
+                                        conflict: false,
+                                        resolved: true
+                                    }
+                                })
+                            }
+                        }
                     }
                 }
             }
@@ -81,6 +103,28 @@ export async function POST(
                                 userId: payload.userId
                             }
                         })
+
+                        // Track in Inventory Sync Log
+                        if (unit?.variantId) {
+                            const variant = await tx.productVariant.findUnique({
+                                where: { id: unit.variantId },
+                                select: { productId: true }
+                            })
+                            if (variant) {
+                                await tx.inventorySyncLog.create({
+                                    data: {
+                                        productId: variant.productId,
+                                        oldQuantity: 1,
+                                        newQuantity: 1,
+                                        updatedBy: payload.userId,
+                                        source: 'ADMIN',
+                                        details: `Order #${order.orderNumber} CANCELLED. Unit ${unit.serialNumber} released back to stock.`,
+                                        conflict: false,
+                                        resolved: true
+                                    }
+                                })
+                            }
+                        }
                     }
                 }
             }

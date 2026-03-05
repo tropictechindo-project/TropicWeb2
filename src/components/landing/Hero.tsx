@@ -82,7 +82,7 @@ export default function Hero({ initialSettings }: HeroProps) {
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         {/* h1 is the LCP element — no animation to ensure paint happens immediately */}
-        <h1 id="hero-title" className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight">
+        <h1 id="hero-title" className="text-4xl sm:text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight tracking-tight uppercase">
           {title}
         </h1>
         <p className="text-xl md:text-2xl mb-4 text-slate-700 dark:text-slate-300 font-medium animate-in fade-in slide-in-from-bottom-5 duration-2000 delay-1000">

@@ -76,6 +76,7 @@ export async function PATCH(
         if (!payload || !['ADMIN', 'OPERATOR'].includes(payload.role)) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
+        const adminId = payload.userId
 
         const { id } = await params
         const body = await request.json()
@@ -91,11 +92,23 @@ export async function PATCH(
             }
         })
 
+        // Log to DeliveryLog for timeline
+        await db.deliveryLog.create({
+            data: {
+                deliveryId: id,
+                createdByUserId: adminId,
+                role: payload.role as any,
+                eventType: 'STATUS_CHANGE',
+                oldValue: { status: 'OVERRIDE' }, // Mark as override
+                newValue: { status: body.status, notes: 'Admin Force Update' }
+            }
+        })
+
         await logActivity({
-            userId: 'admin', // Typically extracted from JWT
+            userId: adminId,
             action: 'UPDATE_DELIVERY',
             entity: 'DELIVERY',
-            details: `Admin force updated delivery ${id} to status ${body.status}`
+            details: `Admin ${payload.email} force updated delivery ${id} to status ${body.status}`
         })
 
         return NextResponse.json({ success: true, delivery })
@@ -118,6 +131,12 @@ export async function DELETE(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
+        const payload = await (await import('@/lib/auth/utils')).verifyToken(token)
+        if (!payload || !['ADMIN', 'OPERATOR'].includes(payload.role)) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+        }
+        const adminId = payload.userId
+
         const { id } = await params
 
         const delivery = await db.delivery.update({
@@ -125,11 +144,22 @@ export async function DELETE(
             data: { status: 'CANCELED' }
         })
 
+        // Log to DeliveryLog for timeline
+        await db.deliveryLog.create({
+            data: {
+                deliveryId: id,
+                createdByUserId: adminId,
+                role: payload.role as any,
+                eventType: 'CANCELED',
+                newValue: { notes: 'Canceled by Admin' }
+            }
+        })
+
         await logActivity({
-            userId: 'admin',
+            userId: adminId,
             action: 'CANCEL_DELIVERY',
             entity: 'DELIVERY',
-            details: `Delivery ${id} canceled by Admin`
+            details: `Delivery ${id} canceled by Admin (${payload.email})`
         })
 
         return NextResponse.json({ success: true, delivery })

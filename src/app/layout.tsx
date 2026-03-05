@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     default: 'Tropic Tech Bali – #1 Workstation Rental Bali | Monitors, Chairs, Desks',
     template: '%s | Tropic Tech Bali',
   },
-  description: 'Maximize your productivity. Rent #1 premium monitors, ergonomic chairs & standing desks in Bali. Ultra-fast island-wide delivery. High-performance workstation rental for digital nomads and remote teams in Canggu, Ubud, Seminyak, Uluwatu & Sanur.',
+  description: 'Maximize your productivity in paradise. Rent #1 premium monitors, ergonomic chairs & standing desks in Bali. Ultra-fast island-wide delivery. High-performance workstation rental for digital nomads and remote teams in Canggu, Ubud, Seminyak, Uluwatu & Sanur.',
   keywords: [
     'workstation rental bali',
     'monitor rental bali',
@@ -61,6 +61,8 @@ export const metadata: Metadata = {
     'tropic tech bali rentals',
     'laptop workstation bali',
     'remote work equipment indonesia',
+    'best desk rental bali',
+    'premium monitor hire bali',
   ],
   applicationName: 'Tropic Tech',
   category: 'Business Equipment Rental',

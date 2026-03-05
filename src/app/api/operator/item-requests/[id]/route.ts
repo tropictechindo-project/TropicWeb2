@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { verifyToken } from '@/lib/auth/utils'
+import { logActivity } from '@/lib/logger'
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
     try {
@@ -71,6 +72,14 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         const updatedRequest = await db.itemRequest.update({
             where: { id: params.id },
             data: { status }
+        })
+
+        // Log the action with precise timestamp (implicit in logActivity/Prisma)
+        await logActivity({
+            userId: payload.userId,
+            action: `ITEM_REQUEST_${status}`,
+            entity: 'ITEM_REQUEST',
+            details: `Request ${params.id} (${itemRequest.type}) was ${status.toLowerCase()} by ${payload.role}.`
         })
 
         return NextResponse.json({ success: true, request: updatedRequest, newDelivery })

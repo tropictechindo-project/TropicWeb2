@@ -186,7 +186,7 @@ export function InventoryClient({ productAssets, products }: InventoryClientProp
                                         variant="outline"
                                         size="sm"
                                         className="text-[10px] font-black uppercase h-8 px-3 border-primary/20 hover:bg-primary/5"
-                                        onClick={() => toast.info("Unit management coming soon")}
+                                        onClick={() => handleEditAsset(asset)}
                                     >
                                         Manage
                                     </Button>

@@ -28,7 +28,7 @@ export default async function AdminUsersPage() {
                 <p className="text-muted-foreground">Registered user database and rental monitoring</p>
             </div>
 
-            <UsersClient users={users} />
+            <UsersClient users={JSON.parse(JSON.stringify(users))} />
         </div>
     )
 }

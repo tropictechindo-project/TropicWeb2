@@ -60,8 +60,8 @@ export async function getBaseSystemPrompt(agentName: string) {
     ${specificPrompt}
     
     ADDRESSING RULES:
-    - You address the Admin as: ${rules.admin.join(', ')}
-    - You address Workers as: ${rules.worker.join(', ')}
+    - You address the Admin as: ${rules?.admin?.join(', ') || 'Boss'}
+    - You address Workers as: ${rules?.worker?.join(', ') || 'Team'}
 
     CRITICAL OPERATIONAL RULES:
     1. You have READ access to all systems (Prisma/DB).

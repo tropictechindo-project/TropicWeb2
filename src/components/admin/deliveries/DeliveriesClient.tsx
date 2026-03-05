@@ -17,7 +17,8 @@ import {
     CheckCircle2,
     XCircle,
     PlayCircle,
-    PauseCircle
+    PauseCircle,
+    Calendar
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -188,13 +189,13 @@ export function DeliveriesClient({
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'QUEUED': return <Badge variant="outline" className="bg-gray-50 text-gray-700"><Clock className="w-3 h-3 mr-1" /> Queued</Badge>
-            case 'CLAIMED': return <Badge variant="outline" className="bg-blue-50 text-blue-700"><User className="w-3 h-3 mr-1" /> Claimed</Badge>
-            case 'OUT_FOR_DELIVERY': return <Badge variant="outline" className="bg-orange-50 text-orange-700"><MapPin className="w-3 h-3 mr-1" /> En Route</Badge>
-            case 'PAUSED': return <Badge variant="outline" className="bg-yellow-50 text-yellow-700"><PauseCircle className="w-3 h-3 mr-1" /> Paused</Badge>
-            case 'DELAYED': return <Badge variant="outline" className="bg-red-50 text-red-700"><AlertCircle className="w-3 h-3 mr-1" /> Delayed</Badge>
-            case 'COMPLETED': return <Badge variant="outline" className="bg-green-50 text-green-700"><CheckCircle2 className="w-3 h-3 mr-1" /> Completed</Badge>
-            case 'CANCELED': return <Badge variant="outline" className="bg-red-50 text-red-700"><XCircle className="w-3 h-3 mr-1" /> Canceled</Badge>
+            case 'QUEUED': return <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200"><Clock className="w-3 h-3 mr-1" /> Queued</Badge>
+            case 'CLAIMED': return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200"><User className="w-3 h-3 mr-1" /> Claimed</Badge>
+            case 'OUT_FOR_DELIVERY': return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200"><MapPin className="w-3 h-3 mr-1" /> En Route</Badge>
+            case 'PAUSED': return <Badge variant="outline" className="bg-zinc-100 text-zinc-500 border-zinc-200"><PauseCircle className="w-3 h-3 mr-1" /> Incoming Pickup</Badge>
+            case 'DELAYED': return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200"><AlertCircle className="w-3 h-3 mr-1" /> Delayed</Badge>
+            case 'COMPLETED': return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200"><CheckCircle2 className="w-3 h-3 mr-1" /> Completed</Badge>
+            case 'CANCELED': return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200"><XCircle className="w-3 h-3 mr-1" /> Canceled</Badge>
             default: return <Badge variant="outline">{status}</Badge>
         }
     }
@@ -208,6 +209,7 @@ export function DeliveriesClient({
                     <TableHead>Worker & Vehicle</TableHead>
                     <TableHead>Items</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Schedule / ETA</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
             </TableHeader>
@@ -277,6 +279,20 @@ export function DeliveriesClient({
                             </div>
                         </TableCell>
                         <TableCell>{getStatusBadge(delivery.status)}</TableCell>
+                        <TableCell>
+                            <div className="flex flex-col gap-1 text-[11px] font-medium">
+                                <span className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3 text-muted-foreground" />
+                                    {delivery.scheduledFor ? format(new Date(delivery.scheduledFor), "MMM d, HH:mm") : 'ASAP'}
+                                </span>
+                                {delivery.eta && (
+                                    <span className="flex items-center gap-1 text-primary">
+                                        <Clock className="w-3 h-3" />
+                                        ETA: {format(new Date(delivery.eta), "HH:mm")}
+                                    </span>
+                                )}
+                            </div>
+                        </TableCell>
                         {(userRole === 'ADMIN' || userRole === 'OPERATOR') && (
                             <TableCell className="text-right">
                                 <div className="flex items-center justify-end gap-2">
@@ -284,15 +300,39 @@ export function DeliveriesClient({
                                         <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors font-bold text-xs"
+                                            className="h-8 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors font-black text-[10px] uppercase tracking-wider"
                                             onClick={() => {
-                                                const url = `${window.location.origin}/track/${delivery.trackingCode}`
-                                                navigator.clipboard.writeText(url)
-                                                toast.success('Tracking link copied to clipboard!')
-                                                window.open(`/track/${delivery.trackingCode}`, '_blank')
+                                                window.open(`/tracking/${delivery.trackingCode}`, '_blank')
                                             }}
                                         >
-                                            <Navigation className="w-3.5 h-3.5" /> Tracker
+                                            <Navigation className="w-3.5 h-3.5" /> Live Track
+                                        </Button>
+                                    )}
+                                    {delivery.deliveryType === 'PICKUP' && delivery.status === 'PAUSED' && (
+                                        <Button
+                                            size="sm"
+                                            className="h-8 gap-2 bg-purple-600 hover:bg-purple-700 text-white font-black text-[10px] uppercase tracking-wider"
+                                            onClick={async () => {
+                                                if (!confirm("Start this pickup now? This will notify the worker fleet.")) return
+                                                try {
+                                                    const token = localStorage.getItem('token')
+                                                    const res = await fetch(`/api/admin/deliveries/${delivery.id}`, {
+                                                        method: 'PATCH',
+                                                        headers: {
+                                                            'Authorization': `Bearer ${token}`,
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify({ status: 'QUEUED' })
+                                                    })
+                                                    if (!res.ok) throw new Error("Failed to start pickup")
+                                                    toast.success("Pickup started! Now visible in worker pool.")
+                                                    router.refresh()
+                                                } catch (e: any) {
+                                                    toast.error(e.message)
+                                                }
+                                            }}
+                                        >
+                                            <PlayCircle className="w-3.5 h-3.5" /> Start Pickup
                                         </Button>
                                     )}
                                     <DropdownMenu>
@@ -364,15 +404,12 @@ export function DeliveriesClient({
                                     <Button
                                         size="sm"
                                         variant="outline"
-                                        className="h-8 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors font-bold text-xs"
+                                        className="h-8 gap-2 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors font-black text-[10px] uppercase tracking-wider"
                                         onClick={() => {
-                                            const url = `${window.location.origin}/track/${delivery.trackingCode}`
-                                            navigator.clipboard.writeText(url)
-                                            toast.success('Tracking link copied to clipboard!')
-                                            window.open(`/track/${delivery.trackingCode}`, '_blank')
+                                            window.open(`/tracking/${delivery.trackingCode || delivery.invoice?.invoiceNumber}`, '_blank')
                                         }}
                                     >
-                                        <Navigation className="w-3.5 h-3.5" /> Track & Share
+                                        <Navigation className="w-3.5 h-3.5" /> Live Track
                                     </Button>
                                 ) : (
                                     <span className="text-[10px] text-muted-foreground uppercase font-bold pr-2 tracking-widest">
@@ -410,7 +447,7 @@ export function DeliveriesClient({
                     <Card>
                         <CardContent className="p-0">
                             <div className="rounded-md border-0">
-                                {renderTable(pickups, "No pickups found in the system or all pickups are hidden in PAUSED state until Day -1.")}
+                                {renderTable(pickups, "No pickups currently scheduled.")}
                             </div>
                         </CardContent>
                     </Card>

@@ -526,6 +526,8 @@ exports.Prisma.DeliveryScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   lastLocationUpdate: 'lastLocationUpdate',
+  userConfirmedAt: 'userConfirmedAt',
+  userConfirmedBy: 'userConfirmedBy',
   trackingCode: 'trackingCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -721,6 +723,7 @@ exports.DeliveryStatus = exports.$Enums.DeliveryStatus = {
   QUEUED: 'QUEUED',
   CLAIMED: 'CLAIMED',
   OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  ARRIVED: 'ARRIVED',
   PAUSED: 'PAUSED',
   DELAYED: 'DELAYED',
   CANCEL_REQUESTED: 'CANCEL_REQUESTED',

@@ -369,6 +369,7 @@ export const DeliveryStatus: {
   QUEUED: 'QUEUED',
   CLAIMED: 'CLAIMED',
   OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
+  ARRIVED: 'ARRIVED',
   PAUSED: 'PAUSED',
   DELAYED: 'DELAYED',
   CANCEL_REQUESTED: 'CANCEL_REQUESTED',
@@ -43728,6 +43729,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -43750,6 +43753,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -43772,6 +43777,8 @@ export namespace Prisma {
     latitude: number
     longitude: number
     lastLocationUpdate: number
+    userConfirmedAt: number
+    userConfirmedBy: number
     trackingCode: number
     createdAt: number
     updatedAt: number
@@ -43810,6 +43817,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
@@ -43832,6 +43841,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
@@ -43854,6 +43865,8 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
@@ -43963,6 +43976,8 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date
     updatedAt: Date
@@ -44004,6 +44019,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -44033,6 +44050,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -44058,6 +44077,8 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -44083,12 +44104,14 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "deliveryMethod" | "deliveryType" | "vehicleId" | "status" | "claimedByWorkerId" | "claimedAt" | "startedAt" | "completedAt" | "eta" | "etaOverrideCount" | "delayMinutes" | "latitude" | "longitude" | "lastLocationUpdate" | "trackingCode" | "createdAt" | "updatedAt", ExtArgs["result"]["delivery"]>
+  export type DeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "deliveryMethod" | "deliveryType" | "vehicleId" | "status" | "claimedByWorkerId" | "claimedAt" | "startedAt" | "completedAt" | "eta" | "etaOverrideCount" | "delayMinutes" | "latitude" | "longitude" | "lastLocationUpdate" | "userConfirmedAt" | "userConfirmedBy" | "trackingCode" | "createdAt" | "updatedAt", ExtArgs["result"]["delivery"]>
   export type DeliveryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
     invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
@@ -44136,6 +44159,8 @@ export namespace Prisma {
       latitude: number | null
       longitude: number | null
       lastLocationUpdate: Date | null
+      userConfirmedAt: Date | null
+      userConfirmedBy: string | null
       trackingCode: string | null
       createdAt: Date
       updatedAt: Date
@@ -44584,6 +44609,8 @@ export namespace Prisma {
     readonly latitude: FieldRef<"Delivery", 'Float'>
     readonly longitude: FieldRef<"Delivery", 'Float'>
     readonly lastLocationUpdate: FieldRef<"Delivery", 'DateTime'>
+    readonly userConfirmedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly userConfirmedBy: FieldRef<"Delivery", 'String'>
     readonly trackingCode: FieldRef<"Delivery", 'String'>
     readonly createdAt: FieldRef<"Delivery", 'DateTime'>
     readonly updatedAt: FieldRef<"Delivery", 'DateTime'>
@@ -52206,6 +52233,8 @@ export namespace Prisma {
     latitude: 'latitude',
     longitude: 'longitude',
     lastLocationUpdate: 'lastLocationUpdate',
+    userConfirmedAt: 'userConfirmedAt',
+    userConfirmedBy: 'userConfirmedBy',
     trackingCode: 'trackingCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -55297,6 +55326,8 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     trackingCode?: StringNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
@@ -55325,6 +55356,8 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     lastLocationUpdate?: SortOrderInput | SortOrder
+    userConfirmedAt?: SortOrderInput | SortOrder
+    userConfirmedBy?: SortOrderInput | SortOrder
     trackingCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -55357,6 +55390,8 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
     claimedByWorker?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -55384,6 +55419,8 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     lastLocationUpdate?: SortOrderInput | SortOrder
+    userConfirmedAt?: SortOrderInput | SortOrder
+    userConfirmedBy?: SortOrderInput | SortOrder
     trackingCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -55414,6 +55451,8 @@ export namespace Prisma {
     latitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    userConfirmedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
     trackingCode?: StringNullableWithAggregatesFilter<"Delivery"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
@@ -58723,6 +58762,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58751,6 +58792,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58773,6 +58816,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58801,6 +58846,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58826,6 +58873,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58845,6 +58894,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -58867,6 +58918,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61636,6 +61689,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -61665,6 +61720,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -61687,6 +61744,8 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -65595,6 +65654,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65621,6 +65682,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65831,6 +65894,8 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     trackingCode?: StringNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
@@ -69213,6 +69278,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -69239,6 +69306,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73593,6 +73662,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73619,6 +73690,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74187,6 +74260,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74214,6 +74289,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74278,6 +74355,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74305,6 +74384,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74450,6 +74531,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74477,6 +74560,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74611,6 +74696,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74638,6 +74725,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74659,6 +74748,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74686,6 +74777,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74814,6 +74907,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74841,6 +74936,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75209,6 +75306,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -75228,6 +75327,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75254,6 +75355,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75278,6 +75381,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76100,6 +76205,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -76449,6 +76556,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76475,6 +76584,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76499,6 +76610,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77421,6 +77534,8 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -77440,6 +77555,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77466,6 +77583,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77490,6 +77609,8 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

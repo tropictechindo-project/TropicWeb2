@@ -606,6 +606,8 @@ model Delivery {
   latitude           Float?
   longitude          Float?
   lastLocationUpdate DateTime?         @map("last_location_update") @db.Timestamptz(6)
+  userConfirmedAt    DateTime?         @map("user_confirmed_at") @db.Timestamptz(6)
+  userConfirmedBy    String?           @map("user_confirmed_by") @db.Uuid
   trackingCode       String?           @unique @map("tracking_code")
   createdAt          DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -802,6 +804,7 @@ enum DeliveryStatus {
   QUEUED
   CLAIMED
   OUT_FOR_DELIVERY
+  ARRIVED
   PAUSED
   DELAYED
   CANCEL_REQUESTED

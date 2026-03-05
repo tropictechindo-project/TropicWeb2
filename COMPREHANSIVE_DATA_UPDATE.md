@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-05 04:15:00 (WITA/GMT+8)
-**System Version**: 1.9.0-stable
-**Environment**: Production Ready (AI Personas & Unified Dashboards)
+**Last Updated**: 2026-03-05 12:30:00 (WITA/GMT+8)
+**System Version**: 1.9.5-stable
+**Environment**: Production Ready (Global Tracking & Inventory Sync)
 
 ---
 
@@ -94,7 +94,15 @@ The website operates through three distinct entry points based on user roles:
 - [x] **Auth & Hydration Hardening**:
   - Unified redirection logic: Both standard and Google login now redirect exclusively to the **Landing Page** as per user request.
   - Resolved persistent **Hydration Mismatch** errors on the landing page by utilizing `isMounted` guards and `suppressHydrationWarning` on dynamic accessibility nodes.
-- [x] **CTA Intelligence**: Added diagnostic toast notifications for Google Login failures to assist in real-time troubleshooting.
+- [x] **CTA Intelligence**: Added diagnostic toast notifications for Google Login failures.
+- [x] **Global Tracking & Pickup System (v1.9.5)**:
+  - Fixed Global Tracker 404s; added support for **Invoice Number / Order Code** lookups.
+  - Implemented **Inbound Pickup Logic**: Pickups are now created in `PAUSED` state and unlocked via Cron exactly 1 day before the scheduled ETA.
+  - Added "Live Track" CTAs across all dashboard tiers (Admin, Operator, User).
+- [x] **Inventory & Audit Excellence (v1.9.5)**:
+  - Enabled **Absolute Inventory Reconciliation**: Admins can now reconcile total stock levels via a manual modal with automated Serial Number generation and delta logging.
+  - Hardened **Audit Trails**: Every delivery update, cancellation, and inventory movement is now logged with precise User Attribution from JWT tokens.
+  - Fixed `Calendar` ReferenceError and optimized Hero font hierarchy for mobile devices.
 
 > [!IMPORTANT]
 > **Production Note**: The system is now unified, hardened, and accessible via PWA on mobile devices. AI Agents are role-aware and provide significantly higher contextual utility.

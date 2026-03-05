@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function AdminRequestsPage() {
     // Verify admin
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const token = cookieStore.get('token')?.value
 
     if (!token) {
