@@ -171,7 +171,9 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                         "name": product.name,
                         "description": product.description || "Premium workstation rental in Bali.",
                         "image": (product.imageUrl || product.image_url || (product.images && product.images[0]))
-                          ? `https://tropictech.online${product.imageUrl || product.image_url || (product.images && product.images[0])}`
+                          ? ((product.imageUrl || product.image_url || (product.images && product.images[0])).startsWith('http')
+                            ? (product.imageUrl || product.image_url || (product.images && product.images[0]))
+                            : `https://tropictech.online${product.imageUrl || product.image_url || (product.images && product.images[0])}`)
                           : "https://tropictech.online/images/og-image.webp",
                         "category": product.category,
                         "brand": {
