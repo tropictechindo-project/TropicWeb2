@@ -237,19 +237,28 @@ export default async function Home() {
                   "@type": "Offer",
                   "name": "Monitor Rental Bali",
                   "description": "Standard HD to 4K Ultrawide monitors for rent in Bali. Ideal for digital nomads and remote workers.",
-                  "itemOffered": { "@type": "Service", "name": "Monitor Rental (Standard & Ultrawide)" }
+                  "priceCurrency": "IDR",
+                  "price": "100000",
+                  "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+                  "itemOffered": { "@type": "Service", "name": "Monitor Rental" }
                 },
                 {
                   "@type": "Offer",
                   "name": "Ergonomic Chair Rental Bali",
                   "description": "Premium ergonomic office chairs for rent. Perfect for long remote work sessions in Bali.",
+                  "priceCurrency": "IDR",
+                  "price": "100000",
+                  "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
                   "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental" }
                 },
                 {
                   "@type": "Offer",
                   "name": "Standing Desk Rental Bali",
                   "description": "Electric standing desks and office tables for rent. Available for daily, weekly, or monthly rental.",
-                  "itemOffered": { "@type": "Service", "name": "Standing Desk & Office Table Rental" }
+                  "priceCurrency": "IDR",
+                  "price": "100000",
+                  "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+                  "itemOffered": { "@type": "Service", "name": "Standing Desk Rental" }
                 }
               ]
             },

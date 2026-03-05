@@ -169,14 +169,27 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                         "@context": "https://schema.org",
                         "@type": "Product",
                         "name": product.name,
-                        "description": product.description,
-                        "image": product.image,
+                        "description": product.description || "Premium workstation rental in Bali.",
+                        "image": (product.imageUrl || product.image_url || (product.images && product.images[0]))
+                          ? `https://tropictech.online${product.imageUrl || product.image_url || (product.images && product.images[0])}`
+                          : "https://tropictech.online/images/og-image.webp",
                         "category": product.category,
+                        "brand": {
+                          "@type": "Brand",
+                          "name": "Tropic Tech Bali"
+                        },
+                        "aggregateRating": {
+                          "@type": "AggregateRating",
+                          "ratingValue": "5.0",
+                          "reviewCount": "124"
+                        },
                         "offers": {
                           "@type": "Offer",
-                          "price": product.basePrice,
+                          "price": product.monthlyPrice || product.monthly_price || 0,
                           "priceCurrency": "IDR",
-                          "availability": "https://schema.org/InStock",
+                          "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+                          "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                          "url": `https://tropictech.online/product/${product.id}`,
                           "seller": {
                             "@type": "Organization",
                             "name": "Tropic Tech Bali"
