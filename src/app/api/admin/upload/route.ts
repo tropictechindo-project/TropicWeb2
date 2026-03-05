@@ -1,6 +1,6 @@
 
 import { NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { supabaseAdmin } from "@/lib/auth/supabase-admin"
 import { verifyAuth } from "@/lib/auth/auth-helper"
 
 export async function POST(req: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
         const filePath = `hero/${fileName}`
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .storage
             .from('Photos')
             .upload(filePath, buffer, {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
             return new NextResponse(`Storage Error: ${error.message}`, { status: 500 })
         }
 
-        const { data: { publicUrl } } = supabase
+        const { data: { publicUrl } } = supabaseAdmin
             .storage
             .from('Photos')
             .getPublicUrl(filePath)

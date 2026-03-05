@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { supabaseAdmin } from "@/lib/auth/supabase-admin"
 import { verifyAuth } from "@/lib/auth/auth-helper"
 import sharp from "sharp"
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.webp`
         const filePath = `optimized-products/${fileName}`
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .storage
             .from('Photos')
             .upload(filePath, optimizedBuffer, {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
             return new NextResponse(`Storage Error: ${error.message}. Ensure bucket 'Photos' exists with public access.`, { status: 500 })
         }
 
-        const { data: { publicUrl } } = supabase
+        const { data: { publicUrl } } = supabaseAdmin
             .storage
             .from('Photos')
             .getPublicUrl(filePath)

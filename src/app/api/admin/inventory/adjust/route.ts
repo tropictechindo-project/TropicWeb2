@@ -1,17 +1,12 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
-import { verifyToken } from '@/lib/auth/utils'
+import { verifyAuth } from '@/lib/auth/auth-helper'
 
 export async function POST(request: Request) {
     try {
-        const authHeader = request.headers.get('authorization')
-        let adminId: string | undefined
-        if (authHeader?.startsWith('Bearer ')) {
-            const token = authHeader.substring(7)
-            const payload = await verifyToken(token)
-            if (payload) adminId = payload.userId
-        }
+        const auth = await verifyAuth(request)
+        const adminId = auth?.userId
 
         const body = await request.json()
         const { variantId, total, reserved, numUnitsToAdd, condition } = body
