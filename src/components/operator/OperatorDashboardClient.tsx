@@ -17,6 +17,7 @@ import { InventoryClient } from "@/components/admin/inventory/InventoryClient"
 import { ServiceRequestsClient } from "@/components/admin/ServiceRequestsClient"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { OperatorSidebar } from "@/components/operator/OperatorSidebar"
+import { useRealtimePoller } from '@/hooks/useRealtimePoller'
 
 interface Props {
     operatorName: string
@@ -58,9 +59,49 @@ async function safeFetch(url: string, opts?: RequestInit) {
 }
 
 export default function OperatorDashboardClient({
-    operatorName, stats, pendingInvoices, deliveries, orders, variants, productAssets, workers
+    operatorName,
+    stats: initialStats,
+    pendingInvoices: initialInvoices,
+    deliveries: initialDeliveries,
+    orders: initialOrders,
+    variants: initialVariants,
+    productAssets: initialProductAssets,
+    workers: initialWorkers
 }: Props) {
     const [activeTab, setActiveTab] = useState<Tab>('overview')
+
+    // Live data state
+    const [stats, setStats] = useState(initialStats)
+    const [pendingInvoices, setPendingInvoices] = useState(initialInvoices)
+    const [deliveries, setDeliveries] = useState(initialDeliveries)
+    const [orders, setOrders] = useState(initialOrders)
+    const [productAssets, setProductAssets] = useState(initialProductAssets)
+    const [workers, setWorkers] = useState(initialWorkers)
+    const [variants, setVariants] = useState(initialVariants)
+
+    const [isPolling, setIsPolling] = useState(false)
+
+    // ─── Real-time Polling ───────────────────────────────────────────────────
+    const refreshOverview = useCallback(async (silent = true) => {
+        if (!silent) setIsPolling(true)
+        try {
+            const data = await safeFetch('/api/operator/overview')
+            setStats(data.stats)
+            setPendingInvoices(data.pendingInvoices)
+            setDeliveries(data.deliveries)
+            setOrders(data.orders)
+            setProductAssets(data.productAssets)
+            setWorkers(data.workers)
+            setVariants(data.variants)
+        } catch (err) {
+            console.error('Polling error:', err)
+        } finally {
+            if (!silent) setIsPolling(false)
+        }
+    }, [])
+
+    // Poll every 20 seconds when tab is active
+    useRealtimePoller(refreshOverview, 20000)
 
     // AI state
     const [aiInput, setAiInput] = useState('')
@@ -237,7 +278,9 @@ export default function OperatorDashboardClient({
                     </div>
                     <div className="flex items-center gap-2">
                         <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary">OPERATOR</Badge>
-                        <Button variant="ghost" size="icon" onClick={() => window.location.reload()}><RefreshCw className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => refreshOverview(false)} disabled={isPolling}>
+                            <RefreshCw className={`h-4 w-4 ${isPolling ? 'animate-spin' : ''}`} />
+                        </Button>
                     </div>
                 </header>
 

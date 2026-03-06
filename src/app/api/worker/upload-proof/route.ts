@@ -44,10 +44,10 @@ export async function POST(req: NextRequest) {
         const fileName = `${auth.userId}-${Date.now()}.webp`
         const filePath = `delivery-proofs/${fileName}`
 
-        // Upload to 'UploadFile' bucket bypassing RLS
+        // Upload to 'Delivery Report' bucket
         const { data, error } = await supabaseAdmin
             .storage
-            .from('UploadFile')
+            .from('Delivery Report')
             .upload(filePath, optimizedBuffer, {
                 contentType: 'image/webp',
                 upsert: true
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
         const { data: { publicUrl } } = supabaseAdmin
             .storage
-            .from('UploadFile')
+            .from('Delivery Report')
             .getPublicUrl(filePath)
 
         return NextResponse.json({ url: publicUrl })

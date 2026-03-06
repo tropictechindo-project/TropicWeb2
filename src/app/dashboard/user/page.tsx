@@ -72,6 +72,8 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import { UserSidebar } from "@/components/user/UserSidebar"
 import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 
+import { useRealtimePoller } from '@/hooks/useRealtimePoller'
+
 export default function UserDashboard() {
   const { user, logout } = useAuth()
   const { unreadMessagesCount, spiNotifications } = useNotification()
@@ -92,6 +94,10 @@ export default function UserDashboard() {
   // Support Group Chat (for Hub default open)
   const [supportGroup, setSupportGroup] = useState<{ id: string, name: string } | null>(null)
 
+  // Modals state
+  const [selectedOrder, setSelectedOrder] = useState<any>(null)
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false)
+
   // Profile Edit State
   const [editForm, setEditForm] = useState({
     fullName: '',
@@ -99,6 +105,12 @@ export default function UserDashboard() {
     whatsappNumber: '',
     baliAddress: '',
   })
+
+  // ─── Real-time Polling ───────────────────────────────────────────────────
+  // Poll every 30 seconds for order status updates
+  useRealtimePoller(() => {
+    if (user) fetchOrders(true)
+  }, 30000)
 
   useEffect(() => {
     if (user) {
@@ -145,7 +157,8 @@ export default function UserDashboard() {
     return null
   }
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (silent = false) => {
+    if (!silent) setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       const response = await fetch('/api/orders/my-orders', {
@@ -160,7 +173,7 @@ export default function UserDashboard() {
     } catch (error) {
       console.error('Failed to fetch orders:', error)
     } finally {
-      setIsLoading(false)
+      if (!silent) setIsLoading(false)
     }
   }
 
@@ -441,6 +454,126 @@ export default function UserDashboard() {
         </header>
 
         <main className="flex-1 p-4 lg:p-8 max-w-5xl w-full mx-auto space-y-6">
+          {/* Live Delivery Status (Grab/Gojek Style) */}
+          {(() => {
+            const activeDeliveryOrder = activeOrders.find(o =>
+              o.invoices?.some((i: any) =>
+                i.deliveries?.some((d: any) =>
+                  ['QUEUED', 'CLAIMED', 'OUT_FOR_DELIVERY', 'ARRIVED'].includes(d.status)
+                )
+              )
+            )
+
+            if (!activeDeliveryOrder) return null
+
+            const delivery = activeDeliveryOrder.invoices
+              .flatMap((i: any) => i.deliveries)
+              .find((d: any) => ['QUEUED', 'CLAIMED', 'OUT_FOR_DELIVERY', 'ARRIVED'].includes(d.status))
+
+            const statusConfig = {
+              QUEUED: { label: 'Finding a Worker', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+              CLAIMED: { label: 'Preparing your Gear', icon: Package, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+              OUT_FOR_DELIVERY: { label: 'Courier is En Route', icon: Truck, color: 'text-primary', bg: 'bg-primary/10' },
+              ARRIVED: { label: 'Courier has Arrived!', icon: MapPin, color: 'text-green-500', bg: 'bg-green-500/10' },
+            } as any
+
+            const config = statusConfig[delivery.status] || statusConfig.QUEUED
+
+            return (
+              <Card className="border-none shadow-xl bg-card border overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
+                <CardContent className="p-0">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="flex-1 p-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className={`${config.bg} ${config.color} border-none font-black text-[10px] tracking-widest uppercase px-3 py-1 flex items-center gap-2`}>
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+                          </span>
+                          Live Tracking
+                        </Badge>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Order: {activeDeliveryOrder.orderNumber}</span>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h3 className="text-2xl font-black tracking-tighter uppercase">{config.label}</h3>
+                        <p className="text-xs text-muted-foreground font-medium">Estimated arrival in Bali traffic is subject to change.</p>
+                      </div>
+
+                      <div className="flex items-center gap-4 pt-2">
+                        <div className={`p-4 rounded-2xl ${config.bg}`}>
+                          <config.icon className={`h-8 w-8 ${config.color}`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${config.color.replace('text', 'bg')} transition-all duration-1000`}
+                              style={{
+                                width: delivery.status === 'QUEUED' ? '25%' :
+                                  delivery.status === 'CLAIMED' ? '50%' :
+                                    delivery.status === 'OUT_FOR_DELIVERY' ? '75%' : '100%'
+                              }}
+                            />
+                          </div>
+                          <div className="flex justify-between mt-2">
+                            {['Order', 'Prep', 'Transit', 'Here'].map((s, i) => (
+                              <span key={s} className="text-[9px] font-black uppercase text-muted-foreground">{s}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 pt-2">
+                        <Button
+                          className="flex-1 font-black rounded-xl gap-2 h-12 shadow-lg shadow-primary/20"
+                          onClick={() => window.location.href = `/tracking/${delivery.trackingCode || activeDeliveryOrder.invoices?.[0]?.invoiceNumber}`}
+                        >
+                          <MapPin className="h-4 w-4" /> OPEN LIVE MAP
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-12 w-12 rounded-xl"
+                          onClick={() => {
+                            if (supportGroup) setDefaultSupportGroup(supportGroup.id)
+                            setShowSupportHub(true)
+                          }}
+                        >
+                          <MessageSquare className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {delivery.claimedByWorker && (
+                      <div className="w-full md:w-64 bg-muted/30 border-t md:border-t-0 md:border-l p-6 flex flex-col justify-center items-center text-center space-y-3">
+                        <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Assigned Courier</p>
+                        <div className="relative">
+                          {delivery.claimedByWorker.profileImage ? (
+                            <img src={delivery.claimedByWorker.profileImage} alt={delivery.claimedByWorker.fullName} className="h-16 w-16 rounded-2xl object-cover ring-2 ring-background shadow-lg" />
+                          ) : (
+                            <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center ring-2 ring-background shadow-lg">
+                              <UserIcon className="h-8 w-8 text-primary" />
+                            </div>
+                          )}
+                          <div className="absolute -bottom-1 -right-1 bg-green-500 h-4 w-4 rounded-full border-2 border-background" title="Online" />
+                        </div>
+                        <div>
+                          <p className="font-black tracking-tight">{delivery.claimedByWorker.fullName}</p>
+                          <Button
+                            variant="link"
+                            className="h-auto p-0 text-[10px] font-bold uppercase text-primary"
+                            onClick={() => window.open(`https://wa.me/${delivery.claimedByWorker.whatsapp?.replace(/\D/g, '')}`, '_blank')}
+                          >
+                            WhatsApp Courier
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })()}
 
           {activeTab === 'rentals' && (
             <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 animate-in fade-in duration-500">
@@ -507,33 +640,232 @@ export default function UserDashboard() {
                   </DialogContent>
                 </Dialog>
 
-                <Card className="border-none shadow-sm bg-gradient-to-br from-primary/10 to-transparent overflow-hidden">
-                  <CardContent className="p-6 text-zinc-900 dark:text-zinc-100">
-                    <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Island Logistics</p>
-                      <div className="flex items-end gap-2">
-                        <span className="text-4xl font-black">{orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).length}</span>
-                        <span className="text-xs text-muted-foreground font-bold mb-1 uppercase">Active Shipments</span>
-                      </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Card className="border-none shadow-sm bg-gradient-to-br from-primary/10 to-transparent overflow-hidden cursor-pointer hover:bg-primary/5 transition-colors">
+                      <CardContent className="p-6 text-zinc-900 dark:text-zinc-100">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Island Logistics</p>
+                          <div className="flex items-end gap-2">
+                            <span className="text-4xl font-black">{orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).length}</span>
+                            <span className="text-xs text-muted-foreground font-bold mb-1 uppercase">Active Shipments</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-black uppercase tracking-tight">Active Shipments</DialogTitle>
+                      <DialogDescription>Real-time status of your gear in transit across Bali.</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-3 pt-4">
+                      {orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).length === 0 ? (
+                        <p className="text-center py-8 text-muted-foreground text-sm italic">No active shipments at the moment.</p>
+                      ) : (
+                        orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).map((order, idx) => {
+                          const delivery = order.invoices.flatMap((i: any) => i.deliveries).find((d: any) => d.status !== 'COMPLETED')
+                          return (
+                            <div key={idx} className="flex items-center justify-between p-4 bg-muted/20 rounded-xl border">
+                              <div className="flex items-center gap-3">
+                                <Truck className="h-4 w-4 text-primary" />
+                                <div>
+                                  <p className="font-bold text-sm">Order #{order.orderNumber}</p>
+                                  <p className="text-[10px] text-muted-foreground uppercase">{delivery.status.replace(/_/g, ' ')}</p>
+                                </div>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 text-[10px] font-bold"
+                                onClick={() => window.location.href = `/tracking/${delivery.trackingCode || order.orderNumber}`}
+                              >
+                                TRACK
+                              </Button>
+                            </div>
+                          )
+                        })
+                      )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </DialogContent>
+                </Dialog>
 
-                <Card className="border-none shadow-sm bg-muted/30 overflow-hidden">
-                  <CardContent className="p-6">
-                    <div className="space-y-1">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Island Coverage</p>
-                      <div className="flex items-center gap-2">
-                        <ShieldCheck className="h-5 w-5 text-green-500" />
-                        <span className="text-sm font-bold uppercase">Bali Delivery</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Card className="border-none shadow-sm bg-muted/30 overflow-hidden cursor-pointer hover:bg-muted/50 transition-colors">
+                      <CardContent className="p-6">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Island Coverage</p>
+                          <div className="flex items-center gap-2">
+                            <ShieldCheck className="h-5 w-5 text-green-500" />
+                            <span className="text-sm font-bold uppercase">Bali Delivery</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">Certified 24/7 Support Included</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-black uppercase tracking-tight">Our Bali Guarantee</DialogTitle>
+                      <DialogDescription>Why professionals choose Tropic Tech for Bali workstations.</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 pt-4">
+                      <div className="flex gap-4">
+                        <div className="h-10 w-10 shrink-0 rounded-xl bg-green-500/10 flex items-center justify-center">
+                          <Truck className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm">Island-Wide Internal Fleet</h4>
+                          <p className="text-xs text-muted-foreground">We don't just use apps. We have our own couriers who know Bali traffic and Canggu shortcuts.</p>
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">Certified 24/7 Support Included</p>
+                      <div className="flex gap-4">
+                        <div className="h-10 w-10 shrink-0 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                          <ShieldCheck className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm">Equipment Protection</h4>
+                          <p className="text-xs text-muted-foreground">Every rental includes structural insurance and 1:1 hardware swap if any technical issues arise.</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="h-10 w-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center">
+                          <Headset className="h-5 w-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm">24/7 On-Ground Support</h4>
+                          <p className="text-xs text-muted-foreground">Broken charger? Connectivity issues? Our team is on WhatsApp 24/7 to solve it locally.</p>
+                        </div>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </DialogContent>
+                </Dialog>
               </div>
+
+              {/* ACTIVE RENTED EQUIPMENT LIST */}
+              <div className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                    <Package className="h-5 w-5 text-primary" />
+                    Active Rented Equipment
+                  </h3>
+                  <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-primary/5 text-primary border-none">
+                    Realtime Data
+                  </Badge>
+                </div>
+
+                {activeOrders.length === 0 ? (
+                  <div className="py-12 text-center border-2 border-dashed rounded-3xl bg-muted/10">
+                    <ShoppingBag className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                    <p className="font-black text-lg uppercase tracking-tighter">No Equipment Deployed</p>
+                    <p className="text-muted-foreground text-xs mt-1">Visit our catalog to start your workstation rental.</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {activeOrders.flatMap((order: any) =>
+                      order.rentalItems.map((item: any) => ({ ...item, orderNumber: order.orderNumber, orderId: order.id }))
+                    ).map((item: any, idx: number) => {
+                      const name = item.variant?.product?.name || item.rentalPackage?.name || "Equipment"
+                      return (
+                        <Card key={`${item.id}-${idx}`} className="group hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden bg-card/50 backdrop-blur-sm">
+                          <CardContent className="p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="h-12 w-12 rounded-xl bg-background border flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                                {item.variant?.product?.images?.[0] ? (
+                                  <img src={item.variant.product.images[0]} alt={name} className="h-8 w-8 object-contain" />
+                                ) : (
+                                  <Package className="h-6 w-6 text-primary" />
+                                )}
+                              </div>
+                              <div>
+                                <p className="font-black text-sm tracking-tight">{name}</p>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-[10px] font-bold text-muted-foreground uppercase flex items-center gap-1">
+                                    <ShoppingBag className="w-3 h-3" /> {item.orderNumber}
+                                  </span>
+                                  <span className="text-[10px] text-muted-foreground">|</span>
+                                  <span className="text-[10px] font-mono text-muted-foreground">SN: {item.unit?.serialNumber || 'PENDING DISPATCH'}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <div className="hidden md:block text-right pr-4 border-r">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Status</p>
+                                <p className="text-[10px] font-bold text-green-600 uppercase">Deployed</p>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 rounded-full"
+                                onClick={() => {
+                                  const order = orders.find(o => o.id === item.orderId)
+                                  if (order) {
+                                    setSelectedOrder(order)
+                                    setIsOrderModalOpen(true)
+                                  }
+                                }}
+                              >
+                                <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* RENTAL HISTORY LIST */}
+              <div className="space-y-4 pt-8 pb-12">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-muted-foreground" />
+                    Rental History
+                  </h3>
+                  <Button variant="link" onClick={() => setActiveTab('history')} className="text-[10px] font-black uppercase tracking-widest">
+                    View All History
+                  </Button>
+                </div>
+
+                {pastOrders.length === 0 ? (
+                  <p className="text-center py-6 text-muted-foreground text-xs italic bg-muted/5 rounded-2xl border border-dashed">No past rental activity recorded.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {pastOrders.slice(0, 3).map((order) => (
+                      <div key={order.id} className="flex items-center justify-between p-4 bg-muted/20 rounded-2xl border hover:bg-muted/30 transition-colors">
+                        <div className="flex items-center gap-4">
+                          <div className="h-10 w-10 flex items-center justify-center text-muted-foreground">
+                            <CheckCircle className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-sm tracking-tight">#{order.orderNumber}</p>
+                            <p className="text-[10px] text-muted-foreground uppercase">{new Date(order.startDate).toLocaleDateString()} - {new Date(order.endDate).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <p className="font-black text-xs">Rp {order.totalAmount.toLocaleString('id-ID')}</p>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => {
+                              const shareableToken = order.invoices?.[0]?.shareableToken;
+                              if (shareableToken) window.open(`/invoice/public/${shareableToken}`, '_blank');
+                            }}
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {activeOrders.length === 0 ? (
-                <div className="py-20 text-center border-2 border-dashed rounded-3xl bg-muted/10">
+                <div className="hidden py-20 text-center border-2 border-dashed rounded-3xl bg-muted/10">
                   <ShoppingBag className="h-12 w-12 mx-auto mb-4 opacity-20" />
                   <p className="font-black text-xl uppercase tracking-tighter">No Active Gear Found</p>
                   <p className="text-muted-foreground text-sm mt-1">Ready to upgrade your workspace? Browse our products.</p>
@@ -667,16 +999,12 @@ export default function UserDashboard() {
                                 variant="ghost"
                                 className="w-full font-bold text-xs"
                                 onClick={() => {
-                                  const shareableToken = order.invoices?.[0]?.shareableToken;
-                                  if (shareableToken) {
-                                    window.open(`/invoice/public/${shareableToken}`, '_blank');
-                                  } else {
-                                    toast.error('Invoice not yet generated for this order');
-                                  }
+                                  setSelectedOrder(order)
+                                  setIsOrderModalOpen(true)
                                 }}
                               >
-                                <FileText className="h-3.5 w-3.5 mr-2" />
-                                DOWNLOAD INVOICE
+                                <ExternalLink className="h-3.5 w-3.5 mr-2" />
+                                VIEW ORDER DETAILS
                               </Button>
                             </div>
                           </div>
@@ -684,6 +1012,99 @@ export default function UserDashboard() {
                       </div>
                     </Card>
                   ))}
+
+                  {/* Order Detail Modal */}
+                  <Dialog open={isOrderModalOpen} onOpenChange={setIsOrderModalOpen}>
+                    <DialogContent className="max-w-2xl p-0 overflow-hidden border-none shadow-2xl">
+                      {selectedOrder && (
+                        <div className="flex flex-col">
+                          <div className="bg-zinc-900 p-8 text-white relative">
+                            <div className="absolute top-0 right-0 p-8 opacity-20">
+                              <ShoppingBag className="h-32 w-32" />
+                            </div>
+                            <div className="space-y-2 relative z-10">
+                              <div className="flex items-center gap-3">
+                                <Badge variant="outline" className="border-primary text-primary font-black text-[10px] uppercase px-3">
+                                  {selectedOrder.status}
+                                </Badge>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Reference: {selectedOrder.orderNumber}</span>
+                              </div>
+                              <h2 className="text-4xl font-black tracking-tighter">ORDER DETAILS</h2>
+                              <p className="text-zinc-400 text-xs font-medium max-w-md">Comprehensive view of your workstation deployment and billing items.</p>
+                            </div>
+                          </div>
+
+                          <div className="p-6 space-y-6 bg-card">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                              <div className="space-y-1">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Start Date</p>
+                                <p className="font-bold text-sm">{new Date(selectedOrder.startDate).toLocaleDateString()}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">End Date</p>
+                                <p className="font-bold text-sm">{new Date(selectedOrder.endDate).toLocaleDateString()}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Payment Method</p>
+                                <p className="font-bold text-sm uppercase">{selectedOrder.paymentMethod}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Total Paid</p>
+                                <p className="font-bold text-sm text-primary">Rp {selectedOrder.totalAmount?.toLocaleString()}</p>
+                              </div>
+                            </div>
+
+                            <div className="space-y-3">
+                              <h3 className="text-xs font-black uppercase tracking-widest">Inventory Deployed</h3>
+                              <div className="divide-y border rounded-2xl overflow-hidden">
+                                {selectedOrder.rentalItems?.map((item: any, i: number) => (
+                                  <div key={i} className="flex items-center justify-between p-4 bg-muted/10">
+                                    <div className="flex items-center gap-4">
+                                      <div className="h-10 w-10 rounded-xl bg-background border flex items-center justify-center">
+                                        <Package className="h-5 w-5 text-primary" />
+                                      </div>
+                                      <div>
+                                        <p className="font-bold text-sm tracking-tight">{item.variant?.product?.name || item.rentalPackage?.name}</p>
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-[10px] text-muted-foreground">SN: {item.unit?.serialNumber || 'Pending Dispatch'}</span>
+                                          {item.unit?.status && <Badge variant="secondary" className="text-[8px] h-4 px-1">{item.unit.status}</Badge>}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="text-right">
+                                      <p className="text-sm font-black">Qty: {item.quantity}</p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex gap-3">
+                              <Button
+                                className="flex-1 font-black rounded-xl"
+                                onClick={() => {
+                                  if (selectedOrder.invoices?.[0]?.shareableToken) {
+                                    window.open(`/invoice/public/${selectedOrder.invoices[0].shareableToken}`, '_blank')
+                                  } else {
+                                    toast.error('Invoice not available')
+                                  }
+                                }}
+                              >
+                                <Download className="h-4 w-4 mr-2" /> DOWNLOAD INVOICE
+                              </Button>
+                              <Button
+                                variant="outline"
+                                className="font-black rounded-xl"
+                                onClick={() => window.location.href = `/tracking/${selectedOrder.invoices?.[0]?.deliveries?.[0]?.trackingCode || selectedOrder.orderNumber}`}
+                              >
+                                <MapPin className="h-4 w-4 mr-2" /> LIVE TRACKING
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 </div>
               )}
             </div>

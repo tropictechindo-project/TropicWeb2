@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
         const { data, error } = await supabase
             .storage
-            .from('UploadFile')
+            .from('Upload File')
             .upload(filePath, uploadBuffer, {
                 contentType: contentType,
                 upsert: true
@@ -49,12 +49,12 @@ export async function POST(req: NextRequest) {
 
         if (error) {
             console.error('[API_UPLOAD_FILE] Supabase storage error:', error)
-            return new NextResponse(`Storage Error: ${error.message}. Ensure bucket 'UploadFile' exists.`, { status: 500 })
+            return new NextResponse(`Storage Error: ${error.message}. Ensure bucket 'Upload File' exists.`, { status: 500 })
         }
 
         const { data: { publicUrl } } = supabase
             .storage
-            .from('UploadFile')
+            .from('Upload File')
             .getPublicUrl(filePath)
 
         return NextResponse.json({ url: publicUrl })

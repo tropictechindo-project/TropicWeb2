@@ -312,13 +312,13 @@ export default function Header() {
                       </Button>
                     </>
                   ) : (
-                    <>
-                      <Button variant="ghost" onClick={() => setShowLoginModal(true)}>
+                    <div className="flex items-center gap-3">
+                      <Button variant="ghost" onClick={() => router.push('/auth/login')}>
                         {t('login')}
                       </Button>
                       <Button
                         onClick={() => setShowContactModal(true)}
-                        className="bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 backdrop-blur-md shadow-lg"
+                        className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest px-6 shadow-xl shadow-primary/20 rounded-xl"
                       >
                         Contact Us
                       </Button>
@@ -382,7 +382,7 @@ export default function Header() {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                    </>
+                    </div>
                   )}
                 </>
               ) : (
@@ -461,7 +461,7 @@ export default function Header() {
                       className="w-full h-11 text-base font-semibold shadow-lg shadow-primary/10"
                       onClick={() => {
                         setMobileMenuOpen(false);
-                        setShowLoginModal(true);
+                        router.push('/auth/login');
                       }}
                     >
                       {t('login')}

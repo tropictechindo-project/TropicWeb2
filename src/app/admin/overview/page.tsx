@@ -61,27 +61,63 @@ async function getStats() {
     }
 }
 
+async function getAnalyticsData() {
+    const months: { name: string; start: Date; end: Date }[] = []
+    const now = new Date()
+    for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+        months.push({
+            name: d.toLocaleString('en-US', { month: 'short' }),
+            start: new Date(d.getFullYear(), d.getMonth(), 1),
+            end: new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999)
+        })
+    }
+
+    const [revenueData, userData] = await Promise.all([
+        Promise.all(months.map(async (m) => {
+            const stats = await db.invoice.aggregate({
+                where: {
+                    createdAt: { gte: m.start, lte: m.end },
+                    status: 'PAID'
+                },
+                _sum: { total: true },
+                _count: { id: true }
+            })
+            return {
+                name: m.name,
+                total: Number(stats._sum.total || 0),
+                count: stats._count.id
+            }
+        })),
+        Promise.all(months.map(async (m) => {
+            const [registered, active] = await Promise.all([
+                db.user.count({
+                    where: { createdAt: { gte: m.start, lte: m.end } }
+                }),
+                db.activityLog.groupBy({
+                    by: ['userId'],
+                    where: {
+                        createdAt: { gte: m.start, lte: m.end },
+                        userId: { not: null }
+                    }
+                }).then(res => res.length)
+            ])
+            return {
+                name: m.name,
+                registered,
+                active
+            }
+        }))
+    ])
+
+    return { revenueData, userData }
+}
+
 export default async function AdminOverviewPage() {
-    const data = await getStats()
-
-    // Mock data for charts
-    const mockRevenueData = [
-        { name: 'Jan', total: 15000000, count: 12 },
-        { name: 'Feb', total: 22000000, count: 18 },
-        { name: 'Mar', total: 18000000, count: 15 },
-        { name: 'Apr', total: 28000000, count: 24 },
-        { name: 'May', total: 35000000, count: 32 },
-        { name: 'Jun', total: 42000000, count: 38 },
-    ]
-
-    const mockUserData = [
-        { name: 'Jan', registered: 20, active: 15 },
-        { name: 'Feb', registered: 35, active: 28 },
-        { name: 'Mar', registered: 45, active: 40 },
-        { name: 'Apr', registered: 60, active: 55 },
-        { name: 'May', registered: 85, active: 75 },
-        { name: 'Jun', registered: 110, active: 95 },
-    ]
+    const [data, analytics] = await Promise.all([
+        getStats(),
+        getAnalyticsData()
+    ])
 
     return (
         <div className="pb-10">
@@ -98,7 +134,7 @@ export default async function AdminOverviewPage() {
             >
                 <div className="grid gap-8 grid-cols-1">
                     <div className="space-y-8">
-                        <OverviewCharts userData={mockUserData} revenueData={mockRevenueData} />
+                        <OverviewCharts userData={analytics.userData} revenueData={analytics.revenueData} />
                     </div>
                     {/* InfoCenter moved below charts, full width */}
                     <div className="space-y-8">
