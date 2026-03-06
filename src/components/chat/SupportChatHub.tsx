@@ -223,63 +223,51 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
             : availableUsers
 
     const renderSidebar = () => (
-        <div className={`w-full sm:w-80 border-r flex flex-col bg-muted/10 h-full ${selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
-            <div className="p-4 border-b space-y-3">
+        <div className={`w-full sm:w-80 border-r border-zinc-800 flex flex-col bg-zinc-950 h-full ${selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
+            <div className="p-6 border-b border-zinc-800 space-y-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="font-bold text-lg">Messages</h2>
+                    <h2 className="font-black text-xl tracking-tighter uppercase italic text-white">Ask-Me Hub</h2>
                     <Button
                         variant="ghost"
                         size="icon"
+                        className="text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl"
                         onClick={() => setActiveTab(activeTab === 'conversations' ? 'users' : 'conversations')}
-                        title={activeTab === 'conversations' ? "Start New Chat" : "Back to List"}
                     >
                         {activeTab === 'conversations' ? <Plus className="h-5 w-5" /> : <X className="h-5 w-5" />}
                     </Button>
                 </div>
                 {activeTab !== 'create-group' && (
-                    <div className="relative">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <div className="relative group">
+                        <Search className="absolute left-3 top-3 h-4 w-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
                         <Input
-                            placeholder="Search..."
-                            className="pl-9 h-9"
+                            placeholder="Find connections..."
+                            className="pl-10 h-10 bg-white/5 border-zinc-800 focus-visible:ring-primary/50 rounded-xl text-xs font-medium text-white placeholder:text-zinc-600"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                 )}
-                {activeTab === 'users' && (
-                    <div className="flex gap-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full text-xs"
-                            onClick={() => setActiveTab('create-group')}
-                        >
-                            <Users className="h-3 w-3 mr-2" />
-                            Create Group
-                        </Button>
-                    </div>
-                )}
             </div>
 
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 px-2">
                 {activeTab === 'create-group' ? (
                     <div className="p-4 space-y-4">
                         <div className="space-y-2">
-                            <h3 className="text-sm font-medium">New Group</h3>
+                            <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Secure Channel Name</h3>
                             <Input
-                                placeholder="Group Name"
+                                placeholder="Alpha Group..."
+                                className="bg-white/5 border-zinc-800 text-white rounded-xl h-10"
                                 value={newGroupName}
                                 onChange={(e) => setNewGroupName(e.target.value)}
                             />
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-sm font-medium">Add Members</h3>
+                            <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Select Operators</h3>
                             <div className="space-y-1">
                                 {availableUsers.map(user => (
                                     <div
                                         key={user.id}
-                                        className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer ${selectedGroupMembers.includes(user.id) ? 'bg-primary/10' : 'hover:bg-muted'}`}
+                                        className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${selectedGroupMembers.includes(user.id) ? 'bg-primary/20 border-primary/20' : 'hover:bg-white/5'}`}
                                         onClick={() => {
                                             if (selectedGroupMembers.includes(user.id)) {
                                                 setSelectedGroupMembers(prev => prev.filter(id => id !== user.id))
@@ -288,135 +276,104 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                                             }
                                         }}
                                     >
-                                        <div className={`h-4 w-4 rounded border flex items-center justify-center ${selectedGroupMembers.includes(user.id) ? 'bg-primary border-primary' : 'border-muted-foreground'}`}>
+                                        <div className={`h-4 w-4 rounded border flex items-center justify-center ${selectedGroupMembers.includes(user.id) ? 'bg-primary border-primary' : 'border-zinc-700'}`}>
                                             {selectedGroupMembers.includes(user.id) && <div className="h-2 w-2 bg-white rounded-full" />}
                                         </div>
-                                        <Avatar className="h-8 w-8">
+                                        <Avatar className="h-8 w-8 border border-zinc-800">
                                             <AvatarImage src={user.profileImage || undefined} />
-                                            <AvatarFallback>{user.fullName.charAt(0)}</AvatarFallback>
+                                            <AvatarFallback className="bg-zinc-800 text-zinc-400">{user.fullName.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div className="text-sm">
-                                            <p className="font-medium">{user.fullName}</p>
-                                            <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
+                                            <p className="font-bold text-zinc-200">{user.fullName}</p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{user.role}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
                         <div className="pt-2 flex gap-2">
-                            <Button variant="outline" className="flex-1" onClick={() => setActiveTab('conversations')}>Cancel</Button>
+                            <Button variant="outline" className="flex-1 bg-transparent border-zinc-800 text-zinc-400 hover:text-white rounded-xl" onClick={() => setActiveTab('conversations')}>CANCEL</Button>
                             <Button
-                                className="flex-1"
+                                className="flex-1 rounded-xl font-black bg-primary hover:bg-primary/80"
                                 disabled={!newGroupName.trim() || selectedGroupMembers.length === 0 || creatingGroup}
                                 onClick={handleCreateGroup}
                             >
-                                {creatingGroup && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                                Create
+                                {creatingGroup ? <Loader2 className="h-4 w-4 animate-spin" /> : 'CREATE'}
                             </Button>
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-col gap-0.5 p-2">
+                    <div className="flex flex-col gap-1 p-2">
+                        {/* Always visible Ask-Me AI Option */}
+                        <div
+                            className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all mb-4 relative overflow-hidden group border border-primary/20 bg-primary/5 hover:bg-primary/10`}
+                            onClick={() => {
+                                if (onOpenChange) onOpenChange(false);
+                            }}
+                        >
+                            <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12 group-hover:rotate-45 transition-transform duration-700">
+                                <Bot className="w-12 h-12 text-primary" />
+                            </div>
+                            <div className="relative">
+                                <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary shadow-lg shadow-primary/20">
+                                    <Bot className="h-6 w-6" />
+                                </div>
+                                <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 bg-green-500 rounded-full border-[3px] border-zinc-950 animate-pulse" />
+                            </div>
+                            <div className="flex-1 relative z-10 text-left">
+                                <h3 className="font-black text-xs uppercase tracking-widest text-white">Ask-Me Neural</h3>
+                                <p className="text-[9px] font-bold text-primary italic uppercase tracking-wider">AI Assistant Online</p>
+                            </div>
+                        </div>
+
                         {loading && (
-                            <div className="flex justify-center p-4"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
+                            <div className="flex justify-center p-8"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
                         )}
 
                         {!loading && filteredItems.length === 0 && (
-                            <div className="text-center p-8 text-muted-foreground text-sm">No results found</div>
+                            <div className="text-center p-8 text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Zero Encrypted Channels</div>
                         )}
 
                         {/* List Items */}
                         {!loading && activeTab === 'conversations' && (
-                            <div className="space-y-6">
-                                {/* Direct Conversations Section */}
-                                {conversations.filter(c => c.type === 'DIRECT' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).length > 0 && (
-                                    <div className="space-y-1">
-                                        <div className="px-3 flex items-center justify-between">
-                                            <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Individual Chat</h3>
-                                            <Badge variant="secondary" className="text-[8px] h-3 px-1">
-                                                {conversations.filter(c => c.type === 'DIRECT' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).length}
-                                            </Badge>
+                            <div className="space-y-1">
+                                {conversations.map((item: any) => (
+                                    <div
+                                        key={`${item.type}-${item.id}`}
+                                        className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all border border-transparent hover:border-white/5 ${selectedConversation?.id === item.id ? 'bg-white/10 border-white/10 shadow-xl' : 'hover:bg-white/5'}`}
+                                        onClick={() => setSelectedConversation(item)}
+                                    >
+                                        <div className="relative">
+                                            <Avatar className="h-12 w-12 border-2 border-zinc-950 shadow-lg">
+                                                <AvatarImage src={item.image || undefined} />
+                                                <AvatarFallback className={`${item.type === 'GROUP' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-primary/20 text-primary'} font-black text-lg`}>
+                                                    {item.type === 'GROUP' ? <Users className="h-5 w-5" /> : item.name.charAt(0)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            {item.unreadCount > 0 && (
+                                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full border-[3px] border-zinc-950 flex items-center justify-center text-[8px] font-black text-white">{item.unreadCount}</span>
+                                            )}
                                         </div>
-                                        {conversations.filter(c => c.type === 'DIRECT' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).map((item: any) => (
-                                            <div
-                                                key={`${item.type}-${item.id}`}
-                                                className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${selectedConversation?.id === item.id ? 'bg-primary/10' : 'hover:bg-muted/50'}`}
-                                                onClick={() => setSelectedConversation(item)}
-                                            >
-                                                <div className="relative">
-                                                    <Avatar className="h-10 w-10 border-2 border-background">
-                                                        <AvatarImage src={item.image || undefined} />
-                                                        <AvatarFallback className="bg-primary/10 text-primary font-bold">{item.name.charAt(0)}</AvatarFallback>
-                                                    </Avatar>
-                                                    {item.unreadCount > 0 && (
-                                                        <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 bg-red-500 rounded-full border-2 border-background animate-pulse" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1 overflow-hidden">
-                                                    <div className="flex justify-between items-center mb-0.5">
-                                                        <span className="font-bold text-sm truncate">{item.name}</span>
-                                                        {item.lastMessage && (
-                                                            <span className="text-[9px] font-medium text-muted-foreground">
-                                                                {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex justify-between items-center gap-2">
-                                                        <p className="text-xs text-muted-foreground truncate flex-1">
-                                                            {item.lastMessage?.content || 'No messages'}
-                                                        </p>
-                                                        <Badge variant="outline" className="text-[8px] h-3 px-1 border-primary/20 text-primary bg-primary/5 uppercase font-black">Individual</Badge>
-                                                    </div>
-                                                </div>
+                                        <div className="flex-1 overflow-hidden">
+                                            <div className="flex justify-between items-center mb-1 text-left">
+                                                <span className="font-black text-[11px] uppercase tracking-tight text-white truncate pr-2">{item.name}</span>
+                                                {item.lastMessage && (
+                                                    <span className="text-[8px] font-black text-zinc-500 uppercase shrink-0">
+                                                        {new Date(item.lastMessage.createdAt).getHours()}:{new Date(item.lastMessage.createdAt).getMinutes().toString().padStart(2, '0')}
+                                                    </span>
+                                                )}
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
-
-                                {/* Group Conversations Section */}
-                                {conversations.filter(c => c.type === 'GROUP' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).length > 0 && (
-                                    <div className="space-y-1">
-                                        <div className="px-3 flex items-center justify-between">
-                                            <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Group Chat</h3>
-                                            <Badge variant="secondary" className="text-[8px] h-3 px-1">
-                                                {conversations.filter(c => c.type === 'GROUP' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).length}
-                                            </Badge>
+                                            <div className="flex justify-between items-center gap-3">
+                                                <p className="text-[9px] text-zinc-500 truncate flex-1 font-medium italic opacity-70 text-left">
+                                                    {item.lastMessage?.content || 'Awaiting transmission...'}
+                                                </p>
+                                                <Badge variant="outline" className={`text-[7px] h-3 px-1 border-none font-black uppercase tracking-widest ${item.type === 'GROUP' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-primary/10 text-primary'}`}>
+                                                    {item.type === 'GROUP' ? 'Group' : 'Direct'}
+                                                </Badge>
+                                            </div>
                                         </div>
-                                        {conversations.filter(c => c.type === 'GROUP' && c.name.toLowerCase().includes(searchTerm.toLowerCase())).map((item: any) => (
-                                            <div
-                                                key={`${item.type}-${item.id}`}
-                                                className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${selectedConversation?.id === item.id ? 'bg-primary/10' : 'hover:bg-muted/50'}`}
-                                                onClick={() => setSelectedConversation(item)}
-                                            >
-                                                <div className="relative">
-                                                    <Avatar className="h-10 w-10 border-2 border-background">
-                                                        <AvatarImage src={item.image || undefined} />
-                                                        <AvatarFallback className="bg-indigo-500/10 text-indigo-600 font-bold"><Users className="h-4 w-4" /></AvatarFallback>
-                                                    </Avatar>
-                                                    {item.unreadCount > 0 && (
-                                                        <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 bg-red-500 rounded-full border-2 border-background animate-pulse" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1 overflow-hidden">
-                                                    <div className="flex justify-between items-center mb-0.5">
-                                                        <span className="font-bold text-sm truncate">{item.name}</span>
-                                                        {item.lastMessage && (
-                                                            <span className="text-[9px] font-medium text-muted-foreground">
-                                                                {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex justify-between items-center gap-2">
-                                                        <p className="text-xs text-muted-foreground truncate flex-1">
-                                                            {item.lastMessage?.content || 'No messages'}
-                                                        </p>
-                                                        <Badge variant="outline" className="text-[8px] h-3 px-1 border-indigo-500/20 text-indigo-600 bg-indigo-500/5 uppercase font-black">Group</Badge>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
                                     </div>
-                                )}
+                                ))}
                             </div>
                         )}
 
@@ -461,37 +418,39 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[100vw] sm:max-w-4xl h-[95dvh] sm:h-[700px] flex flex-col sm:flex-row p-0 gap-0 overflow-hidden outline-none w-full sm:w-auto rounded-xl sm:rounded-2xl border-none sm:border-solid">
-                <DialogTitle className="sr-only">Chat Hub</DialogTitle>
+            <DialogContent className="max-w-[100vw] sm:max-w-5xl h-[95dvh] sm:h-[750px] flex flex-col sm:flex-row p-0 gap-0 overflow-hidden outline-none w-full sm:w-auto rounded-none sm:rounded-[2.5rem] border-none bg-zinc-950 shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
+                <DialogTitle className="sr-only">Ask-Me Hub</DialogTitle>
                 {renderSidebar()}
-                <div className={`flex-1 flex flex-col bg-background h-full ${!selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
+                <div className={`flex-1 flex flex-col bg-zinc-900/50 backdrop-blur-3xl h-full ${!selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
                     {selectedConversation ? (
                         <div className="flex flex-col h-full w-full">
-                            <div className="p-2 sm:p-4 border-b flex items-center justify-between shrink-0">
-                                <div className="flex items-center gap-2 sm:gap-3">
-                                    <Button variant="ghost" size="icon" className="sm:hidden -ml-2" onClick={() => setSelectedConversation(null)}>
+                            <div className="p-4 sm:p-6 border-b border-white/5 flex items-center justify-between shrink-0 bg-white/5">
+                                <div className="flex items-center gap-4">
+                                    <Button variant="ghost" size="icon" className="sm:hidden -ml-2 text-zinc-400 hover:bg-white/5" onClick={() => setSelectedConversation(null)}>
                                         <X className="h-5 w-5" />
                                     </Button>
-                                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-                                        <AvatarImage src={selectedConversation.image || undefined} />
-                                        <AvatarFallback>{selectedConversation.type === 'GROUP' ? <Users /> : selectedConversation.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
+                                    <div className="relative">
+                                        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border-2 border-zinc-950 shadow-xl">
+                                            <AvatarImage src={selectedConversation.image || undefined} />
+                                            <AvatarFallback className="bg-zinc-800 text-zinc-400 font-black">{selectedConversation.type === 'GROUP' ? <Users /> : selectedConversation.name.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 bg-green-500 rounded-full border-[3px] border-zinc-950 shadow-sm shadow-green-500/50" />
+                                    </div>
                                     <div>
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="font-black text-sm uppercase tracking-tight">{selectedConversation.name}</h3>
+                                        <div className="flex items-center gap-3">
+                                            <h3 className="font-black text-xs uppercase tracking-[0.15em] text-white">{selectedConversation.name}</h3>
                                             <Badge
                                                 variant="outline"
-                                                className={`text-[8px] h-4 px-1 uppercase font-black ${selectedConversation.type === 'GROUP'
-                                                    ? 'border-indigo-500/20 text-indigo-600 bg-indigo-500/5'
-                                                    : 'border-primary/20 text-primary bg-primary/5'
+                                                className={`text-[8px] h-4 px-2 uppercase font-black border-none tracking-widest ${selectedConversation.type === 'GROUP'
+                                                    ? 'bg-indigo-500/20 text-indigo-400'
+                                                    : 'bg-primary/20 text-primary'
                                                     }`}
                                             >
-                                                {selectedConversation.type === 'GROUP' ? 'Group' : 'Individual'}
+                                                {selectedConversation.type === 'GROUP' ? 'Group Secure' : 'Neural Direct'}
                                             </Badge>
                                         </div>
-                                        <p className="text-[10px] text-muted-foreground font-bold flex items-center gap-1">
-                                            <span className={`h-1.5 w-1.5 rounded-full ${selectedConversation.type === 'GROUP' ? 'bg-indigo-500' : 'bg-primary'} animate-pulse`} />
-                                            {selectedConversation.type === 'GROUP' ? 'Active Group Conversation' : 'Direct Support Connection'}
+                                        <p className="text-[9px] text-zinc-500 font-bold flex items-center gap-1.5 uppercase mt-1 tracking-widest italic">
+                                            <Bot className="w-3 h-3 text-primary animate-pulse" /> Verified Logistics encrypted frequency
                                         </p>
                                     </div>
                                 </div>
@@ -512,10 +471,13 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                             </div>
                         </div>
                     ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
-                            <MessageSquare className="h-16 w-16 mb-4 opacity-20" />
-                            <p className="text-lg font-medium">Select a conversation</p>
-                            <p className="text-sm">or start a new chat to begin</p>
+                        <div className="flex-1 flex flex-col items-center justify-center text-zinc-500 p-12 text-center select-none">
+                            <div className="h-40 w-40 bg-white/5 rounded-[2.5rem] flex items-center justify-center mb-10 border border-white/10 animate-pulse relative">
+                                <div className="absolute inset-0 bg-primary/20 blur-[80px] rounded-full animate-pulse" />
+                                <MessageSquare className="h-20 w-20 opacity-20 text-primary relative z-10" />
+                            </div>
+                            <h3 className="text-2xl font-black uppercase tracking-[0.4em] text-white/40 italic">Neural Connection Hub</h3>
+                            <p className="max-w-[320px] text-[10px] font-black leading-relaxed mt-6 opacity-30 uppercase tracking-[0.2em]">Select a secure frequency to synchronize real-time logistics transmission.</p>
                         </div>
                     )}
                 </div>
@@ -581,34 +543,32 @@ function InlineChat({ otherUserId, myId }: { otherUserId: string, myId: string |
     }
 
     return (
-        <div className="flex flex-col h-full">
-            <ScrollArea className="flex-1 p-4 bg-muted/30">
-                <div className="space-y-4">
+        <div className="flex flex-col h-full bg-zinc-950/50 backdrop-blur-md">
+            <ScrollArea className="flex-1 p-6">
+                <div className="space-y-6">
                     {messages.map((msg) => {
                         const isMe = msg.senderId === myId
-                        // Fallback in case sender is not populated (though it should be now)
-                        const senderName = msg.sender?.fullName || 'Unknown'
+                        const senderName = msg.sender?.fullName || 'Secure Node'
                         const senderImage = msg.sender?.profileImage
 
                         return (
-                            <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`flex gap-2 max-w-[80%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                            <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}>
+                                <div className={`flex gap-3 max-w-[85%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                                     {!isMe && (
-                                        <Avatar className="h-8 w-8 mt-1">
+                                        <Avatar className="h-9 w-9 border-2 border-zinc-800 shadow-xl mt-1">
                                             <AvatarImage src={senderImage || undefined} />
-                                            <AvatarFallback>{senderName.charAt(0)}</AvatarFallback>
+                                            <AvatarFallback className="bg-zinc-800 text-zinc-500 font-bold">{senderName.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                     )}
-                                    <div>
-                                        {!isMe && (
-                                            <p className="text-xs text-muted-foreground mb-1 ml-1">{senderName}</p>
-                                        )}
-                                        <div className={`rounded-2xl p-3 text-sm shadow-sm ${isMe ? 'bg-primary text-primary-foreground rounded-tr-none' : 'bg-card text-card-foreground rounded-tl-none border'}`}>
+                                    <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                                        <div className={`rounded-3xl p-4 text-xs leading-relaxed shadow-lg ${isMe
+                                            ? 'bg-primary text-white rounded-tr-none font-bold'
+                                            : 'bg-white/5 border border-white/10 text-zinc-200 rounded-tl-none font-medium backdrop-blur-sm'}`}>
                                             {msg.content}
-                                            <div className={`text-[10px] mt-1 opacity-70 ${isMe ? 'text-right' : 'text-left'}`}>
-                                                {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </div>
                                         </div>
+                                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-zinc-600 mt-2 px-1">
+                                            {new Date(msg.createdAt).getHours()}:{new Date(msg.createdAt).getMinutes().toString().padStart(2, '0')}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -617,11 +577,17 @@ function InlineChat({ otherUserId, myId }: { otherUserId: string, myId: string |
                     <div ref={scrollRef} />
                 </div>
             </ScrollArea>
-            <div className="p-4 border-t bg-background">
-                <form onSubmit={handleSend} className="flex gap-2">
-                    <Input value={newMessage} onChange={e => setNewMessage(e.target.value)} placeholder="Type a message..." disabled={sending} />
-                    <Button type="submit" size="icon" disabled={!newMessage.trim() || sending}>
-                        {sending ? <Loader2 className="animate-spin h-4 w-4" /> : <Send className="h-4 w-4" />}
+            <div className="p-6 border-t border-white/5 bg-zinc-950/50 backdrop-blur-xl">
+                <form onSubmit={handleSend} className="flex gap-3">
+                    <Input
+                        value={newMessage}
+                        onChange={e => setNewMessage(e.target.value)}
+                        placeholder="Neural message encrypted..."
+                        disabled={sending}
+                        className="flex-1 bg-white/5 border-white/10 text-white rounded-2xl h-12 px-5 font-medium focus-visible:ring-primary/50 placeholder:text-zinc-600"
+                    />
+                    <Button type="submit" size="icon" disabled={!newMessage.trim() || sending} className="rounded-2xl h-12 w-12 bg-primary hover:bg-primary/80 text-white shadow-xl shadow-primary/20 transition-transform active:scale-95">
+                        {sending ? <Loader2 className="animate-spin h-5 w-5" /> : <Send className="h-5 w-5" />}
                     </Button>
                 </form>
             </div>
@@ -689,30 +655,29 @@ function InlineGroupChat({ groupId, myId }: { groupId: string, myId: string | nu
     const uniqueMessages = Array.from(new Map(messages.map(m => [m.id, m])).values())
 
     return (
-        <div className="flex flex-col h-full">
-            <ScrollArea className="flex-1 p-4 bg-muted/30">
-                <div className="space-y-4">
+        <div className="flex flex-col h-full bg-zinc-950/50 backdrop-blur-md">
+            <ScrollArea className="flex-1 p-6">
+                <div className="space-y-6">
                     {uniqueMessages.map((msg) => {
                         const isMe = msg.senderId === myId
                         return (
-                            <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`flex gap-2 max-w-[80%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                            <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}>
+                                <div className={`flex gap-3 max-w-[85%] ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                                     {!isMe && (
-                                        <Avatar className="h-8 w-8">
+                                        <Avatar className="h-9 w-9 border-2 border-zinc-800 shadow-xl mt-1">
                                             <AvatarImage src={msg.sender.profileImage || undefined} />
-                                            <AvatarFallback>{msg.sender.fullName.charAt(0)}</AvatarFallback>
+                                            <AvatarFallback className="bg-zinc-800 text-zinc-500 font-bold">{msg.sender.fullName.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                     )}
-                                    <div>
-                                        {!isMe && (
-                                            <p className="text-xs text-muted-foreground mb-1 ml-1">{msg.sender.fullName}</p>
-                                        )}
-                                        <div className={`rounded-2xl p-3 text-sm shadow-sm ${isMe ? 'bg-primary text-primary-foreground rounded-tr-none' : 'bg-card text-card-foreground rounded-tl-none border'}`}>
+                                    <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                                        <div className={`rounded-3xl p-4 text-xs leading-relaxed shadow-lg ${isMe
+                                            ? 'bg-primary text-white rounded-tr-none font-bold'
+                                            : 'bg-white/5 border border-white/10 text-zinc-200 rounded-tl-none font-medium backdrop-blur-sm'}`}>
                                             {msg.content}
-                                            <div className={`text-[10px] mt-1 opacity-70 ${isMe ? 'text-right' : 'text-left'}`}>
-                                                {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </div>
                                         </div>
+                                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-zinc-600 mt-2 px-1">
+                                            {new Date(msg.createdAt).getHours()}:{new Date(msg.createdAt).getMinutes().toString().padStart(2, '0')}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -721,11 +686,17 @@ function InlineGroupChat({ groupId, myId }: { groupId: string, myId: string | nu
                     <div ref={scrollRef} />
                 </div>
             </ScrollArea>
-            <div className="p-4 border-t bg-background">
-                <form onSubmit={handleSend} className="flex gap-2">
-                    <Input value={newMessage} onChange={e => setNewMessage(e.target.value)} placeholder="Type a message..." disabled={sending} />
-                    <Button type="submit" size="icon" disabled={!newMessage.trim() || sending}>
-                        {sending ? <Loader2 className="animate-spin h-4 w-4" /> : <Send className="h-4 w-4" />}
+            <div className="p-6 border-t border-white/5 bg-zinc-950/50 backdrop-blur-xl">
+                <form onSubmit={handleSend} className="flex gap-3">
+                    <Input
+                        value={newMessage}
+                        onChange={e => setNewMessage(e.target.value)}
+                        placeholder="Neural message encrypted..."
+                        disabled={sending}
+                        className="flex-1 bg-white/5 border-white/10 text-white rounded-2xl h-12 px-5 font-medium focus-visible:ring-primary/50 placeholder:text-zinc-600"
+                    />
+                    <Button type="submit" size="icon" disabled={!newMessage.trim() || sending} className="rounded-2xl h-12 w-12 bg-primary hover:bg-primary/80 text-white shadow-xl shadow-primary/20 transition-transform active:scale-95">
+                        {sending ? <Loader2 className="animate-spin h-5 w-5" /> : <Send className="h-5 w-5" />}
                     </Button>
                 </form>
             </div>

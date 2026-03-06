@@ -53,6 +53,7 @@ export default function Hero({ initialSettings }: HeroProps) {
       className="relative min-h-screen flex items-center w-full justify-center overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5"
       aria-labelledby="hero-title"
     >
+      {/* Background image + opacity layers */}
       <div className="absolute inset-0">
         <div className="absolute inset-0">
           <Image
@@ -62,8 +63,9 @@ export default function Hero({ initialSettings }: HeroProps) {
             className="object-cover"
             priority
             fetchPriority="high"
+            loading="eager"
             sizes="100vw"
-            quality={80}
+            quality={90}
           />
         </div>
 
@@ -79,6 +81,7 @@ export default function Hero({ initialSettings }: HeroProps) {
         />
       </div>
 
+      {/* Hero content – text & CTA */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <h1 id="hero-title" className="text-4xl sm:text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight tracking-tight uppercase">
           {title}
@@ -94,7 +97,7 @@ export default function Hero({ initialSettings }: HeroProps) {
             size="lg"
             className="text-lg px-10 py-6 h-auto font-black uppercase tracking-tighter shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all rounded-xl group relative overflow-hidden bg-primary text-white"
             onClick={scrollToProducts}
-            aria-label="Rent Hardware Now"
+            aria-label="Rent Hardware Now - View our premium workstation catalog"
           >
             <span className="relative z-10">{t('rentNow')}</span>
             <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
@@ -146,6 +149,6 @@ export default function Hero({ initialSettings }: HeroProps) {
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2 animate-pulse" />
         </div>
       </div>
-    </section >
+    </section>
   )
 }

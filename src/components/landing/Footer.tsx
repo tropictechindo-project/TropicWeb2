@@ -104,10 +104,10 @@ export default function Footer() {
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
-              <a href="mailto:tropictechindo@gmail.com" className="hover:text-primary hover:underline transition-colors">
+              <a href="mailto:tropictechindo@gmail.com" className="hover:text-primary hover:underline transition-colors" aria-label="Email our primary inbox">
                 tropictechindo@gmail.com
               </a>
-              <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors">
+              <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors" aria-label="Email our support team">
                 support@tropictech.online
               </a>
             </div>

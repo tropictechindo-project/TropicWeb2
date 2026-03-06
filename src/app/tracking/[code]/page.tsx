@@ -10,7 +10,10 @@ export default async function PublicTrackingPage({
     params: { code: string }
 }) {
     // Next 15 awaits params
-    const { code } = await params
+    const { code: rawCode } = await params
+
+    // Sanitize the code: Remove prefixes like "INV:", "REF:", and clean whitespace
+    const code = rawCode.replace(/^(INV:|REF:|ORDER:)\s*/i, '').trim()
 
     let delivery = await db.delivery.findUnique({
         where: { trackingCode: code },

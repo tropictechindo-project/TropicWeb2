@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { Loader2 } from "lucide-react"
+import { Loader2, Navigation as NavigationIcon } from "lucide-react"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user, isLoading, isAuthenticated } = useAuth()
@@ -49,7 +49,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <h2 className="text-2xl font-black tracking-tighter uppercase leading-none">Control <span className="text-primary">Center</span></h2>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => window.location.href = '/tracking'}
+                                className="h-8 px-4 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] font-black uppercase hover:bg-primary/10 transition-colors flex items-center gap-2"
+                            >
+                                <NavigationIcon className="w-3 h-3" /> Global Tracker
+                            </button>
                             <Badge variant="outline" className="rounded-full px-4 border-primary/20 bg-primary/5 text-primary text-[10px] font-black">ROOT ACCESS</Badge>
                         </div>
                     </div>

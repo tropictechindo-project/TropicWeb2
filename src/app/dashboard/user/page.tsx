@@ -33,7 +33,7 @@ import {
   LogOut,
   Bell,
   ExternalLink,
-  Map,
+  Map as MapIcon,
   Truck
 } from 'lucide-react'
 import {
@@ -423,7 +423,7 @@ export default function UserDashboard() {
     )
   }
 
-  const activeOrders = orders.filter(o => o.status === 'ACTIVE' || o.status === 'CONFIRMED' || o.status === 'PENDING')
+  const activeOrders = orders.filter(o => o.status === 'ACTIVE' || o.status === 'CONFIRMED' || o.status === 'PAID' || o.status === 'PENDING')
   const pastOrders = orders.filter(o => o.status === 'COMPLETED' || o.status === 'CANCELLED')
 
   return (
@@ -441,7 +441,7 @@ export default function UserDashboard() {
             </div>
           </div>
           <Button variant="outline" size="sm" onClick={() => window.location.href = '/tracking'} className="h-8 gap-1.5 flex text-xs">
-            <Map className="w-3.5 h-3.5" />Global Tracker
+            <MapIcon className="w-3.5 h-3.5" />Global Tracker
           </Button>
           <Button variant="outline" size="sm" onClick={() => {
             if (supportGroup) setDefaultSupportGroup(supportGroup.id)
@@ -768,7 +768,17 @@ export default function UserDashboard() {
                     ).map((item: any, idx: number) => {
                       const name = item.variant?.product?.name || item.rentalPackage?.name || "Equipment"
                       return (
-                        <Card key={`${item.id}-${idx}`} className="group hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden bg-card/50 backdrop-blur-sm">
+                        <Card
+                          key={`${item.id}-${idx}`}
+                          className="group hover:border-primary/40 transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden bg-card/50 backdrop-blur-sm cursor-pointer"
+                          onClick={() => {
+                            const order = orders.find(o => o.id === item.orderId)
+                            if (order) {
+                              setSelectedOrder(order)
+                              setIsOrderModalOpen(true)
+                            }
+                          }}
+                        >
                           <CardContent className="p-4 flex items-center justify-between">
                             <div className="flex items-center gap-4">
                               <div className="h-12 w-12 rounded-xl bg-background border flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
@@ -794,20 +804,9 @@ export default function UserDashboard() {
                                 <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Status</p>
                                 <p className="text-[10px] font-bold text-green-600 uppercase">Deployed</p>
                               </div>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0 rounded-full"
-                                onClick={() => {
-                                  const order = orders.find(o => o.id === item.orderId)
-                                  if (order) {
-                                    setSelectedOrder(order)
-                                    setIsOrderModalOpen(true)
-                                  }
-                                }}
-                              >
+                              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-muted/50 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                                 <ChevronRight className="h-4 w-4" />
-                              </Button>
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -1424,17 +1423,15 @@ export default function UserDashboard() {
             </div>
           )}
 
-          {/* AI Panel Tab */}
           {activeTab === 'ai' && (
             <div className="animate-in fade-in duration-500 space-y-6">
               <AiDashboardPanel
-                title="Tropic Tech AI Assistant"
-                agentName="Sunny"
-                welcomeMessage="Hi! I am Sunny, your Tropic Tech assistant. Need help with your rentals, packages, or general Bali info?"
+                title="Ask-Me"
+                agentName="Ask-Me"
+                welcomeMessage="Hi! I am Ask-Me, your Tropic Tech neural assistant. How can I help you today?"
                 apiRoute="/api/ai/seller"
                 icon={<Bot className="w-5 h-5 text-primary" />}
               />
-
             </div>
           )}
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
-    Navigation,
+    Navigation as NavigationIcon,
     MoreHorizontal,
     Trash,
     Edit,
@@ -249,7 +249,7 @@ export function DeliveriesClient({
                                             className="h-7 text-[10px] gap-1 px-2 border-primary/20 hover:bg-primary/5"
                                             onClick={() => window.open(delivery.invoice.guestAddress, '_blank')}
                                         >
-                                            <Navigation className="w-3 h-3 text-primary" /> MAP LINK
+                                            <NavigationIcon className="w-3 h-3 text-primary" /> MAP LINK
                                         </Button>
                                     )}
                                 </div>
@@ -305,7 +305,7 @@ export function DeliveriesClient({
                                                 window.open(`/tracking/${delivery.trackingCode}`, '_blank')
                                             }}
                                         >
-                                            <Navigation className="w-3.5 h-3.5" /> Live Track
+                                            <NavigationIcon className="w-3.5 h-3.5" /> Live Track
                                         </Button>
                                     )}
                                     {delivery.deliveryType === 'PICKUP' && delivery.status === 'PAUSED' && (
@@ -409,7 +409,7 @@ export function DeliveriesClient({
                                             window.open(`/tracking/${delivery.trackingCode || delivery.invoice?.invoiceNumber}`, '_blank')
                                         }}
                                     >
-                                        <Navigation className="w-3.5 h-3.5" /> Live Track
+                                        <NavigationIcon className="w-3.5 h-3.5" /> Live Track
                                     </Button>
                                 ) : (
                                     <span className="text-[10px] text-muted-foreground uppercase font-bold pr-2 tracking-widest">

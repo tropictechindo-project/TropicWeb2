@@ -58,7 +58,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     try {
         // Dynamic Product pages
-        const products = await db.product.findMany({ select: { id: true, createdAt: true } })
+        const products = await db.product.findMany({
+            select: { id: true, createdAt: true },
+            where: { status: 'PUBLISHED' } // Only show published products
+        })
+
         const productPages: MetadataRoute.Sitemap = products.map((p) => ({
             url: `${baseUrl}/product/${p.id}`,
             lastModified: p.createdAt || new Date(),
@@ -66,16 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.7,
         }))
 
-        // Dynamic Package pages (assuming they have routes)
-        const packages = await db.rentalPackage.findMany({ select: { id: true, createdAt: true } })
-        const packagePages: MetadataRoute.Sitemap = packages.map((pkg) => ({
-            url: `${baseUrl}/product/${pkg.id}`, // Packages usually display in product detail or modal
-            lastModified: pkg.createdAt || new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.7,
-        }))
-
-        return [...staticPages, ...productPages, ...packagePages]
+        return [...staticPages, ...productPages]
     } catch (err) {
         console.error('Sitemap error:', err)
         return staticPages

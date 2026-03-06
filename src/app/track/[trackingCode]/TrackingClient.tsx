@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Truck, CheckCircle, Clock, Package, Navigation, Phone, Info } from "lucide-react"
+import { MapPin, Truck, CheckCircle, Clock, Package, Navigation as NavigationIcon, Phone, Info } from "lucide-react"
 
 export function TrackingClient({ delivery }: { delivery: any }) {
     const isPickup = delivery.deliveryType === 'PICKUP'
@@ -118,7 +118,7 @@ export function TrackingClient({ delivery }: { delivery: any }) {
                                 <div className="flex justify-center gap-2 pt-2">
                                     {(delivery.latitude && delivery.longitude) && (
                                         <a href={`https://www.google.com/maps?q=${delivery.latitude},${delivery.longitude}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-xl text-sm font-bold hover:bg-muted/80 transition-colors">
-                                            <Navigation className="w-4 h-4 text-primary" /> Track Map
+                                            <NavigationIcon className="w-4 h-4 text-primary" /> Track Map
                                         </a>
                                     )}
                                 </div>

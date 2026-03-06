@@ -118,6 +118,7 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
               src={displayImage}
               alt={`${product.name} - Premium Workstation Rental Bali`}
               fill
+              loading="lazy"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               quality={75}

@@ -61,60 +61,67 @@ export function AiDashboardPanel({ title, agentName, welcomeMessage, apiRoute, i
     }
 
     return (
-        <Card className="flex flex-col h-[500px] shadow-sm border-primary/20 overflow-hidden relative">
-            <CardHeader className="bg-primary/5 pb-4 border-b">
-                <div className="flex items-center gap-3">
-                    <div className="bg-primary/10 p-2 rounded-xl text-primary">
-                        {icon || <Bot className="h-5 w-5" />}
+        <Card className="flex flex-col h-[600px] border-none shadow-2xl overflow-hidden relative bg-zinc-950 text-white rounded-[2rem]">
+            {/* Glossy Header */}
+            <CardHeader className="bg-white/5 pb-6 border-b border-white/10 backdrop-blur-md">
+                <div className="flex items-center gap-4">
+                    <div className="bg-primary/20 p-3 rounded-2xl text-primary shadow-lg shadow-primary/10">
+                        {icon || <Bot className="h-6 w-6" />}
                     </div>
                     <div>
-                        <CardTitle className="text-sm font-black uppercase tracking-widest">{title}</CardTitle>
-                        <div className="flex items-center gap-1.5 mt-1">
-                            <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{agentName} Active</span>
+                        <CardTitle className="text-sm font-black uppercase tracking-[0.2em] text-white/90">{title}</CardTitle>
+                        <div className="flex items-center gap-1.5 mt-1.5">
+                            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{agentName} IS ONLINE</span>
                         </div>
                     </div>
                 </div>
             </CardHeader>
 
-            <CardContent className="flex-1 p-0 bg-background overflow-hidden relative">
-                <ScrollArea className="h-full p-4">
-                    <div className="space-y-4 pb-2">
+            <CardContent className="flex-1 p-0 bg-transparent overflow-hidden relative">
+                <ScrollArea className="h-full p-6">
+                    <div className="space-y-6 pb-4">
                         {messages.map((m, i) => (
-                            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[85%] p-3 rounded-2xl text-xs ${m.role === 'user'
-                                    ? 'bg-primary text-primary-foreground rounded-tr-none'
-                                    : 'bg-muted/50 border border-border/50 rounded-tl-none font-medium'
+                            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
+                                <div className={`max-w-[85%] p-4 rounded-3xl text-xs leading-relaxed shadow-sm ${m.role === 'user'
+                                    ? 'bg-primary text-white rounded-tr-none font-bold'
+                                    : 'bg-white/5 border border-white/10 rounded-tl-none font-medium text-zinc-200 backdrop-blur-sm'
                                     }`}>
                                     {m.content}
                                 </div>
                             </div>
                         ))}
                         {isLoading && (
-                            <div className="flex justify-start">
-                                <div className="bg-muted/30 p-3 rounded-2xl rounded-tl-none animate-pulse flex items-center gap-2">
-                                    <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                                    <span className="text-[10px] uppercase font-bold tracking-widest text-primary/60">{agentName} is thinking...</span>
+                            <div className="flex justify-start animate-in fade-in duration-300">
+                                <div className="bg-white/5 border border-white/10 p-4 rounded-3xl rounded-tl-none flex items-center gap-3 backdrop-blur-sm">
+                                    <div className="flex gap-1">
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
+                                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" />
+                                    </div>
+                                    <span className="text-[10px] uppercase font-black tracking-widest text-zinc-500">{agentName} is generating...</span>
                                 </div>
                             </div>
                         )}
                         <div ref={scrollRef} />
                     </div>
                 </ScrollArea>
-                <div className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-background to-transparent z-10" />
+                {/* Visual accents */}
+                <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-zinc-950 to-transparent z-10 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-zinc-950 to-transparent z-10 pointer-events-none" />
             </CardContent>
 
-            <CardFooter className="p-4 border-t bg-muted/10">
-                <div className="flex w-full gap-2">
+            <CardFooter className="p-6 border-t border-white/10 bg-white/5 backdrop-blur-xl">
+                <div className="flex w-full gap-3">
                     <input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                        placeholder="Message Assistant..."
-                        className="flex-1 bg-background border border-border/50 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-3 py-2 text-xs transition-all pointer-events-auto"
+                        placeholder={`Ask ${agentName} anything...`}
+                        className="flex-1 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-2xl px-5 py-3 text-sm transition-all pointer-events-auto text-white placeholder:text-zinc-500 font-medium"
                     />
-                    <Button size="icon" onClick={handleSend} disabled={isLoading} className="rounded-xl h-10 w-10 flex-shrink-0">
-                        <Send className="h-4 w-4" />
+                    <Button size="icon" onClick={handleSend} disabled={isLoading} className="rounded-2xl h-12 w-12 flex-shrink-0 bg-primary hover:bg-primary/80 text-white shadow-xl shadow-primary/20 transition-transform active:scale-95">
+                        <Send className="h-5 w-5" />
                     </Button>
                 </div>
             </CardFooter>

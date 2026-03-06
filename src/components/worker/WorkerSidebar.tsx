@@ -3,7 +3,7 @@
 import {
     LayoutDashboard,
     Package,
-    Navigation,
+    Navigation as NavigationIcon,
     Home,
     LogOut,
     Sun,
@@ -46,7 +46,7 @@ const items = [
     {
         title: "Delivery Pool",
         id: "pool",
-        icon: Navigation,
+        icon: NavigationIcon,
     },
     {
         title: "Active Jobs",
@@ -56,7 +56,7 @@ const items = [
     {
         title: "Delivery Tracker (Global)",
         id: "tracking",
-        icon: Navigation,
+        icon: NavigationIcon,
     },
     {
         title: "Team Comms",
@@ -69,7 +69,7 @@ const items = [
         icon: ClipboardCheck,
     },
     {
-        title: "AI Master",
+        title: "Ask-Me",
         id: "ai",
         icon: Bot,
     }

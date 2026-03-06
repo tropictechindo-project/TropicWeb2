@@ -135,7 +135,7 @@ export const metadata: Metadata = {
 
   // ── Verification ──────────────────────────────────────────────────────────
   verification: {
-    google: 'your-google-verification-code',
+    google: 'G-XXXXXXXXXX', // Use the actual GA4/Google ID if available, otherwise leave as standard tag
   },
 };
 

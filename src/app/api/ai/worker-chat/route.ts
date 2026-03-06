@@ -58,10 +58,11 @@ You must be concise, encouraging, and action-oriented. Reply politely to the wor
             if (!apiKey) throw new Error('No AI key configured')
 
             // Try to call existing AI infrastructure (if available)
-            const aiRes = await fetch(new URL('/api/ai/master', req.url).toString(), {
+            const baseUrl = req.nextUrl.origin
+            const aiRes = await fetch(`${baseUrl}/api/ai/master`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: req.headers.get('Authorization') || '' },
-                body: JSON.stringify({ messages: [{ role: 'user', content: message }], systemPrompt: systemContext })
+                body: JSON.stringify({ message: message, history: [] }) // Align with master route expectation
             })
             if (aiRes.ok) {
                 const aiData = await aiRes.json()

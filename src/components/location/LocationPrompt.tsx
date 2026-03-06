@@ -10,7 +10,7 @@ import {
     DialogFooter,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { MapPin, Navigation } from 'lucide-react'
+import { MapPin, Navigation as NavigationIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 export function LocationPrompt() {
@@ -103,7 +103,7 @@ export function LocationPrompt() {
                 </DialogHeader>
                 <div className="flex flex-col gap-3 py-4">
                     <div className="flex items-start gap-3 p-3 rounded-xl bg-muted/50 border border-border/50">
-                        <Navigation className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <NavigationIcon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <p className="text-xs text-muted-foreground leading-relaxed">
                             Your coordinates will be shared with the delivery worker to ensure your workstation arrives at the exact spot.
                         </p>

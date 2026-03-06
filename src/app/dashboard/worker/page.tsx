@@ -27,7 +27,7 @@ import {
   Package,
   TrendingUp,
   ClipboardCheck,
-  Navigation,
+  Navigation as NavigationIcon,
   Camera,
   Loader2,
   X
@@ -415,6 +415,14 @@ export default function WorkerDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.location.href = '/tracking'}
+                className="h-8 gap-1.5 flex text-[10px] font-black uppercase border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+              >
+                <NavigationIcon className="w-3.5 h-3.5" />Global Tracker
+              </Button>
               <Button variant="outline" size="sm" onClick={() => setShowNotificationsDialog(true)} className="h-8 gap-1.5 flex text-xs">
                 <Bell className="w-3.5 h-3.5" />Notifications
                 {unreadCount > 0 && <Badge className="ml-0.5 h-4 px-1 text-[9px]">{unreadCount}</Badge>}
@@ -562,11 +570,11 @@ export default function WorkerDashboard() {
             {activeTab === 'ai' && (
               <div className="space-y-4 animate-in fade-in duration-500">
                 <AiDashboardPanel
-                  title="Worker AI Assistant"
-                  agentName="Operations AI"
-                  welcomeMessage="Hero! I am your Operations AI. Need to check your active jobs, pool deliveries, or daily stats?"
+                  title="Ask-Me Assistant"
+                  agentName="Ask-Me"
+                  welcomeMessage={`Hi ${user?.fullName || 'Hero'}! I am Ask-Me, your advanced intelligence unit. How can I assist with your field operations today?`}
                   apiRoute="/api/ai/worker-chat"
-                  icon={<BotMessageSquare className="w-5 h-5 text-blue-500" />}
+                  icon={<BotMessageSquare className="w-5 h-5 text-primary" />}
                 />
               </div>
             )}
@@ -620,7 +628,7 @@ export default function WorkerDashboard() {
                                           window.open(delivery.invoice.guestAddress, '_blank')
                                         }}
                                       >
-                                        <Navigation className="w-3 h-3" /> MAP LINK
+                                        <NavigationIcon className="w-3 h-3" /> MAP LINK
                                       </Button>
                                     )}
                                   </div>
@@ -720,7 +728,7 @@ export default function WorkerDashboard() {
                                           window.open(delivery.invoice.guestAddress, '_blank')
                                         }}
                                       >
-                                        <Navigation className="w-3 h-3" /> VIEW MAP LINK
+                                        <NavigationIcon className="w-3 h-3" /> VIEW MAP LINK
                                       </Button>
                                     )}
                                   </div>

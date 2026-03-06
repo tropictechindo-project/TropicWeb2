@@ -18,8 +18,9 @@ import {
     Globe,
     Bot,
     Truck,
-    Navigation,
-    ClipboardCheck
+    Navigation as NavigationIcon,
+    ClipboardCheck,
+    Map as MapIcon
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
@@ -69,7 +70,7 @@ const items = [
     {
         title: "Deliveries Queue",
         url: "/admin/deliveries",
-        icon: Navigation,
+        icon: NavigationIcon,
     },
     {
         title: "Fleet & Vehicles",
@@ -193,6 +194,14 @@ export function AdminSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <GlobalTrackerModal />
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild tooltip="Global Tracker Map">
+                                    <Link href="/tracking" className="bg-primary/5 hover:bg-primary/10 text-primary transition-colors">
+                                        <MapIcon className="h-4 w-4" />
+                                        <span className="font-bold">GLOBAL TRACKER</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild tooltip="Back to Home">
                                     <Link href="/">

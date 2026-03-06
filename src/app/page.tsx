@@ -18,6 +18,9 @@ const Packages = dynamic(() => import('@/components/landing/Packages'), {
 const SpecialOffers = dynamic(() => import('@/components/landing/SpecialOffers'), {
   loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
+const TrackerSection = dynamic(() => import('@/components/landing/TrackerSection'), {
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
 const Services = dynamic(() => import('@/components/landing/Services'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
@@ -145,6 +148,10 @@ export default async function Home() {
 
         <Suspense fallback={<div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
           <SpecialOffers initialSettings={specialOffersSettings} />
+        </Suspense>
+
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+          <TrackerSection />
         </Suspense>
 
         <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>

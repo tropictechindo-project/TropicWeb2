@@ -117,8 +117,9 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                 {offer.images && offer.images.length > 0 ? (
                                                     <Image
                                                         src={offer.images[0]}
-                                                        alt={offer.title}
+                                                        alt={`${offer.title} - Special Offer | Tropic Tech Bali Workstation Rental`}
                                                         fill
+                                                        loading="lazy"
                                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                                                     />
                                                 ) : (

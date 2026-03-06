@@ -4,20 +4,22 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import {
-    LayoutDashboard, FileText, Truck, Package, Bot,
-    Clock, AlertTriangle, TrendingUp, Send, Loader2,
-    ChevronRight, RefreshCw, ArrowRight, BarChart3, Activity,
-    Download, ListOrdered, LogOut
-} from 'lucide-react'
+import { OperatorSidebar } from "@/components/operator/OperatorSidebar"
+import { useRealtimePoller } from '@/hooks/useRealtimePoller'
+import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
+import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { OrdersClient } from "@/components/admin/orders/OrdersClient"
 import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 import { InventoryClient } from "@/components/admin/inventory/InventoryClient"
 import { ServiceRequestsClient } from "@/components/admin/ServiceRequestsClient"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { OperatorSidebar } from "@/components/operator/OperatorSidebar"
-import { useRealtimePoller } from '@/hooks/useRealtimePoller'
+import {
+    LayoutDashboard, FileText, Truck, Package, Bot,
+    Clock, AlertTriangle, TrendingUp, Send, Loader2,
+    ChevronRight, RefreshCw, ArrowRight, BarChart3, Activity,
+    Download, ListOrdered, LogOut, Navigation as NavigationIcon, Map as MapIcon
+} from 'lucide-react'
 
 interface Props {
     operatorName: string
@@ -273,14 +275,26 @@ export default function OperatorDashboardClient({
                     <div className="flex items-center gap-2">
                         <SidebarTrigger />
                         <div className="flex flex-col ml-2">
-                            <h1 className="text-lg font-black uppercase tracking-tight leading-tight">⚡ Operator Console</h1>
+                            <h1 className="text-lg font-black uppercase tracking-tight leading-tight flex items-center gap-2">
+                                <span className="text-primary truncate font-black">Operator Terminal</span>
+                            </h1>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary">OPERATOR</Badge>
-                        <Button variant="ghost" size="icon" onClick={() => refreshOverview(false)} disabled={isPolling}>
-                            <RefreshCw className={`h-4 w-4 ${isPolling ? 'animate-spin' : ''}`} />
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.location.href = '/tracking'}
+                            className="h-8 gap-1.5 flex text-[10px] font-black uppercase border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
+                        >
+                            <MapIcon className="w-3.5 h-3.5" />Global Tracker
                         </Button>
+                        <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-[10px] font-black uppercase border-primary/30 text-primary">OPERATOR</Badge>
+                            <Button variant="ghost" size="icon" onClick={() => refreshOverview(false)} disabled={isPolling} className="h-8 w-8 rounded-full">
+                                <RefreshCw className={cn("h-4 w-4 text-muted-foreground", isPolling && "animate-spin")} />
+                            </Button>
+                        </div>
                     </div>
                 </header>
 
@@ -637,66 +651,16 @@ export default function OperatorDashboardClient({
                         </div>
                     )}
 
-                    {/* ═══ AI ASSISTANT ═══════════════════════════════════════════════════ */}
+                    {/* ═══ AI ASSISTANT (Ask-Me) ═══════════════════════════════════════════════════ */}
                     {activeTab === 'ai' && (
-                        <div className="space-y-4 max-w-2xl mx-auto">
-                            <div className="text-center">
-                                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 mb-3">
-                                    <Bot className="w-7 h-7 text-primary" />
-                                </div>
-                                <h2 className="text-lg font-black uppercase tracking-tight">Operator AI Assistant</h2>
-                                <p className="text-xs text-muted-foreground mt-1">Ask about orders, stock, delivery priorities, or operational summaries.</p>
-                            </div>
-
-                            <div className="bg-card border rounded-2xl overflow-hidden">
-                                <div className="h-[400px] overflow-y-auto p-4 space-y-3 flex flex-col">
-                                    {aiMessages.map((msg, i) => (
-                                        <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                            <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user'
-                                                ? 'bg-primary text-primary-foreground rounded-br-sm'
-                                                : 'bg-muted rounded-bl-sm'
-                                                }`}>
-                                                {msg.role === 'ai' && <span className="text-[9px] font-black uppercase tracking-widest text-primary/60 block mb-1">AI OPERATOR</span>}
-                                                <span className="whitespace-pre-wrap">{msg.text}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {aiLoading && (
-                                        <div className="flex justify-start">
-                                            <div className="bg-muted rounded-2xl rounded-bl-sm px-4 py-3">
-                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="border-t p-3 flex gap-2">
-                                    <Input
-                                        placeholder="Ask about stock levels, pending orders, delivery status..."
-                                        value={aiInput}
-                                        onChange={e => setAiInput(e.target.value)}
-                                        onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendAiMessage()}
-                                        className="flex-1 text-sm"
-                                    />
-                                    <Button onClick={sendAiMessage} disabled={aiLoading || !aiInput.trim()} size="icon">
-                                        <Send className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-2">
-                                {[
-                                    "Summary of today's pending orders",
-                                    'Which products are out of stock?',
-                                    'How many deliveries are queued?',
-                                    'What needs urgent attention?',
-                                ].map(prompt => (
-                                    <button key={prompt} onClick={() => setAiInput(prompt)}
-                                        className="text-left p-3 bg-card border rounded-xl text-xs text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all flex items-center gap-2"
-                                    >
-                                        <ChevronRight className="h-3 w-3 shrink-0" />{prompt}
-                                    </button>
-                                ))}
-                            </div>
+                        <div className="animate-in fade-in duration-500">
+                            <AiDashboardPanel
+                                title="Ask-Me Assistant"
+                                agentName="Ask-Me"
+                                welcomeMessage={`Hi ${operatorName}! I am Ask-Me, your advanced intelligence unit. How can I assist with your terminal operations today?`}
+                                apiRoute="/api/ai/operator-chat"
+                                icon={<Bot className="w-5 h-5 text-primary" />}
+                            />
                         </div>
                     )}
                     {/* ═══ CREATE INVOICE ══════════════════════════════════════════════════ */}

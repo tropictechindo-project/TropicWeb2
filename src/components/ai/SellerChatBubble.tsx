@@ -4,13 +4,12 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { MessageCircle, X, Send, Bot, Loader2 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { X, Send, Bot, Loader2, Sparkles } from "lucide-react"
 
 export function SellerChatBubble() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState<any[]>([
-        { role: 'assistant', content: 'Hi! I am Sunny, your Tropic Tech assistant. Looking for the perfect remote setup in Bali?' }
+        { role: 'assistant', content: 'Hi! I am Ask-Me, your Tropic Tech AI assistant. Looking for the perfect remote setup in Bali?' }
     ])
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -40,47 +39,54 @@ export function SellerChatBubble() {
             const data = await response.json()
             setMessages(prev => [...prev, { role: 'assistant', content: data.reply }])
         } catch (error) {
-            setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I am having a bit of trouble connecting to my neural network. Please try again later!' }])
+            setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I am having a bit of trouble connecting. Please try again later!' }])
         } finally {
             setIsLoading(false)
         }
     }
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4 pointer-events-none">
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 pointer-events-none">
+            {/* Chat Window */}
             {isOpen && (
-                <Card className="w-[380px] h-[550px] shadow-2xl border-primary/20 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 pointer-events-auto">
-                    <CardHeader className="bg-primary p-4 flex flex-row items-center justify-between text-white border-none">
+                <Card className="w-[380px] h-[550px] shadow-2xl border-zinc-800/50 bg-zinc-950 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 duration-300 pointer-events-auto text-white">
+                    {/* Header */}
+                    <CardHeader className="bg-zinc-900 p-4 flex flex-row items-center justify-between border-b border-zinc-800">
                         <div className="flex items-center gap-3">
-                            <div className="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-                                <Bot className="h-5 w-5" />
+                            <div className="bg-white/10 p-2 rounded-xl">
+                                <Bot className="h-4 w-4 text-white" />
                             </div>
                             <div>
-                                <CardTitle className="text-sm font-black uppercase tracking-tighter">Tropic Tech Assistant</CardTitle>
-                                <div className="flex items-center gap-1.5">
+                                <CardTitle className="text-sm font-black uppercase tracking-tighter text-white">Ask-Me</CardTitle>
+                                <div className="flex items-center gap-1.5 mt-0.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
-                                    <span className="text-[9px] font-bold uppercase tracking-widest opacity-80">AI Active Now</span>
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">AI Active</span>
                                 </div>
                             </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-white hover:bg-white/10 rounded-full h-8 w-8">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setIsOpen(false)}
+                            className="text-white hover:bg-white/10 rounded-full h-8 w-8"
+                            aria-label="Close Ask-Me chat"
+                        >
                             <X className="h-4 w-4" />
                         </Button>
                     </CardHeader>
 
-                    <CardContent className="flex-1 p-0 bg-background overflow-hidden relative">
+                    {/* Messages */}
+                    <CardContent className="flex-1 p-0 bg-zinc-950 overflow-hidden relative">
                         <ScrollArea className="h-full p-4">
                             <div className="space-y-4">
                                 {messages.map((m, i) => (
                                     <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                         <div className={`max-w-[85%] p-3 rounded-2xl text-xs ${m.role === 'user'
-                                            ? 'bg-primary text-primary-foreground rounded-tr-none'
-                                            : 'bg-muted/50 border border-border/50 rounded-tl-none font-medium text-foreground/90'
+                                            ? 'bg-white text-zinc-900 rounded-tr-none font-semibold'
+                                            : 'bg-zinc-800 border border-zinc-700 rounded-tl-none text-zinc-100'
                                             }`}>
                                             {m.role === 'assistant' && (
-                                                <p className="text-[9px] font-black uppercase tracking-widest text-primary/60 mb-1">
-                                                    Sunny (AI Assistant)
-                                                </p>
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1">Ask-Me</p>
                                             )}
                                             {m.content}
                                         </div>
@@ -88,28 +94,34 @@ export function SellerChatBubble() {
                                 ))}
                                 {isLoading && (
                                     <div className="flex justify-start">
-                                        <div className="bg-muted/30 p-3 rounded-2xl rounded-tl-none animate-pulse flex items-center gap-2">
-                                            <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                                            <span className="text-[10px] uppercase font-bold tracking-widest text-primary/60">Sunny is thinking...</span>
+                                        <div className="bg-zinc-800 border border-zinc-700 p-3 rounded-2xl rounded-tl-none animate-pulse flex items-center gap-2">
+                                            <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />
+                                            <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-400">Ask-Me is thinking...</span>
                                         </div>
                                     </div>
                                 )}
                                 <div ref={scrollRef} />
                             </div>
                         </ScrollArea>
-                        <div className="absolute top-0 left-0 w-full h-4 bg-gradient-to-b from-background to-transparent z-10" />
                     </CardContent>
 
-                    <CardFooter className="p-4 border-t bg-muted/10">
+                    {/* Footer */}
+                    <CardFooter className="p-4 border-t border-zinc-800 bg-zinc-900">
                         <div className="flex w-full gap-2">
                             <input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                                placeholder="Ask me something about rentals..."
-                                className="flex-1 bg-background border border-border/50 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-xl px-3 py-2 text-xs transition-all pointer-events-auto"
+                                placeholder="Ask me about rentals..."
+                                className="flex-1 bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder:text-zinc-500 transition-all pointer-events-auto"
                             />
-                            <Button size="icon" onClick={handleSend} disabled={isLoading} className="rounded-xl h-10 w-10 flex-shrink-0 pointer-events-auto">
+                            <Button
+                                size="icon"
+                                onClick={handleSend}
+                                disabled={isLoading}
+                                className="rounded-xl h-10 w-10 flex-shrink-0 bg-white hover:bg-zinc-100 text-zinc-900 pointer-events-auto"
+                                aria-label="Send message"
+                            >
                                 <Send className="h-4 w-4" />
                             </Button>
                         </div>
@@ -117,28 +129,21 @@ export function SellerChatBubble() {
                 </Card>
             )}
 
-            <div className="flex items-center gap-3">
-                {!isOpen && (
-                    <div className="bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-primary/20 shadow-lg animate-in fade-in slide-in-from-right-5 duration-500 pointer-events-auto">
-                        <span className="text-sm font-black uppercase tracking-tighter text-primary whitespace-nowrap">
-                            Ask-Me
-                        </span>
-                    </div>
-                )}
-                <Button
-                    onClick={() => setIsOpen(!isOpen)}
-                    aria-label="Ask-Me AI Assistant"
-                    className={`h-14 w-14 rounded-full shadow-2xl transition-all duration-300 pointer-events-auto ${isOpen ? 'rotate-90 opacity-0 scale-0' : 'scale-100 rotate-0'}`}
-                >
-                    <div className="relative">
-                        <MessageCircle className="h-6 w-6" />
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                        </span>
-                    </div>
-                </Button>
-            </div>
+            {/* Trigger Button — "Ask-Me" name integrated inside the button */}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Open Ask-Me AI Assistant"
+                className={`pointer-events-auto flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-full shadow-2xl border border-zinc-700 transition-all duration-300 ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}
+            >
+                <div className="relative">
+                    <Sparkles className="h-4 w-4 text-white" />
+                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white" />
+                    </span>
+                </div>
+                <span className="text-sm font-black uppercase tracking-tighter whitespace-nowrap">Ask-Me</span>
+            </button>
         </div>
     )
 }

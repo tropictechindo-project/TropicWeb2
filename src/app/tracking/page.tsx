@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Package, ArrowRight, Loader2, MapPin, CheckCircle } from 'lucide-react'
+import { Search, Package, ArrowRight, Loader2, MapPin, CheckCircle, Home, ChevronLeft } from 'lucide-react'
 import { toast } from 'sonner'
 
 function TrackingSearchPageInner() {
@@ -53,6 +53,13 @@ function TrackingSearchPageInner() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background flex flex-col items-center justify-center p-6">
+            <div className="absolute top-6 left-6 flex gap-2">
+                <Button variant="ghost" size="sm" asChild className="rounded-full font-bold text-[10px] uppercase tracking-widest gap-2 bg-background border shadow-sm">
+                    <a href="/">
+                        <Home className="w-3.5 h-3.5" /> Home
+                    </a>
+                </Button>
+            </div>
             <div className="w-full max-w-md space-y-8">
                 {/* Header */}
                 <div className="text-center space-y-3">
@@ -132,6 +139,17 @@ function TrackingSearchPageInner() {
                             <p className="text-[10px] font-bold text-muted-foreground leading-tight">{item.label}</p>
                         </div>
                     ))}
+                </div>
+                {/* Footer CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Button variant="outline" asChild className="flex-1 rounded-2xl h-14 font-black uppercase tracking-widest gap-2 bg-background border-2 shadow-sm order-2 sm:order-1">
+                        <a href="/">
+                            <Home className="w-4 h-4" /> Back to Home
+                        </a>
+                    </Button>
+                    <Button className="flex-1 rounded-2xl h-14 font-black uppercase tracking-widest gap-2 shadow-xl shadow-primary/20 order-1 sm:order-2" onClick={() => window.history.back()}>
+                        <ChevronLeft className="w-4 h-4" /> Go Back
+                    </Button>
                 </div>
             </div>
         </div>
