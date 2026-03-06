@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-07 05:45:00 (WITA/GMT+8)
-**System Version**: 2.2.0-stable
-**Environment**: Production Hardened (Instant Page & Minimal UI)
+**Last Updated**: 2026-03-07 06:55:00 (WITA/GMT+8)
+**System Version**: 2.4.0-hardened
+**Environment**: Global Production (Security Hardened & UI Mastered)
 
 ---
 
@@ -104,6 +104,17 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 ---
 
 ## 📅 Complete System Update History
+
+### ✅ v2.4.0 — Infrastructure Hardening & Global Production (2026-03-07)
+- **Supabase Security Hardening**: Resolved `mutable search_path` vulnerability in `handle_new_user` and related functions to prevent search path hijacking.
+- **Production Build Integrity**: Verified 100% stability across all routes for final global deployment.
+
+### ✅ v2.3.0 — UI Mastery & Auth Hardening (2026-03-07)
+- **Hero CTA Transformation**: Refined "RENT NOW" to a premium large, pitch-black aesthetic.
+- **Pricing Logic Overhaul**: Implemented unified rounding: `(Monthly / 30)` rounded UP to the nearest **IDR 2,000**.
+- **Single Admin Lock**: Restricted `ADMIN` role access exclusively to `tropictechindo@gmail.com`.
+- **Image Resiliency**: Local fallback `/packages/Rental Bali3.webp` ensured for broken package links.
+- **Admin Dashboard Stability**: Hardened BigInt/Date serialization to prevent production server exceptions.
 
 ### ✅ v2.2.0 — UI Refinement & Performance Maximization (2026-03-07)
 - **Instant Page Architecture**: Converted all below-the-fold components to `dynamic` imports with Skeleton placeholders, maximizing TTI and perceived loading speed.

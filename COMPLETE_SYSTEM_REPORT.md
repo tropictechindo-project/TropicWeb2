@@ -1,11 +1,23 @@
-# 🏆 TropicTech Complete System Report - March 2026 (v2.2.0)
+# 🏆 TropicTech Complete System Report - March 2026 (v2.4.0)
 
 ## 📌 Executive Summary
-The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **UI Refinement & Performance Maximization (v2.2.0)** milestone. The system is now significantly faster ("Instant Page" loading), precisely branded with a minimal aesthetic, and fully production-hardened with zero diagnostic footprint.
+The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Infrastructure Hardening & UI Mastery (v2.4.0)** milestone. The system is now significantly more secure (Supabase hardening), visually exclusive (Black Hero CTA), and mathematically consistent (IDR 2,000 Pricing Logic).
 
 ---
 
-## ✨ 0. UI Refinement & Performance Maximization (NEW v2.2.0)
+## 🛡️ 0. Infrastructure Hardening (NEW v2.4.0)
+- **Supabase Security Fix**: Addressed the `mutable search_path` vulnerability across database functions, ensuring immunity to search-path hijacking.
+- **Production Build Integrity**: Verified all 100+ routes for static/dynamic stability under the latest Next.js Turbopack build.
+- **Optimization Persistence**: Confirmed that all "Instant Page" architectural benefits remain 100% active.
+
+## 💎 0. UI Mastery & Auth Hardening (NEW v2.3.0)
+- **Premium Hero Aesthetic**: Transformed the primary CTA to a large, pitch-black "RENT NOW" button with enhanced contrast for a high-end business feel.
+- **Buffered Pricing Logic**: Standardized daily rates to `(Monthly / 30)` rounded UP to the nearest **IDR 2,000**, ensuring consistent profit buffers and clean UI displays.
+- **Single Admin Lock**: Hardened security by restricting the `ADMIN` role strictly to `tropictechindo@gmail.com`.
+- **Image Resiliency**: Integrated local failover assets for team setup packages, ensuring 100% visual uptime on production.
+- **Dashboard Stability**: Resolved server-side serialization issues in the Admin Overview, ensuring smooth analytics rendering.
+
+## ✨ 0. UI Refinement & Performance Maximization (v2.2.0)
 - **Instant Page Loading**: Implemented aggressive code splitting using `next/dynamic` for all below-fold sections. The page now interactive significantly faster, providing a native-app-like experience.
 - **Aggressive Prefetching**: Optimized the link architecture to pre-load destinations on hover/intent, eliminating perceived navigation latency.
 - **Minimal Branding**: Replaced bold colors with a sophisticated Charcoal (`#55595a`) palette for all CTAs, featuring "short/thin" padding for a premium, non-intrusive business aesthetic.

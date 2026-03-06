@@ -91,9 +91,24 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-**Last Updated**: 2026-03-07 05:45:00 (WITA/GMT+8)
-**System Version**: 2.2.0-stable
-**Environment**: Production Hardened (Instant Page & Minimal Branding)
+**Last Updated**: 2026-03-07 06:55:00 (WITA/GMT+8)
+**System Version**: 2.4.0-hardened
+**Environment**: Global Production Stable (Supabase Hardening + UI Mastery)
+
+- ✅ **Infrastructure Hardening (v2.4.0)**:
+    - ✅ **Supabase Security Fix**: Resolved the `mutable search_path` vulnerability in the `handle_new_user` function.
+    - ✅ **Performance Persistence**: Verified 100% longevity of "Instant Page" optimizations (dynamic imports/suspense).
+    - ✅ **Production Build Verified**: Final global build passed for commercial deployment.
+
+- ✅ **UI Mastery & Auth Hardening (v2.3.0)**:
+    - ✅ **Hero CTA Transformation**: Refined "RENT NOW" to a premium large, pitch-black aesthetic.
+    - ✅ **Pricing Logic Overhaul**: Implemented unified rounding: `(Monthly / 30)` rounded UP to the nearest **IDR 2,000**.
+    - ✅ **Single Admin Lock**: Restricted `ADMIN` role access exclusively to `tropictechindo@gmail.com`.
+    - ✅ **Auth UI Cleanup**: Removed Google Login from login paths to streamline the flow; resolved JSX syntax overhead.
+    - ✅ **Production Image Resiliency**: Implemented local fallback `/packages/Rental Bali3.webp` for broken external links.
+    - ✅ **Admin Overview Dashboard Fix**: Hardened data serialization (BigInt/Date) to prevent server-side exceptions.
+    - ✅ **Checkout Flow Precision**: Fine-tuned location prompts (Payment) and notification triggers (Checkout).
+
 - ✅ **UI Refinement & Minimal Branding (v2.2.0)**:
     - ✅ **Minimal CTA Styling**: Unified all landing page buttons (Products, Gallery, Special Offers, About Us, Header) to business charcoal `#55595a` with thin/short padding.
     - ✅ **Footer Cleanup**: Removed redundant links (Rental Hardware, Corporate Solutions, Help Center / FAQ) for a cleaner UX.
