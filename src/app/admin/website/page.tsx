@@ -18,8 +18,7 @@ export default function WebsiteSettingsPage() {
 
     // Local state for form inputs to allow editing before saving
     const [formData, setFormData] = useState<Record<string, any>>({})
-    const [collageImages, setCollageImages] = useState<any[]>([])
-    const [uploadingCollage, setUploadingCollage] = useState(false)
+
 
     // Default FAQs matching the landing page
     const DEFAULT_FAQS = [
@@ -90,88 +89,7 @@ export default function WebsiteSettingsPage() {
         }
     }, [settings])
 
-    useEffect(() => {
-        fetchCollageImages()
-    }, [])
 
-    const fetchCollageImages = async () => {
-        try {
-            const res = await fetch('/api/photo-collage')
-            if (res.ok) {
-                const data = await res.json()
-                if (data.success) {
-                    setCollageImages(data.images || [])
-                }
-            }
-        } catch (error) {
-            console.error('Failed to fetch collage images:', error)
-        }
-    }
-
-    const handleCollageImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        if (file.size > 5 * 1024 * 1024) {
-            toast.error('File size too large (max 5MB)')
-            return
-        }
-
-        setUploadingCollage(true)
-        const toastId = toast.loading('Uploading and compressing image to WebP...')
-        const uploadData = new FormData()
-        uploadData.append('file', file)
-
-        try {
-            const token = localStorage.getItem('token')
-            // Upload to Supabase bucket
-            const response = await fetch('/api/admin/upload', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` },
-                body: uploadData
-            })
-
-            if (!response.ok) throw new Error('Upload failed')
-
-            const data = await response.json()
-
-            // Save to PhotoCollage database
-            const dbResponse = await fetch('/api/photo-collage', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ images: [data.url] })
-            })
-
-            if (!dbResponse.ok) throw new Error('Failed to save to database')
-
-            toast.success('Image uploaded and added to collage', { id: toastId })
-            fetchCollageImages()
-        } catch (error) {
-            console.error('Upload error:', error)
-            toast.error('Failed to upload image', { id: toastId })
-        } finally {
-            setUploadingCollage(false)
-            // Reset input
-            e.target.value = ''
-        }
-    }
-
-    const deleteCollageImage = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this collage image?')) return
-
-        try {
-            const res = await fetch(`/api/photo-collage?id=${id}`, { method: 'DELETE' })
-            if (res.ok) {
-                toast.success('Image removed from collage')
-                fetchCollageImages()
-            } else {
-                throw new Error('Failed to delete')
-            }
-        } catch (error) {
-            console.error(error)
-            toast.error('Could not delete image')
-        }
-    }
 
     const handleInputChange = (key: string, value: any) => {
         setFormData(prev => ({ ...prev, [key]: value }))
@@ -286,7 +204,7 @@ export default function WebsiteSettingsPage() {
             <Tabs defaultValue="hero" className="space-y-4">
                 <TabsList className="grid w-full grid-cols-6">
                     <TabsTrigger value="hero">Hero</TabsTrigger>
-                    <TabsTrigger value="collage">Collage</TabsTrigger>
+
                     <TabsTrigger value="faq">FAQ</TabsTrigger>
                     <TabsTrigger value="about">About Page</TabsTrigger>
                     <TabsTrigger value="affiliate">Affiliate Page</TabsTrigger>
@@ -887,78 +805,7 @@ export default function WebsiteSettingsPage() {
                             </div>
                         </CardContent>
                     </Card>
-                </TabsContent>
 
-                <TabsContent value="collage" className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Photo Collage Section</CardTitle>
-                            <CardDescription>
-                                Upload and manage images for the dynamic "Premium Setups" collage on the landing page.
-                                Images are automatically compressed and formatted as WebP.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border">
-                                <div>
-                                    <h3 className="font-semibold flex items-center gap-2">
-                                        <Camera className="h-4 w-4" /> Manage Grid Images
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mt-1">Upload high quality landscape setups.</p>
-                                </div>
-                                <div className="relative">
-                                    <input
-                                        type="file"
-                                        id="collage-upload"
-                                        className="hidden"
-                                        accept="image/*"
-                                        onChange={handleCollageImageUpload}
-                                        disabled={uploadingCollage}
-                                    />
-                                    <Button
-                                        onClick={() => document.getElementById('collage-upload')?.click()}
-                                        disabled={uploadingCollage}
-                                    >
-                                        {uploadingCollage ? (
-                                            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading</>
-                                        ) : (
-                                            <><Plus className="mr-2 h-4 w-4" /> Upload Photo</>
-                                        )}
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {collageImages.map((img: any, idx) => (
-                                    <div key={img.id} className="relative aspect-[16/9] group rounded-lg overflow-hidden border bg-muted">
-                                        <img
-                                            src={img.imageUrl}
-                                            alt={`Collage ${idx}`}
-                                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <Button
-                                                variant="destructive"
-                                                size="icon"
-                                                onClick={() => deleteCollageImage(img.id)}
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ))}
-                                {collageImages.length === 0 && Array.from({ length: 4 }).map((_, i) => (
-                                    <div key={i} className="aspect-[16/9] rounded-lg border-2 border-dashed flex items-center justify-center bg-muted/20 text-muted-foreground">
-                                        Empty Slot
-                                    </div>
-                                ))}
-                            </div>
-                            <p className="text-xs text-center text-muted-foreground mt-4">
-                                The landing page grid scales dynamically based on the number of photos uploaded. We recommend 6-8 photos for the best masonry effect.
-                            </p>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
             </Tabs>
         </div>
     )

@@ -4,7 +4,6 @@ import Header from '@/components/header/Header'
 import Hero from '@/components/landing/Hero'
 import LandingClient from '@/components/landing/LandingClient'
 import { db } from '@/lib/db'
-import { PhotoCollageSection } from '@/components/landing/PhotoCollageSection'
 
 // ─── Critical above-fold: eager ────────────────────────────────────────────
 // Header + Hero are imported eagerly (no dynamic()) for best LCP
@@ -155,9 +154,7 @@ export default async function Home() {
           <TrackerSection />
         </Suspense>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
-          <PhotoCollageSection />
-        </Suspense>
+
 
         <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
           <Services initialSettings={serviceSettings} />
