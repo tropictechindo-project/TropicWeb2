@@ -9,7 +9,7 @@ import { X, Send, Bot, Loader2, Sparkles } from "lucide-react"
 export function SellerChatBubble() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState<any[]>([
-        { role: 'assistant', content: 'Hi! I am Ask-Me, your Tropic Tech AI assistant. Looking for the perfect remote setup in Bali?' }
+        { role: 'assistant', content: 'Hi! I am T-TechAi, your Tropic Tech AI assistant. Looking for the perfect remote setup in Bali?' }
     ])
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -57,7 +57,7 @@ export function SellerChatBubble() {
                                 <Bot className="h-4 w-4 text-white" />
                             </div>
                             <div>
-                                <CardTitle className="text-sm font-black uppercase tracking-tighter text-white">Ask-Me</CardTitle>
+                                <CardTitle className="text-sm font-black uppercase tracking-tighter text-white">T-TechAi</CardTitle>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <div className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
                                     <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">AI Active</span>
@@ -69,7 +69,7 @@ export function SellerChatBubble() {
                             size="icon"
                             onClick={() => setIsOpen(false)}
                             className="text-white hover:bg-white/10 rounded-full h-8 w-8"
-                            aria-label="Close Ask-Me chat"
+                            aria-label="Close T-TechAi chat"
                         >
                             <X className="h-4 w-4" />
                         </Button>
@@ -86,7 +86,7 @@ export function SellerChatBubble() {
                                             : 'bg-zinc-800 border border-zinc-700 rounded-tl-none text-zinc-100'
                                             }`}>
                                             {m.role === 'assistant' && (
-                                                <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1">Ask-Me</p>
+                                                <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1">T-Tech.Ai</p>
                                             )}
                                             {m.content}
                                         </div>
@@ -96,7 +96,7 @@ export function SellerChatBubble() {
                                     <div className="flex justify-start">
                                         <div className="bg-zinc-800 border border-zinc-700 p-3 rounded-2xl rounded-tl-none animate-pulse flex items-center gap-2">
                                             <Loader2 className="h-3 w-3 animate-spin text-zinc-400" />
-                                            <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-400">Ask-Me is thinking...</span>
+                                            <span className="text-[10px] uppercase font-bold tracking-widest text-zinc-400">T-Tech.Ai is thinking...</span>
                                         </div>
                                     </div>
                                 )}
@@ -129,10 +129,10 @@ export function SellerChatBubble() {
                 </Card>
             )}
 
-            {/* Trigger Button — "Ask-Me" name integrated inside the button */}
+            {/* Trigger Button — "T-Tech.Ai" name integrated inside the button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label="Open Ask-Me AI Assistant"
+                aria-label="Open T-Tech.Ai AI Assistant"
                 className={`pointer-events-auto flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-full shadow-2xl border border-zinc-700 transition-all duration-300 ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}
             >
                 <div className="relative">
@@ -142,7 +142,7 @@ export function SellerChatBubble() {
                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white" />
                     </span>
                 </div>
-                <span className="text-sm font-black uppercase tracking-tighter whitespace-nowrap">Ask-Me</span>
+                <span className="text-sm font-black uppercase tracking-tighter whitespace-nowrap">T-Tech.Ai</span>
             </button>
         </div>
     )

@@ -17,7 +17,7 @@ import { useCart } from '@/contexts/CartContext'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Tag } from 'lucide-react'
-import { ProductDetailModal } from './ProductDetailModal'
+import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
 
 interface SpecialOffersProps {
     initialSettings?: Record<string, string>
@@ -28,7 +28,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
     const { addItem } = useCart()
     const router = useRouter()
     const [selectedOffer, setSelectedOffer] = useState<any | null>(null)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isGalleryOpen, setIsGalleryOpen] = useState(false)
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
@@ -102,7 +102,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                             className="group relative flex flex-col justify-between h-full bg-card rounded-xl border-2 border-primary/20 shadow-xl overflow-hidden hover:border-primary transition-colors cursor-pointer text-center"
                                             onClick={() => {
                                                 setSelectedOffer(offer)
-                                                setIsModalOpen(true)
+                                                setIsGalleryOpen(true)
                                             }}
                                         >
                                             {offer.badgeText && (
@@ -136,67 +136,67 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                     </span>
                                                 </div>
                                             </div>
+                                            <div className="p-6 flex flex-col flex-1 items-center text-center">
+                                                <div className="flex flex-col flex-1 w-full items-center">
+                                                    <h3 className="text-2xl font-bold mb-2 leading-tight">{offer.title}</h3>
+                                                    <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                                                        {offer.description}
+                                                    </p>
 
-                                            <div className="p-6 flex flex-col flex-grow items-center text-center">
-                                                <h3 className="text-2xl font-bold mb-2 leading-tight">{offer.title}</h3>
-                                                <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
-                                                    {offer.description}
-                                                </p>
-
-                                                {/* Simulated items list rendering for dummy data demonstration */}
-                                                <div className="w-full text-left bg-muted p-4 rounded-xl border border-primary/10 mb-6 flex-grow shadow-inner">
-                                                    <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 text-center">Included setup</p>
-                                                    <ul className="space-y-2 text-sm text-muted-foreground">
-                                                        {offer.title.includes("Nyepi") || offer.description.includes("Desk") ? (
-                                                            <>
-                                                                <li className="flex items-center gap-2">
-                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-                                                                    <span className="line-clamp-1">Herman Miller Aeron Chair x1</span>
-                                                                </li>
-                                                                <li className="flex items-center gap-2">
-                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-                                                                    <span className="line-clamp-1">32-inch 4K Dell UltraSharp x1</span>
-                                                                </li>
-                                                                <li className="flex items-center gap-2">
-                                                                    <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-                                                                    <span className="line-clamp-1">Adjustable Standing Desk x1</span>
-                                                                </li>
-                                                            </>
-                                                        ) : (
-                                                            <li className="text-muted-foreground italic text-center text-xs">Custom premium bundle</li>
-                                                        )}
-                                                    </ul>
-                                                </div>
-
-                                                <div className="grid grid-cols-2 gap-3 mt-auto w-full">
-                                                    <Button
-                                                        variant="default"
-                                                        className="w-full font-bold shadow-md z-10"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            addItem({
-                                                                id: offer.id,
-                                                                name: offer.title,
-                                                                price: offer.finalPrice,
-                                                                type: 'PACKAGE',
-                                                                image: offer.images?.[0] || '/LogoTropicTech.webp',
-                                                                duration: 30
-                                                            })
-                                                            router.push('/checkout')
-                                                        }}
-                                                    >
-                                                        Claim Deal
-                                                    </Button>
-                                                    <Button
-                                                        variant="outline"
-                                                        className="w-full flex justify-center items-center z-10 font-bold"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            router.push(`/product/${offer.id}`)
-                                                        }}
-                                                    >
-                                                        Details
-                                                    </Button>
+                                                    {/* Simulated items list rendering for dummy data demonstration */}
+                                                    <div className="w-full text-left bg-muted p-4 rounded-xl border border-primary/10 mb-6 flex-grow shadow-inner">
+                                                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3 text-center">Included setup</p>
+                                                        <ul className="space-y-2 text-sm text-muted-foreground">
+                                                            {offer.title.includes("Nyepi") || offer.description.includes("Desk") ? (
+                                                                <>
+                                                                    <li className="flex items-center gap-2">
+                                                                        <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                        <span className="line-clamp-1">Herman Miller Aeron Chair x1</span>
+                                                                    </li>
+                                                                    <li className="flex items-center gap-2">
+                                                                        <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                        <span className="line-clamp-1">32-inch 4K Dell UltraSharp x1</span>
+                                                                    </li>
+                                                                    <li className="flex items-center gap-2">
+                                                                        <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                                                                        <span className="line-clamp-1">Adjustable Standing Desk x1</span>
+                                                                    </li>
+                                                                </>
+                                                            ) : (
+                                                                <li className="text-muted-foreground italic text-center text-xs">Custom premium bundle</li>
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-3 mt-auto w-full pt-4">
+                                                        <Button
+                                                            variant="default"
+                                                            className="w-full font-bold shadow-md z-10"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                addItem({
+                                                                    id: offer.id,
+                                                                    name: offer.title,
+                                                                    price: offer.finalPrice,
+                                                                    type: 'PACKAGE',
+                                                                    image: offer.images?.[0] || '/LogoTropicTech.webp',
+                                                                    duration: 30
+                                                                })
+                                                                router.push('/checkout')
+                                                            }}
+                                                        >
+                                                            Claim Deal
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            className="w-full flex justify-center items-center z-10 font-bold"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                router.push(`/product/${offer.id}`)
+                                                            }}
+                                                        >
+                                                            Details
+                                                        </Button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,23 +230,11 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                 </div>
             </div>
 
-            {selectedOffer && (
-                <ProductDetailModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    product={{
-                        ...selectedOffer,
-                        name: selectedOffer.title,
-                        monthlyPrice: selectedOffer.finalPrice,
-                        category: null, // Package-like behaviour
-                        items: selectedOffer.title.includes("Nyepi") ? [
-                            { id: '1', name: 'Herman Miller Aeron Chair', quantity: 1 },
-                            { id: '2', name: '32-inch 4K Dell UltraSharp', quantity: 1 },
-                            { id: '3', name: 'Adjustable Standing Desk', quantity: 1 }
-                        ] : []
-                    }}
-                />
-            )}
+            <ImageGalleryModal
+                isOpen={isGalleryOpen}
+                onClose={() => setIsGalleryOpen(false)}
+                images={selectedOffer?.images?.length > 0 ? selectedOffer.images : ['/LogoTropicTech.webp']}
+            />
         </section>
     )
 }

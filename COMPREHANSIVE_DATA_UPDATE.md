@@ -29,7 +29,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 ### 1. Unified Dashboard System
 | Dashboard | Role | Key Features |
 |-----------|------|--------------|
-| `/` | Public | Landing Page, Products, Tracker Section, AI Chat (Ask-Me) |
+| `/` | Public | Landing Page, Products, Tracker Section, AI Chat (T-Tech.Ai) |
 | `/admin` | Admin | Full control — Orders, Workers, Deliveries, Settings, Global Tracker |
 | `/dashboard/operator` | Operator | Order management, Delivery queue, Global Tracker |
 | `/dashboard/worker` | Worker | Attendance, Delivery Pool, Live GPS updates |
@@ -51,7 +51,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 - **Delivery Pool**: Workers see and claim available delivery jobs.
 - **Live GPS**: Workers update their location every 10s while on delivery.
 - **Proof Upload**: Photos uploaded directly to Supabase Storage (Bucket: `delivery-proofs`).
-- **AI Chat**: `Ask-Me (Worker AI)` available in worker sidebar for operational guidance.
+- **AI Chat**: `T-Tech.Ai (Worker AI)` available in worker sidebar for operational guidance.
 
 #### 👤 User Experience
 - **Active Rentals**: User Dashboard shows rented equipment list, not just counts.
@@ -89,7 +89,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 - `POST /api/worker/deliveries/[id]/complete` — Mark delivery done + upload proof
 - `GET /api/orders/my-orders` — User's order history
 - `GET /api/invoices/my-invoices` — User's invoice history
-- `POST /api/ai/seller` — Landing page AI assistant (Ask-Me)
+- `POST /api/ai/seller` — Landing page AI assistant (T-Tech.Ai)
 - `POST /api/ai/worker-chat` — Worker AI assistant
 - `POST /api/ai/operator-chat` — Operator AI assistant
 - `POST /api/ai/master` — Admin AI master control
@@ -102,7 +102,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 - **TrackerSection on Landing Page**: New premium section below Special Offers with Invoice search CTA and "Track Your Order" real-time features.
 - **Icon Standardization**: Resolved `Map` / `Navigation` / `Home` naming conflicts across all dashboards by aliasing to `MapIcon`, `NavigationIcon`. Fixed all runtime `TypeError` ("Illegal constructor") and `ReferenceError` errors.
 - **Hero.tsx Fix**: Fixed JSX structure — Opacity slider and scroll indicator moved to `<section>` level, restoring correct nesting and full opacity style functionality.
-- **Ask-Me ChatWidget Unification**: Removed separate floating label pill. "Ask-Me" name is now integrated directly in the trigger button (icon + text). Card header also shows "Ask-Me" with black/zinc theme.
+- **T-Tech.Ai ChatWidget Unification**: Removed separate floating label pill. "T-Tech.Ai" name is now integrated directly in the trigger button (icon + text). Card header also shows "T-Tech.Ai" with black/zinc theme.
 - **Delivery Search Hardening**: `/track/[trackingCode]` now falls back to searching by invoiceNumber or orderNumber if trackingCode lookup fails.
 - **SEO Gold**: Removed redundant `public/sitemap.xml` and `public/robots.txt` in favor of dynamic Next.js generation. `sitemap.ts` now only returns published product routes.
 - **Performance**: `loading="lazy"` applied to all below-fold images (ProductCard, SpecialOffers). Hero image upgraded to `quality={90}` with `fetchPriority="high"`.
@@ -115,7 +115,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 - **Global Tracker CTAs**: Admin, Operator, and Worker dashboards all have Global Tracker access buttons in their sidebars.
 - **Worker Upload Fix**: Resolved "Bucket Not Found" error — standardized Supabase bucket name to `delivery-proofs`.
 - **User Delivery Access**: "Active Shipments" card opens delivery popup — users can see their own deliveries only.
-- **AI Ask-Me Branding**: Consistent "Ask-Me" black branding across Worker and Operator chat panels.
+- **AI T-Tech.Ai Branding**: Consistent "T-Tech.Ai" black branding across Worker and Operator chat panels.
 
 ### ✅ v1.9.0 — Global Tracking & Inventory Sync
 - Fixed Global Tracker 404s; added support for Invoice Number / Order Code lookups.
@@ -143,7 +143,7 @@ TropicTech is a sophisticated rental management and service ecosystem designed f
 | Worker Dashboard | ✅ Fully Operational | GPS, Proof Upload, AI Chat |
 | User Dashboard | ✅ Fully Operational | Rentals, History, Live Tracking CTA |
 | Tracking System | ✅ Real-time | GPS polling, maps, invoice/order lookup |
-| AI System | ✅ Active | Ask-Me (Landing), Worker AI, Operator AI, Master AI |
+| AI System | ✅ Active | T-Tech.Ai (Landing), Worker AI, Operator AI, Master AI |
 | Payment Flow | ✅ End-to-End | Invoice → Confirm → Delivery creation atomic |
 | SEO | ✅ Gold | Dynamic sitemap, structured data, FAQPage schema |
 | PWA | ✅ Active | Install prompts for iOS/Android |

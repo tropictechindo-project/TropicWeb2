@@ -74,7 +74,7 @@ const items = [
         icon: ClipboardCheck,
     },
     {
-        title: "Ask-Me",
+        title: "T-Tech.Ai",
         url: "?tab=ai",
         icon: Bot,
     }

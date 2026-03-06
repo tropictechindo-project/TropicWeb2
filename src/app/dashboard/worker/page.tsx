@@ -620,9 +620,9 @@ export default function WorkerDashboard() {
             {activeTab === 'ai' && (
               <div className="space-y-4 animate-in fade-in duration-500">
                 <AiDashboardPanel
-                  title="Ask-Me Assistant"
-                  agentName="Ask-Me"
-                  welcomeMessage={`Hi ${user?.fullName || 'Hero'}! I am Ask-Me, your advanced intelligence unit. How can I assist with your field operations today?`}
+                  title="T-Tech.Ai Assistant"
+                  agentName="T-Tech.Ai"
+                  welcomeMessage={`Hi ${user?.fullName || 'Hero'}! I am T-Tech.Ai, your advanced intelligence unit. How can I assist with your field operations today?`}
                   apiRoute="/api/ai/worker-chat"
                   icon={<BotMessageSquare className="w-5 h-5 text-primary" />}
                 />

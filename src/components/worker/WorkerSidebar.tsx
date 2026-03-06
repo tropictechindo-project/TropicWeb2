@@ -69,7 +69,7 @@ const items = [
         icon: ClipboardCheck,
     },
     {
-        title: "Ask-Me",
+        title: "T-Tech.Ai",
         id: "ai",
         icon: Bot,
     }

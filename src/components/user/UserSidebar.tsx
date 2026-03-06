@@ -66,7 +66,7 @@ const items = [
         icon: ShieldCheck,
     },
     {
-        title: "Ask-Me",
+        title: "T-Tech.Ai",
         id: "ai",
         icon: Bot,
     }

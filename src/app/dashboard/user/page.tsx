@@ -1426,9 +1426,9 @@ export default function UserDashboard() {
           {activeTab === 'ai' && (
             <div className="animate-in fade-in duration-500 space-y-6">
               <AiDashboardPanel
-                title="Ask-Me"
-                agentName="Ask-Me"
-                welcomeMessage="Hi! I am Ask-Me, your Tropic Tech neural assistant. How can I help you today?"
+                title="T-TechAi"
+                agentName="T-TechAi"
+                welcomeMessage="Hi! I am T-TechAi, your Tropic Tech neural assistant. How can I help you today?"
                 apiRoute="/api/ai/seller"
                 icon={<Bot className="w-5 h-5 text-primary" />}
               />

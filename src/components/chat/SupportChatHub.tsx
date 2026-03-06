@@ -226,7 +226,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
         <div className={`w-full sm:w-80 border-r border-zinc-800 flex flex-col bg-zinc-950 h-full ${selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
             <div className="p-6 border-b border-zinc-800 space-y-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="font-black text-xl tracking-tighter uppercase italic text-white">Ask-Me Hub</h2>
+                    <h2 className="font-black text-xl tracking-tighter uppercase italic text-white">T-Tech.Ai Hub</h2>
                     <Button
                         variant="ghost"
                         size="icon"
@@ -304,7 +304,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                     </div>
                 ) : (
                     <div className="flex flex-col gap-1 p-2">
-                        {/* Always visible Ask-Me AI Option */}
+                        {/* Always visible T-Tech AI Option */}
                         <div
                             className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all mb-4 relative overflow-hidden group border border-primary/20 bg-primary/5 hover:bg-primary/10`}
                             onClick={() => {
@@ -321,7 +321,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
                                 <span className="absolute -bottom-1 -right-1 h-3.5 w-3.5 bg-green-500 rounded-full border-[3px] border-zinc-950 animate-pulse" />
                             </div>
                             <div className="flex-1 relative z-10 text-left">
-                                <h3 className="font-black text-xs uppercase tracking-widest text-white">Ask-Me Neural</h3>
+                                <h3 className="font-black text-xs uppercase tracking-widest text-white">T-Tech.Ai Neural</h3>
                                 <p className="text-[9px] font-bold text-primary italic uppercase tracking-wider">AI Assistant Online</p>
                             </div>
                         </div>
@@ -419,7 +419,7 @@ export function SupportChatHub({ open, onOpenChange, defaultSupportGroupId }: Su
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-[100vw] sm:max-w-5xl h-[95dvh] sm:h-[750px] flex flex-col sm:flex-row p-0 gap-0 overflow-hidden outline-none w-full sm:w-auto rounded-none sm:rounded-[2.5rem] border-none bg-zinc-950 shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
-                <DialogTitle className="sr-only">Ask-Me Hub</DialogTitle>
+                <DialogTitle className="sr-only">T-Tech.Ai Hub</DialogTitle>
                 {renderSidebar()}
                 <div className={`flex-1 flex flex-col bg-zinc-900/50 backdrop-blur-3xl h-full ${!selectedConversation ? 'hidden sm:flex' : 'flex'}`}>
                     {selectedConversation ? (

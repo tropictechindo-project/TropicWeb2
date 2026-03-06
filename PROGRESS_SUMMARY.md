@@ -286,11 +286,11 @@
     - Fixed a parse error (`Unexpected token`) caused by the opacity slider and scroll indicator being nested inside the text content `<div>`.
     - Moved both to the `<section>` level — opacity layers and user opacity slider style fully preserved.
 
-- [x] **Ask-Me ChatWidget Unification**:
+- [x] **T-Tech.Ai ChatWidget Unification**:
     - Removed the separate floating label pill next to the chat button.
-    - "Ask-Me" name is now displayed directly inside the trigger button (icon + text in one unified pill).
-    - Card header updated to "Ask-Me" (was "Tropic Tech Assistant").
-    - All AI messages labeled "Ask-Me" in chat bubbles.
+    - "T-Tech.Ai" name is now displayed directly inside the trigger button (icon + text in one unified pill).
+    - Card header updated to "T-Tech.Ai" (was "Tropic Tech Assistant").
+    - All AI messages labeled "T-Tech.Ai" in chat bubbles.
     - Premium black/zinc dark theme applied throughout.
 
 - [x] **Delivery Search Hardening**:
@@ -327,6 +327,6 @@
 | Worker Dashboard | ✅ GPS, Proof Upload, AI Chat |
 | User Dashboard | ✅ Rentals, History, Live Track |
 | Tracking System | ✅ Real-time GPS + Invoice/Order lookup |
-| AI (Ask-Me) | ✅ Unified branding, black theme |
+| AI (T-Tech.Ai) | ✅ Unified branding, black theme |
 | Build | ✅ Exit code 0 |
 | Repository | ✅ Pushed to `origin main` → `57213d2` |

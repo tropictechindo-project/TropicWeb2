@@ -19,7 +19,7 @@ import { ShoppingCart, Share2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { SharePopover } from './SharePopover'
-import { ProductDetailModal } from './ProductDetailModal'
+import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
 
 interface ProductCardProps {
   product: {
@@ -74,6 +74,13 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   // Only require selection if there are multiple actual colored variants
   const needsSelection = (product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD') && !selectedVariant
 
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+
+  // Use all available images or fallback to the main display image
+  const galleryImages = [
+    ...(product.images || []),
+    ...(displayImage && !(product.images || []).includes(displayImage) ? [displayImage] : [])
+  ].filter(Boolean) as string[]
 
   const handleRentNow = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -102,10 +109,10 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
     <>
       <Card
         className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsGalleryOpen(true)}
         suppressHydrationWarning
       >
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 flex-shrink-0">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted group">
             {discountPercentage > 0 && (
               <div className="absolute top-2 left-2 z-10">
@@ -131,17 +138,19 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="flex-1">
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
+        <CardContent className="flex flex-col flex-1 pb-4">
+          <div className="space-y-4 flex flex-col h-full">
+            {/* Stock status indicator */}
+            <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">{t('daily')}:</span>
               <span className="font-semibold">
                 Rp {dailyPrice.toLocaleString('id-ID')}
               </span>
             </div>
 
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t('monthly')}:</span>
+            {/* Price section - anchored to bottom above inputs using mt-auto */}
+            <div className="flex justify-between items-end pb-2 mt-auto">
+              <span className="text-sm font-medium text-muted-foreground">Price/Day</span>
               <div className="flex flex-col items-end">
                 {discountPercentage > 0 && (
                   <span className="text-[10px] line-through text-muted-foreground">
@@ -203,14 +212,14 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
           </div>
         </CardContent>
 
-        <CardFooter className="gap-2" onClick={(e) => e.stopPropagation()}>
+        <CardFooter className="gap-2 flex-shrink-0 mt-auto" onClick={(e) => e.stopPropagation()}>
           <Button
             className="flex-1"
             onClick={handleRentNow}
-            disabled={isOutOfStock || !!needsSelection}
-            aria-label={isOutOfStock ? `Product out of stock` : `Rent ${product.name} now`}
+            disabled={!!needsSelection}
+            aria-label={`Rent ${product.name} now`}
           >
-            {isOutOfStock ? 'Out of Stock' : (needsSelection ? 'Select Color' : 'Rent Now')}
+            {needsSelection ? 'Select Color' : 'Rent Now'}
           </Button>
           <AddToCartButton
             item={{
@@ -225,7 +234,7 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
               quantity: 1,
               stock: currentStock
             }}
-            disabled={isOutOfStock || !!needsSelection}
+            disabled={!!needsSelection}
             needsSelection={!!needsSelection}
           />
           {isMounted ? (
@@ -240,10 +249,10 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
         </CardFooter>
       </Card>
 
-      <ProductDetailModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        product={product}
+      <ImageGalleryModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={galleryImages.length > 0 ? galleryImages : [displayImage || '/MyAi.webp']}
       />
     </>
   )

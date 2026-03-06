@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { SharePopover } from './SharePopover'
-import { ProductDetailModal } from './ProductDetailModal'
+import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
 
 interface PackageCardProps {
   package: {
@@ -40,12 +40,16 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
   const router = useRouter()
   const { addItem } = useCart()
   const { t } = useLanguage()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
 
   const discountPercentage = pkg.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? pkg.price * (1 - discountPercentage / 100) : pkg.price
   const displayImage = pkg.imageUrl || pkg.image_url || (pkg.images && pkg.images[0]) || '/MyAi.webp'
 
+  const galleryImages = [
+    ...(pkg.images || []),
+    ...(displayImage && !(pkg.images || []).includes(displayImage) ? [displayImage] : [])
+  ].filter(Boolean) as string[]
 
   const handleRentNow = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -66,9 +70,9 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
     <>
       <Card
         className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsGalleryOpen(true)}
       >
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 flex-shrink-0">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted group">
             {discountPercentage > 0 && (
               <div className="absolute top-2 left-2 z-10">
@@ -90,8 +94,8 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
           <CardDescription className="line-clamp-2">{pkg.description}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex-1">
-          <div className="space-y-3">
+        <CardContent className="flex flex-col flex-1 pb-4">
+          <div className="space-y-4 flex flex-col h-full">
             <div>
               <p className="text-sm font-medium mb-2">Included Items:</p>
               <ul className="space-y-1 text-sm text-muted-foreground">
@@ -106,7 +110,8 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
               </ul>
             </div>
 
-            <div className="border-t pt-3 space-y-2">
+            {/* Price section - anchored to bottom above inputs using mt-auto */}
+            <div className="border-t pt-3 space-y-2 mt-auto">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">{t('rentalDuration')}:</span>
                 <span className="font-semibold">{pkg.duration} days</span>
@@ -126,7 +131,7 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
           </div>
         </CardContent>
 
-        <CardFooter className="gap-2" onClick={(e) => e.stopPropagation()}>
+        <CardFooter className="gap-2 flex-shrink-0 mt-auto" onClick={(e) => e.stopPropagation()}>
           <Button className="flex-1" onClick={handleRentNow} aria-label={`Rent package ${pkg.name} now`}>
             Rent Now
           </Button>
@@ -153,10 +158,10 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
         </CardFooter>
       </Card>
 
-      <ProductDetailModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        product={pkg}
+      <ImageGalleryModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={galleryImages.length > 0 ? galleryImages : [displayImage || '/MyAi.webp']}
       />
     </>
   )

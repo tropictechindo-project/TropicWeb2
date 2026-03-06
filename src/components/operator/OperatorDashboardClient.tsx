@@ -687,13 +687,13 @@ export default function OperatorDashboardClient({
                         </div>
                     )}
 
-                    {/* ═══ AI ASSISTANT (Ask-Me) ═══════════════════════════════════════════════════ */}
+                    {/* ═══ AI ASSISTANT (T-Tech.Ai) ═══════════════════════════════════════════════════ */}
                     {activeTab === 'ai' && (
                         <div className="animate-in fade-in duration-500">
                             <AiDashboardPanel
-                                title="Ask-Me Assistant"
-                                agentName="Ask-Me"
-                                welcomeMessage={`Hi ${operatorName}! I am Ask-Me, your advanced intelligence unit. How can I assist with your terminal operations today?`}
+                                title="T-Tech.Ai Assistant"
+                                agentName="T-Tech.Ai"
+                                welcomeMessage={`Hi ${operatorName}! I am T-Tech.Ai, your advanced intelligence unit. How can I assist with your terminal operations today?`}
                                 apiRoute="/api/ai/operator-chat"
                                 icon={<Bot className="w-5 h-5 text-primary" />}
                             />
