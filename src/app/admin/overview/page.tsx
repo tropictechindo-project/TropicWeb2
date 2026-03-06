@@ -45,6 +45,12 @@ async function getStats() {
 
     const verifiedCount = Number((verifiedUsers as any)[0]?.count || 0)
 
+    // Serialization Fix: Convert Date objects to strings for Client Component boundary
+    const serializedNotifications = notifications.map(n => ({
+        ...n,
+        createdAt: n.createdAt.toISOString()
+    }))
+
     return {
         cards: {
             totalUsers,
@@ -57,7 +63,7 @@ async function getStats() {
             unresolvedConflicts,
             lastUpdate: lastActivity?.createdAt ? lastActivity.createdAt.toISOString() : new Date().toISOString()
         },
-        notifications
+        notifications: serializedNotifications
     }
 }
 

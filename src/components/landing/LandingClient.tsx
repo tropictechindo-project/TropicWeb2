@@ -42,7 +42,9 @@ export default function LandingClient({ children }: LandingClientProps) {
         fetch(`/api/products/${productId}`)
             .then(res => res.json())
             .then(data => {
-                const dailyPrice = data.product.monthlyPrice / 30
+                // Unified Pricing Logic: Round up to nearest 2,000 IDR
+                const rawDaily = data.product.monthlyPrice / 30
+                const dailyPrice = Math.ceil(rawDaily / 2000) * 2000
                 setOrderItem({
                     type: 'PRODUCT',
                     id: productId,

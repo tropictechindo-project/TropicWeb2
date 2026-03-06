@@ -44,11 +44,14 @@ export async function POST(request: NextRequest) {
         const isMatch = await bcrypt.compare(password, prismaUser.password)
         if (isMatch) {
           // Verify success! Generate token manually
+          // Security Hardening: ONLY tropictechindo@gmail.com can be ADMIN
+          const userRole = prismaUser.email === 'tropictechindo@gmail.com' ? 'ADMIN' : prismaUser.role === 'ADMIN' ? 'USER' : prismaUser.role
+
           const token = await generateToken({
             userId: prismaUser.id,
             username: prismaUser.username,
             email: prismaUser.email,
-            role: prismaUser.role,
+            role: userRole,
           })
 
           const res = NextResponse.json({
@@ -58,7 +61,7 @@ export async function POST(request: NextRequest) {
               username: prismaUser.username,
               email: prismaUser.email,
               fullName: prismaUser.fullName,
-              role: prismaUser.role,
+              role: userRole,
               isVerified: prismaUser.isVerified
             }
           })
@@ -137,12 +140,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Security Hardening: ONLY tropictechindo@gmail.com can be ADMIN
+    const userRole = user.email === 'tropictechindo@gmail.com' ? 'ADMIN' : user.role === 'ADMIN' ? 'USER' : user.role
+
     // Generate our custom application token for session management
     const token = await generateToken({
       userId: user.id,
       username: user.username,
       email: user.email,
-      role: user.role,
+      role: userRole,
     })
 
     // 4. Admin Logging & Concurrent Session Alert

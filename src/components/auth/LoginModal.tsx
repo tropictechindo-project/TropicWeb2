@@ -117,17 +117,6 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
                     >
                         {isLoading ? 'Logging in...' : t('login')}
                     </Button>
-
-                    <div className="relative my-4">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t border-muted-foreground/30" />
-                        </div>
-                        <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
-                            <span className="bg-background px-3 text-muted-foreground">or continue with</span>
-                        </div>
-                    </div>
-
-                    <GoogleSignInButton text="Continue with Google Account" />
                 </form>
 
                 <div className="text-center text-sm border-t border-border/50 pt-4">

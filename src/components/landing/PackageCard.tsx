@@ -44,7 +44,13 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
 
   const discountPercentage = pkg.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? pkg.price * (1 - discountPercentage / 100) : pkg.price
-  const displayImage = (pkg.images && pkg.images.length > 0) ? pkg.images[0] : (pkg.imageUrl || pkg.image_url || '/MyAi.webp')
+
+  // Production Fix: Use local fallback for 'Rental Bali' images which often fail on Supabase
+  let displayImage = (pkg.images && pkg.images.length > 0) ? pkg.images[0] : (pkg.imageUrl || pkg.image_url || '/MyAi.webp')
+  if (displayImage.includes('Rental%20Bali') || displayImage.includes('Rental Bali')) {
+    const fileName = displayImage.split('/').pop()?.replace(/%20/g, ' ')
+    displayImage = `/packages/${fileName}`
+  }
 
   const galleryImages = [
     ...(pkg.images || []),

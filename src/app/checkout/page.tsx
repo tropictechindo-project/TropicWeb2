@@ -150,6 +150,9 @@ export default function CheckoutPage() {
     }
 
     const handleBuy = async () => {
+        // Trigger Notification prompt ONLY on checkout click
+        window.dispatchEvent(new CustomEvent('trigger-notification-prompt'))
+
         if (!formData.name || !formData.email || !formData.whatsapp || !formData.address) {
             toast.error('Please fill in all required fields')
             return
@@ -290,7 +293,18 @@ export default function CheckoutPage() {
                         {/* Payment Options */}
                         <div className="bg-card border rounded-xl p-6 shadow-sm">
                             <h2 className="text-xl font-semibold mb-6">Payment Method</h2>
-                            <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <RadioGroup
+                                value={paymentMethod}
+                                onValueChange={(val) => {
+                                    setPaymentMethod(val)
+                                    // Trigger Geolocation prompt ONLY on payment selection
+                                    const lat = localStorage.getItem('user_lat')
+                                    if (!lat) {
+                                        window.dispatchEvent(new CustomEvent('trigger-location-prompt'))
+                                    }
+                                }}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                            >
                                 {paymentMethods.map((method) => (
                                     <div key={method.id} className="relative">
                                         <RadioGroupItem value={method.id} id={method.id} className="peer sr-only" />
@@ -309,8 +323,10 @@ export default function CheckoutPage() {
                             </RadioGroup>
                         </div>
 
-                        {/* Product Suggestions */}
-                        <ProductSuggestions productIds={items.map(i => i.id)} />
+                        {/* Product Suggestions Restoration */}
+                        <div className="pt-4">
+                            <ProductSuggestions productIds={items.map(i => i.id)} />
+                        </div>
 
                     </div>
 

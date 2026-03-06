@@ -61,8 +61,9 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   const discountPercentage = product.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? price * (1 - discountPercentage / 100) : price
 
-  const dailyPrice = Math.ceil(discountedPrice / 30)
-  const originalDailyPrice = Math.ceil(price / 30)
+  // Unified Pricing Logic: Round up to nearest 2,000 IDR
+  const dailyPrice = Math.ceil(discountedPrice / 30 / 2000) * 2000
+  const originalDailyPrice = Math.ceil(price / 30 / 2000) * 2000
 
   const totalPrice = dailyPrice * duration
   const displayImage = product.imageUrl || product.image_url || (product.images && product.images[0]) || '/MyAi.webp'

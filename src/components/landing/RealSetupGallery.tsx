@@ -74,7 +74,7 @@ export default function RealSetupGallery() {
                     <Button
                         size="sm"
                         onClick={() => setIsOpen(true)}
-                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white h-auto py-2 px-6 rounded-md font-bold text-sm shadow-sm transition-all uppercase tracking-widest"
+                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white h-auto py-2 px-6 rounded-md font-bold text-sm shadow-sm transition-all uppercase tracking-widest border-2 border-transparent hover:border-black/5"
                     >
                         <Maximize2 className="mr-2 w-4 h-4" /> SEE ALL SET-UP
                     </Button>
