@@ -144,13 +144,13 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   userId: 'userId',
   discountAmount: 'discountAmount',
   discountPercentage: 'discountPercentage',
-  lineItems: 'lineItems',
-  completedByUserId: 'completedByUserId',
   completedAt: 'completedAt',
+  completedByUserId: 'completedByUserId',
+  deliveryAddress: 'deliveryAddress',
   locationLatitude: 'locationLatitude',
+  lineItems: 'lineItems',
   locationLongitude: 'locationLongitude',
-  paymentMethod: 'paymentMethod',
-  deliveryAddress: 'deliveryAddress'
+  paymentMethod: 'paymentMethod'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -172,12 +172,12 @@ exports.Prisma.OrderScalarFieldEnum = {
   paymentConfirmedBy: 'paymentConfirmedBy',
   paymentStatus: 'paymentStatus',
   userId: 'userId',
-  completedByUserId: 'completedByUserId',
-  completedAt: 'completedAt',
-  locationLatitude: 'locationLatitude',
-  locationLongitude: 'locationLongitude',
   discountAmount: 'discountAmount',
-  discountPercentage: 'discountPercentage'
+  discountPercentage: 'discountPercentage',
+  completedAt: 'completedAt',
+  completedByUserId: 'completedByUserId',
+  locationLatitude: 'locationLatitude',
+  locationLongitude: 'locationLongitude'
 };
 
 exports.Prisma.PaymentTransactionScalarFieldEnum = {
@@ -527,11 +527,11 @@ exports.Prisma.DeliveryScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   lastLocationUpdate: 'lastLocationUpdate',
-  userConfirmedAt: 'userConfirmedAt',
-  userConfirmedBy: 'userConfirmedBy',
   trackingCode: 'trackingCode',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userConfirmedAt: 'userConfirmedAt',
+  userConfirmedBy: 'userConfirmedBy'
 };
 
 exports.Prisma.DeliveryItemScalarFieldEnum = {
@@ -724,12 +724,12 @@ exports.DeliveryStatus = exports.$Enums.DeliveryStatus = {
   QUEUED: 'QUEUED',
   CLAIMED: 'CLAIMED',
   OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
-  ARRIVED: 'ARRIVED',
   PAUSED: 'PAUSED',
   DELAYED: 'DELAYED',
   CANCEL_REQUESTED: 'CANCEL_REQUESTED',
   COMPLETED: 'COMPLETED',
-  CANCELED: 'CANCELED'
+  CANCELED: 'CANCELED',
+  ARRIVED: 'ARRIVED'
 };
 
 exports.DeliveryRole = exports.$Enums.DeliveryRole = {

@@ -369,12 +369,12 @@ export const DeliveryStatus: {
   QUEUED: 'QUEUED',
   CLAIMED: 'CLAIMED',
   OUT_FOR_DELIVERY: 'OUT_FOR_DELIVERY',
-  ARRIVED: 'ARRIVED',
   PAUSED: 'PAUSED',
   DELAYED: 'DELAYED',
   CANCEL_REQUESTED: 'CANCEL_REQUESTED',
   COMPLETED: 'COMPLETED',
-  CANCELED: 'CANCELED'
+  CANCELED: 'CANCELED',
+  ARRIVED: 'ARRIVED'
 };
 
 export type DeliveryStatus = (typeof DeliveryStatus)[keyof typeof DeliveryStatus]
@@ -4976,6 +4976,7 @@ export namespace Prisma {
     inventoryResolutions: number
     inventoryUpdates: number
     invoices: number
+    itemRequests: number
     receivedMessages: number
     sentMessages: number
     notificationDismissals: number
@@ -4988,7 +4989,6 @@ export namespace Prisma {
     workerAttendance: number
     sentNotifications: number
     receivedNotifications: number
-    itemRequests: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5002,6 +5002,7 @@ export namespace Prisma {
     inventoryResolutions?: boolean | UserCountOutputTypeCountInventoryResolutionsArgs
     inventoryUpdates?: boolean | UserCountOutputTypeCountInventoryUpdatesArgs
     invoices?: boolean | UserCountOutputTypeCountInvoicesArgs
+    itemRequests?: boolean | UserCountOutputTypeCountItemRequestsArgs
     receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     notificationDismissals?: boolean | UserCountOutputTypeCountNotificationDismissalsArgs
@@ -5014,7 +5015,6 @@ export namespace Prisma {
     workerAttendance?: boolean | UserCountOutputTypeCountWorkerAttendanceArgs
     sentNotifications?: boolean | UserCountOutputTypeCountSentNotificationsArgs
     receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
-    itemRequests?: boolean | UserCountOutputTypeCountItemRequestsArgs
   }
 
   // Custom InputTypes
@@ -5101,6 +5101,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ItemRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountReceivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageWhereInput
   }
@@ -5180,13 +5187,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkerNotificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ItemRequestWhereInput
   }
 
 
@@ -5415,12 +5415,12 @@ export namespace Prisma {
     userId: string | null
     discountAmount: Decimal | null
     discountPercentage: number | null
-    completedByUserId: string | null
     completedAt: Date | null
+    completedByUserId: string | null
+    deliveryAddress: string | null
     locationLatitude: number | null
     locationLongitude: number | null
     paymentMethod: string | null
-    deliveryAddress: string | null
   }
 
   export type InvoiceMaxAggregateOutputType = {
@@ -5446,12 +5446,12 @@ export namespace Prisma {
     userId: string | null
     discountAmount: Decimal | null
     discountPercentage: number | null
-    completedByUserId: string | null
     completedAt: Date | null
+    completedByUserId: string | null
+    deliveryAddress: string | null
     locationLatitude: number | null
     locationLongitude: number | null
     paymentMethod: string | null
-    deliveryAddress: string | null
   }
 
   export type InvoiceCountAggregateOutputType = {
@@ -5477,13 +5477,13 @@ export namespace Prisma {
     userId: number
     discountAmount: number
     discountPercentage: number
-    lineItems: number
-    completedByUserId: number
     completedAt: number
+    completedByUserId: number
+    deliveryAddress: number
     locationLatitude: number
+    lineItems: number
     locationLongitude: number
     paymentMethod: number
-    deliveryAddress: number
     _all: number
   }
 
@@ -5537,12 +5537,12 @@ export namespace Prisma {
     userId?: true
     discountAmount?: true
     discountPercentage?: true
-    completedByUserId?: true
     completedAt?: true
+    completedByUserId?: true
+    deliveryAddress?: true
     locationLatitude?: true
     locationLongitude?: true
     paymentMethod?: true
-    deliveryAddress?: true
   }
 
   export type InvoiceMaxAggregateInputType = {
@@ -5568,12 +5568,12 @@ export namespace Prisma {
     userId?: true
     discountAmount?: true
     discountPercentage?: true
-    completedByUserId?: true
     completedAt?: true
+    completedByUserId?: true
+    deliveryAddress?: true
     locationLatitude?: true
     locationLongitude?: true
     paymentMethod?: true
-    deliveryAddress?: true
   }
 
   export type InvoiceCountAggregateInputType = {
@@ -5599,13 +5599,13 @@ export namespace Prisma {
     userId?: true
     discountAmount?: true
     discountPercentage?: true
-    lineItems?: true
-    completedByUserId?: true
     completedAt?: true
+    completedByUserId?: true
+    deliveryAddress?: true
     locationLatitude?: true
+    lineItems?: true
     locationLongitude?: true
     paymentMethod?: true
-    deliveryAddress?: true
     _all?: true
   }
 
@@ -5718,13 +5718,13 @@ export namespace Prisma {
     userId: string | null
     discountAmount: Decimal | null
     discountPercentage: number | null
-    lineItems: JsonValue | null
-    completedByUserId: string | null
     completedAt: Date | null
+    completedByUserId: string | null
+    deliveryAddress: string | null
     locationLatitude: number | null
+    lineItems: JsonValue | null
     locationLongitude: number | null
     paymentMethod: string | null
-    deliveryAddress: string | null
     _count: InvoiceCountAggregateOutputType | null
     _avg: InvoiceAvgAggregateOutputType | null
     _sum: InvoiceSumAggregateOutputType | null
@@ -5769,13 +5769,13 @@ export namespace Prisma {
     userId?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
-    lineItems?: boolean
-    completedByUserId?: boolean
     completedAt?: boolean
+    completedByUserId?: boolean
+    deliveryAddress?: boolean
     locationLatitude?: boolean
+    lineItems?: boolean
     locationLongitude?: boolean
     paymentMethod?: boolean
-    deliveryAddress?: boolean
     deliveries?: boolean | Invoice$deliveriesArgs<ExtArgs>
     order?: boolean | Invoice$orderArgs<ExtArgs>
     user?: boolean | Invoice$userArgs<ExtArgs>
@@ -5805,13 +5805,13 @@ export namespace Prisma {
     userId?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
-    lineItems?: boolean
-    completedByUserId?: boolean
     completedAt?: boolean
+    completedByUserId?: boolean
+    deliveryAddress?: boolean
     locationLatitude?: boolean
+    lineItems?: boolean
     locationLongitude?: boolean
     paymentMethod?: boolean
-    deliveryAddress?: boolean
     order?: boolean | Invoice$orderArgs<ExtArgs>
     user?: boolean | Invoice$userArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
@@ -5839,13 +5839,13 @@ export namespace Prisma {
     userId?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
-    lineItems?: boolean
-    completedByUserId?: boolean
     completedAt?: boolean
+    completedByUserId?: boolean
+    deliveryAddress?: boolean
     locationLatitude?: boolean
+    lineItems?: boolean
     locationLongitude?: boolean
     paymentMethod?: boolean
-    deliveryAddress?: boolean
     order?: boolean | Invoice$orderArgs<ExtArgs>
     user?: boolean | Invoice$userArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
@@ -5873,16 +5873,16 @@ export namespace Prisma {
     userId?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
-    lineItems?: boolean
-    completedByUserId?: boolean
     completedAt?: boolean
+    completedByUserId?: boolean
+    deliveryAddress?: boolean
     locationLatitude?: boolean
+    lineItems?: boolean
     locationLongitude?: boolean
     paymentMethod?: boolean
-    deliveryAddress?: boolean
   }
 
-  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceNumber" | "orderId" | "subtotal" | "tax" | "deliveryFee" | "total" | "currency" | "createdAt" | "deliveryFeeOverride" | "emailSent" | "emailSentAt" | "guestAddress" | "guestEmail" | "guestName" | "guestWhatsapp" | "shareableToken" | "status" | "taxRate" | "userId" | "discountAmount" | "discountPercentage" | "lineItems" | "completedByUserId" | "completedAt" | "locationLatitude" | "locationLongitude" | "paymentMethod" | "deliveryAddress", ExtArgs["result"]["invoice"]>
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceNumber" | "orderId" | "subtotal" | "tax" | "deliveryFee" | "total" | "currency" | "createdAt" | "deliveryFeeOverride" | "emailSent" | "emailSentAt" | "guestAddress" | "guestEmail" | "guestName" | "guestWhatsapp" | "shareableToken" | "status" | "taxRate" | "userId" | "discountAmount" | "discountPercentage" | "completedAt" | "completedByUserId" | "deliveryAddress" | "locationLatitude" | "lineItems" | "locationLongitude" | "paymentMethod", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deliveries?: boolean | Invoice$deliveriesArgs<ExtArgs>
     order?: boolean | Invoice$orderArgs<ExtArgs>
@@ -5928,13 +5928,13 @@ export namespace Prisma {
       userId: string | null
       discountAmount: Prisma.Decimal | null
       discountPercentage: number | null
-      lineItems: Prisma.JsonValue | null
-      completedByUserId: string | null
       completedAt: Date | null
+      completedByUserId: string | null
+      deliveryAddress: string | null
       locationLatitude: number | null
+      lineItems: Prisma.JsonValue | null
       locationLongitude: number | null
       paymentMethod: string | null
-      deliveryAddress: string | null
     }, ExtArgs["result"]["invoice"]>
     composites: {}
   }
@@ -6383,13 +6383,13 @@ export namespace Prisma {
     readonly userId: FieldRef<"Invoice", 'String'>
     readonly discountAmount: FieldRef<"Invoice", 'Decimal'>
     readonly discountPercentage: FieldRef<"Invoice", 'Int'>
-    readonly lineItems: FieldRef<"Invoice", 'Json'>
-    readonly completedByUserId: FieldRef<"Invoice", 'String'>
     readonly completedAt: FieldRef<"Invoice", 'DateTime'>
+    readonly completedByUserId: FieldRef<"Invoice", 'String'>
+    readonly deliveryAddress: FieldRef<"Invoice", 'String'>
     readonly locationLatitude: FieldRef<"Invoice", 'Float'>
+    readonly lineItems: FieldRef<"Invoice", 'Json'>
     readonly locationLongitude: FieldRef<"Invoice", 'Float'>
     readonly paymentMethod: FieldRef<"Invoice", 'String'>
-    readonly deliveryAddress: FieldRef<"Invoice", 'String'>
   }
     
 
@@ -6884,10 +6884,10 @@ export namespace Prisma {
     subtotal: Decimal | null
     tax: Decimal | null
     deliveryFee: Decimal | null
-    locationLatitude: number | null
-    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type OrderSumAggregateOutputType = {
@@ -6896,10 +6896,10 @@ export namespace Prisma {
     subtotal: Decimal | null
     tax: Decimal | null
     deliveryFee: Decimal | null
-    locationLatitude: number | null
-    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type OrderMinAggregateOutputType = {
@@ -6921,12 +6921,12 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string | null
-    completedByUserId: string | null
-    completedAt: Date | null
-    locationLatitude: number | null
-    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
+    completedAt: Date | null
+    completedByUserId: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -6948,12 +6948,12 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string | null
-    completedByUserId: string | null
-    completedAt: Date | null
-    locationLatitude: number | null
-    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
+    completedAt: Date | null
+    completedByUserId: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -6975,12 +6975,12 @@ export namespace Prisma {
     paymentConfirmedBy: number
     paymentStatus: number
     userId: number
-    completedByUserId: number
-    completedAt: number
-    locationLatitude: number
-    locationLongitude: number
     discountAmount: number
     discountPercentage: number
+    completedAt: number
+    completedByUserId: number
+    locationLatitude: number
+    locationLongitude: number
     _all: number
   }
 
@@ -6991,10 +6991,10 @@ export namespace Prisma {
     subtotal?: true
     tax?: true
     deliveryFee?: true
-    locationLatitude?: true
-    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type OrderSumAggregateInputType = {
@@ -7003,10 +7003,10 @@ export namespace Prisma {
     subtotal?: true
     tax?: true
     deliveryFee?: true
-    locationLatitude?: true
-    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type OrderMinAggregateInputType = {
@@ -7028,12 +7028,12 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
-    completedByUserId?: true
-    completedAt?: true
-    locationLatitude?: true
-    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
+    completedAt?: true
+    completedByUserId?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -7055,12 +7055,12 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
-    completedByUserId?: true
-    completedAt?: true
-    locationLatitude?: true
-    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
+    completedAt?: true
+    completedByUserId?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -7082,12 +7082,12 @@ export namespace Prisma {
     paymentConfirmedBy?: true
     paymentStatus?: true
     userId?: true
-    completedByUserId?: true
-    completedAt?: true
-    locationLatitude?: true
-    locationLongitude?: true
     discountAmount?: true
     discountPercentage?: true
+    completedAt?: true
+    completedByUserId?: true
+    locationLatitude?: true
+    locationLongitude?: true
     _all?: true
   }
 
@@ -7196,12 +7196,12 @@ export namespace Prisma {
     paymentConfirmedBy: string | null
     paymentStatus: string | null
     userId: string | null
-    completedByUserId: string | null
-    completedAt: Date | null
-    locationLatitude: number | null
-    locationLongitude: number | null
     discountAmount: Decimal | null
     discountPercentage: number | null
+    completedAt: Date | null
+    completedByUserId: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -7242,12 +7242,12 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
-    completedByUserId?: boolean
-    completedAt?: boolean
-    locationLatitude?: boolean
-    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
+    completedAt?: boolean
+    completedByUserId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
@@ -7276,12 +7276,12 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
-    completedByUserId?: boolean
-    completedAt?: boolean
-    locationLatitude?: boolean
-    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
+    completedAt?: boolean
+    completedByUserId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
@@ -7305,12 +7305,12 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
-    completedByUserId?: boolean
-    completedAt?: boolean
-    locationLatitude?: boolean
-    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
+    completedAt?: boolean
+    completedByUserId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
     user?: boolean | Order$userArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
@@ -7334,15 +7334,15 @@ export namespace Prisma {
     paymentConfirmedBy?: boolean
     paymentStatus?: boolean
     userId?: boolean
-    completedByUserId?: boolean
-    completedAt?: boolean
-    locationLatitude?: boolean
-    locationLongitude?: boolean
     discountAmount?: boolean
     discountPercentage?: boolean
+    completedAt?: boolean
+    completedByUserId?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "currency" | "paymentMethod" | "createdAt" | "deliveryAddress" | "paymentConfirmedAt" | "paymentConfirmedBy" | "paymentStatus" | "userId" | "completedByUserId" | "completedAt" | "locationLatitude" | "locationLongitude" | "discountAmount" | "discountPercentage", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "status" | "startDate" | "endDate" | "duration" | "totalAmount" | "subtotal" | "tax" | "deliveryFee" | "currency" | "paymentMethod" | "createdAt" | "deliveryAddress" | "paymentConfirmedAt" | "paymentConfirmedBy" | "paymentStatus" | "userId" | "discountAmount" | "discountPercentage" | "completedAt" | "completedByUserId" | "locationLatitude" | "locationLongitude", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     invoices?: boolean | Order$invoicesArgs<ExtArgs>
     users_orders_payment_confirmed_byTousers?: boolean | Order$users_orders_payment_confirmed_byTousersArgs<ExtArgs>
@@ -7390,12 +7390,12 @@ export namespace Prisma {
       paymentConfirmedBy: string | null
       paymentStatus: string | null
       userId: string | null
-      completedByUserId: string | null
-      completedAt: Date | null
-      locationLatitude: number | null
-      locationLongitude: number | null
       discountAmount: Prisma.Decimal | null
       discountPercentage: number | null
+      completedAt: Date | null
+      completedByUserId: string | null
+      locationLatitude: number | null
+      locationLongitude: number | null
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -7843,12 +7843,12 @@ export namespace Prisma {
     readonly paymentConfirmedBy: FieldRef<"Order", 'String'>
     readonly paymentStatus: FieldRef<"Order", 'String'>
     readonly userId: FieldRef<"Order", 'String'>
-    readonly completedByUserId: FieldRef<"Order", 'String'>
-    readonly completedAt: FieldRef<"Order", 'DateTime'>
-    readonly locationLatitude: FieldRef<"Order", 'Float'>
-    readonly locationLongitude: FieldRef<"Order", 'Float'>
     readonly discountAmount: FieldRef<"Order", 'Decimal'>
     readonly discountPercentage: FieldRef<"Order", 'Int'>
+    readonly completedAt: FieldRef<"Order", 'DateTime'>
+    readonly completedByUserId: FieldRef<"Order", 'String'>
+    readonly locationLatitude: FieldRef<"Order", 'Float'>
+    readonly locationLongitude: FieldRef<"Order", 'Float'>
   }
     
 
@@ -19189,11 +19189,11 @@ export namespace Prisma {
     variantId?: boolean
     unitId?: boolean
     deliveryItems?: boolean | RentalItem$deliveryItemsArgs<ExtArgs>
+    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
-    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rentalItem"]>
 
@@ -19238,11 +19238,11 @@ export namespace Prisma {
   export type RentalItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "packageId" | "quantity" | "createdAt" | "variantId" | "unitId", ExtArgs["result"]["rentalItem"]>
   export type RentalItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deliveryItems?: boolean | RentalItem$deliveryItemsArgs<ExtArgs>
+    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
     rentalPackage?: boolean | RentalItem$rentalPackageArgs<ExtArgs>
     unit?: boolean | RentalItem$unitArgs<ExtArgs>
     variant?: boolean | RentalItem$variantArgs<ExtArgs>
-    itemRequests?: boolean | RentalItem$itemRequestsArgs<ExtArgs>
     _count?: boolean | RentalItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RentalItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19262,11 +19262,11 @@ export namespace Prisma {
     name: "RentalItem"
     objects: {
       deliveryItems: Prisma.$DeliveryItemPayload<ExtArgs>[]
+      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
       order: Prisma.$OrderPayload<ExtArgs>
       rentalPackage: Prisma.$RentalPackagePayload<ExtArgs> | null
       unit: Prisma.$ProductUnitPayload<ExtArgs> | null
       variant: Prisma.$ProductVariantPayload<ExtArgs> | null
-      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19671,11 +19671,11 @@ export namespace Prisma {
   export interface Prisma__RentalItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     deliveryItems<T extends RentalItem$deliveryItemsArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$deliveryItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeliveryItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    itemRequests<T extends RentalItem$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     rentalPackage<T extends RentalItem$rentalPackageArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$rentalPackageArgs<ExtArgs>>): Prisma__RentalPackageClient<$Result.GetResult<Prisma.$RentalPackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     unit<T extends RentalItem$unitArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$unitArgs<ExtArgs>>): Prisma__ProductUnitClient<$Result.GetResult<Prisma.$ProductUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     variant<T extends RentalItem$variantArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$variantArgs<ExtArgs>>): Prisma__ProductVariantClient<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    itemRequests<T extends RentalItem$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, RentalItem$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20132,6 +20132,30 @@ export namespace Prisma {
   }
 
   /**
+   * RentalItem.itemRequests
+   */
+  export type RentalItem$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    where?: ItemRequestWhereInput
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    cursor?: ItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
    * RentalItem.rentalPackage
    */
   export type RentalItem$rentalPackageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20186,30 +20210,6 @@ export namespace Prisma {
      */
     include?: ProductVariantInclude<ExtArgs> | null
     where?: ProductVariantWhereInput
-  }
-
-  /**
-   * RentalItem.itemRequests
-   */
-  export type RentalItem$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ItemRequest
-     */
-    select?: ItemRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ItemRequest
-     */
-    omit?: ItemRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ItemRequestInclude<ExtArgs> | null
-    where?: ItemRequestWhereInput
-    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
-    cursor?: ItemRequestWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
   }
 
   /**
@@ -20509,6 +20509,7 @@ export namespace Prisma {
     inventoryResolutions?: boolean | User$inventoryResolutionsArgs<ExtArgs>
     inventoryUpdates?: boolean | User$inventoryUpdatesArgs<ExtArgs>
     invoices?: boolean | User$invoicesArgs<ExtArgs>
+    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     notificationDismissals?: boolean | User$notificationDismissalsArgs<ExtArgs>
@@ -20521,7 +20522,6 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
-    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -20600,6 +20600,7 @@ export namespace Prisma {
     inventoryResolutions?: boolean | User$inventoryResolutionsArgs<ExtArgs>
     inventoryUpdates?: boolean | User$inventoryUpdatesArgs<ExtArgs>
     invoices?: boolean | User$invoicesArgs<ExtArgs>
+    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     notificationDismissals?: boolean | User$notificationDismissalsArgs<ExtArgs>
@@ -20612,7 +20613,6 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
-    itemRequests?: boolean | User$itemRequestsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -20631,6 +20631,7 @@ export namespace Prisma {
       inventoryResolutions: Prisma.$InventorySyncLogPayload<ExtArgs>[]
       inventoryUpdates: Prisma.$InventorySyncLogPayload<ExtArgs>[]
       invoices: Prisma.$InvoicePayload<ExtArgs>[]
+      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
       receivedMessages: Prisma.$MessagePayload<ExtArgs>[]
       sentMessages: Prisma.$MessagePayload<ExtArgs>[]
       notificationDismissals: Prisma.$NotificationDismissalPayload<ExtArgs>[]
@@ -20643,7 +20644,6 @@ export namespace Prisma {
       workerAttendance: Prisma.$WorkerAttendancePayload<ExtArgs>[]
       sentNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
       receivedNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
-      itemRequests: Prisma.$ItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21068,6 +21068,7 @@ export namespace Prisma {
     inventoryResolutions<T extends User$inventoryResolutionsArgs<ExtArgs> = {}>(args?: Subset<T, User$inventoryResolutionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventorySyncLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     inventoryUpdates<T extends User$inventoryUpdatesArgs<ExtArgs> = {}>(args?: Subset<T, User$inventoryUpdatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventorySyncLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invoices<T extends User$invoicesArgs<ExtArgs> = {}>(args?: Subset<T, User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    itemRequests<T extends User$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notificationDismissals<T extends User$notificationDismissalsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationDismissalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationDismissalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -21080,7 +21081,6 @@ export namespace Prisma {
     workerAttendance<T extends User$workerAttendanceArgs<ExtArgs> = {}>(args?: Subset<T, User$workerAttendanceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentNotifications<T extends User$sentNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    itemRequests<T extends User$itemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$itemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21756,6 +21756,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.itemRequests
+   */
+  export type User$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ItemRequest
+     */
+    select?: ItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ItemRequest
+     */
+    omit?: ItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ItemRequestInclude<ExtArgs> | null
+    where?: ItemRequestWhereInput
+    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
+    cursor?: ItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
+  }
+
+  /**
    * User.receivedMessages
    */
   export type User$receivedMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22041,30 +22065,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkerNotificationScalarFieldEnum | WorkerNotificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.itemRequests
-   */
-  export type User$itemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ItemRequest
-     */
-    select?: ItemRequestSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ItemRequest
-     */
-    omit?: ItemRequestOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ItemRequestInclude<ExtArgs> | null
-    where?: ItemRequestWhereInput
-    orderBy?: ItemRequestOrderByWithRelationInput | ItemRequestOrderByWithRelationInput[]
-    cursor?: ItemRequestWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ItemRequestScalarFieldEnum | ItemRequestScalarFieldEnum[]
   }
 
   /**
@@ -43742,11 +43742,11 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
-    userConfirmedAt: Date | null
-    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
   }
 
   export type DeliveryMaxAggregateOutputType = {
@@ -43766,11 +43766,11 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
-    userConfirmedAt: Date | null
-    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
   }
 
   export type DeliveryCountAggregateOutputType = {
@@ -43790,11 +43790,11 @@ export namespace Prisma {
     latitude: number
     longitude: number
     lastLocationUpdate: number
-    userConfirmedAt: number
-    userConfirmedBy: number
     trackingCode: number
     createdAt: number
     updatedAt: number
+    userConfirmedAt: number
+    userConfirmedBy: number
     _all: number
   }
 
@@ -43830,11 +43830,11 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
-    userConfirmedAt?: true
-    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
   }
 
   export type DeliveryMaxAggregateInputType = {
@@ -43854,11 +43854,11 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
-    userConfirmedAt?: true
-    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
   }
 
   export type DeliveryCountAggregateInputType = {
@@ -43878,11 +43878,11 @@ export namespace Prisma {
     latitude?: true
     longitude?: true
     lastLocationUpdate?: true
-    userConfirmedAt?: true
-    userConfirmedBy?: true
     trackingCode?: true
     createdAt?: true
     updatedAt?: true
+    userConfirmedAt?: true
+    userConfirmedBy?: true
     _all?: true
   }
 
@@ -43989,11 +43989,11 @@ export namespace Prisma {
     latitude: number | null
     longitude: number | null
     lastLocationUpdate: Date | null
-    userConfirmedAt: Date | null
-    userConfirmedBy: string | null
     trackingCode: string | null
     createdAt: Date
     updatedAt: Date
+    userConfirmedAt: Date | null
+    userConfirmedBy: string | null
     _count: DeliveryCountAggregateOutputType | null
     _avg: DeliveryAvgAggregateOutputType | null
     _sum: DeliverySumAggregateOutputType | null
@@ -44032,11 +44032,11 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
-    userConfirmedAt?: boolean
-    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
     invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
     vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
@@ -44063,11 +44063,11 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
-    userConfirmedAt?: boolean
-    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
     invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
     vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
@@ -44090,11 +44090,11 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
-    userConfirmedAt?: boolean
-    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
     claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
     invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
     vehicle?: boolean | Delivery$vehicleArgs<ExtArgs>
@@ -44117,14 +44117,14 @@ export namespace Prisma {
     latitude?: boolean
     longitude?: boolean
     lastLocationUpdate?: boolean
-    userConfirmedAt?: boolean
-    userConfirmedBy?: boolean
     trackingCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    userConfirmedAt?: boolean
+    userConfirmedBy?: boolean
   }
 
-  export type DeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "deliveryMethod" | "deliveryType" | "vehicleId" | "status" | "claimedByWorkerId" | "claimedAt" | "startedAt" | "completedAt" | "eta" | "etaOverrideCount" | "delayMinutes" | "latitude" | "longitude" | "lastLocationUpdate" | "userConfirmedAt" | "userConfirmedBy" | "trackingCode" | "createdAt" | "updatedAt", ExtArgs["result"]["delivery"]>
+  export type DeliveryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "invoiceId" | "deliveryMethod" | "deliveryType" | "vehicleId" | "status" | "claimedByWorkerId" | "claimedAt" | "startedAt" | "completedAt" | "eta" | "etaOverrideCount" | "delayMinutes" | "latitude" | "longitude" | "lastLocationUpdate" | "trackingCode" | "createdAt" | "updatedAt" | "userConfirmedAt" | "userConfirmedBy", ExtArgs["result"]["delivery"]>
   export type DeliveryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     claimedByWorker?: boolean | Delivery$claimedByWorkerArgs<ExtArgs>
     invoice?: boolean | Delivery$invoiceArgs<ExtArgs>
@@ -44172,11 +44172,11 @@ export namespace Prisma {
       latitude: number | null
       longitude: number | null
       lastLocationUpdate: Date | null
-      userConfirmedAt: Date | null
-      userConfirmedBy: string | null
       trackingCode: string | null
       createdAt: Date
       updatedAt: Date
+      userConfirmedAt: Date | null
+      userConfirmedBy: string | null
     }, ExtArgs["result"]["delivery"]>
     composites: {}
   }
@@ -44622,11 +44622,11 @@ export namespace Prisma {
     readonly latitude: FieldRef<"Delivery", 'Float'>
     readonly longitude: FieldRef<"Delivery", 'Float'>
     readonly lastLocationUpdate: FieldRef<"Delivery", 'DateTime'>
-    readonly userConfirmedAt: FieldRef<"Delivery", 'DateTime'>
-    readonly userConfirmedBy: FieldRef<"Delivery", 'String'>
     readonly trackingCode: FieldRef<"Delivery", 'String'>
     readonly createdAt: FieldRef<"Delivery", 'DateTime'>
     readonly updatedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly userConfirmedAt: FieldRef<"Delivery", 'DateTime'>
+    readonly userConfirmedBy: FieldRef<"Delivery", 'String'>
   }
     
 
@@ -51765,13 +51765,13 @@ export namespace Prisma {
     userId: 'userId',
     discountAmount: 'discountAmount',
     discountPercentage: 'discountPercentage',
-    lineItems: 'lineItems',
-    completedByUserId: 'completedByUserId',
     completedAt: 'completedAt',
+    completedByUserId: 'completedByUserId',
+    deliveryAddress: 'deliveryAddress',
     locationLatitude: 'locationLatitude',
+    lineItems: 'lineItems',
     locationLongitude: 'locationLongitude',
-    paymentMethod: 'paymentMethod',
-    deliveryAddress: 'deliveryAddress'
+    paymentMethod: 'paymentMethod'
   };
 
   export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
@@ -51796,12 +51796,12 @@ export namespace Prisma {
     paymentConfirmedBy: 'paymentConfirmedBy',
     paymentStatus: 'paymentStatus',
     userId: 'userId',
-    completedByUserId: 'completedByUserId',
-    completedAt: 'completedAt',
-    locationLatitude: 'locationLatitude',
-    locationLongitude: 'locationLongitude',
     discountAmount: 'discountAmount',
-    discountPercentage: 'discountPercentage'
+    discountPercentage: 'discountPercentage',
+    completedAt: 'completedAt',
+    completedByUserId: 'completedByUserId',
+    locationLatitude: 'locationLatitude',
+    locationLongitude: 'locationLongitude'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -52247,11 +52247,11 @@ export namespace Prisma {
     latitude: 'latitude',
     longitude: 'longitude',
     lastLocationUpdate: 'lastLocationUpdate',
-    userConfirmedAt: 'userConfirmedAt',
-    userConfirmedBy: 'userConfirmedBy',
     trackingCode: 'trackingCode',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    userConfirmedAt: 'userConfirmedAt',
+    userConfirmedBy: 'userConfirmedBy'
   };
 
   export type DeliveryScalarFieldEnum = (typeof DeliveryScalarFieldEnum)[keyof typeof DeliveryScalarFieldEnum]
@@ -52457,20 +52457,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -52481,6 +52467,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -52723,13 +52723,13 @@ export namespace Prisma {
     userId?: UuidNullableFilter<"Invoice"> | string | null
     discountAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Invoice"> | number | null
-    lineItems?: JsonNullableFilter<"Invoice">
-    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
     completedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
+    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
     locationLatitude?: FloatNullableFilter<"Invoice"> | number | null
+    lineItems?: JsonNullableFilter<"Invoice">
     locationLongitude?: FloatNullableFilter<"Invoice"> | number | null
     paymentMethod?: StringNullableFilter<"Invoice"> | string | null
-    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
     deliveries?: DeliveryListRelationFilter
     order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -52758,13 +52758,13 @@ export namespace Prisma {
     userId?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
-    lineItems?: SortOrderInput | SortOrder
-    completedByUserId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    completedByUserId?: SortOrderInput | SortOrder
+    deliveryAddress?: SortOrderInput | SortOrder
     locationLatitude?: SortOrderInput | SortOrder
+    lineItems?: SortOrderInput | SortOrder
     locationLongitude?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
-    deliveryAddress?: SortOrderInput | SortOrder
     deliveries?: DeliveryOrderByRelationAggregateInput
     order?: OrderOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -52796,13 +52796,13 @@ export namespace Prisma {
     userId?: UuidNullableFilter<"Invoice"> | string | null
     discountAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Invoice"> | number | null
-    lineItems?: JsonNullableFilter<"Invoice">
-    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
     completedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
+    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
     locationLatitude?: FloatNullableFilter<"Invoice"> | number | null
+    lineItems?: JsonNullableFilter<"Invoice">
     locationLongitude?: FloatNullableFilter<"Invoice"> | number | null
     paymentMethod?: StringNullableFilter<"Invoice"> | string | null
-    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
     deliveries?: DeliveryListRelationFilter
     order?: XOR<OrderNullableScalarRelationFilter, OrderWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -52831,13 +52831,13 @@ export namespace Prisma {
     userId?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
-    lineItems?: SortOrderInput | SortOrder
-    completedByUserId?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
+    completedByUserId?: SortOrderInput | SortOrder
+    deliveryAddress?: SortOrderInput | SortOrder
     locationLatitude?: SortOrderInput | SortOrder
+    lineItems?: SortOrderInput | SortOrder
     locationLongitude?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
-    deliveryAddress?: SortOrderInput | SortOrder
     _count?: InvoiceCountOrderByAggregateInput
     _avg?: InvoiceAvgOrderByAggregateInput
     _max?: InvoiceMaxOrderByAggregateInput
@@ -52871,13 +52871,13 @@ export namespace Prisma {
     userId?: UuidNullableWithAggregatesFilter<"Invoice"> | string | null
     discountAmount?: DecimalNullableWithAggregatesFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableWithAggregatesFilter<"Invoice"> | number | null
-    lineItems?: JsonNullableWithAggregatesFilter<"Invoice">
-    completedByUserId?: UuidNullableWithAggregatesFilter<"Invoice"> | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
+    completedByUserId?: UuidNullableWithAggregatesFilter<"Invoice"> | string | null
+    deliveryAddress?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     locationLatitude?: FloatNullableWithAggregatesFilter<"Invoice"> | number | null
+    lineItems?: JsonNullableWithAggregatesFilter<"Invoice">
     locationLongitude?: FloatNullableWithAggregatesFilter<"Invoice"> | number | null
     paymentMethod?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
-    deliveryAddress?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
   }
 
   export type OrderWhereInput = {
@@ -52902,12 +52902,12 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidNullableFilter<"Order"> | string | null
-    completedByUserId?: UuidNullableFilter<"Order"> | string | null
-    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    locationLatitude?: FloatNullableFilter<"Order"> | number | null
-    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Order"> | string | null
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     invoices?: InvoiceListRelationFilter
     users_orders_payment_confirmed_byTousers?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -52935,12 +52935,12 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentStatus?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
-    completedByUserId?: SortOrderInput | SortOrder
-    completedAt?: SortOrderInput | SortOrder
-    locationLatitude?: SortOrderInput | SortOrder
-    locationLongitude?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    completedByUserId?: SortOrderInput | SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     invoices?: InvoiceOrderByRelationAggregateInput
     users_orders_payment_confirmed_byTousers?: UserOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -52971,12 +52971,12 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidNullableFilter<"Order"> | string | null
-    completedByUserId?: UuidNullableFilter<"Order"> | string | null
-    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    locationLatitude?: FloatNullableFilter<"Order"> | number | null
-    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Order"> | string | null
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     invoices?: InvoiceListRelationFilter
     users_orders_payment_confirmed_byTousers?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -53004,12 +53004,12 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrderInput | SortOrder
     paymentStatus?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
-    completedByUserId?: SortOrderInput | SortOrder
-    completedAt?: SortOrderInput | SortOrder
-    locationLatitude?: SortOrderInput | SortOrder
-    locationLongitude?: SortOrderInput | SortOrder
     discountAmount?: SortOrderInput | SortOrder
     discountPercentage?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    completedByUserId?: SortOrderInput | SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -53039,12 +53039,12 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableWithAggregatesFilter<"Order"> | string | null
     paymentStatus?: StringNullableWithAggregatesFilter<"Order"> | string | null
     userId?: UuidNullableWithAggregatesFilter<"Order"> | string | null
-    completedByUserId?: UuidNullableWithAggregatesFilter<"Order"> | string | null
-    completedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
-    locationLatitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
-    locationLongitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
     discountAmount?: DecimalNullableWithAggregatesFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableWithAggregatesFilter<"Order"> | number | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    completedByUserId?: UuidNullableWithAggregatesFilter<"Order"> | string | null
+    locationLatitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableWithAggregatesFilter<"Order"> | number | null
   }
 
   export type PaymentTransactionWhereInput = {
@@ -53784,11 +53784,11 @@ export namespace Prisma {
     variantId?: UuidNullableFilter<"RentalItem"> | string | null
     unitId?: UuidNullableFilter<"RentalItem"> | string | null
     deliveryItems?: DeliveryItemListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
-    itemRequests?: ItemRequestListRelationFilter
   }
 
   export type RentalItemOrderByWithRelationInput = {
@@ -53800,11 +53800,11 @@ export namespace Prisma {
     variantId?: SortOrderInput | SortOrder
     unitId?: SortOrderInput | SortOrder
     deliveryItems?: DeliveryItemOrderByRelationAggregateInput
+    itemRequests?: ItemRequestOrderByRelationAggregateInput
     order?: OrderOrderByWithRelationInput
     rentalPackage?: RentalPackageOrderByWithRelationInput
     unit?: ProductUnitOrderByWithRelationInput
     variant?: ProductVariantOrderByWithRelationInput
-    itemRequests?: ItemRequestOrderByRelationAggregateInput
   }
 
   export type RentalItemWhereUniqueInput = Prisma.AtLeast<{
@@ -53819,11 +53819,11 @@ export namespace Prisma {
     variantId?: UuidNullableFilter<"RentalItem"> | string | null
     unitId?: UuidNullableFilter<"RentalItem"> | string | null
     deliveryItems?: DeliveryItemListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
     rentalPackage?: XOR<RentalPackageNullableScalarRelationFilter, RentalPackageWhereInput> | null
     unit?: XOR<ProductUnitNullableScalarRelationFilter, ProductUnitWhereInput> | null
     variant?: XOR<ProductVariantNullableScalarRelationFilter, ProductVariantWhereInput> | null
-    itemRequests?: ItemRequestListRelationFilter
   }, "id">
 
   export type RentalItemOrderByWithAggregationInput = {
@@ -53886,6 +53886,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogListRelationFilter
     inventoryUpdates?: InventorySyncLogListRelationFilter
     invoices?: InvoiceListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
     receivedMessages?: MessageListRelationFilter
     sentMessages?: MessageListRelationFilter
     notificationDismissals?: NotificationDismissalListRelationFilter
@@ -53898,7 +53899,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
-    itemRequests?: ItemRequestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -53930,6 +53930,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogOrderByRelationAggregateInput
     inventoryUpdates?: InventorySyncLogOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
+    itemRequests?: ItemRequestOrderByRelationAggregateInput
     receivedMessages?: MessageOrderByRelationAggregateInput
     sentMessages?: MessageOrderByRelationAggregateInput
     notificationDismissals?: NotificationDismissalOrderByRelationAggregateInput
@@ -53942,7 +53943,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceOrderByRelationAggregateInput
     sentNotifications?: WorkerNotificationOrderByRelationAggregateInput
     receivedNotifications?: WorkerNotificationOrderByRelationAggregateInput
-    itemRequests?: ItemRequestOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -53977,6 +53977,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogListRelationFilter
     inventoryUpdates?: InventorySyncLogListRelationFilter
     invoices?: InvoiceListRelationFilter
+    itemRequests?: ItemRequestListRelationFilter
     receivedMessages?: MessageListRelationFilter
     sentMessages?: MessageListRelationFilter
     notificationDismissals?: NotificationDismissalListRelationFilter
@@ -53989,7 +53990,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
-    itemRequests?: ItemRequestListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -55345,11 +55345,11 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     trackingCode?: StringNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     claimedByWorker?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
     vehicle?: XOR<VehicleNullableScalarRelationFilter, VehicleWhereInput> | null
@@ -55375,11 +55375,11 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     lastLocationUpdate?: SortOrderInput | SortOrder
-    userConfirmedAt?: SortOrderInput | SortOrder
-    userConfirmedBy?: SortOrderInput | SortOrder
     trackingCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userConfirmedAt?: SortOrderInput | SortOrder
+    userConfirmedBy?: SortOrderInput | SortOrder
     claimedByWorker?: UserOrderByWithRelationInput
     invoice?: InvoiceOrderByWithRelationInput
     vehicle?: VehicleOrderByWithRelationInput
@@ -55409,10 +55409,10 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     claimedByWorker?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
     vehicle?: XOR<VehicleNullableScalarRelationFilter, VehicleWhereInput> | null
@@ -55438,11 +55438,11 @@ export namespace Prisma {
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     lastLocationUpdate?: SortOrderInput | SortOrder
-    userConfirmedAt?: SortOrderInput | SortOrder
-    userConfirmedBy?: SortOrderInput | SortOrder
     trackingCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userConfirmedAt?: SortOrderInput | SortOrder
+    userConfirmedBy?: SortOrderInput | SortOrder
     _count?: DeliveryCountOrderByAggregateInput
     _avg?: DeliveryAvgOrderByAggregateInput
     _max?: DeliveryMaxOrderByAggregateInput
@@ -55470,11 +55470,11 @@ export namespace Prisma {
     latitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
-    userConfirmedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
-    userConfirmedBy?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
     trackingCode?: StringNullableWithAggregatesFilter<"Delivery"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Delivery"> | Date | string
+    userConfirmedAt?: DateTimeNullableWithAggregatesFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableWithAggregatesFilter<"Delivery"> | string | null
   }
 
   export type DeliveryItemWhereInput = {
@@ -55923,13 +55923,13 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
     order?: OrderCreateNestedOneWithoutInvoicesInput
     user?: UserCreateNestedOneWithoutInvoicesInput
@@ -55958,13 +55958,13 @@ export namespace Prisma {
     userId?: string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
@@ -55989,13 +55989,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
     order?: OrderUpdateOneWithoutInvoicesNestedInput
     user?: UserUpdateOneWithoutInvoicesNestedInput
@@ -56024,13 +56024,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -56057,13 +56057,13 @@ export namespace Prisma {
     userId?: string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
   }
 
   export type InvoiceUpdateManyMutationInput = {
@@ -56087,13 +56087,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InvoiceUncheckedUpdateManyInput = {
@@ -56119,13 +56119,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderCreateInput = {
@@ -56145,12 +56145,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user?: UserCreateNestedOneWithoutOrdersInput
@@ -56178,12 +56178,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
@@ -56207,12 +56207,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
@@ -56240,12 +56240,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
@@ -56271,12 +56271,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -56296,12 +56296,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -56323,12 +56323,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type PaymentTransactionCreateInput = {
@@ -57117,11 +57117,11 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateInput = {
@@ -57141,11 +57141,11 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateInput = {
@@ -57215,6 +57215,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -57227,7 +57228,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -57259,6 +57259,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -57271,7 +57272,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -57303,6 +57303,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -57315,7 +57316,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -57347,6 +57347,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -57359,7 +57360,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -58788,11 +58788,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
@@ -58818,11 +58818,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
@@ -58842,11 +58842,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
@@ -58872,11 +58872,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
@@ -58899,11 +58899,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
   }
 
   export type DeliveryUpdateManyMutationInput = {
@@ -58920,11 +58920,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DeliveryUncheckedUpdateManyInput = {
@@ -58944,11 +58944,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DeliveryItemCreateInput = {
@@ -59500,6 +59500,17 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -59522,17 +59533,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type DeliveryListRelationFilter = {
@@ -59583,13 +59583,13 @@ export namespace Prisma {
     userId?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
-    lineItems?: SortOrder
-    completedByUserId?: SortOrder
     completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    deliveryAddress?: SortOrder
     locationLatitude?: SortOrder
+    lineItems?: SortOrder
     locationLongitude?: SortOrder
     paymentMethod?: SortOrder
-    deliveryAddress?: SortOrder
   }
 
   export type InvoiceAvgOrderByAggregateInput = {
@@ -59628,12 +59628,12 @@ export namespace Prisma {
     userId?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
-    completedByUserId?: SortOrder
     completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    deliveryAddress?: SortOrder
     locationLatitude?: SortOrder
     locationLongitude?: SortOrder
     paymentMethod?: SortOrder
-    deliveryAddress?: SortOrder
   }
 
   export type InvoiceMinOrderByAggregateInput = {
@@ -59659,12 +59659,12 @@ export namespace Prisma {
     userId?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
-    completedByUserId?: SortOrder
     completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    deliveryAddress?: SortOrder
     locationLatitude?: SortOrder
     locationLongitude?: SortOrder
     paymentMethod?: SortOrder
-    deliveryAddress?: SortOrder
   }
 
   export type InvoiceSumOrderByAggregateInput = {
@@ -59815,6 +59815,22 @@ export namespace Prisma {
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
@@ -59840,22 +59856,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -59939,12 +59939,12 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
-    completedByUserId?: SortOrder
-    completedAt?: SortOrder
-    locationLatitude?: SortOrder
-    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
+    completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -59953,10 +59953,10 @@ export namespace Prisma {
     subtotal?: SortOrder
     tax?: SortOrder
     deliveryFee?: SortOrder
-    locationLatitude?: SortOrder
-    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type OrderMaxOrderByAggregateInput = {
@@ -59978,12 +59978,12 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
-    completedByUserId?: SortOrder
-    completedAt?: SortOrder
-    locationLatitude?: SortOrder
-    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
+    completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -60005,12 +60005,12 @@ export namespace Prisma {
     paymentConfirmedBy?: SortOrder
     paymentStatus?: SortOrder
     userId?: SortOrder
-    completedByUserId?: SortOrder
-    completedAt?: SortOrder
-    locationLatitude?: SortOrder
-    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
+    completedAt?: SortOrder
+    completedByUserId?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -60019,10 +60019,10 @@ export namespace Prisma {
     subtotal?: SortOrder
     tax?: SortOrder
     deliveryFee?: SortOrder
-    locationLatitude?: SortOrder
-    locationLongitude?: SortOrder
     discountAmount?: SortOrder
     discountPercentage?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -60616,6 +60616,12 @@ export namespace Prisma {
     none?: DeliveryItemWhereInput
   }
 
+  export type ItemRequestListRelationFilter = {
+    every?: ItemRequestWhereInput
+    some?: ItemRequestWhereInput
+    none?: ItemRequestWhereInput
+  }
+
   export type RentalPackageNullableScalarRelationFilter = {
     is?: RentalPackageWhereInput | null
     isNot?: RentalPackageWhereInput | null
@@ -60629,12 +60635,6 @@ export namespace Prisma {
   export type ProductVariantNullableScalarRelationFilter = {
     is?: ProductVariantWhereInput | null
     isNot?: ProductVariantWhereInput | null
-  }
-
-  export type ItemRequestListRelationFilter = {
-    every?: ItemRequestWhereInput
-    some?: ItemRequestWhereInput
-    none?: ItemRequestWhereInput
   }
 
   export type DeliveryItemOrderByRelationAggregateInput = {
@@ -61718,11 +61718,11 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
-    userConfirmedAt?: SortOrder
-    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
   }
 
   export type DeliveryAvgOrderByAggregateInput = {
@@ -61749,11 +61749,11 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
-    userConfirmedAt?: SortOrder
-    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
   }
 
   export type DeliveryMinOrderByAggregateInput = {
@@ -61773,11 +61773,11 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     lastLocationUpdate?: SortOrder
-    userConfirmedAt?: SortOrder
-    userConfirmedBy?: SortOrder
     trackingCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    userConfirmedAt?: SortOrder
+    userConfirmedBy?: SortOrder
   }
 
   export type DeliverySumOrderByAggregateInput = {
@@ -63074,6 +63074,13 @@ export namespace Prisma {
     connect?: DeliveryItemWhereUniqueInput | DeliveryItemWhereUniqueInput[]
   }
 
+  export type ItemRequestCreateNestedManyWithoutRentalItemInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+  }
+
   export type OrderCreateNestedOneWithoutRentalItemsInput = {
     create?: XOR<OrderCreateWithoutRentalItemsInput, OrderUncheckedCreateWithoutRentalItemsInput>
     connectOrCreate?: OrderCreateOrConnectWithoutRentalItemsInput
@@ -63096,13 +63103,6 @@ export namespace Prisma {
     create?: XOR<ProductVariantCreateWithoutRentalItemsInput, ProductVariantUncheckedCreateWithoutRentalItemsInput>
     connectOrCreate?: ProductVariantCreateOrConnectWithoutRentalItemsInput
     connect?: ProductVariantWhereUniqueInput
-  }
-
-  export type ItemRequestCreateNestedManyWithoutRentalItemInput = {
-    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
-    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
   }
 
   export type DeliveryItemUncheckedCreateNestedManyWithoutRentalItemInput = {
@@ -63131,6 +63131,20 @@ export namespace Prisma {
     update?: DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput | DeliveryItemUpdateWithWhereUniqueWithoutRentalItemInput[]
     updateMany?: DeliveryItemUpdateManyWithWhereWithoutRentalItemInput | DeliveryItemUpdateManyWithWhereWithoutRentalItemInput[]
     deleteMany?: DeliveryItemScalarWhereInput | DeliveryItemScalarWhereInput[]
+  }
+
+  export type ItemRequestUpdateManyWithoutRentalItemNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput | ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput[]
+    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput | ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutRentalItemInput | ItemRequestUpdateManyWithWhereWithoutRentalItemInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type OrderUpdateOneRequiredWithoutRentalItemsNestedInput = {
@@ -63169,20 +63183,6 @@ export namespace Prisma {
     delete?: ProductVariantWhereInput | boolean
     connect?: ProductVariantWhereUniqueInput
     update?: XOR<XOR<ProductVariantUpdateToOneWithWhereWithoutRentalItemsInput, ProductVariantUpdateWithoutRentalItemsInput>, ProductVariantUncheckedUpdateWithoutRentalItemsInput>
-  }
-
-  export type ItemRequestUpdateManyWithoutRentalItemNestedInput = {
-    create?: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput> | ItemRequestCreateWithoutRentalItemInput[] | ItemRequestUncheckedCreateWithoutRentalItemInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutRentalItemInput | ItemRequestCreateOrConnectWithoutRentalItemInput[]
-    upsert?: ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput | ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput[]
-    createMany?: ItemRequestCreateManyRentalItemInputEnvelope
-    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    update?: ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput | ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput[]
-    updateMany?: ItemRequestUpdateManyWithWhereWithoutRentalItemInput | ItemRequestUpdateManyWithWhereWithoutRentalItemInput[]
-    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type DeliveryItemUncheckedUpdateManyWithoutRentalItemNestedInput = {
@@ -63283,6 +63283,13 @@ export namespace Prisma {
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
   }
 
+  export type ItemRequestCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+  }
+
   export type MessageCreateNestedManyWithoutReceiverInput = {
     create?: XOR<MessageCreateWithoutReceiverInput, MessageUncheckedCreateWithoutReceiverInput> | MessageCreateWithoutReceiverInput[] | MessageUncheckedCreateWithoutReceiverInput[]
     connectOrCreate?: MessageCreateOrConnectWithoutReceiverInput | MessageCreateOrConnectWithoutReceiverInput[]
@@ -63367,13 +63374,6 @@ export namespace Prisma {
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
   }
 
-  export type ItemRequestCreateNestedManyWithoutUserInput = {
-    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
-    createMany?: ItemRequestCreateManyUserInputEnvelope
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-  }
-
   export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -63442,6 +63442,13 @@ export namespace Prisma {
     connectOrCreate?: InvoiceCreateOrConnectWithoutUserInput | InvoiceCreateOrConnectWithoutUserInput[]
     createMany?: InvoiceCreateManyUserInputEnvelope
     connect?: InvoiceWhereUniqueInput | InvoiceWhereUniqueInput[]
+  }
+
+  export type ItemRequestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
   }
 
   export type MessageUncheckedCreateNestedManyWithoutReceiverInput = {
@@ -63526,13 +63533,6 @@ export namespace Prisma {
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutWorkerInput | WorkerNotificationCreateOrConnectWithoutWorkerInput[]
     createMany?: WorkerNotificationCreateManyWorkerInputEnvelope
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
-  }
-
-  export type ItemRequestUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
-    createMany?: ItemRequestCreateManyUserInputEnvelope
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
   }
 
   export type ActivityLogUpdateManyWithoutUserNestedInput = {
@@ -63673,6 +63673,20 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutUserInput | InvoiceUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutUserInput | InvoiceUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type ItemRequestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type MessageUpdateManyWithoutReceiverNestedInput = {
@@ -63843,20 +63857,6 @@ export namespace Prisma {
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
   }
 
-  export type ItemRequestUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
-    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ItemRequestCreateManyUserInputEnvelope
-    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
-  }
-
   export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -63995,6 +63995,20 @@ export namespace Prisma {
     update?: InvoiceUpdateWithWhereUniqueWithoutUserInput | InvoiceUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: InvoiceUpdateManyWithWhereWithoutUserInput | InvoiceUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: InvoiceScalarWhereInput | InvoiceScalarWhereInput[]
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
+    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ItemRequestCreateManyUserInputEnvelope
+    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
+    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type MessageUncheckedUpdateManyWithoutReceiverNestedInput = {
@@ -64163,20 +64177,6 @@ export namespace Prisma {
     update?: WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput | WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput[]
     updateMany?: WorkerNotificationUpdateManyWithWhereWithoutWorkerInput | WorkerNotificationUpdateManyWithWhereWithoutWorkerInput[]
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
-  }
-
-  export type ItemRequestUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput> | ItemRequestCreateWithoutUserInput[] | ItemRequestUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ItemRequestCreateOrConnectWithoutUserInput | ItemRequestCreateOrConnectWithoutUserInput[]
-    upsert?: ItemRequestUpsertWithWhereUniqueWithoutUserInput | ItemRequestUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ItemRequestCreateManyUserInputEnvelope
-    set?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    disconnect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    delete?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    connect?: ItemRequestWhereUniqueInput | ItemRequestWhereUniqueInput[]
-    update?: ItemRequestUpdateWithWhereUniqueWithoutUserInput | ItemRequestUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ItemRequestUpdateManyWithWhereWithoutUserInput | ItemRequestUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
   }
 
   export type ChatGroupMemberCreateNestedManyWithoutGroupInput = {
@@ -65286,6 +65286,22 @@ export namespace Prisma {
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -65308,22 +65324,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -65683,11 +65683,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
     editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
@@ -65711,11 +65711,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
@@ -65748,12 +65748,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user?: UserCreateNestedOneWithoutOrdersInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
@@ -65780,12 +65780,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
@@ -65824,6 +65824,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -65836,7 +65837,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -65867,6 +65867,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -65879,7 +65880,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -65923,11 +65923,11 @@ export namespace Prisma {
     latitude?: FloatNullableFilter<"Delivery"> | number | null
     longitude?: FloatNullableFilter<"Delivery"> | number | null
     lastLocationUpdate?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
-    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
     trackingCode?: StringNullableFilter<"Delivery"> | string | null
     createdAt?: DateTimeFilter<"Delivery"> | Date | string
     updatedAt?: DateTimeFilter<"Delivery"> | Date | string
+    userConfirmedAt?: DateTimeNullableFilter<"Delivery"> | Date | string | null
+    userConfirmedBy?: UuidNullableFilter<"Delivery"> | string | null
   }
 
   export type OrderUpsertWithoutInvoicesInput = {
@@ -65958,12 +65958,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
@@ -65990,12 +65990,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
@@ -66040,6 +66040,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -66052,7 +66053,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -66083,6 +66083,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -66095,7 +66096,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceCreateWithoutOrderInput = {
@@ -66119,13 +66119,13 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
     user?: UserCreateNestedOneWithoutInvoicesInput
   }
@@ -66152,13 +66152,13 @@ export namespace Prisma {
     userId?: string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
@@ -66201,6 +66201,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -66212,7 +66213,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -66244,6 +66244,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -66255,7 +66256,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -66292,6 +66292,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -66303,7 +66304,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -66335,6 +66335,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -66346,7 +66347,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -66435,10 +66435,10 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutOrderInput = {
@@ -66504,13 +66504,13 @@ export namespace Prisma {
     userId?: UuidNullableFilter<"Invoice"> | string | null
     discountAmount?: DecimalNullableFilter<"Invoice"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Invoice"> | number | null
-    lineItems?: JsonNullableFilter<"Invoice">
-    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
     completedAt?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Invoice"> | string | null
+    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
     locationLatitude?: FloatNullableFilter<"Invoice"> | number | null
+    lineItems?: JsonNullableFilter<"Invoice">
     locationLongitude?: FloatNullableFilter<"Invoice"> | number | null
     paymentMethod?: StringNullableFilter<"Invoice"> | string | null
-    deliveryAddress?: StringNullableFilter<"Invoice"> | string | null
   }
 
   export type UserUpsertWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -66553,6 +66553,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -66564,7 +66565,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -66596,6 +66596,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -66607,7 +66608,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -66650,6 +66650,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -66661,7 +66662,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -66693,6 +66693,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -66704,7 +66705,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PaymentTransactionUpsertWithWhereUniqueWithoutOrderInput = {
@@ -66819,12 +66819,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user?: UserCreateNestedOneWithoutOrdersInput
@@ -66851,12 +66851,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
@@ -66896,6 +66896,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -66907,7 +66908,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerifiedTransactionsInput = {
@@ -66939,6 +66939,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -66950,7 +66951,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerifiedTransactionsInput = {
@@ -66986,12 +66986,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
@@ -67018,12 +67018,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
@@ -67069,6 +67069,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -67080,7 +67081,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerifiedTransactionsInput = {
@@ -67112,6 +67112,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -67123,7 +67124,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutProductRelationsInput = {
@@ -67479,10 +67479,10 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     order: OrderCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutRentalPackageInput = {
@@ -67902,10 +67902,10 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutVariantInput = {
@@ -68023,12 +68023,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user?: UserCreateNestedOneWithoutOrdersInput
@@ -68055,12 +68055,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     rentalItems?: RentalItemUncheckedCreateNestedManyWithoutOrderInput
@@ -68103,10 +68103,10 @@ export namespace Prisma {
     quantity?: number | null
     createdAt?: Date | string | null
     deliveryItems?: DeliveryItemCreateNestedManyWithoutRentalItemInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutUnitInput = {
@@ -68190,12 +68190,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
@@ -68222,12 +68222,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     rentalItems?: RentalItemUncheckedUpdateManyWithoutOrderNestedInput
@@ -68375,6 +68375,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -68386,7 +68387,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUnitActionsInput = {
@@ -68418,6 +68418,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -68429,7 +68430,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUnitActionsInput = {
@@ -68516,6 +68516,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -68527,7 +68528,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUnitActionsInput = {
@@ -68559,6 +68559,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -68570,7 +68571,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSystemNotificationsInput = {
@@ -68602,6 +68602,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -68613,7 +68614,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSystemNotificationsInput = {
@@ -68645,6 +68645,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -68656,7 +68657,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSystemNotificationsInput = {
@@ -68704,6 +68704,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -68715,7 +68716,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSystemNotificationsInput = {
@@ -68747,6 +68747,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -68758,7 +68759,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryItemCreateWithoutRentalItemInput = {
@@ -68783,6 +68783,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ItemRequestCreateWithoutRentalItemInput = {
+    id?: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutItemRequestsInput
+  }
+
+  export type ItemRequestUncheckedCreateWithoutRentalItemInput = {
+    id?: string
+    userId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestCreateOrConnectWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestCreateManyRentalItemInputEnvelope = {
+    data: ItemRequestCreateManyRentalItemInput | ItemRequestCreateManyRentalItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrderCreateWithoutRentalItemsInput = {
     id?: string
     orderNumber: string
@@ -68800,12 +68830,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     user?: UserCreateNestedOneWithoutOrdersInput
@@ -68832,12 +68862,12 @@ export namespace Prisma {
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
@@ -68941,36 +68971,6 @@ export namespace Prisma {
     create: XOR<ProductVariantCreateWithoutRentalItemsInput, ProductVariantUncheckedCreateWithoutRentalItemsInput>
   }
 
-  export type ItemRequestCreateWithoutRentalItemInput = {
-    id?: string
-    type: string
-    status?: string
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutItemRequestsInput
-  }
-
-  export type ItemRequestUncheckedCreateWithoutRentalItemInput = {
-    id?: string
-    userId: string
-    type: string
-    status?: string
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ItemRequestCreateOrConnectWithoutRentalItemInput = {
-    where: ItemRequestWhereUniqueInput
-    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
-  }
-
-  export type ItemRequestCreateManyRentalItemInputEnvelope = {
-    data: ItemRequestCreateManyRentalItemInput | ItemRequestCreateManyRentalItemInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DeliveryItemUpsertWithWhereUniqueWithoutRentalItemInput = {
     where: DeliveryItemWhereUniqueInput
     update: XOR<DeliveryItemUpdateWithoutRentalItemInput, DeliveryItemUncheckedUpdateWithoutRentalItemInput>
@@ -68995,6 +68995,36 @@ export namespace Prisma {
     deliveryId?: UuidFilter<"DeliveryItem"> | string
     rentalItemId?: UuidFilter<"DeliveryItem"> | string
     quantity?: IntFilter<"DeliveryItem"> | number
+  }
+
+  export type ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    update: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
+    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput = {
+    where: ItemRequestWhereUniqueInput
+    data: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
+  }
+
+  export type ItemRequestUpdateManyWithWhereWithoutRentalItemInput = {
+    where: ItemRequestScalarWhereInput
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutRentalItemInput>
+  }
+
+  export type ItemRequestScalarWhereInput = {
+    AND?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+    OR?: ItemRequestScalarWhereInput[]
+    NOT?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
+    id?: UuidFilter<"ItemRequest"> | string
+    rentalItemId?: UuidFilter<"ItemRequest"> | string
+    userId?: UuidFilter<"ItemRequest"> | string
+    type?: StringFilter<"ItemRequest"> | string
+    status?: StringFilter<"ItemRequest"> | string
+    reason?: StringNullableFilter<"ItemRequest"> | string | null
+    createdAt?: DateTimeFilter<"ItemRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"ItemRequest"> | Date | string
   }
 
   export type OrderUpsertWithoutRentalItemsInput = {
@@ -69025,12 +69055,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
@@ -69057,12 +69087,12 @@ export namespace Prisma {
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
@@ -69179,36 +69209,6 @@ export namespace Prisma {
     units?: ProductUnitUncheckedUpdateManyWithoutVariantNestedInput
   }
 
-  export type ItemRequestUpsertWithWhereUniqueWithoutRentalItemInput = {
-    where: ItemRequestWhereUniqueInput
-    update: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
-    create: XOR<ItemRequestCreateWithoutRentalItemInput, ItemRequestUncheckedCreateWithoutRentalItemInput>
-  }
-
-  export type ItemRequestUpdateWithWhereUniqueWithoutRentalItemInput = {
-    where: ItemRequestWhereUniqueInput
-    data: XOR<ItemRequestUpdateWithoutRentalItemInput, ItemRequestUncheckedUpdateWithoutRentalItemInput>
-  }
-
-  export type ItemRequestUpdateManyWithWhereWithoutRentalItemInput = {
-    where: ItemRequestScalarWhereInput
-    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutRentalItemInput>
-  }
-
-  export type ItemRequestScalarWhereInput = {
-    AND?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
-    OR?: ItemRequestScalarWhereInput[]
-    NOT?: ItemRequestScalarWhereInput | ItemRequestScalarWhereInput[]
-    id?: UuidFilter<"ItemRequest"> | string
-    rentalItemId?: UuidFilter<"ItemRequest"> | string
-    userId?: UuidFilter<"ItemRequest"> | string
-    type?: StringFilter<"ItemRequest"> | string
-    status?: StringFilter<"ItemRequest"> | string
-    reason?: StringNullableFilter<"ItemRequest"> | string | null
-    createdAt?: DateTimeFilter<"ItemRequest"> | Date | string
-    updatedAt?: DateTimeFilter<"ItemRequest"> | Date | string
-  }
-
   export type ActivityLogCreateWithoutUserInput = {
     id?: string
     action: string
@@ -69309,11 +69309,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
     editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
@@ -69337,11 +69337,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
@@ -69536,13 +69536,13 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryCreateNestedManyWithoutInvoiceInput
     order?: OrderCreateNestedOneWithoutInvoicesInput
   }
@@ -69569,13 +69569,13 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     deliveries?: DeliveryUncheckedCreateNestedManyWithoutInvoiceInput
   }
 
@@ -69586,6 +69586,36 @@ export namespace Prisma {
 
   export type InvoiceCreateManyUserInputEnvelope = {
     data: InvoiceCreateManyUserInput | InvoiceCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ItemRequestCreateWithoutUserInput = {
+    id?: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rentalItem: RentalItemCreateNestedOneWithoutItemRequestsInput
+  }
+
+  export type ItemRequestUncheckedCreateWithoutUserInput = {
+    id?: string
+    rentalItemId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ItemRequestCreateOrConnectWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemRequestCreateManyUserInputEnvelope = {
+    data: ItemRequestCreateManyUserInput | ItemRequestCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -69682,12 +69712,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     user?: UserCreateNestedOneWithoutOrdersInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
@@ -69713,12 +69743,12 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
@@ -69752,12 +69782,12 @@ export namespace Prisma {
     deliveryAddress?: string | null
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceCreateNestedManyWithoutOrderInput
     users_orders_payment_confirmed_byTousers?: UserCreateNestedOneWithoutOrders_orders_payment_confirmed_byTousersInput
     paymentTransactions?: PaymentTransactionCreateNestedManyWithoutOrderInput
@@ -69783,12 +69813,12 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutOrderInput
     paymentTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutOrderInput
     assignedUnits?: ProductUnitUncheckedCreateNestedManyWithoutAssignedOrderInput
@@ -70033,36 +70063,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ItemRequestCreateWithoutUserInput = {
-    id?: string
-    type: string
-    status?: string
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    rentalItem: RentalItemCreateNestedOneWithoutItemRequestsInput
-  }
-
-  export type ItemRequestUncheckedCreateWithoutUserInput = {
-    id?: string
-    rentalItemId: string
-    type: string
-    status?: string
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ItemRequestCreateOrConnectWithoutUserInput = {
-    where: ItemRequestWhereUniqueInput
-    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
-  }
-
-  export type ItemRequestCreateManyUserInputEnvelope = {
-    data: ItemRequestCreateManyUserInput | ItemRequestCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -70303,6 +70303,22 @@ export namespace Prisma {
     data: XOR<InvoiceUpdateManyMutationInput, InvoiceUncheckedUpdateManyWithoutUserInput>
   }
 
+  export type ItemRequestUpsertWithWhereUniqueWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    update: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
+    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
+  }
+
+  export type ItemRequestUpdateWithWhereUniqueWithoutUserInput = {
+    where: ItemRequestWhereUniqueInput
+    data: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ItemRequestUpdateManyWithWhereWithoutUserInput = {
+    where: ItemRequestScalarWhereInput
+    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type MessageUpsertWithWhereUniqueWithoutReceiverInput = {
     where: MessageWhereUniqueInput
     update: XOR<MessageUpdateWithoutReceiverInput, MessageUncheckedUpdateWithoutReceiverInput>
@@ -70412,12 +70428,12 @@ export namespace Prisma {
     paymentConfirmedBy?: UuidNullableFilter<"Order"> | string | null
     paymentStatus?: StringNullableFilter<"Order"> | string | null
     userId?: UuidNullableFilter<"Order"> | string | null
-    completedByUserId?: UuidNullableFilter<"Order"> | string | null
-    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    locationLatitude?: FloatNullableFilter<"Order"> | number | null
-    locationLongitude?: FloatNullableFilter<"Order"> | number | null
     discountAmount?: DecimalNullableFilter<"Order"> | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: IntNullableFilter<"Order"> | number | null
+    completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    completedByUserId?: UuidNullableFilter<"Order"> | string | null
+    locationLatitude?: FloatNullableFilter<"Order"> | number | null
+    locationLongitude?: FloatNullableFilter<"Order"> | number | null
   }
 
   export type OrderUpsertWithWhereUniqueWithoutUserInput = {
@@ -70608,22 +70624,6 @@ export namespace Prisma {
     data: XOR<WorkerNotificationUpdateManyMutationInput, WorkerNotificationUncheckedUpdateManyWithoutWorkerInput>
   }
 
-  export type ItemRequestUpsertWithWhereUniqueWithoutUserInput = {
-    where: ItemRequestWhereUniqueInput
-    update: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
-    create: XOR<ItemRequestCreateWithoutUserInput, ItemRequestUncheckedCreateWithoutUserInput>
-  }
-
-  export type ItemRequestUpdateWithWhereUniqueWithoutUserInput = {
-    where: ItemRequestWhereUniqueInput
-    data: XOR<ItemRequestUpdateWithoutUserInput, ItemRequestUncheckedUpdateWithoutUserInput>
-  }
-
-  export type ItemRequestUpdateManyWithWhereWithoutUserInput = {
-    where: ItemRequestScalarWhereInput
-    data: XOR<ItemRequestUpdateManyMutationInput, ItemRequestUncheckedUpdateManyWithoutUserInput>
-  }
-
   export type ChatGroupMemberCreateWithoutGroupInput = {
     id?: string
     role?: string
@@ -70757,6 +70757,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -70769,7 +70770,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatGroupMembershipsInput = {
@@ -70800,6 +70800,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -70812,7 +70813,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatGroupMembershipsInput = {
@@ -70888,6 +70888,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -70900,7 +70901,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatGroupMembershipsInput = {
@@ -70931,6 +70931,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -70943,7 +70944,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatGroupCreateWithoutMessagesInput = {
@@ -70997,6 +70997,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -71009,7 +71010,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGroupMessagesInput = {
@@ -71040,6 +71040,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -71052,7 +71053,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGroupMessagesInput = {
@@ -71128,6 +71128,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -71140,7 +71141,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGroupMessagesInput = {
@@ -71171,6 +71171,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -71183,7 +71184,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -71214,6 +71214,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -71226,7 +71227,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -71257,6 +71257,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -71269,7 +71270,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -71316,6 +71316,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -71328,7 +71329,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -71359,6 +71359,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -71371,7 +71372,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWorkerAttendanceInput = {
@@ -71403,6 +71403,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -71414,7 +71415,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkerAttendanceInput = {
@@ -71446,6 +71446,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -71457,7 +71458,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkerAttendanceInput = {
@@ -71505,6 +71505,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -71516,7 +71517,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkerAttendanceInput = {
@@ -71548,6 +71548,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -71559,7 +71560,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutInventorySyncLogsInput = {
@@ -71629,6 +71629,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -71641,7 +71642,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryResolutionsInput = {
@@ -71672,6 +71672,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -71684,7 +71685,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryResolutionsInput = {
@@ -71720,6 +71720,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -71732,7 +71733,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryUpdatesInput = {
@@ -71763,6 +71763,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -71775,7 +71776,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryUpdatesInput = {
@@ -71867,6 +71867,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -71879,7 +71880,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryResolutionsInput = {
@@ -71910,6 +71910,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -71922,7 +71923,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutInventoryUpdatesInput = {
@@ -71964,6 +71964,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -71976,7 +71977,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryUpdatesInput = {
@@ -72007,6 +72007,7 @@ export namespace Prisma {
     sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -72019,7 +72020,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -72051,6 +72051,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -72062,7 +72063,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -72094,6 +72094,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -72105,7 +72106,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -72142,6 +72142,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -72153,7 +72154,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -72185,6 +72185,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -72196,7 +72197,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -72244,6 +72244,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -72255,7 +72256,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -72287,6 +72287,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -72298,7 +72299,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -72341,6 +72341,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -72352,7 +72353,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -72384,6 +72384,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -72395,7 +72396,6 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReceivedMessagesInput = {
@@ -72427,6 +72427,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72438,7 +72439,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -72470,6 +72470,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72481,7 +72482,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -72518,6 +72518,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72529,7 +72530,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -72561,6 +72561,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72572,7 +72573,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -72620,6 +72620,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72631,7 +72632,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -72663,6 +72663,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72674,7 +72675,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutSentMessagesInput = {
@@ -72717,6 +72717,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72728,7 +72729,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -72760,6 +72760,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72771,7 +72772,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationDismissalsInput = {
@@ -72803,6 +72803,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72814,7 +72815,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationDismissalsInput = {
@@ -72846,6 +72846,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
@@ -72857,7 +72858,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationDismissalsInput = {
@@ -72905,6 +72905,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72916,7 +72917,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationDismissalsInput = {
@@ -72948,6 +72948,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
@@ -72959,7 +72960,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSpiNotificationsInput = {
@@ -72991,6 +72991,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -73002,7 +73003,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpiNotificationsInput = {
@@ -73034,6 +73034,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -73045,7 +73046,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpiNotificationsInput = {
@@ -73093,6 +73093,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -73104,7 +73105,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpiNotificationsInput = {
@@ -73136,6 +73136,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -73147,7 +73148,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiActionCreateWithoutAgentInput = {
@@ -73423,6 +73423,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -73435,7 +73436,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiActionApprovalsInput = {
@@ -73466,6 +73466,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -73478,7 +73479,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiActionApprovalsInput = {
@@ -73560,6 +73560,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -73572,7 +73573,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiActionApprovalsInput = {
@@ -73603,6 +73603,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -73615,7 +73616,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiAgentCreateWithoutTrainingDataInput = {
@@ -73696,11 +73696,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     editLogs?: DeliveryEditLogCreateNestedManyWithoutDeliveryInput
@@ -73724,11 +73724,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
@@ -73788,6 +73788,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -73800,7 +73801,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimedDeliveriesInput = {
@@ -73831,6 +73831,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -73843,7 +73844,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimedDeliveriesInput = {
@@ -73872,13 +73872,13 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
     order?: OrderCreateNestedOneWithoutInvoicesInput
     user?: UserCreateNestedOneWithoutInvoicesInput
   }
@@ -73906,13 +73906,13 @@ export namespace Prisma {
     userId?: string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
   }
 
   export type InvoiceCreateOrConnectWithoutDeliveriesInput = {
@@ -74068,6 +74068,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -74080,7 +74081,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimedDeliveriesInput = {
@@ -74111,6 +74111,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -74123,7 +74124,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceUpsertWithoutDeliveriesInput = {
@@ -74158,13 +74158,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     order?: OrderUpdateOneWithoutInvoicesNestedInput
     user?: UserUpdateOneWithoutInvoicesNestedInput
   }
@@ -74192,13 +74192,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VehicleUpsertWithoutDeliveriesInput = {
@@ -74294,11 +74294,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
@@ -74323,11 +74323,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
   }
@@ -74341,11 +74341,11 @@ export namespace Prisma {
     id?: string
     quantity?: number | null
     createdAt?: Date | string | null
+    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
     order: OrderCreateNestedOneWithoutRentalItemsInput
     rentalPackage?: RentalPackageCreateNestedOneWithoutRentalItemsInput
     unit?: ProductUnitCreateNestedOneWithoutRentalItemsInput
     variant?: ProductVariantCreateNestedOneWithoutRentalItemsInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutRentalItemInput
   }
 
   export type RentalItemUncheckedCreateWithoutDeliveryItemsInput = {
@@ -74389,11 +74389,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
@@ -74418,11 +74418,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
   }
@@ -74442,11 +74442,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutDeliveryItemsInput = {
@@ -74488,6 +74488,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -74500,7 +74501,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryLogsInput = {
@@ -74531,6 +74531,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -74543,7 +74544,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryLogsInput = {
@@ -74565,11 +74565,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
@@ -74594,11 +74594,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     editLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutDeliveryInput
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
   }
@@ -74647,6 +74647,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -74659,7 +74660,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryLogsInput = {
@@ -74690,6 +74690,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -74702,7 +74703,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryUpsertWithoutLogsInput = {
@@ -74730,11 +74730,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
@@ -74759,11 +74759,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
   }
@@ -74782,11 +74782,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     claimedByWorker?: UserCreateNestedOneWithoutClaimedDeliveriesInput
     invoice?: InvoiceCreateNestedOneWithoutDeliveriesInput
     vehicle?: VehicleCreateNestedOneWithoutDeliveriesInput
@@ -74811,11 +74811,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
     items?: DeliveryItemUncheckedCreateNestedManyWithoutDeliveryInput
     logs?: DeliveryLogUncheckedCreateNestedManyWithoutDeliveryInput
   }
@@ -74853,6 +74853,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
     receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
@@ -74865,7 +74866,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryEditLogsInput = {
@@ -74896,6 +74896,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
     inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
     receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
     sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
     notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
@@ -74908,7 +74909,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
-    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryEditLogsInput = {
@@ -74941,11 +74941,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
@@ -74970,11 +74970,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
   }
@@ -75018,6 +75018,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
@@ -75030,7 +75031,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryEditLogsInput = {
@@ -75061,6 +75061,7 @@ export namespace Prisma {
     inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
     inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
     receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
     sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
     notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
@@ -75073,7 +75074,6 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
-    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RentalItemCreateWithoutItemRequestsInput = {
@@ -75340,11 +75340,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
   }
 
   export type DeliveryUpdateWithoutInvoiceInput = {
@@ -75361,11 +75361,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
     editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
@@ -75389,11 +75389,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
@@ -75415,11 +75415,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InvoiceCreateManyOrderInput = {
@@ -75444,13 +75444,13 @@ export namespace Prisma {
     userId?: string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
   }
 
   export type PaymentTransactionCreateManyOrderInput = {
@@ -75509,13 +75509,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
     user?: UserUpdateOneWithoutInvoicesNestedInput
   }
@@ -75542,13 +75542,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -75574,13 +75574,13 @@ export namespace Prisma {
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentTransactionUpdateWithoutOrderInput = {
@@ -75670,10 +75670,10 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutOrderInput = {
@@ -75738,10 +75738,10 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutRentalPackageInput = {
@@ -76022,10 +76022,10 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     unit?: ProductUnitUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutVariantInput = {
@@ -76073,10 +76073,10 @@ export namespace Prisma {
     quantity?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveryItems?: DeliveryItemUpdateManyWithoutRentalItemNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
     order?: OrderUpdateOneRequiredWithoutRentalItemsNestedInput
     rentalPackage?: RentalPackageUpdateOneWithoutRentalItemsNestedInput
     variant?: ProductVariantUpdateOneWithoutRentalItemsNestedInput
-    itemRequests?: ItemRequestUpdateManyWithoutRentalItemNestedInput
   }
 
   export type RentalItemUncheckedUpdateWithoutUnitInput = {
@@ -76240,11 +76240,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
   }
 
   export type DeliveryEditLogCreateManyEditedByUserInput = {
@@ -76323,13 +76323,23 @@ export namespace Prisma {
     taxRate?: Decimal | DecimalJsLike | number | string | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: string | null
     completedAt?: Date | string | null
+    completedByUserId?: string | null
+    deliveryAddress?: string | null
     locationLatitude?: number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: number | null
     paymentMethod?: string | null
-    deliveryAddress?: string | null
+  }
+
+  export type ItemRequestCreateManyUserInput = {
+    id?: string
+    rentalItemId: string
+    type: string
+    status?: string
+    reason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type MessageCreateManyReceiverInput = {
@@ -76373,12 +76383,12 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentStatus?: string | null
     userId?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
   }
 
   export type OrderCreateManyUserInput = {
@@ -76399,12 +76409,12 @@ export namespace Prisma {
     paymentConfirmedAt?: Date | string | null
     paymentConfirmedBy?: string | null
     paymentStatus?: string | null
-    completedByUserId?: string | null
-    completedAt?: Date | string | null
-    locationLatitude?: number | null
-    locationLongitude?: number | null
     discountAmount?: Decimal | DecimalJsLike | number | string | null
     discountPercentage?: number | null
+    completedAt?: Date | string | null
+    completedByUserId?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
   }
 
   export type PaymentTransactionCreateManyVerifiedByInput = {
@@ -76484,16 +76494,6 @@ export namespace Prisma {
     message: string
     isRead?: boolean | null
     createdAt?: Date | string | null
-  }
-
-  export type ItemRequestCreateManyUserInput = {
-    id?: string
-    rentalItemId: string
-    type: string
-    status?: string
-    reason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type ActivityLogUpdateWithoutUserInput = {
@@ -76594,11 +76594,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     vehicle?: VehicleUpdateOneWithoutDeliveriesNestedInput
     editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
@@ -76622,11 +76622,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
@@ -76648,11 +76648,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DeliveryEditLogUpdateWithoutEditedByUserInput = {
@@ -76838,13 +76838,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUpdateManyWithoutInvoiceNestedInput
     order?: OrderUpdateOneWithoutInvoicesNestedInput
   }
@@ -76871,13 +76871,13 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     deliveries?: DeliveryUncheckedUpdateManyWithoutInvoiceNestedInput
   }
 
@@ -76903,13 +76903,43 @@ export namespace Prisma {
     taxRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
-    lineItems?: NullableJsonNullValueInput | InputJsonValue
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    lineItems?: NullableJsonNullValueInput | InputJsonValue
     locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ItemRequestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rentalItem?: RentalItemUpdateOneRequiredWithoutItemRequestsNestedInput
+  }
+
+  export type ItemRequestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemRequestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rentalItemId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MessageUpdateWithoutReceiverInput = {
@@ -76998,12 +77028,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     user?: UserUpdateOneWithoutOrdersNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
@@ -77029,12 +77059,12 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
@@ -77059,12 +77089,12 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type OrderUpdateWithoutUserInput = {
@@ -77084,12 +77114,12 @@ export namespace Prisma {
     deliveryAddress?: NullableStringFieldUpdateOperationsInput | string | null
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUpdateManyWithoutOrderNestedInput
     users_orders_payment_confirmed_byTousers?: UserUpdateOneWithoutOrders_orders_payment_confirmed_byTousersNestedInput
     paymentTransactions?: PaymentTransactionUpdateManyWithoutOrderNestedInput
@@ -77115,12 +77145,12 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     invoices?: InvoiceUncheckedUpdateManyWithoutOrderNestedInput
     paymentTransactions?: PaymentTransactionUncheckedUpdateManyWithoutOrderNestedInput
     assignedUnits?: ProductUnitUncheckedUpdateManyWithoutAssignedOrderNestedInput
@@ -77145,12 +77175,12 @@ export namespace Prisma {
     paymentConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     paymentStatus?: NullableStringFieldUpdateOperationsInput | string | null
-    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
-    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     discountAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     discountPercentage?: NullableIntFieldUpdateOperationsInput | number | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type PaymentTransactionUpdateWithoutVerifiedByInput = {
@@ -77390,36 +77420,6 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ItemRequestUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rentalItem?: RentalItemUpdateOneRequiredWithoutItemRequestsNestedInput
-  }
-
-  export type ItemRequestUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ItemRequestUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rentalItemId?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ChatGroupMemberCreateManyGroupInput = {
     id?: string
     userId: string
@@ -77576,11 +77576,11 @@ export namespace Prisma {
     latitude?: number | null
     longitude?: number | null
     lastLocationUpdate?: Date | string | null
-    userConfirmedAt?: Date | string | null
-    userConfirmedBy?: string | null
     trackingCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    userConfirmedAt?: Date | string | null
+    userConfirmedBy?: string | null
   }
 
   export type DeliveryUpdateWithoutVehicleInput = {
@@ -77597,11 +77597,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     claimedByWorker?: UserUpdateOneWithoutClaimedDeliveriesNestedInput
     invoice?: InvoiceUpdateOneWithoutDeliveriesNestedInput
     editLogs?: DeliveryEditLogUpdateManyWithoutDeliveryNestedInput
@@ -77625,11 +77625,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     editLogs?: DeliveryEditLogUncheckedUpdateManyWithoutDeliveryNestedInput
     items?: DeliveryItemUncheckedUpdateManyWithoutDeliveryNestedInput
     logs?: DeliveryLogUncheckedUpdateManyWithoutDeliveryNestedInput
@@ -77651,11 +77651,11 @@ export namespace Prisma {
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
     lastLocationUpdate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
     trackingCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userConfirmedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DeliveryEditLogCreateManyDeliveryInput = {

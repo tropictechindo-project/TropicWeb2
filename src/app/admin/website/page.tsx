@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
-import { Loader2, Save, Plus, Trash2, Camera } from 'lucide-react'
+import { Loader2, Save, Plus, Trash2, Camera, Images } from 'lucide-react'
+import { ImageUploadTool } from '@/components/admin/ImageUploadTool'
 
 export default function WebsiteSettingsPage() {
     const { settings, loading, updateSetting, refresh } = useSiteSettings()
@@ -74,6 +75,10 @@ export default function WebsiteSettingsPage() {
 
     useEffect(() => {
         if (settings && Object.keys(settings).length > 0) {
+            console.log('--- Admin WebsiteSettings Init from Hook ---', Object.keys(settings));
+            if (settings.setup_gallery_images) {
+                console.log('--- Found gallery images in settings:', settings.setup_gallery_images);
+            }
             setFormData(prev => ({
                 ...prev,
                 // Ensure defaults are populated if settings are missing
@@ -139,10 +144,10 @@ export default function WebsiteSettingsPage() {
             keysToSave = ['hero_title', 'hero_subtitle', 'hero_subtitle2', 'hero_opacity_default', 'hero_show_slider', 'hero_image', 'product_catalog_url']
         } else if (section === 'faq') {
             keysToSave = ['faq_title', 'faq_text', 'faq_data']
-        } else if (section === 'about') {
-            keysToSave = ['about_page_content']
         } else if (section === 'affiliate') {
             keysToSave = ['affiliate_content']
+        } else if (section === 'gallery') {
+            keysToSave = ['setup_gallery_images']
         } else if (section === 'sections') {
             keysToSave = ['about_title', 'about_text', 'services_title', 'services_text', 'reviews_title', 'reviews_text', 'about_stats', 'services_data', 'reviews_data']
         } else if (section === 'legal') {
@@ -155,7 +160,7 @@ export default function WebsiteSettingsPage() {
                     let valueToSave = formData[key]
 
                     // Special handling for JSON keys
-                    const jsonKeys = ['faq_data', 'about_stats', 'services_data', 'reviews_data', 'about_page_content', 'affiliate_content']
+                    const jsonKeys = ['faq_data', 'about_stats', 'services_data', 'reviews_data', 'about_page_content', 'affiliate_content', 'setup_gallery_images']
                     if (jsonKeys.includes(key)) {
                         // If it's a string, try to parse it to ensure it's valid JSON
                         // If it's already an object/array, use it directly
@@ -202,14 +207,47 @@ export default function WebsiteSettingsPage() {
             </div>
 
             <Tabs defaultValue="hero" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-6">
-                    <TabsTrigger value="hero">Hero</TabsTrigger>
-
-                    <TabsTrigger value="faq">FAQ</TabsTrigger>
-                    <TabsTrigger value="about">About Page</TabsTrigger>
-                    <TabsTrigger value="affiliate">Affiliate Page</TabsTrigger>
-                    <TabsTrigger value="legal">Legal Pages</TabsTrigger>
+                <TabsList className="flex flex-wrap h-auto p-1 bg-muted/50 gap-1">
+                    <TabsTrigger value="hero" className="flex-1 min-w-[100px]">Hero</TabsTrigger>
+                    <TabsTrigger value="gallery" className="flex-1 min-w-[100px]">Gallery</TabsTrigger>
+                    <TabsTrigger value="faq" className="flex-1 min-w-[100px]">FAQ</TabsTrigger>
+                    <TabsTrigger value="about" className="flex-1 min-w-[100px]">About Page</TabsTrigger>
+                    <TabsTrigger value="affiliate" className="flex-1 min-w-[100px]">Affiliate Page</TabsTrigger>
+                    <TabsTrigger value="legal" className="flex-1 min-w-[100px]">Legal Pages</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="gallery" className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Real Set-up Gallery</CardTitle>
+                            <CardDescription>
+                                Manage the images displayed in the "Real Set-up View" section on the landing page.
+                                Images are automatically converted to high-quality WebP format.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-4">
+                                <Label>Setup Images (Max 12)</Label>
+                                <ImageUploadTool
+                                    value={formData.setup_gallery_images || []}
+                                    onChange={(urls) => handleInputChange('setup_gallery_images', urls)}
+                                    maxImages={12}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    The first 4 images will be shown as previews on the main page. All images will be available in the full-screen lightbox.
+                                </p>
+                            </div>
+
+                            <div className="pt-4 flex justify-end border-t">
+                                <Button onClick={() => handleSave('gallery')} disabled={saving}>
+                                    {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    <Save className="mr-2 h-4 w-4" />
+                                    Save Gallery
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
 
                 <TabsContent value="hero" className="space-y-4">
                     <Card>

@@ -136,7 +136,7 @@ export default function Header() {
               "flex items-center space-x-2 transition-all duration-500",
               mounted && showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
             )}>
-              <Link href="/" id="main-header-logo" className="text-2xl font-bold text-primary">
+              <Link href="/" id="main-header-logo" className="text-2xl font-bold text-primary" prefetch={true}>
                 Tropic Tech
               </Link>
             </div>
@@ -313,12 +313,12 @@ export default function Header() {
                     </>
                   ) : (
                     <div className="flex items-center gap-3">
-                      <Button variant="ghost" onClick={() => router.push('/auth/login')}>
+                      <Button variant="ghost" onClick={() => router.push('/auth/login')} className="font-semibold px-4">
                         {t('login')}
                       </Button>
                       <Button
                         onClick={() => setShowContactModal(true)}
-                        className="bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest px-6 shadow-xl shadow-primary/20 rounded-xl"
+                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold uppercase tracking-widest px-6 h-10 rounded-md shadow-sm"
                       >
                         Contact Us
                       </Button>

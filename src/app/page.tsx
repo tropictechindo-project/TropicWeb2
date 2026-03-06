@@ -1,14 +1,11 @@
-import { Suspense } from 'react'
-import dynamic from 'next/dynamic'
 import Header from '@/components/header/Header'
 import Hero from '@/components/landing/Hero'
 import LandingClient from '@/components/landing/LandingClient'
 import { db } from '@/lib/db'
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
-// ─── Critical above-fold: eager ────────────────────────────────────────────
-// Header + Hero are imported eagerly (no dynamic()) for best LCP
-
-// ─── Below-fold: lazy with Suspense skeletons ───────────────────────────────
+// ─── Below-fold: dynamic imports with skeletons ───
 const Products = dynamic(() => import('@/components/landing/Products'), {
   loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
@@ -164,18 +161,8 @@ export default async function Home() {
         </Suspense>
 
         <Suspense fallback={null}>
-          <ClientLogos />
-        </Suspense>
-
-        <Suspense fallback={null}>
-          <FeaturesSection />
-        </Suspense>
-
-        <Suspense fallback={null}>
           <RealSetupGallery />
         </Suspense>
-
-
 
         <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
           <Services initialSettings={serviceSettings} />
@@ -187,6 +174,10 @@ export default async function Home() {
 
         <Suspense fallback={null}>
           <AboutUs />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <ClientLogos />
         </Suspense>
 
         <Suspense fallback={null}>

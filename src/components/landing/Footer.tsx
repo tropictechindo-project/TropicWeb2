@@ -64,22 +64,22 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/terms-conditions" className="text-sm hover:text-primary transition-colors">
+                <Link href="/terms-conditions" className="text-sm hover:text-primary transition-colors" prefetch={true}>
                   {t('termsConditions')}
                 </Link>
               </li>
               <li>
-                <Link href="/refund-policy" className="text-sm hover:text-primary transition-colors">
+                <Link href="/refund-policy" className="text-sm hover:text-primary transition-colors" prefetch={true}>
                   {t('refundPolicy')}
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-sm hover:text-primary transition-colors">
+                <Link href="/contact" className="text-sm hover:text-primary transition-colors" prefetch={true}>
                   {t('ContactUs')}
                 </Link>
               </li>
               <li>
-                <Link href="/affiliate" className="text-sm hover:text-primary transition-colors">
+                <Link href="/affiliate" className="text-sm hover:text-primary transition-colors" prefetch={true}>
                   {t('Affiliate')}
                 </Link>
               </li>

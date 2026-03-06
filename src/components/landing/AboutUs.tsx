@@ -182,7 +182,7 @@ export default function AboutUs() {
         </div>
 
         <div className="mt-16 flex justify-center">
-          <Button asChild size="lg" className="rounded-lg px-12 h-14 text-lg font-semibold shadow-md hover:shadow-lg transition-all">
+          <Button asChild size="sm" className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold uppercase tracking-widest px-8 py-2 h-auto rounded-md shadow-sm transition-all">
             <Link href="/about">
               All About Us
             </Link>

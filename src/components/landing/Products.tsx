@@ -234,8 +234,7 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
         <div className="mt-16 flex justify-center">
           <Button
             asChild
-            variant="ghost"
-            className="h-auto p-0 bg-transparent hover:bg-transparent hover:text-primary text-xl font-bold transition-all duration-300 drop-shadow-sm hover:drop-shadow-md"
+            className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold uppercase tracking-widest px-6 py-2 h-auto rounded-md transition-all duration-300 shadow-sm"
           >
             <Link href="/products">
               See All Products

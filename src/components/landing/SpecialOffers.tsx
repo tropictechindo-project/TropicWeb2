@@ -172,7 +172,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                     <div className="grid grid-cols-2 gap-3 mt-auto w-full pt-4">
                                                         <Button
                                                             variant="default"
-                                                            className="w-full font-bold shadow-md z-10"
+                                                            className="w-full bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold h-auto py-2 rounded-md shadow-sm z-10 uppercase tracking-widest text-xs"
                                                             onClick={(e) => {
                                                                 e.stopPropagation()
                                                                 addItem({
@@ -190,7 +190,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                         </Button>
                                                         <Button
                                                             variant="outline"
-                                                            className="w-full flex justify-center items-center z-10 font-bold"
+                                                            className="w-full flex justify-center items-center z-10 font-bold h-auto py-2 rounded-md border-[#55595a] text-[#55595a] hover:bg-[#55595a]/10 uppercase tracking-widest text-xs"
                                                             onClick={(e) => {
                                                                 e.stopPropagation()
                                                                 router.push(`/product/${offer.id}`)

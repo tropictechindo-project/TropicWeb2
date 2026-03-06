@@ -94,13 +94,12 @@ export default function Hero({ initialSettings }: HeroProps) {
         </p>
         <div className="flex flex-col items-center gap-4 mt-8 md:mt-16">
           <Button
-            size="lg"
-            className="text-lg px-10 py-6 h-auto font-black uppercase tracking-tighter shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all rounded-xl group relative overflow-hidden bg-primary text-white"
+            size="sm"
+            className="text-sm px-8 py-2 h-auto font-bold uppercase tracking-widest shadow-sm hover:shadow-md transition-all rounded-md bg-[#55595a] hover:bg-[#55595a]/90 text-white"
             onClick={scrollToProducts}
             aria-label="Rent Hardware Now - View our premium workstation catalog"
           >
-            <span className="relative z-10">{t('rentNow')}</span>
-            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            {t('rentNow')}
           </Button>
         </div>
       </div>

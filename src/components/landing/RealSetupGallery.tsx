@@ -5,19 +5,31 @@ import Image from 'next/image'
 import { X, ChevronLeft, ChevronRight, Play, Maximize2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useSiteSettings } from '@/hooks/useSiteSettings'
 
-const setupImages = [
-    '/Set-Up/setup1.webp',
-    '/Set-Up/setup2.webp',
-    '/Set-Up/setup3.webp',
-    '/Set-Up/setup4.webp',
-    '/Set-Up/setup5.webp',
-    '/Set-Up/setup6.webp',
-    '/Set-Up/setup7.webp',
-    '/Set-Up/setup8.webp',
+const DEFAULT_SETUP_IMAGES = [
+    '/Set-Up Documentation/setup1.webp',
+    '/Set-Up Documentation/setup2.webp',
+    '/Set-Up Documentation/setup3.webp',
+    '/Set-Up Documentation/setup4.webp',
 ]
 
 export default function RealSetupGallery() {
+    const { settings } = useSiteSettings()
+
+    // DEBUG LOGGING
+    useEffect(() => {
+        console.log('--- RealSetupGallery Settings Map ---', settings);
+        console.log('--- Gallery Images found? ---', !!settings?.setup_gallery_images);
+        if (settings?.setup_gallery_images) {
+            console.log('--- Images list ---', settings.setup_gallery_images);
+        }
+    }, [settings]);
+
+    const setupImages = Array.isArray(settings?.setup_gallery_images) && settings.setup_gallery_images.length > 0
+        ? settings.setup_gallery_images
+        : DEFAULT_SETUP_IMAGES
+
     const [isOpen, setIsOpen] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [isAutoPlaying, setIsAutoPlaying] = useState(true)
@@ -60,21 +72,45 @@ export default function RealSetupGallery() {
                     </div>
 
                     <Button
-                        size="lg"
+                        size="sm"
                         onClick={() => setIsOpen(true)}
-                        className="h-16 px-10 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
+                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white h-auto py-2 px-6 rounded-md font-bold text-sm shadow-sm transition-all uppercase tracking-widest"
                     >
-                        <Maximize2 className="mr-3 w-5 h-5" /> SEE ALL SET-UP
+                        <Maximize2 className="mr-2 w-4 h-4" /> SEE ALL SET-UP
                     </Button>
                 </div>
 
-                {/* Featured Preview */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 opacity-70 group hover:opacity-100 transition-opacity">
-                    {setupImages.slice(0, 4).map((img, i) => (
-                        <div key={i} className="aspect-[4/3] relative rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer" onClick={() => { setCurrentIndex(i); setIsOpen(true); }}>
-                            <Image src={img} alt="Setup preview" fill className="object-cover" sizes="25vw" />
+                {/* Featured Preview - Scrollable on mobile/tablet, grid on desktop if few, but always scrollable if > 4 */}
+                <div className="relative group/gallery">
+                    <div className={cn(
+                        "flex gap-4 pb-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide",
+                        setupImages.length <= 4 && "md:grid md:grid-cols-4 md:overflow-hidden"
+                    )}>
+                        {setupImages.map((img, i) => (
+                            <div
+                                key={i}
+                                className={cn(
+                                    "relative rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer snap-start flex-shrink-0",
+                                    "aspect-[4/3] w-[80%] md:w-full",
+                                    setupImages.length <= 4 ? "md:max-w-none" : "md:w-[28%]"
+                                )}
+                                onClick={() => { setCurrentIndex(i); setIsOpen(true); }}
+                            >
+                                <Image src={img} alt={`Setup preview ${i + 1}`} fill className="object-cover" sizes="(max-width: 768px) 80vw, 25vw" />
+                                <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <Maximize2 className="text-white w-8 h-8" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {setupImages.length > 4 && (
+                        <div className="flex justify-center gap-2 mt-4 md:hidden">
+                            <div className="h-1 w-12 bg-primary rounded-full" />
+                            <div className="h-1 w-4 bg-muted rounded-full" />
+                            <div className="h-1 w-4 bg-muted rounded-full" />
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
 

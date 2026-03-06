@@ -34,14 +34,13 @@ model Invoice {
   userId              String?    @map("user_id") @db.Uuid
   discountAmount      Decimal?   @default(0) @map("discount_amount") @db.Decimal(10, 2)
   discountPercentage  Int?       @default(0) @map("discount_percentage")
-  // v1.8.0: Invoice-first order flow fields
-  lineItems           Json?      @map("line_items")           // Stores cart items at time of invoice creation
-  completedByUserId   String?    @map("completed_by_user_id") @db.Uuid // User who confirmed receipt
   completedAt         DateTime?  @map("completed_at") @db.Timestamptz(6)
+  completedByUserId   String?    @map("completed_by_user_id") @db.Uuid
+  deliveryAddress     String?    @map("delivery_address")
   locationLatitude    Float?     @map("latitude")
+  lineItems           Json?      @map("line_items")
   locationLongitude   Float?     @map("longitude")
   paymentMethod       String?    @map("payment_method")
-  deliveryAddress     String?    @map("delivery_address")
   deliveries          Delivery[]
   order               Order?     @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user                User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -71,15 +70,13 @@ model Order {
   paymentConfirmedAt                       DateTime?            @map("payment_confirmed_at") @db.Timestamptz(6)
   paymentConfirmedBy                       String?              @map("payment_confirmed_by") @db.Uuid
   paymentStatus                            String?              @default("PENDING") @map("payment_status") @db.VarChar(20)
-  // v1.8.0: nullable to support guest orders (no account required)
   userId                                   String?              @map("user_id") @db.Uuid
-  // v1.8.0: track who confirmed receipt
-  completedByUserId                        String?              @map("completed_by_user_id") @db.Uuid
-  completedAt                              DateTime?            @map("completed_at") @db.Timestamptz(6)
-  locationLatitude                         Float?               @map("latitude")
-  locationLongitude                        Float?               @map("longitude")
   discountAmount                           Decimal?             @default(0) @map("discount_amount") @db.Decimal(10, 2)
   discountPercentage                       Int?                 @default(0) @map("discount_percentage")
+  completedAt                              DateTime?            @map("completed_at") @db.Timestamptz(6)
+  completedByUserId                        String?              @map("completed_by_user_id") @db.Uuid
+  locationLatitude                         Float?               @map("latitude")
+  locationLongitude                        Float?               @map("longitude")
   invoices                                 Invoice[]
   users_orders_payment_confirmed_byTousers User?                @relation("orders_payment_confirmed_byTousers", fields: [paymentConfirmedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user                                     User?                @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -261,11 +258,11 @@ model RentalItem {
   variantId     String?         @map("variant_id") @db.Uuid
   unitId        String?         @map("unit_id") @db.Uuid
   deliveryItems DeliveryItem[]
+  itemRequests  ItemRequest[]
   order         Order           @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   rentalPackage RentalPackage?  @relation(fields: [packageId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   unit          ProductUnit?    @relation(fields: [unitId], references: [id])
   variant       ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  itemRequests  ItemRequest[]
 
   @@map("rental_items")
 }
@@ -299,6 +296,7 @@ model User {
   inventoryResolutions                      InventorySyncLog[]      @relation("InventoryResolutions")
   inventoryUpdates                          InventorySyncLog[]      @relation("InventoryUpdates")
   invoices                                  Invoice[]
+  itemRequests                              ItemRequest[]
   receivedMessages                          Message[]               @relation("ReceivedMessages")
   sentMessages                              Message[]               @relation("SentMessages")
   notificationDismissals                    NotificationDismissal[]
@@ -311,7 +309,6 @@ model User {
   workerAttendance                          WorkerAttendance[]
   sentNotifications                         WorkerNotification[]    @relation("SentNotifications")
   receivedNotifications                     WorkerNotification[]    @relation("ReceivedNotifications")
-  itemRequests                              ItemRequest[]
 
   @@map("users")
 }
@@ -329,11 +326,11 @@ model ChatGroup {
 }
 
 model ChatGroupMember {
-  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  groupId  String    @map("group_id") @db.Uuid
-  userId   String    @map("user_id") @db.Uuid
-  role     String    @default("MEMBER")
-  joinedAt DateTime  @default(now()) @map("joined_at") @db.Timestamptz(6)
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  groupId    String    @map("group_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  role       String    @default("MEMBER")
+  joinedAt   DateTime  @default(now()) @map("joined_at") @db.Timestamptz(6)
   lastReadAt DateTime? @default(now()) @map("last_read_at") @db.Timestamptz(6)
   group      ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -607,11 +604,11 @@ model Delivery {
   latitude           Float?
   longitude          Float?
   lastLocationUpdate DateTime?         @map("last_location_update") @db.Timestamptz(6)
-  userConfirmedAt    DateTime?         @map("user_confirmed_at") @db.Timestamptz(6)
-  userConfirmedBy    String?           @map("user_confirmed_by") @db.Uuid
   trackingCode       String?           @unique @map("tracking_code")
   createdAt          DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  userConfirmedAt    DateTime?         @map("user_confirmed_at") @db.Timestamptz(6)
+  userConfirmedBy    String?           @map("user_confirmed_by") @db.Uuid
   claimedByWorker    User?             @relation("WorkerDeliveries", fields: [claimedByWorkerId], references: [id])
   invoice            Invoice?          @relation(fields: [invoiceId], references: [id])
   vehicle            Vehicle?          @relation(fields: [vehicleId], references: [id])
@@ -695,6 +692,24 @@ model ContactMessage {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@map("contact_messages")
+}
+
+model ItemRequest {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rentalItemId String     @map("rental_item_id") @db.Uuid
+  userId       String     @map("user_id") @db.Uuid
+  type         String
+  status       String     @default("PENDING")
+  reason       String?
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  rentalItem   RentalItem @relation(fields: [rentalItemId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([rentalItemId])
+  @@index([userId])
+  @@index([status])
+  @@map("item_requests")
 }
 
 enum attendance_status {
@@ -805,35 +820,16 @@ enum DeliveryStatus {
   QUEUED
   CLAIMED
   OUT_FOR_DELIVERY
-  ARRIVED
   PAUSED
   DELAYED
   CANCEL_REQUESTED
   COMPLETED
   CANCELED
+  ARRIVED
 }
 
 enum DeliveryRole {
   ADMIN
   WORKER
   SYSTEM
-}
-
-model ItemRequest {
-  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  rentalItemId  String      @map("rental_item_id") @db.Uuid
-  userId        String      @map("user_id") @db.Uuid
-  type          String      // EXTENSION, RETURN, SWAP, SERVICE
-  status        String      @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
-  reason        String?
-  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
-  
-  rentalItem    RentalItem  @relation(fields: [rentalItemId], references: [id], onDelete: Cascade)
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([rentalItemId])
-  @@index([userId])
-  @@index([status])
-  @@map("item_requests")
 }

@@ -11,6 +11,8 @@ export function useSiteSettings() {
     const [settings, setSettings] = useState<Record<string, any>>({})
     const [loading, setLoading] = useState(true)
 
+    console.log('--- useSiteSettings Initializing ---');
+
     const fetchSettings = async () => {
         try {
             const { data, error } = await supabase
@@ -23,10 +25,20 @@ export function useSiteSettings() {
             }
 
             if (data) {
+                console.log('--- useSiteSettings Data Received ---', data.length, 'keys');
                 const settingsMap = data.reduce((acc, curr) => {
-                    acc[curr.key] = curr.value
+                    let val = curr.value;
+                    if (typeof val === 'string' && (val.startsWith('[') || val.startsWith('{'))) {
+                        try {
+                            val = JSON.parse(val);
+                        } catch (e) {
+                            console.warn(`Failed to parse JSON for key ${curr.key}:`, e);
+                        }
+                    }
+                    acc[curr.key] = val
                     return acc
                 }, {} as Record<string, any>)
+                console.log('--- useSiteSettings Map ---', Object.keys(settingsMap));
                 setSettings(settingsMap)
             }
         } catch (error) {
