@@ -5,6 +5,9 @@ import Footer from '@/components/landing/Footer';
 import AffiliateForm from '@/components/landing/AffiliateForm';
 import { db } from '@/lib/db';
 import Image from 'next/image';
+import { InvestorModal } from '@/components/ui/InvestorModal';
+import { Button } from '@/components/ui/button';
+import { TrendingUp } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Affiliate Program | PT Tropic Tech International',
@@ -207,6 +210,43 @@ export default async function AffiliatePage() {
                             <p className="text-muted-foreground text-lg">Join the network and start monetizing your Bali footprint today.</p>
                         </div>
                         <AffiliateForm />
+                    </div>
+                </div>
+            </section>
+
+            {/* Investor Section */}
+            <section className="py-24 px-6 bg-slate-950 text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mt-20" />
+                <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+                                <TrendingUp className="w-3 h-3" />
+                                Strategic Partnership
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase mb-6">
+                                Invest in the <span className="text-blue-500">Future</span> of <br /> Bali Hardware
+                            </h2>
+                            <p className="text-lg text-slate-400 mb-8 max-w-xl">
+                                PT Tropic Tech International is scaling. We are open to strategic investments and equity partnerships from funds and individuals looking to capitalize on Bali's growing digital economy.
+                            </p>
+                            <div className="flex flex-col gap-2 mb-8 p-6 bg-white/5 rounded-2xl border border-white/10 w-fit">
+                                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Direct executive line</span>
+                                <a href="mailto:ceo@tropictech.online" className="text-xl font-bold hover:text-blue-400 transition-colors">ceo@tropictech.online</a>
+                            </div>
+                        </div>
+                        <div className="flex justify-center lg:justify-end">
+                            <InvestorModal>
+                                <Button className="h-20 px-12 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xl uppercase tracking-tighter shadow-2xl shadow-blue-900/40 group transition-all hover:scale-105 active:scale-95">
+                                    <div className="flex items-center gap-4">
+                                        Invest Now
+                                        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                            <TrendingUp className="w-6 h-6" />
+                                        </div>
+                                    </div>
+                                </Button>
+                            </InvestorModal>
+                        </div>
                     </div>
                 </div>
             </section>

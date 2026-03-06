@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { Eye, EyeOff, X } from 'lucide-react'
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -18,18 +19,6 @@ export default function LoginPage() {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
-  // Remove the useEffect for bridge_token as per the new API approach
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search)
-  //   const bridgeToken = urlParams.get('bridge_token')
-
-  //   if (bridgeToken) {
-  //     localStorage.setItem('token', bridgeToken)
-  //     toast.success('Login successful via Google!')
-  //     window.location.href = '/'
-  //   }
-  // }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -77,21 +66,22 @@ export default function LoginPage() {
           <X className="h-5 w-5" />
         </Button>
         <CardHeader className="text-center pt-10 relative z-10">
-          <CardTitle className="text-3xl font-bold text-primary">Tropic Tech</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+          <CardTitle className="text-3xl font-bold text-primary tracking-tighter uppercase italic">Tropic <span className="text-foreground">Tech</span></CardTitle>
+          <CardDescription className="text-sm font-semibold tracking-widest uppercase">Sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email Account</Label>
               <Input
                 id="email"
                 type="text"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="Enter your email"
+                placeholder="john@example.com"
                 required
                 disabled={isLoading}
+                className="bg-background/50 border-primary/20 focus-visible:ring-primary/30"
               />
             </div>
             <div className="space-y-2">
@@ -104,7 +94,7 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   required
                   disabled={isLoading}
-                  className="pr-10"
+                  className="pr-10 bg-background/50 border-primary/20 focus-visible:ring-primary/30"
                 />
                 <Button
                   type="button"
@@ -137,13 +127,21 @@ export default function LoginPage() {
               {isLoading ? 'Logging in...' : 'Log In'}
             </Button>
 
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-muted-foreground/30" />
+              </div>
+              <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+                <span className="bg-background px-3 text-muted-foreground">or continue with</span>
+              </div>
+            </div>
 
+            <GoogleSignInButton text="Continue with Google Account" />
           </form>
-
 
           <div className="mt-8 text-center text-sm border-t border-border/50 pt-4">
             <span className="text-muted-foreground font-medium">Don't have an account? </span>
-            <Link href="/auth/signup" className="text-primary hover:underline font-bold italic">
+            <Link href="/auth/signup" className="text-primary hover:underline font-bold italic uppercase tracking-tighter">
               Sign Up
             </Link>
           </div>

@@ -180,8 +180,8 @@ export default async function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": ["LocalBusiness", "RentalBusiness"],
-            "name": "Tropic Tech Bali - #1 Workstation Rental Bali",
-            "description": "Premium workstation and office equipment rental in Bali. High-performance monitors, ergonomic chairs, and desks for digital nomads and remote workers. 5+ years experience with fast island-wide delivery.",
+            "name": "Tropic Tech Bali | #1 Workstation Rental & Office Equipment",
+            "description": "Bali's leading premium workstation rental company. Rent ergonomic chairs, high-performance monitors, and standing desks with island-wide delivery. Trusted by digital nomads and remote workers in Canggu, Ubud, and Seminyak.",
             "url": SITE_URL,
             "telephone": "+6282266574860",
             "email": "contact@tropictech.online",

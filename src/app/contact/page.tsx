@@ -2,13 +2,13 @@ import React from 'react';
 import Header from '@/components/header/Header';
 import Footer from '@/components/landing/Footer';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import ContactForm from '@/components/ui/ContactForm';
+import { InvestorModal } from '@/components/ui/InvestorModal';
+import { Button } from '@/components/ui/button';
+import { TrendingUp } from 'lucide-react';
 
 // Lazy load map component (if one exists) or prevent blocking the main thread entirely.
-// Note: User said "Use existing integrated Google Maps API" - we'll implement a fallback if it's missing,
-// but ensure it's client-run and lazy. Wait for hydration before showing heavy maps.
 const DynamicClientMap = dynamic(() => import('@/components/ui/MapPlaceholder'), {
     loading: () => <div className="w-full h-full min-h-[400px] bg-gray-100 animate-pulse rounded-3xl flex items-center justify-center text-gray-400">Loading Map...</div>
 });
@@ -108,16 +108,49 @@ export default function ContactPage() {
                             </a>
                         </div>
                         <div className="w-full flex-grow min-h-[400px] p-6 pt-0 relative">
-                            {/* 
-                   We lazy load the map here because standard IFRAMES ruin Lighthouse scores.
-                   If the client doesn't have MapPlaceholder component yet, we just render a clean UI block.
-                 */}
                             <DynamicClientMap />
                         </div>
                     </div>
                 </div>
-
             </section>
+
+            {/* Investor Section */}
+            <section className="py-20 px-6 bg-slate-950 text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mt-20" />
+                <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+                                <TrendingUp className="w-3 h-3" />
+                                Strategic Partnership
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase mb-6">
+                                Invest in the <span className="text-blue-500">Future</span> of <br /> Bali Hardware
+                            </h2>
+                            <p className="text-lg text-slate-400 mb-8 max-w-xl">
+                                PT Tropic Tech International is scaling. We are open to strategic investments and equity partnerships from funds and individuals looking to capitalize on Bali's growing digital economy.
+                            </p>
+                            <div className="flex flex-col gap-2 mb-8 p-6 bg-white/5 rounded-2xl border border-white/10 w-fit">
+                                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Direct executive line</span>
+                                <a href="mailto:ceo@tropictech.online" className="text-xl font-bold hover:text-blue-400 transition-colors">ceo@tropictech.online</a>
+                            </div>
+                        </div>
+                        <div className="flex justify-center lg:justify-end">
+                            <InvestorModal>
+                                <Button className="h-20 px-12 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xl uppercase tracking-tighter shadow-2xl shadow-blue-900/40 group transition-all hover:scale-105 active:scale-95">
+                                    <div className="flex items-center gap-4">
+                                        Invest Now
+                                        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                            <TrendingUp className="w-6 h-6" />
+                                        </div>
+                                    </div>
+                                </Button>
+                            </InvestorModal>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <Footer />
         </div>
     );

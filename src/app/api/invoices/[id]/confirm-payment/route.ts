@@ -178,6 +178,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 } else if (invoice.guestEmail) {
                     recipients.push(invoice.guestEmail)
                 }
+
+                // Also notify workers
+                const workers = await db.user.findMany({
+                    where: { role: 'WORKER' },
+                    select: { email: true }
+                })
+                workers.forEach(w => recipients.push(w.email))
+
                 recipients.push('contact@tropictech.online')
 
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'

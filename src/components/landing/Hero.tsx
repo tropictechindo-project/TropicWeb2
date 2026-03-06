@@ -54,53 +54,45 @@ export default function Hero({ initialSettings }: HeroProps) {
       aria-labelledby="hero-title"
     >
       <div className="absolute inset-0">
-        <div className="absolute inset-0 animate-in fade-in zoom-in-95 delay-[2000ms] duration-1000 ease-in-out fill-mode-both">
+        <div className="absolute inset-0">
           <Image
             src={heroImage}
-            alt="Tropic Tech - Premium Workstation Equipment Bali"
+            alt="Tropic Tech - #1 Workstation & Office Equipment Rental Bali"
             fill
             className="object-cover"
             priority
-            loading="eager"
             fetchPriority="high"
             sizes="100vw"
-            quality={90}
+            quality={85}
           />
         </div>
 
-        {/* Layer 1: the user's exact "Crystal Clear" baseline (20% or less) */}
+        {/* Improved visibility layer */}
         <div
-          className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none z-0"
-          style={{ opacity: imageOpacity <= 20 ? imageOpacity / 20 : 1 }}
-        />
-        {/* Layer 2: The fill layer for values above 20% */}
-        <div
-          className="absolute inset-0 bg-background pointer-events-none z-0"
-          style={{ opacity: imageOpacity > 20 ? (imageOpacity - 20) / 80 : 0 }}
+          className="absolute inset-0 bg-background/30 backdrop-blur-[2px] pointer-events-none z-0"
+          style={{ opacity: imageOpacity / 100 }}
         />
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        {/* h1 is the LCP element — no animation to ensure paint happens immediately */}
         <h1 id="hero-title" className="text-4xl sm:text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent leading-tight tracking-tight uppercase">
           {title}
         </h1>
-        <p className="text-xl md:text-2xl mb-4 text-slate-700 dark:text-slate-300 font-medium animate-in fade-in slide-in-from-bottom-5 duration-2000 delay-1000">
+        <p className="text-xl md:text-2xl mb-4 text-slate-800 dark:text-slate-200 font-bold">
           {subtitle}
         </p>
-        <p className="text-lg md:text-xl mb-8 text-slate-600 dark:text-slate-400 animate-in fade-in slide-in-from-bottom-6 duration-2000 delay-1500">
+        <p className="text-lg md:text-xl mb-8 text-slate-700 dark:text-slate-300 font-medium">
           {subtitle2}
         </p>
-        <div className="flex flex-col items-center gap-4 mt-16 md:mt-32 animate-in fade-in zoom-in duration-2000 delay-2000">
+        <div className="flex flex-col items-center gap-4 mt-8 md:mt-16">
           <Button
             size="lg"
-            className="text-lg px-8 py-4 h-auto font-bold shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all rounded-md overflow-hidden group relative"
+            className="text-lg px-10 py-6 h-auto font-black uppercase tracking-tighter shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all rounded-xl group relative overflow-hidden bg-primary text-white"
             onClick={scrollToProducts}
-            aria-label="Scroll to workstation rentals"
-            name="CTA Search (Src)"
+            aria-label="Rent Hardware Now"
           >
-            <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
             <span className="relative z-10">{t('rentNow')}</span>
+            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </Button>
         </div>
       </div>
@@ -109,7 +101,7 @@ export default function Hero({ initialSettings }: HeroProps) {
       {showSlider && (
         <>
           {/* Desktop Version (Vertical) */}
-          <div className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 bg-background/20 backdrop-blur-md p-4 rounded-full shadow-lg border border-white/10 z-20 animate-in fade-in slide-in-from-right-10 duration-1000">
+          <div className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 bg-background/20 backdrop-blur-md p-4 rounded-full shadow-lg border border-white/10 z-20">
             <div className="h-48 flex items-center justify-center w-6">
               <Slider
                 value={[imageOpacity]}
@@ -122,21 +114,6 @@ export default function Hero({ initialSettings }: HeroProps) {
               />
             </div>
             <span className="text-xs font-bold text-primary whitespace-nowrap">
-              {imageOpacity}%
-            </span>
-          </div>
-
-          {/* Mobile Version (Horizontal) */}
-          <div className="flex md:hidden absolute bottom-32 left-1/2 -translate-x-1/2 flex-row items-center gap-3 bg-background/20 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 z-20 w-[220px] animate-in fade-in slide-in-from-bottom-10 duration-3000 delay-1000 ease-in-out">
-            <Slider
-              value={[imageOpacity]}
-              onValueChange={(value) => setImageOpacity(value[0])}
-              min={0}
-              max={100}
-              step={1}
-              className="flex-1"
-            />
-            <span className="text-[10px] font-bold text-primary whitespace-nowrap min-w-[30px]">
               {imageOpacity}%
             </span>
           </div>

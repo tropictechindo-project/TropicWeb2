@@ -17,6 +17,7 @@ import {
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { Eye, EyeOff } from 'lucide-react'
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 interface LoginModalProps {
     isOpen: boolean
@@ -29,25 +30,9 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false)
     const { login } = useAuth()
     const router = useRouter()
     const { t } = useLanguage()
-
-    const handleGoogleLogin = async () => {
-        setIsGoogleLoading(true)
-        try {
-            const { supabase } = await import('@/lib/supabase')
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: `${window.location.origin}/api/auth/callback` },
-            })
-            if (error) throw error
-        } catch (error: any) {
-            toast.error(error.message || 'Failed to sign in with Google')
-            setIsGoogleLoading(false)
-        }
-    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -70,11 +55,9 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="text-center text-2xl font-bold text-primary">Tropic Tech</DialogTitle>
-                    <DialogDescription className="text-center">{t('login')}</DialogDescription>
+                    <DialogTitle className="text-center text-2xl font-bold text-primary tracking-tighter uppercase italic">Tropic <span className="text-foreground">Tech</span></DialogTitle>
+                    <DialogDescription className="text-center font-semibold tracking-widest uppercase text-xs">{t('login')}</DialogDescription>
                 </DialogHeader>
-
-
 
                 <form onSubmit={handleSubmit} className="space-y-4 py-4">
                     <div className="space-y-2">
@@ -84,9 +67,10 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
+                            placeholder="john@example.com"
                             required
                             disabled={isLoading}
+                            className="bg-background/50 border-primary/20 focus-visible:ring-primary/30"
                         />
                     </div>
                     <div className="space-y-2">
@@ -100,7 +84,7 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
                                 placeholder="Enter your password"
                                 required
                                 disabled={isLoading}
-                                className="pr-10"
+                                className="pr-10 bg-background/50 border-primary/20 focus-visible:ring-primary/30"
                             />
                             <Button
                                 type="button"
@@ -128,18 +112,30 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
                     </div>
                     <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full h-12 text-sm font-bold uppercase tracking-widest"
                         disabled={isLoading}
                     >
                         {isLoading ? 'Logging in...' : t('login')}
                     </Button>
+
+                    <div className="relative my-4">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t border-muted-foreground/30" />
+                        </div>
+                        <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+                            <span className="bg-background px-3 text-muted-foreground">or continue with</span>
+                        </div>
+                    </div>
+
+                    <GoogleSignInButton text="Continue with Google Account" />
                 </form>
-                <div className="text-center text-sm">
-                    <span className="text-muted-foreground">Don't have an account? </span>
+
+                <div className="text-center text-sm border-t border-border/50 pt-4">
+                    <span className="text-muted-foreground font-medium">Don't have an account? </span>
                     <button
                         type="button"
                         onClick={onSwitchToSignup}
-                        className="text-primary hover:underline font-medium"
+                        className="text-primary hover:underline font-bold italic uppercase tracking-tighter"
                     >
                         {t('signUp')}
                     </button>
