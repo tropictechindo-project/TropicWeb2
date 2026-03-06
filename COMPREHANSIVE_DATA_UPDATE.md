@@ -1,52 +1,63 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-05 12:30:00 (WITA/GMT+8)
-**System Version**: 1.9.5-stable
-**Environment**: Production Ready (Global Tracking & Inventory Sync)
+**Last Updated**: 2026-03-06 14:42:00 (WITA/GMT+8)
+**System Version**: 2.0.0-stable
+**Environment**: Production Ready (Landing Page Maximization & Full Dashboard Integration)
 
 ---
 
 ## 🏛️ System Overview
-TropicTech is a sophisticated rental management and service ecosystem designed for seamless coordination between customers, administrators, and field workers. It features an AI-orchestrated backend, real-time inventory tracking, and an automated invoicing system.
+TropicTech is a sophisticated rental management and service ecosystem designed for seamless coordination between customers, administrators, and field workers. It features an AI-orchestrated backend, real-time inventory tracking, an automated invoicing system, live delivery tracking (GPS/Maps), and a global tracker accessible across all roles.
 
 ### 🚀 Technology Stack
-- **Framework**: Next.js 16 (App Router / Turbopack)
+- **Framework**: Next.js 16.1.6 (App Router / Turbopack)
 - **Language**: TypeScript 5, React 19
 - **Styling**: Tailwind CSS 4, Radix UI (Shadcn), Lucide Icons
 - **Database**: PostgreSQL (Supabase) with Prisma ORM
-- **Authentication**: NextAuth.js 4 & Supabase SSR Bridge
-- **State/Data**: Zustand (Client State), TanStack Query v5 (Server State)
-- **Utilities**: Framer Motion (Animations), Resend.com (Email - Professional Domain), jsPDF (Invoices), Sharp (Images)
-- **Email Infrastructure**: Switched to **Local Transport (SMTP/Resend)** for all auth and system notifications via `contact@tropictech.online`.
-- **AI Engine**: OpenAI & Google Gemini Integrated with custom AI Orchestration (Sales, Worker, Risk, Seller, Master agents)
+- **Authentication**: Custom JWT + Supabase SSR Bridge
+- **State/Data**: React Hooks, Server Components (App Router)
+- **Utilities**: jsPDF (Invoices), Sharp (Images), Resend (Email)
+- **AI Engine**: OpenAI & Google Gemini — Sales, Worker, Operator, Seller, Master agents
+- **Maps**: Google Maps API (real-time GPS tracking, ETA calculation, distance-based delivery fees)
+- **Storage**: Supabase Storage (Delivery proof photos, product images)
+- **PWA**: Progressive Web App with install prompts for iOS & Android
 
 ---
 
 ## 🏗️ Architecture & How It Works
 
 ### 1. Unified Dashboard System
-The website operates through three distinct entry points based on user roles:
-- **Client Interface**: Browse products, create orders, track rentals, and view invoices.
-- **Admin Panel (`/admin`)**: Central command for managing orders, products, workers, schedules, and site settings.
-- **Operator Panel (`/dashboard/operator`)**: Specialized view for handling orders and deliveries.
-- **Worker Portal (`/dashboard/worker`)**: Mobile-first interface for field workers to check attendance, update job statuses, and sync inventory.
+| Dashboard | Role | Key Features |
+|-----------|------|--------------|
+| `/` | Public | Landing Page, Products, Tracker Section, AI Chat (Ask-Me) |
+| `/admin` | Admin | Full control — Orders, Workers, Deliveries, Settings, Global Tracker |
+| `/dashboard/operator` | Operator | Order management, Delivery queue, Global Tracker |
+| `/dashboard/worker` | Worker | Attendance, Delivery Pool, Live GPS updates |
+| `/dashboard/user` | Customer | Order history, Rentals overview, Live tracking CTA |
+| `/tracking` | Public | Global order search by Invoice/Order number |
+| `/track/[trackingCode]` | Public | Real-time delivery map view (GPS) |
 
 ### 2. Core Business Workflows
-#### 💳 Order & Payment Flow
-1. User creates an order (Draft → Awaiting Payment).
-2. User uploads payment proof or pays via provider.
-3. Admin verifies payment (`/api/admin/orders/[id]/confirm-payment`).
-4. System auto-calculates 2% tax and generates an `Invoice`.
-5. Email notifications sent to User, Workers, and Central Admin.
+#### 💳 Order → Payment → Delivery Flow
+1. User browses products on landing page → adds to cart.
+2. User places order → Invoice created (PENDING).
+3. User uploads payment proof → awaiting admin confirmation.
+4. Admin confirms payment → `Order`, `RentalItem`, `Delivery` records created atomically.
+5. Workers see delivery in pool → claim it → update GPS location live.
+6. User can track their delivery in real-time on `/track/[trackingCode]` or from User Dashboard.
+7. Delivery completed → Worker uploads proof photo → status synced to all dashboards.
 
 #### 👷 Worker Management
-- **Scheduling**: Admins assign jobs to workers linked to specific orders.
-- **Attendance**: Workers check-in/out via the portal. System auto-flags "LATE" attendance after 9:00 AM.
-- **Reporting**: Workers submit daily reports including checklist items and **Live Delivery Photos**.
+- **Delivery Pool**: Workers see and claim available delivery jobs.
+- **Live GPS**: Workers update their location every 10s while on delivery.
+- **Proof Upload**: Photos uploaded directly to Supabase Storage (Bucket: `delivery-proofs`).
+- **AI Chat**: `Ask-Me (Worker AI)` available in worker sidebar for operational guidance.
 
-#### 📦 Inventory & Sync
-- **Serial Tracking**: Every product unit is tracked by serial number and condition.
-- **Conflict Detection**: If a worker and admin update the same stock simultaneously, the system flags a "Sync Conflict" in `InventorySyncLog` for admin resolution.
+#### 👤 User Experience
+- **Active Rentals**: User Dashboard shows rented equipment list, not just counts.
+- **Rental History**: Full historical log of all completed rentals.
+- **Live Tracking**: "Track Live" CTA opens real-time GPS map for active deliveries.
+- **Tracking from Landing**: New `TrackerSection` allows anyone to search by Invoice number.
 
 ---
 
@@ -55,57 +66,90 @@ The website operates through three distinct entry points based on user roles:
 ### 📁 Frontend Routes
 | Route | Access | Description |
 |-------|--------|-------------|
-| `/` | Public | Home page & Product browsing |
+| `/` | Public | Home page with Products, Tracker Section, ABout, AI Chat |
+| `/products` | Public | Full product catalog with filters |
+| `/product/[id]` | Public | Product detail page |
+| `/checkout` | User | Checkout with location-based fee calculation |
 | `/auth/login` | Public | Authentication gateway |
-| `/dashboard/user` | User | Customer order history & Profile |
-| `/admin` | Admin | Main administration analytics |
-| `/dashboard/operator`| Operator| Order & Delivery management |
-| `/dashboard/worker` | Worker | Attendance & Active assignments |
+| `/auth/signup` | Public | Registration with email verification |
+| `/dashboard/user` | User | Active rentals, order history, rental history |
+| `/admin` | Admin | Full admin portal |
+| `/dashboard/operator` | Operator | Order & delivery management |
+| `/dashboard/worker` | Worker | Jobs, attendance, delivery pool |
+| `/tracking` | Public | Search orders by Invoice/Order Number |
+| `/track/[trackingCode]` | Public | Real-time GPS map view |
 | `/invoice/public/[token]` | Public | View-only shareable invoice |
-| `/tracking/[code]` | Public | Real-time GPS delivery tracking |
 
 ### 🔌 API Endpoints (Core)
-- **Admin**:
-  - `POST /api/admin/orders/[id]/confirm-payment`
-  - `GET/POST /api/admin/workers`
-- **Worker**:
-  - `POST /api/worker/attendance`
-  - `POST /api/worker/upload-proof` - Image upload for delivery.
-- **AI**:
-  - `/api/ai/worker-chat` - Specific Worker persona.
-  - `/api/ai/operator-chat` - Dashboard context AI.
+- `POST /api/orders` — Create invoice/order
+- `PATCH /api/invoices/[id]/confirm-payment` — Payment confirmation + delivery creation
+- `GET /api/tracking/lookup` — Search by invoice/order number
+- `GET /api/tracking/[code]` — Get delivery GPS state
+- `POST /api/worker/deliveries/[id]/location` — Update worker GPS position
+- `POST /api/worker/deliveries/[id]/complete` — Mark delivery done + upload proof
+- `GET /api/orders/my-orders` — User's order history
+- `GET /api/invoices/my-invoices` — User's invoice history
+- `POST /api/ai/seller` — Landing page AI assistant (Ask-Me)
+- `POST /api/ai/worker-chat` — Worker AI assistant
+- `POST /api/ai/operator-chat` — Operator AI assistant
+- `POST /api/ai/master` — Admin AI master control
 
 ---
 
-## 📅 Recent System Updates (v1.9.0)
-- [x] **Dashboard Unification (Phase 14)**:
-  - Synchronized `AdminSidebar` and `OperatorSidebar` with real-time notification badges for Orders and Deliveries.
-  - Implemented **SPI Redirection**: Clicking a notification popup now instantly navigates the user to the relevant dashboard panel.
-  - Integrated **Global Tracker Modal**: Accessible from all sidebar roles (Admin, Operator, Worker, User).
-- [x] **AI Persona Integration**: 
-  - Launched specialized AI personas: **Worker AI** (Safety & Ops focused) and **Operator AI** (Analytics & Queue focused).
-  - Standardized AI response handling across all dashboard panels (`data.reply` / `data.response` normalization).
-- [x] **Worker Proof of Delivery (v1.9.0)**:
-  - Successfully migrated from "Image URL" manual input to a robust **File Uploader** component.
-  - Integrated with Supabase Storage for secure persistence of delivery proof photos.
-- [x] **PWA & Mobile Engagement**:
-  - Authored a premium **PWA Install Prompt**: Contextual detection for iOS/Safari and Android/Chrome using glassmorphic UI.
-  - Added "Register UX Hardening": Notification now prompts users to check their "Spam Email" folder.
-- [x] **Auth & Hydration Hardening**:
-  - Unified redirection logic: Both standard and Google login now redirect exclusively to the **Landing Page** as per user request.
-  - Resolved persistent **Hydration Mismatch** errors on the landing page by utilizing `isMounted` guards and `suppressHydrationWarning` on dynamic accessibility nodes.
-- [x] **CTA Intelligence**: Added diagnostic toast notifications for Google Login failures.
-- [x] **Global Tracking & Pickup System (v1.9.5)**:
-  - Fixed Global Tracker 404s; added support for **Invoice Number / Order Code** lookups.
-  - Implemented **Inbound Pickup Logic**: Pickups are now created in `PAUSED` state and unlocked via Cron exactly 1 day before the scheduled ETA.
-  - Added "Live Track" CTAs across all dashboard tiers (Admin, Operator, User).
-- [x] **Inventory & Audit Excellence (v1.9.5)**:
-  - Enabled **Absolute Inventory Reconciliation**: Admins can now reconcile total stock levels via a manual modal with automated Serial Number generation and delta logging.
-  - Hardened **Audit Trails**: Every delivery update, cancellation, and inventory movement is now logged with precise User Attribution from JWT tokens.
-  - Fixed `Calendar` ReferenceError and optimized Hero font hierarchy for mobile devices.
+## 📅 Complete System Update History
+
+### ✅ v2.0.0 — Landing Page Maximization & Production Hardening (2026-03-06)
+- **TrackerSection on Landing Page**: New premium section below Special Offers with Invoice search CTA and "Track Your Order" real-time features.
+- **Icon Standardization**: Resolved `Map` / `Navigation` / `Home` naming conflicts across all dashboards by aliasing to `MapIcon`, `NavigationIcon`. Fixed all runtime `TypeError` ("Illegal constructor") and `ReferenceError` errors.
+- **Hero.tsx Fix**: Fixed JSX structure — Opacity slider and scroll indicator moved to `<section>` level, restoring correct nesting and full opacity style functionality.
+- **Ask-Me ChatWidget Unification**: Removed separate floating label pill. "Ask-Me" name is now integrated directly in the trigger button (icon + text). Card header also shows "Ask-Me" with black/zinc theme.
+- **Delivery Search Hardening**: `/track/[trackingCode]` now falls back to searching by invoiceNumber or orderNumber if trackingCode lookup fails.
+- **SEO Gold**: Removed redundant `public/sitemap.xml` and `public/robots.txt` in favor of dynamic Next.js generation. `sitemap.ts` now only returns published product routes.
+- **Performance**: `loading="lazy"` applied to all below-fold images (ProductCard, SpecialOffers). Hero image upgraded to `quality={90}` with `fetchPriority="high"`.
+- **Accessibility**: Comprehensive `aria-labels` added to Hero CTA, ProductCard actions, Footer links, and ChatWidget controls.
+- **Production Build**: Verified `npm run build` — Exit code 0, all 100+ routes compiled successfully.
+- **Commit**: `57213d2` — pushed to `origin main`.
+
+### ✅ v1.9.5 — Dashboard Production Hardening (2026-03-05/06)
+- **User Dashboard**: Active rented equipment list shows individual items (not just count). Rental history section added.
+- **Global Tracker CTAs**: Admin, Operator, and Worker dashboards all have Global Tracker access buttons in their sidebars.
+- **Worker Upload Fix**: Resolved "Bucket Not Found" error — standardized Supabase bucket name to `delivery-proofs`.
+- **User Delivery Access**: "Active Shipments" card opens delivery popup — users can see their own deliveries only.
+- **AI Ask-Me Branding**: Consistent "Ask-Me" black branding across Worker and Operator chat panels.
+
+### ✅ v1.9.0 — Global Tracking & Inventory Sync
+- Fixed Global Tracker 404s; added support for Invoice Number / Order Code lookups.
+- Implemented `PAUSED` pickup state with Cron unlock 1 day before scheduled ETA.
+- Added "Live Track" CTAs across all dashboard tiers.
+
+### ✅ v1.7.7 — Operator Dashboard Refinement
+- Operators can handle order confirmations, manage Gojek dispatch, and fully control deliveries.
+- Intent-based browser permission prompts (Location, Notification only on checkout/login).
+
+### ✅ v1.6.0 — AI Master Persona & Pricing Engine
+- AI agents: Sales, Worker, Operator, Seller, Master — all with role-aware context.
+- Tax & Logistics Engine: 2% tax + distance-based delivery fees (IDR 10k/km).
+- Real-time checkout breakdown via `/api/checkout/calculate`.
+
+---
+
+## 🎯 Current System Health
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Landing Page | ✅ Production Ready | TrackerSection live, SEO Gold, lazy loading |
+| Admin Dashboard | ✅ Fully Operational | Global Tracker, All CRUD, Analytics |
+| Operator Dashboard | ✅ Fully Operational | Orders + Deliveries management |
+| Worker Dashboard | ✅ Fully Operational | GPS, Proof Upload, AI Chat |
+| User Dashboard | ✅ Fully Operational | Rentals, History, Live Tracking CTA |
+| Tracking System | ✅ Real-time | GPS polling, maps, invoice/order lookup |
+| AI System | ✅ Active | Ask-Me (Landing), Worker AI, Operator AI, Master AI |
+| Payment Flow | ✅ End-to-End | Invoice → Confirm → Delivery creation atomic |
+| SEO | ✅ Gold | Dynamic sitemap, structured data, FAQPage schema |
+| PWA | ✅ Active | Install prompts for iOS/Android |
 
 > [!IMPORTANT]
-> **Production Note**: The system is now unified, hardened, and accessible via PWA on mobile devices. AI Agents are role-aware and provide significantly higher contextual utility.
+> **Production Status**: System is fully production-ready as of v2.0.0. All dashboards use real-time data. No mock data or placeholder content remains in any user-facing flow.
 
 > [!NOTE]
-> This file is the **Source of Truth** for TropicTech system state. Version 1.9.0 focus: **Unity, AI Intelligence, and Mobile UX**.
+> **Deployment**: All changes are live in `origin main` (commit `57213d2`). The application is built with `next build --standalone` and served via Caddy reverse proxy.

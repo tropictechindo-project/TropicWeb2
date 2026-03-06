@@ -260,3 +260,73 @@
     - **Google Auth Sync**: Unified redirect to landing page (`/`) for all successful OAuth logins.
     - **Email Deliverability**: Integrated local SMTP verification fallback in the signup flow for 100% email reliability.
 - [x] **Logic Hardening & AI Mastery (v1.6.0)**:
+    - AI Master with prompt engineering for dynamic role-aware responses.
+    - Distance-based delivery fees, real-time checkout calculation.
+
+---
+
+## ✅ v2.0.0 — Landing Page Maximization & Final Production Hardening (2026-03-06)
+
+**Last Updated**: 2026-03-06 14:42:00 (WITA/GMT+8)
+**Commit**: `57213d2` → `origin main`
+
+### 🚀 What Changed This Session
+
+- [x] **TrackerSection on Landing Page**:
+    - New premium `TrackerSection` component below Special Offers on the landing page.
+    - Allows users to search any order by Invoice Number with a CTA to `/tracking`.
+    - Dynamically imported for optimal page load.
+
+- [x] **Icon Standardization & Runtime Error Fixes**:
+    - Resolved `TypeError: Illegal constructor` across Admin, Operator, Worker, and User sidebars.
+    - Aliased `Map → MapIcon`, `Navigation → NavigationIcon` in all dashboard files.
+    - Resolved `ReferenceError: Home is not defined` and `ChevronLeft is not defined` in `/tracking/page.tsx`.
+
+- [x] **Hero.tsx JSX Structure Fix**:
+    - Fixed a parse error (`Unexpected token`) caused by the opacity slider and scroll indicator being nested inside the text content `<div>`.
+    - Moved both to the `<section>` level — opacity layers and user opacity slider style fully preserved.
+
+- [x] **Ask-Me ChatWidget Unification**:
+    - Removed the separate floating label pill next to the chat button.
+    - "Ask-Me" name is now displayed directly inside the trigger button (icon + text in one unified pill).
+    - Card header updated to "Ask-Me" (was "Tropic Tech Assistant").
+    - All AI messages labeled "Ask-Me" in chat bubbles.
+    - Premium black/zinc dark theme applied throughout.
+
+- [x] **Delivery Search Hardening**:
+    - `/track/[trackingCode]` now falls back to invoice number and order number search if tracking code not found.
+    - Enables users to track by any ID they have (invoice, order, or tracking code).
+
+- [x] **SEO Gold**:
+    - Removed redundant `public/sitemap.xml` and `public/robots.txt` — replaced by dynamic Next.js `sitemap.ts` and `robots.ts` generation.
+    - `sitemap.ts` cleaned to only include PUBLISHED product routes, removing invalid package duplicates.
+    - Structured data: `LocalBusiness`, `RentalBusiness`, `FAQPage`, `WebSite`, `Product` schemas all active.
+
+- [x] **Performance Optimization**:
+    - Below-fold images in `ProductCard` and `SpecialOffers` now use `loading="lazy"`.
+    - Hero image upgraded to `quality={90}` with `fetchPriority="high"` + `loading="eager"`.
+    - All major sections dynamically imported with Suspense skeletons.
+
+- [x] **Accessibility**:
+    - Comprehensive `aria-label` attributes added to Hero CTA, ProductCard Rent/Cart buttons, Footer email links, ChatWidget trigger and close buttons.
+    - `aria-labelledby="hero-title"` on Hero section.
+    - `aria-hidden="true"` on decorative scroll indicator.
+
+- [x] **Production Build Verified**:
+    - `npm run build` passes — Exit code: 0.
+    - 100+ routes compiled (static + dynamic).
+    - `/sitemap.xml` and `/robots.txt` both dynamically generated.
+
+### 📊 Final System Health (v2.0.0)
+
+| Component | Status |
+|-----------|--------|
+| Landing Page | ✅ SEO Gold, Fast Loading, TrackerSection Active |
+| Admin Dashboard | ✅ Fully Operational |
+| Operator Dashboard | ✅ Fully Operational |
+| Worker Dashboard | ✅ GPS, Proof Upload, AI Chat |
+| User Dashboard | ✅ Rentals, History, Live Track |
+| Tracking System | ✅ Real-time GPS + Invoice/Order lookup |
+| AI (Ask-Me) | ✅ Unified branding, black theme |
+| Build | ✅ Exit code 0 |
+| Repository | ✅ Pushed to `origin main` → `57213d2` |
