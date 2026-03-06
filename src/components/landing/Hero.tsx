@@ -63,14 +63,19 @@ export default function Hero({ initialSettings }: HeroProps) {
             priority
             fetchPriority="high"
             sizes="100vw"
-            quality={85}
+            quality={80}
           />
         </div>
 
-        {/* Improved visibility layer */}
+        {/* Layer 1: the user's exact "Crystal Clear" baseline (20% or less) */}
         <div
-          className="absolute inset-0 bg-background/30 backdrop-blur-[2px] pointer-events-none z-0"
-          style={{ opacity: imageOpacity / 100 }}
+          className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none z-0"
+          style={{ opacity: imageOpacity <= 20 ? imageOpacity / 20 : 1 }}
+        />
+        {/* Layer 2: The fill layer for values above 20% */}
+        <div
+          className="absolute inset-0 bg-background pointer-events-none z-0"
+          style={{ opacity: imageOpacity > 20 ? (imageOpacity - 20) / 80 : 0 }}
         />
       </div>
 
@@ -114,6 +119,21 @@ export default function Hero({ initialSettings }: HeroProps) {
               />
             </div>
             <span className="text-xs font-bold text-primary whitespace-nowrap">
+              {imageOpacity}%
+            </span>
+          </div>
+
+          {/* Mobile Version (Horizontal) */}
+          <div className="flex md:hidden absolute bottom-32 left-1/2 -translate-x-1/2 flex-row items-center gap-3 bg-background/20 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 z-20 w-[220px]">
+            <Slider
+              value={[imageOpacity]}
+              onValueChange={(value) => setImageOpacity(value[0])}
+              min={0}
+              max={100}
+              step={1}
+              className="flex-1"
+            />
+            <span className="text-[10px] font-bold text-primary whitespace-nowrap min-w-[30px]">
               {imageOpacity}%
             </span>
           </div>

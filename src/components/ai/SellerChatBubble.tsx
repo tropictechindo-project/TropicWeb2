@@ -117,18 +117,28 @@ export function SellerChatBubble() {
                 </Card>
             )}
 
-            <Button
-                onClick={() => setIsOpen(!isOpen)}
-                className={`h-14 w-14 rounded-full shadow-2xl transition-all duration-300 pointer-events-auto ${isOpen ? 'rotate-90 opacity-0 scale-0' : 'scale-100 rotate-0'}`}
-            >
-                <div className="relative">
-                    <MessageCircle className="h-6 w-6" />
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                    </span>
-                </div>
-            </Button>
+            <div className="flex items-center gap-3">
+                {!isOpen && (
+                    <div className="bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-primary/20 shadow-lg animate-in fade-in slide-in-from-right-5 duration-500 pointer-events-auto">
+                        <span className="text-sm font-black uppercase tracking-tighter text-primary whitespace-nowrap">
+                            Ask-Me
+                        </span>
+                    </div>
+                )}
+                <Button
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="Ask-Me AI Assistant"
+                    className={`h-14 w-14 rounded-full shadow-2xl transition-all duration-300 pointer-events-auto ${isOpen ? 'rotate-90 opacity-0 scale-0' : 'scale-100 rotate-0'}`}
+                >
+                    <div className="relative">
+                        <MessageCircle className="h-6 w-6" />
+                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                        </span>
+                    </div>
+                </Button>
+            </div>
         </div>
     )
 }
