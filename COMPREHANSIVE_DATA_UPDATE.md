@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-07 00:15:00 (WITA/GMT+8)
-**System Version**: 2.1.1-stable
-**Environment**: Production Ready (SEO Gold & Performance Mastery)
+**Last Updated**: 2026-03-07 05:45:00 (WITA/GMT+8)
+**System Version**: 2.2.0-stable
+**Environment**: Production Hardened (Instant Page & Minimal UI)
 
 ---
 
@@ -105,6 +105,14 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 ## 📅 Complete System Update History
 
+### ✅ v2.2.0 — UI Refinement & Performance Maximization (2026-03-07)
+- **Instant Page Architecture**: Converted all below-the-fold components to `dynamic` imports with Skeleton placeholders, maximizing TTI and perceived loading speed.
+- **Minimal CTA Styling**: Redesigned all landing page actions with business charcoal `#55595a` and minimal "short/thin" padding layout.
+- **Footer Cleanup**: Streamlined navigation by removing Hardware, Corporate, and FAQ links.
+- **Gallery Deep Sync**: Hardened `useSiteSettings` with JSON parsing to ensure perfect synchronization between Admin settings and Landing visual state.
+- **Image Fallback**: Fixed broken "Team Setup" visuals with verified local asset `/packages/Rental Bali3.webp`.
+- **System Hardening**: Successfully verified production build (`npm run build`) and purged all temporary diagnostic scripts.
+
 ### ✅ v2.1.1 — Landing Page & SEO Mastery (2026-03-07)
 - **LCP Optimization**: Precision-tuned image loading (`fetchPriority`, `decoding="async"`) for < 1.2s perceived load time.
 - **SEO Gold**: Validated all `h1`-`h2`-`h3` tags and structured data schemas for maximum search visibility.
@@ -154,7 +162,7 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Landing Page | ✅ Production Ready | TrackerSection live, SEO Gold, lazy loading |
+| Landing Page | ✅ v2.2.0 Hardened | Instant Page, Minimal CTAs, Deep Sync |
 | Admin Dashboard | ✅ Fully Operational | Global Tracker, All CRUD, Analytics |
 | Operator Dashboard | ✅ Fully Operational | Orders + Deliveries management |
 | Worker Dashboard | ✅ Fully Operational | GPS, Proof Upload, AI Chat |
@@ -166,7 +174,7 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 | PWA | ✅ Active | Install prompts for iOS/Android |
 
 > [!IMPORTANT]
-> **Production Status**: System is fully production-ready as of v2.0.0. All dashboards use real-time data. No mock data or placeholder content remains in any user-facing flow.
+> **Production Status**: System is fully production-hardened as of v2.2.0. All user-facing components use the new minimal branding and extreme performance optimizations.
 
 > [!NOTE]
-> **Deployment**: All changes are live in `origin main` (commit `57213d2`). The application is built with `next build --standalone` and served via Caddy reverse proxy.
+> **Deployment**: All changes are live in `origin main`. The application is built with `next build --standalone` and served via Caddy reverse proxy.
