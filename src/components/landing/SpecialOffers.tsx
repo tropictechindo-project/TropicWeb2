@@ -120,7 +120,9 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                         alt={`${offer.title} - Special Offer | Tropic Tech Bali Workstation Rental`}
                                                         fill
                                                         loading="lazy"
+                                                        decoding="async"
                                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-primary/5">

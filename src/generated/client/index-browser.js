@@ -331,7 +331,8 @@ exports.Prisma.ChatGroupMemberScalarFieldEnum = {
   groupId: 'groupId',
   userId: 'userId',
   role: 'role',
-  joinedAt: 'joinedAt'
+  joinedAt: 'joinedAt',
+  lastReadAt: 'lastReadAt'
 };
 
 exports.Prisma.GroupMessageScalarFieldEnum = {

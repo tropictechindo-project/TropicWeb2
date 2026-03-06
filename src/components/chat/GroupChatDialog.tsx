@@ -60,9 +60,27 @@ export function GroupChatDialog({
         setIsDirectChatOpen(true)
     }
 
+    const markAsRead = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (!token) return
+            await fetch(`/api/groups/${groupId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ action: 'MARK_READ' })
+            })
+        } catch (error) {
+            console.error('Failed to mark group as read:', error)
+        }
+    }
+
     useEffect(() => {
         if (open && groupId) {
             fetchMessages()
+            markAsRead()
             // Poll for new messages every 5 seconds
             pollingRef.current = setInterval(fetchMessages, 5000)
 

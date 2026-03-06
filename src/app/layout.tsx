@@ -12,6 +12,8 @@ import { LocationPrompt } from "@/components/location/LocationPrompt";
 import { NotificationPrompt } from "@/components/NotificationPrompt";
 import { IslandHub } from "@/components/ui/IslandHub";
 import { PWAInstallPrompt } from "@/components/shared/PWAInstallPrompt";
+import { RealtimeHandler } from "../components/shared/RealtimeHandler";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -145,8 +147,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://ivszititvwyxeglntscj.supabase.co" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg - background text - foreground`}
@@ -164,19 +169,22 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            <AuthProvider>
-              <LocationPrompt />
-              <NotificationPrompt />
-              <NotificationProvider>
-                <CartProvider>
-                  <StickyPanelInfo />
-                  <IslandHub />
-                  {children}
-                </CartProvider>
-              </NotificationProvider>
-            </AuthProvider>
-          </LanguageProvider>
+          <QueryProvider>
+            <LanguageProvider>
+              <AuthProvider>
+                <LocationPrompt />
+                <NotificationPrompt />
+                <NotificationProvider>
+                  <CartProvider>
+                    <RealtimeHandler />
+                    <StickyPanelInfo />
+                    <IslandHub />
+                    {children}
+                  </CartProvider>
+                </NotificationProvider>
+              </AuthProvider>
+            </LanguageProvider>
+          </QueryProvider>
         </ThemeProvider>
         <Toaster position="top-center" richColors />
         <PWAInstallPrompt />

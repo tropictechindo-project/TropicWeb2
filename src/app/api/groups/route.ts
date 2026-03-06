@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
                             }
                         }
                     },
-                    // Safety net: Workers and Admins should see all Support Groups
-                    ...(user.role === 'WORKER' || user.role === 'ADMIN' ? [{
+                    // Safety net: Workers, Operators and Admins should see all Support Groups
+                    ...(user.role === 'WORKER' || user.role === 'OPERATOR' || user.role === 'ADMIN' ? [{
                         type: 'USER_SUPPORT'
                     }] : [])
                 ]

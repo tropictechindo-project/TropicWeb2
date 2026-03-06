@@ -77,32 +77,26 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: true, group: updatedGroup })
         }
 
-        // 3. Find an Admin to assign (for new groups)
-        const [admin, fullUser] = await Promise.all([
-            (db as any).user.findFirst({
-                where: { role: 'ADMIN' }
-            }),
+        // 3. Find ALL staff members (Admin & Operator) to assign
+        const staff = await (db as any).user.findMany({
+            where: {
+                role: { in: ['ADMIN', 'OPERATOR'] },
+                isActive: true
+            }
+        })
+
+        const [fullUser] = await Promise.all([
             (db as any).user.findUnique({
                 where: { id: user.id }
             })
         ])
 
-        if (!admin) {
+        if (staff.length === 0) {
             return NextResponse.json({ error: 'No support agents available' }, { status: 404 })
         }
 
-        // Prepare member data: User + Admin + All Workers
-        const membersToCreate = [
-            { userId: user.id, role: 'MEMBER' },
-            { userId: admin.id, role: 'ADMIN' }
-        ]
-
-        if (workers && workers.length > 0) {
-
-        }
-
-        // 3. Create the support group
-        // Deduplicate members to prevent unique constraint violations (e.g. if Admin is also in Workers list)
+        // Prepare member data: User + All Staff + All Workers
+        // Deduplicate members to prevent unique constraint violations
         const uniqueMemberIds = new Set<string>()
         const distinctMembersToCreate: { userId: string, role: string }[] = []
 
@@ -117,13 +111,15 @@ export async function POST(request: NextRequest) {
         // Add User (Member)
         addMember(user.id, 'MEMBER')
 
-        // Add Admin
-        if (admin.id === user.id) {
-            const index = distinctMembersToCreate.findIndex(m => m.userId === user.id)
-            if (index !== -1) distinctMembersToCreate[index].role = 'ADMIN'
-        } else {
-            addMember(admin.id, 'ADMIN')
-        }
+        // Add Staff (ADMIN role for staff in group)
+        staff.forEach((s: any) => {
+            if (s.id === user.id) {
+                const index = distinctMembersToCreate.findIndex(m => m.userId === user.id)
+                if (index !== -1) distinctMembersToCreate[index].role = 'ADMIN'
+            } else {
+                addMember(s.id, 'ADMIN')
+            }
+        })
 
         // Add Workers
         if (workers && workers.length > 0) {
@@ -143,8 +139,8 @@ export async function POST(request: NextRequest) {
                 },
                 messages: {
                     create: {
-                        senderId: admin.id,
-                        content: `Hello ${fullUser?.fullName || 'there'}, welcome to Tropic Tech support! Our team (Admin & Workers) is here to help.`
+                        senderId: staff[0].id, // Default to first staff member for welcome message
+                        content: `Hello ${fullUser?.fullName || 'there'}, welcome to Tropic Tech support! Our team of experts (Admin, Operators & Workers) is here to help.`
                     }
                 }
             }

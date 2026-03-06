@@ -23200,6 +23200,7 @@ export namespace Prisma {
     userId: string | null
     role: string | null
     joinedAt: Date | null
+    lastReadAt: Date | null
   }
 
   export type ChatGroupMemberMaxAggregateOutputType = {
@@ -23208,6 +23209,7 @@ export namespace Prisma {
     userId: string | null
     role: string | null
     joinedAt: Date | null
+    lastReadAt: Date | null
   }
 
   export type ChatGroupMemberCountAggregateOutputType = {
@@ -23216,6 +23218,7 @@ export namespace Prisma {
     userId: number
     role: number
     joinedAt: number
+    lastReadAt: number
     _all: number
   }
 
@@ -23226,6 +23229,7 @@ export namespace Prisma {
     userId?: true
     role?: true
     joinedAt?: true
+    lastReadAt?: true
   }
 
   export type ChatGroupMemberMaxAggregateInputType = {
@@ -23234,6 +23238,7 @@ export namespace Prisma {
     userId?: true
     role?: true
     joinedAt?: true
+    lastReadAt?: true
   }
 
   export type ChatGroupMemberCountAggregateInputType = {
@@ -23242,6 +23247,7 @@ export namespace Prisma {
     userId?: true
     role?: true
     joinedAt?: true
+    lastReadAt?: true
     _all?: true
   }
 
@@ -23323,6 +23329,7 @@ export namespace Prisma {
     userId: string
     role: string
     joinedAt: Date
+    lastReadAt: Date | null
     _count: ChatGroupMemberCountAggregateOutputType | null
     _min: ChatGroupMemberMinAggregateOutputType | null
     _max: ChatGroupMemberMaxAggregateOutputType | null
@@ -23348,6 +23355,7 @@ export namespace Prisma {
     userId?: boolean
     role?: boolean
     joinedAt?: boolean
+    lastReadAt?: boolean
     group?: boolean | ChatGroupDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chatGroupMember"]>
@@ -23358,6 +23366,7 @@ export namespace Prisma {
     userId?: boolean
     role?: boolean
     joinedAt?: boolean
+    lastReadAt?: boolean
     group?: boolean | ChatGroupDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chatGroupMember"]>
@@ -23368,6 +23377,7 @@ export namespace Prisma {
     userId?: boolean
     role?: boolean
     joinedAt?: boolean
+    lastReadAt?: boolean
     group?: boolean | ChatGroupDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chatGroupMember"]>
@@ -23378,9 +23388,10 @@ export namespace Prisma {
     userId?: boolean
     role?: boolean
     joinedAt?: boolean
+    lastReadAt?: boolean
   }
 
-  export type ChatGroupMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "userId" | "role" | "joinedAt", ExtArgs["result"]["chatGroupMember"]>
+  export type ChatGroupMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "groupId" | "userId" | "role" | "joinedAt" | "lastReadAt", ExtArgs["result"]["chatGroupMember"]>
   export type ChatGroupMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     group?: boolean | ChatGroupDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -23406,6 +23417,7 @@ export namespace Prisma {
       userId: string
       role: string
       joinedAt: Date
+      lastReadAt: Date | null
     }, ExtArgs["result"]["chatGroupMember"]>
     composites: {}
   }
@@ -23836,6 +23848,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"ChatGroupMember", 'String'>
     readonly role: FieldRef<"ChatGroupMember", 'String'>
     readonly joinedAt: FieldRef<"ChatGroupMember", 'DateTime'>
+    readonly lastReadAt: FieldRef<"ChatGroupMember", 'DateTime'>
   }
     
 
@@ -51981,7 +51994,8 @@ export namespace Prisma {
     groupId: 'groupId',
     userId: 'userId',
     role: 'role',
-    joinedAt: 'joinedAt'
+    joinedAt: 'joinedAt',
+    lastReadAt: 'lastReadAt'
   };
 
   export type ChatGroupMemberScalarFieldEnum = (typeof ChatGroupMemberScalarFieldEnum)[keyof typeof ChatGroupMemberScalarFieldEnum]
@@ -54093,6 +54107,7 @@ export namespace Prisma {
     userId?: UuidFilter<"ChatGroupMember"> | string
     role?: StringFilter<"ChatGroupMember"> | string
     joinedAt?: DateTimeFilter<"ChatGroupMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"ChatGroupMember"> | Date | string | null
     group?: XOR<ChatGroupScalarRelationFilter, ChatGroupWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -54103,6 +54118,7 @@ export namespace Prisma {
     userId?: SortOrder
     role?: SortOrder
     joinedAt?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
     group?: ChatGroupOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -54117,6 +54133,7 @@ export namespace Prisma {
     userId?: UuidFilter<"ChatGroupMember"> | string
     role?: StringFilter<"ChatGroupMember"> | string
     joinedAt?: DateTimeFilter<"ChatGroupMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"ChatGroupMember"> | Date | string | null
     group?: XOR<ChatGroupScalarRelationFilter, ChatGroupWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "groupId_userId">
@@ -54127,6 +54144,7 @@ export namespace Prisma {
     userId?: SortOrder
     role?: SortOrder
     joinedAt?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
     _count?: ChatGroupMemberCountOrderByAggregateInput
     _max?: ChatGroupMemberMaxOrderByAggregateInput
     _min?: ChatGroupMemberMinOrderByAggregateInput
@@ -54141,6 +54159,7 @@ export namespace Prisma {
     userId?: UuidWithAggregatesFilter<"ChatGroupMember"> | string
     role?: StringWithAggregatesFilter<"ChatGroupMember"> | string
     joinedAt?: DateTimeWithAggregatesFilter<"ChatGroupMember"> | Date | string
+    lastReadAt?: DateTimeNullableWithAggregatesFilter<"ChatGroupMember"> | Date | string | null
   }
 
   export type GroupMessageWhereInput = {
@@ -57474,6 +57493,7 @@ export namespace Prisma {
     id?: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
     group: ChatGroupCreateNestedOneWithoutMembersInput
     user: UserCreateNestedOneWithoutChatGroupMembershipsInput
   }
@@ -57484,12 +57504,14 @@ export namespace Prisma {
     userId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type ChatGroupMemberUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     group?: ChatGroupUpdateOneRequiredWithoutMembersNestedInput
     user?: UserUpdateOneRequiredWithoutChatGroupMembershipsNestedInput
   }
@@ -57500,6 +57522,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberCreateManyInput = {
@@ -57508,12 +57531,14 @@ export namespace Prisma {
     userId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type ChatGroupMemberUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberUncheckedUpdateManyInput = {
@@ -57522,6 +57547,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type GroupMessageCreateInput = {
@@ -60895,6 +60921,7 @@ export namespace Prisma {
     userId?: SortOrder
     role?: SortOrder
     joinedAt?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type ChatGroupMemberMaxOrderByAggregateInput = {
@@ -60903,6 +60930,7 @@ export namespace Prisma {
     userId?: SortOrder
     role?: SortOrder
     joinedAt?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type ChatGroupMemberMinOrderByAggregateInput = {
@@ -60911,6 +60939,7 @@ export namespace Prisma {
     userId?: SortOrder
     role?: SortOrder
     joinedAt?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type GroupMessageCountOrderByAggregateInput = {
@@ -69244,6 +69273,7 @@ export namespace Prisma {
     id?: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
     group: ChatGroupCreateNestedOneWithoutMembersInput
   }
 
@@ -69252,6 +69282,7 @@ export namespace Prisma {
     groupId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type ChatGroupMemberCreateOrConnectWithoutUserInput = {
@@ -70117,6 +70148,7 @@ export namespace Prisma {
     userId?: UuidFilter<"ChatGroupMember"> | string
     role?: StringFilter<"ChatGroupMember"> | string
     joinedAt?: DateTimeFilter<"ChatGroupMember"> | Date | string
+    lastReadAt?: DateTimeNullableFilter<"ChatGroupMember"> | Date | string | null
   }
 
   export type DeliveryUpsertWithWhereUniqueWithoutClaimedByWorkerInput = {
@@ -70596,6 +70628,7 @@ export namespace Prisma {
     id?: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
     user: UserCreateNestedOneWithoutChatGroupMembershipsInput
   }
 
@@ -70604,6 +70637,7 @@ export namespace Prisma {
     userId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type ChatGroupMemberCreateOrConnectWithoutGroupInput = {
@@ -76187,6 +76221,7 @@ export namespace Prisma {
     groupId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type DeliveryCreateManyClaimedByWorkerInput = {
@@ -76525,6 +76560,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     group?: ChatGroupUpdateOneRequiredWithoutMembersNestedInput
   }
 
@@ -76533,6 +76569,7 @@ export namespace Prisma {
     groupId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberUncheckedUpdateManyWithoutUserInput = {
@@ -76540,6 +76577,7 @@ export namespace Prisma {
     groupId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DeliveryUpdateWithoutClaimedByWorkerInput = {
@@ -77387,6 +77425,7 @@ export namespace Prisma {
     userId: string
     role?: string
     joinedAt?: Date | string
+    lastReadAt?: Date | string | null
   }
 
   export type GroupMessageCreateManyGroupInput = {
@@ -77400,6 +77439,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutChatGroupMembershipsNestedInput
   }
 
@@ -77408,6 +77448,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ChatGroupMemberUncheckedUpdateManyWithoutGroupInput = {
@@ -77415,6 +77456,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type GroupMessageUpdateWithoutGroupInput = {

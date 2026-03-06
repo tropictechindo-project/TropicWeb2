@@ -53,21 +53,50 @@ export async function GET(request: Request) {
                 })
 
                 if (delivery && delivery.status === 'QUEUED') {
-                    // Send alert to admin
-                    const { sendEmail } = await import('@/lib/email')
-                    await sendEmail({
-                        to: 'contact@tropictech.online',
-                        subject: `🚨 UNCLAIMED JOB ALERT: Delivery ${deliveryId.substring(0, 8)}`,
-                        html: `
-                            <h2>Unclaimed Delivery Job</h2>
-                            <p>Delivery for Invoice <strong>${delivery.invoice?.invoiceNumber || 'N/A'}</strong> has been unclaimed for over 1 hour.</p>
-                            <p>Status: QUEUED</p>
-                            <p>Please take action in the Admin Dashboard.</p>
-                            <hr/>
-                            <p>Tropic Tech Dispatch System</p>
-                        `
+                    // AUTO-CLAIM LOGIC
+                    // 1. Find the first active worker to assign as a fallback
+                    const fallbackWorker = await db.user.findFirst({
+                        where: { role: 'WORKER', isActive: true },
+                        orderBy: { createdAt: 'asc' }
                     })
-                    console.log(`Alert sent for unclaimed delivery ${deliveryId}`)
+
+                    if (fallbackWorker) {
+                        // 2. Auto-assign the delivery
+                        await db.delivery.update({
+                            where: { id: delivery.id },
+                            data: {
+                                claimedByWorkerId: fallbackWorker.id,
+                                status: 'CLAIMED',
+                                claimedAt: new Date()
+                            }
+                        })
+
+                        // 3. Log the automated action
+                        await db.deliveryLog.create({
+                            data: {
+                                deliveryId: delivery.id,
+                                eventType: 'AUTO_CLAIMED',
+                                newValue: { workerId: fallbackWorker.id, workerName: fallbackWorker.fullName },
+                                role: 'SYSTEM'
+                            }
+                        })
+
+                        console.log(`Delivery ${deliveryId} automatically claimed by ${fallbackWorker.fullName}`)
+                    } else {
+                        // Original fallback: send alert to admin if no worker available
+                        const { sendEmail } = await import('@/lib/email')
+                        await sendEmail({
+                            to: 'contact@tropictech.online',
+                            subject: `🚨 UNCLAIMED JOB ALERT: Delivery ${deliveryId.substring(0, 8)}`,
+                            html: `
+                                <h2>Unclaimed Delivery Job - No Workers Available</h2>
+                                <p>Delivery for Invoice <strong>${delivery.invoice?.invoiceNumber || 'N/A'}</strong> has been unclaimed for over 1 hour.</p>
+                                <p>System tried to auto-claim but no active workers were found.</p>
+                                <hr/>
+                                <p>Tropic Tech Dispatch System</p>
+                            `
+                        })
+                    }
                 }
             }
 

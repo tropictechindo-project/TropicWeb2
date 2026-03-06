@@ -36,13 +36,13 @@ import {
 import { StatCardWithPopup } from '@/components/ui/stat-card'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { UnifiedMessagingHub } from '@/components/chat/UnifiedMessagingHub'
 import { DirectMessagesList } from '@/components/chat/DirectMessagesList'
-import { MessageSquare, Users, MessageCircle } from 'lucide-react'
-import { RealtimePoller } from '@/lib/realtime'
+import { MessageSquare, Users, MessageCircle, BotMessageSquare } from 'lucide-react'
 import { GroupChatDialog } from '@/components/chat/GroupChatDialog'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
-import { BotMessageSquare } from 'lucide-react'
 import { DeliveriesClient } from '@/components/admin/deliveries/DeliveriesClient'
+import { RealtimePoller } from '@/lib/realtime'
 
 export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
@@ -555,65 +555,16 @@ export default function WorkerDashboard() {
             )}
 
             {activeTab === 'chat' && (
-              <div className="space-y-4 animate-in fade-in duration-500">
-                <Card className="border-primary/20 bg-primary/5">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-primary">
-                      <Users className="w-5 h-5" />
-                      Team Chat
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {teamGroup ? (
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium">Tropic Tech Daily</p>
-                          <p className="text-xs text-muted-foreground truncate max-w-[150px]">
-                            {teamGroup.messages && teamGroup.messages[0]
-                              ? teamGroup.messages[0].content
-                              : 'No messages yet'}
-                          </p>
-                        </div>
-                        <Button size="sm" onClick={() => openGroupChat(teamGroup)}>Open Chat</Button>
-                      </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">Team group not found.</p>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Support Tickets / User Groups */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageCircle className="w-5 h-5" />
-                      Support Tickets
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {supportGroups.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No active support tickets.</p>
-                    ) : (
-                      <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
-                        {supportGroups.map(group => (
-                          <div key={group.id} className="flex items-center justify-between p-2 hover:bg-muted rounded-lg border">
-                            <div className="overflow-hidden">
-                              <p className="font-medium text-sm truncate">{group.name.replace('Support - ', '')}</p>
-                              <p className="text-xs text-muted-foreground truncate max-w-[150px]">
-                                {group.messages && group.messages[0]
-                                  ? group.messages[0].content
-                                  : 'No messages'}
-                              </p>
-                            </div>
-                            <Button size="sm" variant="ghost" className="h-6 px-2 text-xs" onClick={() => openGroupChat(group)}>
-                              View
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+              <div className="space-y-4 animate-in fade-in duration-500 h-[calc(100vh-250px)] flex flex-col">
+                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 relative overflow-hidden">
+                  <div className="relative z-10">
+                    <h2 className="text-2xl font-black uppercase tracking-tight text-primary">Team Comms</h2>
+                    <p className="text-sm font-medium text-primary/80 mt-1">Signals from HQ and specialized support channels.</p>
+                  </div>
+                </div>
+                <div className="flex-1 overflow-hidden bg-card border rounded-2xl p-6 shadow-xl shadow-primary/5">
+                  <UnifiedMessagingHub />
+                </div>
               </div>
             )}
 

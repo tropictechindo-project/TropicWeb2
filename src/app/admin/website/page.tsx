@@ -805,6 +805,7 @@ export default function WebsiteSettingsPage() {
                             </div>
                         </CardContent>
                     </Card>
+                </TabsContent>
 
             </Tabs>
         </div>

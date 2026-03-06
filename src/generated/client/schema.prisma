@@ -329,13 +329,14 @@ model ChatGroup {
 }
 
 model ChatGroupMember {
-  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  groupId  String    @map("group_id") @db.Uuid
-  userId   String    @map("user_id") @db.Uuid
-  role     String    @default("MEMBER")
-  joinedAt DateTime  @default(now()) @map("joined_at") @db.Timestamptz(6)
-  group    ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  groupId    String    @map("group_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  role       String    @default("MEMBER")
+  joinedAt   DateTime  @default(now()) @map("joined_at") @db.Timestamptz(6)
+  lastReadAt DateTime? @default(now()) @map("last_read_at") @db.Timestamptz(6)
+  group      ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, userId])
   @@index([userId], map: "idx_chat_group_members_user")

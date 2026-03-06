@@ -1,4 +1,4 @@
-# TropicTech Automation Audit Report (v1.7.7)
+# TropicTech Automation Audit Report (v2.1.1)
 
 This report summarizes the current state of system automation and identifies manual processes that are candidates for future optimization.
 
@@ -13,12 +13,16 @@ The following workflows are fully automated and trigger system-wide changes with
 4.  **Notifications**: 
     - SPI real-time alerts for staff (Assignments/SPI Alerts).
     - Device notification permission requests for users.
-5.  **Master AI Orchestration**: 
-    - AI-generated formal proposals from natural language.
-    - Signature-based (`TropicBoss2026`) instant execution of approved actions.
-    - Contextual memory of pending proposals across chat sessions.
+5.  **Secure AI Orchestration (2-Step Verification)**: 
+    - **Proposal → Signature → Execution**: AI cannot execute data mutations unilaterally. It must first generate a formal Proposal.
+    - **Admin Verification**: High-privilege actions require a **2-Step Verification** process.
+    - **Secret Signature Code**: Execution is only possible after an Admin provides a **super-secret verification code** (Signature) known only to authorized administrators.
+    - **Contextual Awareness**: AI maintains memory of pending proposals across chat sessions for seamless approval workflows.
 6.  **AI Proposal Lifecycle**: Automatic 7-day expiration for unapproved AI proposals.
 7.  **Intent-Based Prompting**: Location and Notification permissions are intelligently delayed (Location at Checkout, Notification at Login) to prevent user drop-off and optimize page load speed.
+8.  **Worker Dispatch Automation**: Automatic assignment of unclaimed `QUEUED` jobs to available workers after 60 minutes.
+9.  **Real-time Data Sync**: Instant bidirectional synchronization for communications (Messages/Notifications) via Supabase WebSockets.
+10. **LCP & SEO Automation**: Automated image decoding strategies and structured data generation for search rankings.
 
 ---
 
@@ -53,7 +57,8 @@ The following areas still require manual intervention and could be targets for P
 
 ## ⚖️ Logical Crush Protection
 The system is now hardened against "Crush Logic" (Race Conditions).
-- Atomic Transactions are used for all multi-step lifecycle changes.
+- **Row-Level Locking**: Atomic `FOR UPDATE` locks are used for all inventory adjustments to prevent lost updates during concurrent edits.
+- **Transaction Safety**: Atomic Transactions are used for all multi-step lifecycle changes.
 - Duplicate trigger prevention is active for the `PICKUP` automation.
 
-**Final Verdict**: TropicTech v1.7.7 is **90% Automated** on the operational core. The remaining gaps are strictly "Admin Super-Vision" items.
+**Final Verdict**: TropicTech v2.1.1 is **92% Automated** on the operational core and performance layer. 

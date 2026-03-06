@@ -21,6 +21,7 @@ import {
     Download, ListOrdered, LogOut, Navigation as NavigationIcon, Map as MapIcon
 } from 'lucide-react'
 import { StatCardWithPopup } from '@/components/ui/stat-card'
+import { UnifiedMessagingHub } from '@/components/chat/UnifiedMessagingHub'
 
 interface Props {
     operatorName: string
@@ -33,7 +34,7 @@ interface Props {
     workers: any[]
 }
 
-type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests'
+type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests' | 'chat'
 
 function getToken() {
     if (typeof document === 'undefined') return ''
@@ -620,6 +621,21 @@ export default function OperatorDashboardClient({
                                     </div>
                                 </>
                             )}
+                        </div>
+                    )}
+
+                    {/* ═══ TEAM CHAT ═════════════════════════════════════════════════════ */}
+                    {activeTab === 'chat' && (
+                        <div className="space-y-4 h-[calc(100vh-200px)] flex flex-col">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-lg font-black uppercase tracking-tight">Team Comms Hub</h2>
+                                    <p className="text-xs text-muted-foreground mt-0.5">Secure channel for staff and user support signals.</p>
+                                </div>
+                            </div>
+                            <div className="flex-1 overflow-hidden bg-card border rounded-2xl p-6 shadow-xl shadow-primary/5">
+                                <UnifiedMessagingHub />
+                            </div>
                         </div>
                     )}
 

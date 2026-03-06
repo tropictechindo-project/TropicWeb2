@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
 import { verifyAuth } from '@/lib/auth/auth-helper'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
-        const auth = await verifyAuth(request)
+        const auth = await verifyAuth(request as NextRequest)
         const adminId = auth?.userId
 
         const body = await request.json()
@@ -34,6 +34,25 @@ export async function POST(request: Request) {
         }
 
         const newUnits = await db.$transaction(async (tx) => {
+            // 1. Lock the variant row for update to prevent concurrent conflicts
+            await tx.$executeRaw`SELECT * FROM product_variants WHERE id = ${variantId}::uuid FOR UPDATE`
+
+            // 2. Determine how many units to add (must recalculate inside tx for accuracy)
+            const currentVariant = await tx.productVariant.findUnique({
+                where: { id: variantId },
+                include: { _count: { select: { units: true } } }
+            })
+
+            if (!currentVariant) throw new Error('Variant not found')
+
+            let unitsToAdd = 0
+            if (numUnitsToAdd) {
+                unitsToAdd = numUnitsToAdd
+            } else if (total !== undefined) {
+                const currentTotal = currentVariant._count.units
+                unitsToAdd = Math.max(0, total - currentTotal)
+            }
+
             const units: any[] = []
             for (let i = 0; i < unitsToAdd; i++) {
                 const serialNumber = `SN-${variant.sku}-${Date.now().toString().slice(-4)}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`

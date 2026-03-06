@@ -334,8 +334,9 @@ model ChatGroupMember {
   userId   String    @map("user_id") @db.Uuid
   role     String    @default("MEMBER")
   joinedAt DateTime  @default(now()) @map("joined_at") @db.Timestamptz(6)
-  group    ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt DateTime? @default(now()) @map("last_read_at") @db.Timestamptz(6)
+  group      ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, userId])
   @@index([userId], map: "idx_chat_group_members_user")

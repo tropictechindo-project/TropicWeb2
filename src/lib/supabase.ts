@@ -15,6 +15,12 @@ export const supabase = createClient(
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true
+    },
+    // Explicitly enabling realtime for clarity, though it's enabled by default
+    realtime: {
+      params: {
+        eventsPerSecond: 10
+      }
     }
   }
 )
