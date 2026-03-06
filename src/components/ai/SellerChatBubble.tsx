@@ -112,7 +112,7 @@ export function SellerChatBubble() {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                                placeholder="Ask me about rentals..."
+                                placeholder="Ask T-Tech.Ai about rentals..."
                                 className="flex-1 bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder:text-zinc-500 transition-all pointer-events-auto"
                             />
                             <Button

@@ -24,7 +24,7 @@ import { toast } from 'sonner'
 import { SharePopover } from './SharePopover'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { cn } from '@/lib/utils'
-import { FullscreenImageModal } from '@/components/ui/FullscreenImageModal'
+import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
 
 interface ProductDetailModalProps {
     isOpen: boolean
@@ -328,9 +328,8 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                 </DialogContent>
             </Dialog>
 
-            <FullscreenImageModal
+            <ImageGalleryModal
                 images={displayImages}
-                initialIndex={lightboxIndex}
                 isOpen={isLightboxOpen}
                 onClose={() => setIsLightboxOpen(false)}
             />

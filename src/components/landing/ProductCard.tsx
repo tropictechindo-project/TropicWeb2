@@ -19,7 +19,7 @@ import { ShoppingCart, Share2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { SharePopover } from './SharePopover'
-import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
+import { ProductDetailModal } from './ProductDetailModal'
 
 interface ProductCardProps {
   product: {
@@ -74,7 +74,7 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   // Only require selection if there are multiple actual colored variants
   const needsSelection = (product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD') && !selectedVariant
 
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+
 
   // Use all available images or fallback to the main display image
   const galleryImages = [
@@ -109,7 +109,7 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
     <>
       <Card
         className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-        onClick={() => setIsGalleryOpen(true)}
+        onClick={() => setIsModalOpen(true)}
         suppressHydrationWarning
       >
         <CardHeader className="pb-3 flex-shrink-0">
@@ -249,10 +249,10 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
         </CardFooter>
       </Card>
 
-      <ImageGalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        images={galleryImages.length > 0 ? galleryImages : [displayImage || '/MyAi.webp']}
+      <ProductDetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={product}
       />
     </>
   )

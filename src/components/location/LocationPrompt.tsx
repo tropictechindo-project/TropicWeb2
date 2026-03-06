@@ -41,7 +41,7 @@ export function LocationPrompt() {
                 console.log('📍 Location updated:', latitude, longitude)
             },
             (error) => {
-                console.error('Error getting location:', error)
+                // Silently ignore geolocation errors initially
             },
             { enableHighAccuracy: true }
         )

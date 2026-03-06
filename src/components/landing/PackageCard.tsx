@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { SharePopover } from './SharePopover'
-import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
+import { ProductDetailModal } from './ProductDetailModal'
 
 interface PackageCardProps {
   package: {
@@ -40,7 +40,7 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
   const router = useRouter()
   const { addItem } = useCart()
   const { t } = useLanguage()
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const discountPercentage = pkg.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? pkg.price * (1 - discountPercentage / 100) : pkg.price
@@ -70,7 +70,7 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
     <>
       <Card
         className="flex flex-col h-full overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-        onClick={() => setIsGalleryOpen(true)}
+        onClick={() => setIsModalOpen(true)}
       >
         <CardHeader className="pb-3 flex-shrink-0">
           <div className="relative aspect-video w-full mb-3 rounded-lg overflow-hidden bg-muted group">
@@ -158,10 +158,19 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
         </CardFooter>
       </Card>
 
-      <ImageGalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        images={galleryImages.length > 0 ? galleryImages : [displayImage || '/MyAi.webp']}
+      <ProductDetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        product={{
+          id: pkg.id,
+          name: pkg.name,
+          description: pkg.description,
+          price: discountedPrice,
+          category: 'PACKAGE',
+          images: galleryImages,
+          items: pkg.items,
+          specs: pkg.specs
+        }}
       />
     </>
   )

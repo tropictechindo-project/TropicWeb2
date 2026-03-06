@@ -17,7 +17,7 @@ import { useCart } from '@/contexts/CartContext'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Tag } from 'lucide-react'
-import { ImageGalleryModal } from '@/components/ui/ImageGalleryModal'
+import { ProductDetailModal } from './ProductDetailModal'
 
 interface SpecialOffersProps {
     initialSettings?: Record<string, string>
@@ -28,7 +28,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
     const { addItem } = useCart()
     const router = useRouter()
     const [selectedOffer, setSelectedOffer] = useState<any | null>(null)
-    const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const [api, setApi] = useState<CarouselApi>()
     const [current, setCurrent] = useState(0)
     const [count, setCount] = useState(0)
@@ -102,7 +102,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                             className="group relative flex flex-col justify-between h-full bg-card rounded-xl border-2 border-primary/20 shadow-xl overflow-hidden hover:border-primary transition-colors cursor-pointer text-center"
                                             onClick={() => {
                                                 setSelectedOffer(offer)
-                                                setIsGalleryOpen(true)
+                                                setIsModalOpen(true)
                                             }}
                                         >
                                             {offer.badgeText && (
@@ -230,11 +230,20 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                 </div>
             </div>
 
-            <ImageGalleryModal
-                isOpen={isGalleryOpen}
-                onClose={() => setIsGalleryOpen(false)}
-                images={selectedOffer?.images?.length > 0 ? selectedOffer.images : ['/LogoTropicTech.webp']}
-            />
+            {selectedOffer && (
+                <ProductDetailModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    product={{
+                        id: selectedOffer.id,
+                        name: selectedOffer.title,
+                        description: selectedOffer.description,
+                        price: selectedOffer.finalPrice,
+                        category: 'PACKAGE',
+                        images: selectedOffer.images?.length > 0 ? selectedOffer.images : ['/LogoTropicTech.webp'],
+                    }}
+                />
+            )}
         </section>
     )
 }
