@@ -45,6 +45,7 @@ interface Product {
     stock: number | null
     discountPercentage: number
     variants: any[]
+    specs: any
 }
 
 interface ProductsClientProps {
@@ -66,13 +67,14 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         imageUrl: "",
         images: [] as string[],
         discountPercentage: "0",
-        variants: [] as any[]
+        variants: [] as any[],
+        specs: ""
     })
     const [variantForm, setVariantForm] = useState({ color: "", stockQuantity: "0" })
     const [isCustomCategory, setIsCustomCategory] = useState(false)
 
     const resetForm = () => {
-        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "", images: [], discountPercentage: "0", variants: [] })
+        setFormData({ name: "", category: "", price: "", description: "", imageUrl: "", images: [], discountPercentage: "0", variants: [], specs: "" })
         setEditingProduct(null)
         setVariantForm({ color: "", stockQuantity: "0" })
         setIsCustomCategory(false)
@@ -134,7 +136,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             imageUrl: product.imageUrl || "",
             images: product.images || (product.imageUrl ? [product.imageUrl] : []),
             discountPercentage: product.discountPercentage?.toString() || "0",
-            variants: product.variants || []
+            variants: product.variants || [],
+            specs: JSON.stringify(product.specs || {}, null, 2)
         })
 
         // If the product belongs to a category not in the standard list, open custom mode immediately
@@ -186,7 +189,8 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     imageUrl: finalImages[0],
                     images: finalImages,
                     discountPercentage: parseInt(formData.discountPercentage),
-                    variants: formData.variants
+                    variants: formData.variants,
+                    specs: JSON.parse(formData.specs || "{}")
                 })
             })
 
@@ -373,12 +377,25 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="description">Description</Label>
+                            <Label htmlFor="description">Description (Plain Text)</Label>
                             <Textarea
                                 id="description"
                                 value={formData.description}
                                 rows={4}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="specs">Detailed Specifications (JSON Format)</Label>
+                            <p className="text-[10px] text-muted-foreground mb-1">Enter key-value pairs like: {"{\"Key\": \"Value\"}"}</p>
+                            <Textarea
+                                id="specs"
+                                value={formData.specs}
+                                rows={6}
+                                className="font-mono text-xs"
+                                placeholder='{ "Processor": "i7", "RAM": "16GB" }'
+                                onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
                             />
                         </div>
 

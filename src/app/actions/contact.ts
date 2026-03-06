@@ -22,13 +22,13 @@ const ContactSchema = z.object({
 export async function submitContactForm(formData: FormData) {
     try {
         const rawData = {
-            name: formData.get('name') as string,
-            email: formData.get('email') as string,
+            name: (formData.get('name') as string) || '',
+            email: (formData.get('email') as string) || '',
             phone: (formData.get('phone') as string) || '',
             subject: (formData.get('subject') as string) || '',
-            message: formData.get('message') as string,
+            message: (formData.get('message') as string) || '',
             source: (formData.get('source') as string) || 'contact_page',
-            bot_trap: formData.get('bot_trap') as string,
+            bot_trap: (formData.get('bot_trap') as string) || undefined,
         };
 
         // 1. Validate honeypot (if bot filled it, silent reject)

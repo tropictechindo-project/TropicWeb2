@@ -44,7 +44,7 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
 
   const discountPercentage = pkg.discountPercentage || 0
   const discountedPrice = discountPercentage > 0 ? pkg.price * (1 - discountPercentage / 100) : pkg.price
-  const displayImage = pkg.imageUrl || pkg.image_url || (pkg.images && pkg.images[0]) || '/MyAi.webp'
+  const displayImage = (pkg.images && pkg.images.length > 0) ? pkg.images[0] : (pkg.imageUrl || pkg.image_url || '/MyAi.webp')
 
   const galleryImages = [
     ...(pkg.images || []),

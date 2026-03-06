@@ -21,10 +21,10 @@ export default function Footer() {
             </div>
 
             <p className="text-sm text-muted-foreground">
-              5+ Years in Bali - Leading the Industry
+              On-demand Office Setup in Bali
             </p>
             <p className="text-sm text-balance">
-              Premium monitors, ergonomic desks, and smart accessories - delivered same day in Bali.
+              Workstation installed within 24 hours anywhere in Bali.
             </p>
           </div>
 

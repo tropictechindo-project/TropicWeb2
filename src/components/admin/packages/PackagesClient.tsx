@@ -50,6 +50,7 @@ interface Package {
     images: string[]
     items: PackageItem[]
     discountPercentage: number
+    specs: any
 }
 
 interface ProductOption {
@@ -77,7 +78,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
         duration: "1", // Default 1 month
         imageUrl: "",
         images: [] as string[],
-        discountPercentage: "0"
+        discountPercentage: "0",
+        specs: ""
     })
     const [selectedItems, setSelectedItems] = useState<PackageItem[]>([])
 
@@ -86,7 +88,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
     const [itemQuantity, setItemQuantity] = useState<string>("1")
 
     const resetForm = () => {
-        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "", images: [], discountPercentage: "0" })
+        setFormData({ name: "", description: "", price: "", duration: "1", imageUrl: "", images: [], discountPercentage: "0", specs: "" })
         setSelectedItems([])
         setEditingId(null)
         setSelectedProductId("")
@@ -107,7 +109,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
             duration: pkg.duration.toString(),
             imageUrl: pkg.imageUrl || "",
             images: pkg.images || (pkg.imageUrl ? [pkg.imageUrl] : []),
-            discountPercentage: pkg.discountPercentage?.toString() || "0"
+            discountPercentage: pkg.discountPercentage?.toString() || "0",
+            specs: JSON.stringify(pkg.specs || {}, null, 2)
         })
         setSelectedItems([...pkg.items])
         setIsOpen(true)
@@ -178,7 +181,8 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                 discountPercentage: parseInt(formData.discountPercentage) || 0,
                 imageUrl: finalImages[0],
                 images: finalImages,
-                items: packageItems
+                items: packageItems,
+                specs: JSON.parse(formData.specs || "{}")
             }
 
             const res = await fetch(url, {
@@ -268,8 +272,20 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="description">Description (Optional)</Label>
+                            <Label htmlFor="description">Description (Plain Text)</Label>
                             <Textarea id="description" value={formData.description} rows={3} onChange={e => setFormData({ ...formData, description: e.target.value })} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="specs">Detailed Specifications (JSON Format)</Label>
+                            <p className="text-[10px] text-muted-foreground mb-1">Enter key-value pairs like: {"{\"Key\": \"Value\"}"}</p>
+                            <Textarea
+                                id="specs"
+                                value={formData.specs}
+                                rows={6}
+                                className="font-mono text-xs"
+                                placeholder='{ "Includes": "Full setup", "Monitors": "Dual 24inch" }'
+                                onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
+                            />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">

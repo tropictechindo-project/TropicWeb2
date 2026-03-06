@@ -69,11 +69,11 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
     // Normalize data
     const price = selectedVariant?.monthlyPrice || product.monthlyPrice || product.monthly_price || product.price || 0
-    const images = (product.images && product.images.length > 0)
+    // Use all available images
+    const displayImages = (product.images && product.images.length > 0)
         ? product.images
         : [product.imageUrl || product.image_url || '/MyAi.webp']
 
-    const displayImages = images.length > 0 ? images : ['/MyAi.webp']
     const currentStock = selectedVariant ? selectedVariant.stock : (product.stock !== undefined ? product.stock : 999)
     const isOutOfStock = currentStock === 0
     const needsSelection = (product.variants && product.variants.length > 0 && product.variants[0].color !== 'STANDARD') && !selectedVariant
@@ -143,34 +143,39 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
                     <div className="grid md:grid-cols-2 gap-6 mt-4">
                         <div className="relative">
-                            <Carousel className="w-full max-w-sm mx-auto">
+                            <Carousel className="w-full">
                                 <CarouselContent>
                                     {displayImages.map((img, index) => (
                                         <CarouselItem key={index}>
                                             <div
-                                                className="relative aspect-square w-full rounded-lg overflow-hidden bg-muted cursor-zoom-in"
+                                                className="relative aspect-square w-full rounded-xl overflow-hidden bg-muted cursor-zoom-in group shadow-inner"
                                                 onClick={() => openLightbox(index)}
                                             >
                                                 <Image
                                                     src={img}
                                                     alt={`${product.name} - View ${index + 1}`}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                    sizes="(max-width: 768px) 100vw, 400px"
+                                                    priority={index === 0}
                                                 />
+                                                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <span className="bg-white/90 text-black px-3 py-1 rounded-full text-xs font-bold shadow-sm">View Gallery</span>
+                                                </div>
                                             </div>
                                         </CarouselItem>
                                     ))}
                                 </CarouselContent>
                                 {displayImages.length > 1 && (
-                                    <>
-                                        <CarouselPrevious className="left-2" />
-                                        <CarouselNext className="right-2" />
-                                    </>
+                                    <div className="flex items-center justify-center gap-4 mt-4">
+                                        <CarouselPrevious className="static translate-y-0 h-8 w-8" />
+                                        <div className="text-xs font-bold text-muted-foreground">
+                                            {lightboxIndex + 1} / {displayImages.length}
+                                        </div>
+                                        <CarouselNext className="static translate-y-0 h-8 w-8" />
+                                    </div>
                                 )}
                             </Carousel>
-                            <p className="text-center text-xs text-muted-foreground mt-2">
-                                Click image to enlarge
-                            </p>
                         </div>
 
                         <div className="space-y-6">
@@ -242,6 +247,7 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                                         Specifications
                                     </h4>
 
+                                    {/* Features Display */}
                                     {specs.features && Array.isArray(specs.features) && (
                                         <div className="space-y-1 text-sm">
                                             <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -255,6 +261,7 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                                         </div>
                                     )}
 
+                                    {/* Dimensions Display */}
                                     {(specs.length || specs.width || specs.height || specs.dimensions) && (
                                         <div className="space-y-1 text-sm">
                                             <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -274,6 +281,20 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                                             {specs.maxLoad && <p>Maximum Load: {specs.maxLoad}</p>}
                                         </div>
                                     )}
+
+                                    {/* Fallback for other specs */}
+                                    <div className="space-y-1 text-sm">
+                                        {Object.entries(specs).map(([key, value]) => {
+                                            const handledKeys = ['features', 'length', 'width', 'height', 'dimensions', 'seatedHeight', 'standingHeight', 'maxLoad', 'colours'];
+                                            if (handledKeys.includes(key) || typeof value === 'object') return null;
+                                            return (
+                                                <div key={key} className="flex justify-between border-b border-dashed pb-1">
+                                                    <span className="text-muted-foreground">{key}</span>
+                                                    <span className="font-medium">{String(value)}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
 
                                     {specs.colours && Array.isArray(specs.colours) && (
                                         <div className="space-y-1 text-sm">

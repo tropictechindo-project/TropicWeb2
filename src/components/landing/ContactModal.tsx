@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { submitContactForm } from '@/app/actions/contact'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -33,30 +34,33 @@ export function ContactModal({ isOpen, onClose }: { isOpen: boolean, onClose: ()
         setIsLoading(true)
 
         try {
-            // Reusing the robust Formspree fallback from Affiliate form for pure client-side submission
-            const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mqkenrdw'
+            const formDataToSubmit = new FormData()
+            formDataToSubmit.append('name', formData.name)
+            formDataToSubmit.append('email', formData.email)
+            formDataToSubmit.append('phone', formData.whatsapp)
+            formDataToSubmit.append('message', formData.notes)
+            formDataToSubmit.append('source', 'Header Contact Modal')
+            formDataToSubmit.append('subject', `Inquiry from ${formData.name}`)
 
-            const response = await fetch(FORMSPREE_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    source: 'Header Contact Modal',
-                    subject: `New Inquiry from ${formData.name}`
-                })
-            })
+            const result = await submitContactForm(formDataToSubmit)
 
-            if (response.ok) {
+            if (result.success) {
                 toast.success('Your message has been sent successfully! Our team will reach out to you shortly.', { duration: 5000 })
                 setFormData({ name: '', whatsapp: '', email: '', notes: '' })
                 onClose()
             } else {
-                throw new Error('Failed to send message')
+                // If validation failed, result.details contains the Zod issues.
+                const errorMessage = result.details
+                    ? (result.details as any[]).map(issue => issue.message).join('. ')
+                    : (result.error || 'Failed to send message')
+                throw new Error(errorMessage)
             }
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Submission error:', error)
-            toast.error('Failed to send message. Please try again or contact us directly on WhatsApp.')
+            toast.error(error.message || 'Failed to send message. Please try again or contact us directly on WhatsApp.', {
+                duration: 6000
+            })
         } finally {
             setIsLoading(false)
         }
@@ -150,6 +154,7 @@ export function ContactModal({ isOpen, onClose }: { isOpen: boolean, onClose: ()
                                 placeholder="How can we help you?"
                                 required
                                 disabled={isLoading}
+                                minLength={10}
                                 rows={3}
                                 className="resize-none bg-muted/50 border-0 focus-visible:ring-1"
                             />

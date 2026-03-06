@@ -36,6 +36,15 @@ const Reviews = dynamic(() => import('@/components/landing/Reviews'), {
 const ContactLandingSection = dynamic(() => import('@/components/landing/ContactLandingSection'), {
   loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
 })
+const ClientLogos = dynamic(() => import('@/components/landing/ClientLogos'), {
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection'), {
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
+const RealSetupGallery = dynamic(() => import('@/components/landing/RealSetupGallery'), {
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+})
 const Footer = dynamic(() => import('@/components/landing/Footer'))
 const SellerChatBubble = dynamic(() =>
   import('@/components/ai/SellerChatBubble').then(m => ({ default: m.SellerChatBubble }))
@@ -152,6 +161,18 @@ export default async function Home() {
 
         <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
           <TrackerSection />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <ClientLogos />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <FeaturesSection />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <RealSetupGallery />
         </Suspense>
 
 
