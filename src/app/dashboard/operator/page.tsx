@@ -84,8 +84,8 @@ export default async function OperatorDashboardPage() {
         }),
         db.productVariant.findMany({
             include: {
-                product: { select: { name: true } },
-                units: { where: { status: 'AVAILABLE' } }
+                product: { select: { name: true, category: true } },
+                units: true
             },
             take: 50
         }),
@@ -115,11 +115,25 @@ export default async function OperatorDashboardPage() {
         }))
     }))
 
+    const productAssets = lowStockVariants.map(v => ({
+        id: v.id,
+        productId: v.productId,
+        name: `${v.product.name} (${v.color})`,
+        category: (v.product as any).category || 'General',
+        total: v.units.length,
+        available: v.units.filter(u => u.status === 'AVAILABLE').length,
+        reserved: v.units.filter(u => u.status === 'RESERVED').length,
+        rented: v.units.filter(u => u.status === 'RENTED').length,
+        maintenance: v.units.filter(u => u.status === 'MAINTENANCE').length,
+        lost: v.units.filter(u => u.status === 'LOST').length,
+        status: (v.units.filter(u => u.status === 'AVAILABLE').length > 0) ? 'HEALTHY' : 'OUT_OF_STOCK'
+    }))
+
     const overviewStats = {
         pendingPayments: pendingInvoices.length,
         queuedDeliveries: queuedDeliveries.filter(d => d.status === 'QUEUED').length,
         activeOrders: allOrders.filter(o => o.status === 'ACTIVE' || o.status === 'PAID').length,
-        lowStockCount: lowStockVariants.filter(v => v.units.length === 0).length,
+        lowStockCount: lowStockVariants.filter(v => v.units.filter(u => u.status === 'AVAILABLE').length === 0).length,
     }
 
     return (
@@ -129,8 +143,9 @@ export default async function OperatorDashboardPage() {
             pendingInvoices={JSON.parse(JSON.stringify(pendingInvoices))}
             deliveries={JSON.parse(JSON.stringify(queuedDeliveries))}
             orders={JSON.parse(JSON.stringify(formattedOrders))}
-            variants={JSON.parse(JSON.stringify(lowStockVariants))}
+            productAssets={JSON.parse(JSON.stringify(productAssets))}
             workers={JSON.parse(JSON.stringify(workers))}
+            variants={JSON.parse(JSON.stringify(lowStockVariants))}
         />
     )
 }

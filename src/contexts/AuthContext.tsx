@@ -58,11 +58,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const bridgeToken = urlParams.get('bridge_token')
 
       if (bridgeToken) {
+        setIsLoading(true)
         localStorage.setItem('token', bridgeToken)
         setCookie('token', bridgeToken)
-        // Clean URL without reloading
-        const newUrl = window.location.pathname + window.location.hash
-        window.history.replaceState({}, '', newUrl)
+
+        // Use location.replace to remove the token from history completely
+        const url = new URL(window.location.href)
+        url.searchParams.delete('bridge_token')
+        window.history.replaceState({}, '', url.pathname + url.search)
       }
 
       const token = localStorage.getItem('token')

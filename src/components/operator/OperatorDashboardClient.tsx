@@ -25,6 +25,7 @@ interface Props {
     deliveries: any[]
     orders: any[]
     variants: any[]
+    productAssets: any[]
     workers: any[]
 }
 
@@ -57,7 +58,7 @@ async function safeFetch(url: string, opts?: RequestInit) {
 }
 
 export default function OperatorDashboardClient({
-    operatorName, stats, pendingInvoices, deliveries, orders, variants, workers
+    operatorName, stats, pendingInvoices, deliveries, orders, variants, productAssets, workers
 }: Props) {
     const [activeTab, setActiveTab] = useState<Tab>('overview')
 
@@ -381,7 +382,7 @@ export default function OperatorDashboardClient({
                     {activeTab === 'inventory' && (
                         <div className="space-y-4">
                             <h2 className="text-lg font-black uppercase tracking-tight">Stock Management</h2>
-                            <InventoryClient products={variants.map(v => v.product)} variants={variants} />
+                            <InventoryClient productAssets={productAssets} products={variants.map(v => v.product)} />
                         </div>
                     )}
 
