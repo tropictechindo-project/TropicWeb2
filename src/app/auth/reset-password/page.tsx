@@ -118,48 +118,6 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
     const router = useRouter()
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        if (password !== confirmPassword) {
-            toast.error('Passwords do not match')
-            return
-        }
-
-        if (password.length < 8) {
-            toast.error('Password must be at least 8 characters long')
-            return
-        }
-
-        setIsLoading(true)
-
-        try {
-            const response = await fetch('/api/auth/reset-password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password }), // Token no longer needed, API uses session
-            })
-
-            if (response.ok) {
-                toast.success('Password reset successful! Please log in.')
-                setTimeout(() => router.push('/auth/login'), 2000)
-            } else {
-                const data = await response.json()
-                // If it's a 401, the Supabase link probably expired
-                if (response.status === 401) {
-                    toast.error('Your reset link has expired. Please request a new one.')
-                    setTimeout(() => router.push('/auth/forgot-password'), 2000)
-                } else {
-                    toast.error(data.error || 'Failed to reset password')
-                }
-            }
-        } catch (error) {
-            toast.error('An error occurred. Please try again.')
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-background to-primary/5">
             <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-primary/10">
