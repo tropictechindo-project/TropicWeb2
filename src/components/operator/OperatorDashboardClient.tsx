@@ -20,6 +20,7 @@ import {
     ChevronRight, RefreshCw, ArrowRight, BarChart3, Activity,
     Download, ListOrdered, LogOut, Navigation as NavigationIcon, Map as MapIcon
 } from 'lucide-react'
+import { StatCardWithPopup } from '@/components/ui/stat-card'
 
 interface Props {
     operatorName: string
@@ -259,10 +260,42 @@ export default function OperatorDashboardClient({
     ] as const
 
     const statCards = [
-        { label: 'Pending Payments', value: stats.pendingPayments, icon: Clock, color: 'text-orange-500', bg: 'bg-orange-500/10' },
-        { label: 'Queued Deliveries', value: stats.queuedDeliveries, icon: Truck, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-        { label: 'Active Orders', value: stats.activeOrders, icon: TrendingUp, color: 'text-green-500', bg: 'bg-green-500/10' },
-        { label: 'Low Stock Items', value: stats.lowStockCount, icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-500/10' },
+        {
+            label: 'Pending Payments', value: stats.pendingPayments, icon: Clock,
+            color: 'text-orange-500', bg: 'bg-orange-500/10',
+            description: 'Invoices awaiting payment confirmation. Confirm payments in the Invoices tab.',
+            popupDetails: [
+                { label: 'Pending Invoices', value: stats.pendingPayments },
+                { label: 'Action Required', value: '', badge: { text: stats.pendingPayments > 0 ? 'Needs Attention' : 'All Clear', className: stats.pendingPayments > 0 ? 'bg-orange-500/10 text-orange-600 border-orange-500/20' : 'bg-green-500/10 text-green-600 border-green-500/20' } }
+            ]
+        },
+        {
+            label: 'Queued Deliveries', value: stats.queuedDeliveries, icon: Truck,
+            color: 'text-blue-500', bg: 'bg-blue-500/10',
+            description: 'Deliveries in QUEUED state waiting to be claimed by a worker. Manage in Deliveries tab.',
+            popupDetails: [
+                { label: 'Queued (Unclaimed)', value: stats.queuedDeliveries },
+                { label: 'Status', value: '', badge: { text: stats.queuedDeliveries > 0 ? 'Needs Worker' : 'All Assigned', className: stats.queuedDeliveries > 0 ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' : 'bg-green-500/10 text-green-600 border-green-500/20' } }
+            ]
+        },
+        {
+            label: 'Active Orders', value: stats.activeOrders, icon: TrendingUp,
+            color: 'text-green-500', bg: 'bg-green-500/10',
+            description: 'Orders currently PAID or ACTIVE — items are with the customer or being prepared for delivery.',
+            popupDetails: [
+                { label: 'Active / Paid Orders', value: stats.activeOrders },
+                { label: 'Pending Deliveries', value: stats.queuedDeliveries }
+            ]
+        },
+        {
+            label: 'Low Stock Items', value: stats.lowStockCount, icon: AlertTriangle,
+            color: 'text-red-500', bg: 'bg-red-500/10',
+            description: 'Product variants with zero available units. Check Inventory tab to view details and manage stock.',
+            popupDetails: [
+                { label: 'Out of Stock Variants', value: stats.lowStockCount },
+                { label: 'Urgency', value: '', badge: { text: stats.lowStockCount > 0 ? 'Restock Needed' : 'Stock OK', className: stats.lowStockCount > 0 ? 'bg-red-500/10 text-red-600 border-red-500/20' : 'bg-green-500/10 text-green-600 border-green-500/20' } }
+            ]
+        },
     ]
 
     // ─── Render ────────────────────────────────────────────────────────────────
@@ -305,13 +338,16 @@ export default function OperatorDashboardClient({
                         <div className="space-y-8">
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                 {statCards.map(card => (
-                                    <div key={card.label} className="bg-card border rounded-2xl p-5 space-y-3">
-                                        <div className={`inline-flex p-2.5 rounded-xl ${card.bg}`}><card.icon className={`h-5 w-5 ${card.color}`} /></div>
-                                        <div>
-                                            <p className={`text-3xl font-black ${card.color}`}>{card.value}</p>
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-0.5">{card.label}</p>
-                                        </div>
-                                    </div>
+                                    <StatCardWithPopup
+                                        key={card.label}
+                                        title={card.label}
+                                        value={card.value}
+                                        icon={card.icon}
+                                        color={card.color}
+                                        bg={card.bg}
+                                        description={card.description}
+                                        popupDetails={card.popupDetails}
+                                    />
                                 ))}
                             </div>
 

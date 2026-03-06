@@ -30,8 +30,10 @@ import {
   Navigation as NavigationIcon,
   Camera,
   Loader2,
-  X
+  X,
+  Truck
 } from 'lucide-react'
+import { StatCardWithPopup } from '@/components/ui/stat-card'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { DirectMessagesList } from '@/components/chat/DirectMessagesList'
@@ -442,22 +444,70 @@ export default function WorkerDashboard() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Card>
-                    <CardHeader className="pb-2"><CardTitle className="text-sm">Pending Jobs</CardTitle></CardHeader>
-                    <CardContent><p className="text-3xl font-black">{pendingJobs}</p></CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="pb-2"><CardTitle className="text-sm text-yellow-600">Active</CardTitle></CardHeader>
-                    <CardContent><p className="text-3xl font-black text-yellow-600">{ongoingJobs}</p></CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="pb-2"><CardTitle className="text-sm text-green-600">Completed</CardTitle></CardHeader>
-                    <CardContent><p className="text-3xl font-black text-green-600">{completedJobs}</p></CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="pb-2"><CardTitle className="text-sm text-primary">Attendance</CardTitle></CardHeader>
-                    <CardContent><p className="text-3xl font-black text-primary">{attendanceRate}%</p></CardContent>
-                  </Card>
+                  <StatCardWithPopup
+                    title="Pending Jobs"
+                    value={pendingJobs}
+                    icon={Package}
+                    color="text-blue-600"
+                    bg="bg-blue-100 dark:bg-blue-900/20"
+                    description="Total active deliveries you've claimed plus unclaimed jobs in the pool."
+                    popupDetails={[
+                      { label: 'My Active Claims', value: myDeliveries.filter(d => d.status !== 'COMPLETED').length },
+                      { label: 'Pool (Unclaimed)', value: poolDeliveries.length },
+                      { label: 'Total Pending', value: pendingJobs },
+                    ]}
+                  />
+                  <StatCardWithPopup
+                    title="Active Deliveries"
+                    value={ongoingJobs}
+                    icon={Truck}
+                    color="text-yellow-600"
+                    bg="bg-yellow-100 dark:bg-yellow-900/20"
+                    description="Deliveries you have claimed and are currently on the way to the customer."
+                    popupDetails={[
+                      { label: 'Out for Delivery', value: myDeliveries.filter(d => d.status === 'OUT_FOR_DELIVERY').length },
+                      { label: 'Claimed (Preparing)', value: myDeliveries.filter(d => d.status === 'CLAIMED').length },
+                      { label: 'Total Active', value: ongoingJobs },
+                    ]}
+                  />
+                  <StatCardWithPopup
+                    title="Completed"
+                    value={completedJobs}
+                    icon={CheckCircle}
+                    color="text-green-600"
+                    bg="bg-green-100 dark:bg-green-900/20"
+                    description="Deliveries you have successfully completed and submitted proof photos for."
+                    popupDetails={[
+                      { label: 'Completed This Session', value: completedJobs },
+                      { label: 'Active', value: ongoingJobs },
+                    ]}
+                  />
+                  <StatCardWithPopup
+                    title="Attendance Rate"
+                    value={`${attendanceRate}%`}
+                    icon={ClipboardCheck}
+                    color="text-primary"
+                    bg="bg-primary/10"
+                    description="Your attendance rate over the last 90 days based on check-in history."
+                    popupDetails={[
+                      { label: 'Records (last 90d)', value: attendanceHistory.length },
+                      { label: 'Present / On Time', value: attendanceHistory.filter((a: any) => a.status === 'PRESENT').length },
+                      { label: 'Late', value: attendanceHistory.filter((a: any) => a.status === 'LATE').length },
+                      { label: 'Absent / Missing', value: attendanceHistory.filter((a: any) => a.status === 'ABSENT').length },
+                      {
+                        label: 'Status',
+                        value: '',
+                        badge: {
+                          text: attendanceRate >= 80 ? 'Excellent' : attendanceRate >= 60 ? 'Average' : 'Needs Improvement',
+                          className: attendanceRate >= 80
+                            ? 'bg-green-500/10 text-green-600 border-green-500/20'
+                            : attendanceRate >= 60
+                              ? 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20'
+                              : 'bg-red-500/10 text-red-600 border-red-500/20'
+                        }
+                      }
+                    ]}
+                  />
                 </div>
               </div>
             )}

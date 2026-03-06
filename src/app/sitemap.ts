@@ -59,8 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     try {
         // Dynamic Product pages
         const products = await db.product.findMany({
-            select: { id: true, createdAt: true },
-            where: { status: 'PUBLISHED' } // Only show published products
+            select: { id: true, createdAt: true }
         })
 
         const productPages: MetadataRoute.Sitemap = products.map((p) => ({

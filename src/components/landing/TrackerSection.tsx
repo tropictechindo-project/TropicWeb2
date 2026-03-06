@@ -31,7 +31,7 @@ export default function TrackerSection() {
                             Real-Time <span className="text-primary italic">Global</span> Tracking
                         </h2>
                         <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
-                            Experience Grab/Gojek style live delivery tracking. Monitor your workstation's journey from our warehouse to your doorstep in real-time.
+                            Experience Maping style live delivery tracking. Monitor your workstation's journey from our warehouse to your doorstep in real-time.
                         </p>
                     </div>
 
