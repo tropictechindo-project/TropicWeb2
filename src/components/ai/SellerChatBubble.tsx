@@ -133,7 +133,7 @@ export function SellerChatBubble() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Open T-Tech.Ai AI Assistant"
-                className={`pointer-events-auto flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-full shadow-2xl border border-zinc-700 transition-all duration-300 ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}
+                className={`pointer-events-auto flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-xl shadow-2xl border border-zinc-700 transition-all duration-300 ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}
             >
                 <div className="relative">
                     <Sparkles className="h-4 w-4 text-white" />

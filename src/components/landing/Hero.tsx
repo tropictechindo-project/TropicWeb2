@@ -95,7 +95,7 @@ export default function Hero({ initialSettings }: HeroProps) {
         <div className="flex flex-col items-center gap-4 mt-8 md:mt-16">
           <Button
             size="lg"
-            className="text-lg px-14 py-8 h-auto font-black uppercase tracking-widest shadow-2xl hover:shadow-black/20 transition-all rounded-xl bg-black hover:bg-black/90 text-white border-2 border-white/10"
+            className="text-lg px-10 py-5 h-auto font-black uppercase tracking-widest shadow-2xl hover:shadow-black/20 transition-all rounded-xl bg-black hover:bg-black/90 text-white border-2 border-white/10"
             onClick={scrollToProducts}
             aria-label="Rent Hardware Now - View our premium workstation catalog"
           >
