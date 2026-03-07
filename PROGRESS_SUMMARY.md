@@ -91,9 +91,16 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-**Last Updated**: 2026-03-07 06:55:00 (WITA/GMT+8)
-**System Version**: 2.4.0-hardened
-**Environment**: Global Production Stable (Supabase Hardening + UI Mastery)
+**Last Updated**: 2026-03-07 12:45:00 (WITA/GMT+8)
+**System Version**: 2.5.0-hardened
+**Environment**: Global Production Stable (AI Intelligence + Auth Hardening)
+
+- ✅ **AI Intelligence & Auth Hardening (v2.5.0)**:
+    - ✅ **Role-Specific AI**: Tailored AI context for Workers (deliveries), Users (rentals), and Operators (management).
+    - ✅ **Auth System Debugged**: Fixed "multi-login" bug by enforcing immediate cookie/localStorage sync.
+    - ✅ **Standardized Logout**: Consolidated logout logic across all Dashboards (Admin, Operator, Worker).
+    - ✅ **Manual Invoicing Fix**: Hardened `OperatorDashboardClient` to ensure `lineItems` are correctly passed for stock reservation.
+    - ✅ **Production Verified**: `npm run build` passes with zero lint/type errors.
 
 - ✅ **Infrastructure Hardening (v2.4.0)**:
     - ✅ **Supabase Security Fix**: Resolved the `mutable search_path` vulnerability in the `handle_new_user` function.
@@ -142,6 +149,7 @@
     - ✅ **SEO Gold**: Validated heading hierarchy (`h1` -> `h2` -> `h3`) and structured data (JSON-LD) for rich snippet dominance.
     - ✅ **Performance Hints**: Injected `preconnect` and `dns-prefetch` for Supabase and Google Fonts into the root layout.
     - ✅ **Stability Fix**: Resolved React `useEffect` dependency array runtime errors in the real-time engine.
+- ✅ **Auth & Manual Dispatch Hardening**: Standardized `useAuth` across all sidebars and fixed the missing `lineItems` manual invoice gap.
 
 ## 📝 Still To Do (Not Yet Started)
 
@@ -151,7 +159,7 @@
   - Added new vehicle selection dialogs and logic
   - Integrated `OUT_FOR_DELIVERY` and `COMPLETED` action flows
 
-- ✅ Add "Log Out" button to all dashboards.
+- ✅ Add "Log Out" button to all dashboards. (Standardized in v2.5.0)
 
 - ⏳ Create public invoice page UI (`/invoice/public/[token]/page.tsx`)
   - Display invoice details

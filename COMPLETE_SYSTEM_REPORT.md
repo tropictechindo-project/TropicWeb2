@@ -1,9 +1,15 @@
-# 🏆 TropicTech Complete System Report - March 2026 (v2.4.0)
+# 🏆 TropicTech Complete System Report - March 2026 (v2.5.0)
 
 ## 📌 Executive Summary
-The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Infrastructure Hardening & UI Mastery (v2.4.0)** milestone. The system is now significantly more secure (Supabase hardening), visually exclusive (Black Hero CTA), and mathematically consistent (IDR 2,000 Pricing Logic).
+The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Role-Specific Intelligence & Auth Hardening (v2.5.0)** milestone. The system is now significantly more intelligent (Tailored AI Agents), reliable (Auth debugging), and operationally robust (Fixed manual invoicing).
 
 ---
+
+## 🤖 0. Role-Specific Intelligence & Auth Hardening (NEW v2.5.0)
+- **Tailored AI Assistants**: Integrated context-aware AI agents for every dashboard tier (Worker, Operator, User), providing role-specific data such as active deliveries or rental history.
+- **Auth Synchronization**: Resolved the "multi-login" requirement by enforcing immediate synchronous token/cookie handshakes in `AuthContext`.
+- **Global Logout Standardization**: Consolidated all logout actions under the centralized `useAuth` hook, ensuring zero session leaks.
+- **Manual Core Hardening**: Fixed a critical gap in the Operator dashboard's manual invoice creation, ensuring 100% downstream order fulfillment.
 
 ## 🛡️ 0. Infrastructure Hardening (NEW v2.4.0)
 - **Supabase Security Fix**: Addressed the `mutable search_path` vulnerability across database functions, ensuring immunity to search-path hijacking.

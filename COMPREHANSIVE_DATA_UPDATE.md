@@ -1,8 +1,8 @@
 # 🌐 TropicTech Comprehensive Data Update & Knowledge Base
 
-**Last Updated**: 2026-03-07 06:55:00 (WITA/GMT+8)
-**System Version**: 2.4.0-hardened
-**Environment**: Global Production (Security Hardened & UI Mastered)
+**Last Updated**: 2026-03-07 12:45:00 (WITA/GMT+8)
+**System Version**: 2.5.0-hardened
+**Environment**: Global Production (AI Intelligence & Auth Hardened)
 
 ---
 
@@ -38,9 +38,9 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 |-----------|------|--------------|
 | `/` | Public | Landing Page, Products, Tracker Section, AI Chat (T-Tech.Ai) |
 | `/admin` | Admin | Full control — Orders, Workers, Deliveries, Settings, Global Tracker |
-| `/dashboard/operator` | Operator | Order management, Delivery queue, Global Tracker |
-| `/dashboard/worker` | Worker | Attendance, Delivery Pool, Live GPS updates |
-| `/dashboard/user` | Customer | Order history, Rentals overview, Live tracking CTA |
+| `/dashboard/operator` | Operator | Order management, Delivery queue, Global Tracker, Operator AI |
+| `/dashboard/worker` | Worker | Attendance, Delivery Pool, Live GPS updates, Worker AI |
+| `/dashboard/user` | Customer | Order history, Rentals overview, Live tracking, User AI |
 | `/tracking` | Public | Global order search by Invoice/Order number |
 | `/track/[trackingCode]` | Public | Real-time delivery map view (GPS) |
 
@@ -104,6 +104,11 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 ---
 
 ## 📅 Complete System Update History
+
+### ✅ v2.5.0 — Role-Specific Intelligence & Auth Hardening (2026-03-07)
+- **Tailored AI Agents**: Integrated specialized AI assistants in User, Worker, and Operator dashboards with deep context sync.
+- **Auth Hardening**: Fixed intermittent multi-login issues; standardized logout logic site-wide.
+- **Manual Flow Fix**: Hardened `OperatorDashboardClient` manual invoice creation to include full `lineItems` data for stock reservation.
 
 ### ✅ v2.4.0 — Infrastructure Hardening & Global Production (2026-03-07)
 - **Supabase Security Hardening**: Resolved `mutable search_path` vulnerability in `handle_new_user` and related functions to prevent search path hijacking.
