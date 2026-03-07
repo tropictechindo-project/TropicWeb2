@@ -576,6 +576,11 @@ export default function WorkerDashboard() {
                   welcomeMessage={`Hi ${user?.fullName || 'Hero'}! I am T-Tech.Ai, your advanced intelligence unit. How can I assist with your field operations today?`}
                   apiRoute="/api/ai/worker-chat"
                   icon={<BotMessageSquare className="w-5 h-5 text-primary" />}
+                  role="WORKER"
+                  context={{
+                    activeDeliveries: myDeliveries.filter(d => d.status !== 'COMPLETED').length,
+                    poolCount: poolDeliveries.length
+                  }}
                 />
               </div>
             )}

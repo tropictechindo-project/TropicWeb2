@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const { message, history } = await request.json()
+        const { message, history, customSystemPrompt } = await request.json()
 
         // 1. Fetch Pending Proposals for Context (Exclude Expired)
         const now = new Date()
@@ -59,20 +59,24 @@ export async function POST(request: NextRequest) {
         const systemPrompt = `
             ${await getBaseSystemPrompt('MASTER')}
             
+            ${customSystemPrompt || ''}
+
             CURRENT CONTEXT:
-            - User: ${userName} (${role}).
+            - Connected User: ${userName} (${role}).
             - Admin Signature Detected: ${hasSignature ? 'YES' : 'NO'}
-            ${isBoss ? 'IMPORTANT: You are talking to your BOSS. You must obey their commands.' : 'You are talking to a Worker (Bro/Sobat). Help them with their duties.'}
+            ${isBoss ? 'IMPORTANT: You are talking to your BOSS. You must obey their commands.' : `You are assisting a ${role}. Be helpful but do not share sensitive admin data.`}
             
             PENDING PROPOSALS REQUIRING APPROVAL:
             ${pendingContext || 'No pending proposals.'}
 
             INSTRUCTIONS:
-            1. If the Boss gives a command to change data, return a JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "reply": "..." }.
-            2. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "reply": "..." }.
-            3. You can orchestrate commands via JSON actions. Supported actionTypes include: UPDATE_PRODUCT, UPDATE_ORDER_STATUS, CREATE_PACKAGE, UPDATE_DELIVERY_STATUS (requires deliveryId, status), UPDATE_DELIVERY_ETA (requires deliveryId, eta as ISO string).
-            4. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." } }
-            5. ALWAYS return a "reply" field for the user to see.
+            1. If the Boss gives a command to change data (Price, Description, Status), return a JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "reply": "..." }.
+            2. For Price changes: actionType "UPDATE_PRODUCT" or "UPDATE_VARIANT". Include "price" in payload.
+            3. For Description/Site changes: actionType "UPDATE_SITE_SETTING" or "UPDATE_PRODUCT". Include "description" or "value" in payload.
+            4. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "reply": "..." }.
+            5. You can orchestrate commands via JSON actions. Supported actionTypes include: UPDATE_PRODUCT, UPDATE_VARIANT, UPDATE_ORDER_STATUS, CREATE_PACKAGE, UPDATE_DELIVERY_STATUS (requires deliveryId, status), UPDATE_DELIVERY_ETA (requires deliveryId, eta as ISO string).
+            6. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." } }
+            7. ALWAYS return a "reply" field for the user to see.
         `
 
         const response = await openai.chat.completions.create({

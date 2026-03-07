@@ -1429,8 +1429,13 @@ export default function UserDashboard() {
                 title="T-TechAi"
                 agentName="T-TechAi"
                 welcomeMessage="Hi! I am T-TechAi, your Tropic Tech neural assistant. How can I help you today?"
-                apiRoute="/api/ai/seller"
+                apiRoute="/api/ai/user-chat"
                 icon={<Bot className="w-5 h-5 text-primary" />}
+                role="USER"
+                context={{
+                  recentOrders: orders.length,
+                  activeShipments: orders.filter(o => o.invoices?.some((i: any) => i.deliveries?.some((d: any) => d.status !== 'COMPLETED'))).length
+                }}
               />
             </div>
           )}

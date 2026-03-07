@@ -224,7 +224,12 @@ export function DeliveriesClient({
                     <TableRow key={delivery.id}>
                         <TableCell className="font-medium">
                             <div className="flex flex-col gap-1">
-                                <span className="text-sm font-bold text-primary">#{delivery.invoice?.invoiceNumber || 'N/A'}</span>
+                                <span
+                                    className="text-sm font-bold text-primary hover:underline cursor-pointer"
+                                    onClick={() => window.open(`/tracking/${delivery.invoice?.invoiceNumber}`, '_blank')}
+                                >
+                                    #{delivery.invoice?.invoiceNumber || 'N/A'}
+                                </span>
                                 <span className="text-xs text-muted-foreground font-mono">ID: {delivery.id.split('-')[0]}</span>
                             </div>
                         </TableCell>

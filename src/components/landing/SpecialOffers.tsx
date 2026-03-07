@@ -75,7 +75,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                         <Tag className="h-8 w-8" />
                         {initialSettings?.special_offers_title?.toUpperCase() || "SPECIAL OFFERS"}
                     </h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto text-lg text-balance">
+                    <p className="text-foreground/80 max-w-2xl mx-auto text-lg text-balance">
                         {initialSettings?.special_offers_description || "Exclusive limited-time promotions on our premium workstation setups. Grab these deals while they last!"}
                     </p>
                 </div>
@@ -122,7 +122,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                         loading="lazy"
                                                         decoding="async"
                                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                        sizes="(max-width: 640px) 92vw, (max-width: 768px) 60vw, (max-width: 1024px) 50vw, (max-width: 1280px) 40vw, 35vw"
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-primary/5">
@@ -141,7 +141,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                             <div className="p-6 flex flex-col flex-1 items-center text-center">
                                                 <div className="flex flex-col flex-1 w-full items-center">
                                                     <h3 className="text-2xl font-bold mb-2 leading-tight">{offer.title}</h3>
-                                                    <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                                                    <p className="text-foreground/80 text-sm line-clamp-2 mb-4">
                                                         {offer.description}
                                                     </p>
 

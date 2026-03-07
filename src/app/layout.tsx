@@ -42,10 +42,10 @@ export const metadata: Metadata = {
 
   // ── Primary ──────────────────────────────────────────────────────────────
   title: {
-    default: 'Tropic Tech Bali – #1 Workstation Rental Bali | Monitors, Chairs, Desks',
-    template: '%s | Tropic Tech Bali',
+    default: 'Tropic Tech - Remote Work Infrastructure Service | Monitors, Chairs, Desks',
+    template: '%s | Tropic Tech',
   },
-  description: 'Maximize your productivity in paradise. Rent #1 premium monitors, ergonomic chairs & standing desks in Bali. Ultra-fast island-wide delivery. High-performance workstation rental for digital nomads and remote teams in Canggu, Ubud, Seminyak, Uluwatu & Sanur.',
+  description: 'Premium remote work infrastructure service in Bali. Rent high-performance monitors, ergonomic chairs, and standing desks. Delivering productivity to digital nomads and remote teams island-wide.',
   keywords: [
     'workstation rental bali',
     'monitor rental bali',
@@ -89,8 +89,8 @@ export const metadata: Metadata = {
 
   // ── Open Graph ────────────────────────────────────────────────────────────
   openGraph: {
-    title: 'Tropic Tech Bali – Workstation Rental Bali | Monitors, Chairs, Desks',
-    description: 'Premium workstation rentals in Bali. Serving digital nomads & remote workers since 2019. Delivery to Canggu, Seminyak, Ubud & beyond.',
+    title: 'Tropic Tech - Remote Work Infrastructure Service',
+    description: 'Premium remote work infrastructure rentals in Bali. Serving digital nomads & remote workers since 2019. Delivery to Canggu, Seminyak, Ubud & beyond.',
     url: 'https://tropictech.online',
     siteName: 'Tropic Tech Bali',
     type: 'website',
@@ -109,7 +109,7 @@ export const metadata: Metadata = {
   // ── Twitter / X ──────────────────────────────────────────────────────────
   twitter: {
     card: 'summary_large_image',
-    title: 'Tropic Tech Bali – #1 Workstation Rental Bali',
+    title: 'Tropic Tech - Remote Work Infrastructure Service',
     description: 'Rent monitors, ergonomic chairs & desks in Bali. Fast delivery, flexible plans. Trusted by 500+ digital nomads.',
     images: ['/images/og-image.webp'],
     creator: '@tropictechs',

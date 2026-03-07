@@ -58,7 +58,7 @@ export default function Hero({ initialSettings }: HeroProps) {
         <div className="absolute inset-0">
           <Image
             src={heroImage}
-            alt="Tropic Tech - #1 Workstation & Office Equipment Rental Bali"
+            alt="Tropic Tech - Remote Work Infrastructure Service"
             fill
             className="object-cover"
             priority

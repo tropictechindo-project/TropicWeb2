@@ -129,8 +129,8 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
               loading="lazy"
               decoding="async"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              quality={75}
+              sizes="(max-width: 640px) 82vw, (max-width: 1024px) 45vw, 25vw"
+              quality={80}
             />
           </div>
 

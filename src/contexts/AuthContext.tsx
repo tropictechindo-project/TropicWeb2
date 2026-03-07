@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return
       }
 
-      // Ensure cookie is in sync with localStorage
+      // Ensure cookie is in sync with localStorage for middleware
       setCookie('token', token)
 
       const response = await fetch('/api/auth/me', {

@@ -27,8 +27,8 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useNotification } from "@/contexts/NotificationContext"
+import { useAuth } from "@/contexts/AuthContext"
 import { GlobalTrackerModal } from "@/components/shared/GlobalTrackerModal"
-
 import {
     Sidebar,
     SidebarContent,
@@ -135,6 +135,7 @@ const items = [
 ]
 
 export function AdminSidebar() {
+    const { logout } = useAuth()
     const pathname = usePathname()
     const { unreadMessagesCount, unreadOrdersCount, unreadDeliveriesCount } = useNotification()
     const { theme, setTheme } = useTheme()
@@ -229,10 +230,7 @@ export function AdminSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip="Log Out">
                             <button
-                                onClick={() => {
-                                    localStorage.removeItem('token')
-                                    window.location.href = '/auth/login'
-                                }}
+                                onClick={() => logout()}
                                 className="flex items-center gap-2 w-full"
                             >
                                 <LogOut className="text-destructive" />

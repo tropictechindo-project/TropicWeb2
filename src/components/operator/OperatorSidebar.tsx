@@ -13,6 +13,7 @@ import {
     Bot,
     Map as MapIcon
 } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -81,6 +82,7 @@ const items = [
 ]
 
 export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: string, onTabChange: (tab: string) => void }) {
+    const { logout } = useAuth()
     const { unreadMessagesCount, unreadOrdersCount, unreadDeliveriesCount } = useNotification()
     const { theme, setTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
@@ -179,10 +181,7 @@ export function OperatorSidebar({ currentTab, onTabChange }: { currentTab: strin
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip="Log Out">
                             <button
-                                onClick={() => {
-                                    localStorage.removeItem('token')
-                                    window.location.href = '/auth/login'
-                                }}
+                                onClick={() => logout()}
                                 className="flex items-center gap-2 w-full"
                             >
                                 <LogOut className="text-destructive h-4 w-4" />

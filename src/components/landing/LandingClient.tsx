@@ -30,6 +30,11 @@ export function useOrder() {
     return context
 }
 
+const SellerChatBubble = dynamic(() =>
+    import('@/components/ai/SellerChatBubble').then(m => ({ default: m.SellerChatBubble })),
+    { ssr: false }
+)
+
 interface LandingClientProps {
     children: React.ReactNode
 }
@@ -92,6 +97,7 @@ export default function LandingClient({ children }: LandingClientProps) {
                     item={orderItem}
                 />
             )}
+            <SellerChatBubble />
         </OrderContext.Provider>
     )
 }

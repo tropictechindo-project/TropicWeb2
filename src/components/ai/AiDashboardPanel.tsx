@@ -12,9 +12,11 @@ interface AiDashboardPanelProps {
     welcomeMessage: string;
     apiRoute: string;
     icon?: React.ReactNode;
+    role?: 'ADMIN' | 'OPERATOR' | 'WORKER' | 'USER';
+    context?: Record<string, any>;
 }
 
-export function AiDashboardPanel({ title, agentName, welcomeMessage, apiRoute, icon }: AiDashboardPanelProps) {
+export function AiDashboardPanel({ title, agentName, welcomeMessage, apiRoute, icon, role, context }: AiDashboardPanelProps) {
     const [messages, setMessages] = useState<any[]>([
         { role: 'assistant', content: welcomeMessage }
     ])
@@ -48,7 +50,12 @@ export function AiDashboardPanel({ title, agentName, welcomeMessage, apiRoute, i
             const response = await fetch(apiRoute, {
                 method: 'POST',
                 headers,
-                body: JSON.stringify({ message: input, history: messages.slice(-4) })
+                body: JSON.stringify({
+                    message: input,
+                    history: messages.slice(-4),
+                    role,
+                    context
+                })
             })
 
             const data = await response.json()

@@ -96,7 +96,7 @@ export default function RealSetupGallery() {
                                 )}
                                 onClick={() => { setCurrentIndex(i); setIsOpen(true); }}
                             >
-                                <Image src={img} alt={`Setup preview ${i + 1}`} fill className="object-cover" sizes="(max-width: 768px) 80vw, 25vw" />
+                                <Image src={img} alt={`Setup preview ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 25vw" quality={80} />
                                 <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <Maximize2 className="text-white w-8 h-8" />
                                 </div>
@@ -115,59 +115,62 @@ export default function RealSetupGallery() {
             </div>
 
             {/* Cinematic Lightbox */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-0 md:p-8 animate-in fade-in duration-300"
-                    onClick={() => setIsOpen(false)}
-                >
+            {
+                isOpen && (
                     <div
-                        className="relative w-full max-w-7xl h-full md:aspect-video flex items-center justify-center overflow-hidden cursor-pointer group/modal"
-                        onClick={(e) => { e.stopPropagation(); handleImageClick(e); }}
+                        className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-0 md:p-8 animate-in fade-in duration-300"
+                        onClick={() => setIsOpen(false)}
                     >
-                        <Image
-                            src={setupImages[currentIndex]}
-                            alt="Real setup view"
-                            fill
-                            className="object-contain md:object-cover select-none pointer-events-none"
-                            priority
-                            quality={100}
-                        />
+                        <div
+                            className="relative w-full max-w-7xl h-full md:aspect-video flex items-center justify-center overflow-hidden cursor-pointer group/modal"
+                            onClick={(e) => { e.stopPropagation(); handleImageClick(e); }}
+                        >
+                            <Image
+                                src={setupImages[currentIndex]}
+                                alt="Real setup view"
+                                fill
+                                className="object-contain md:object-cover select-none pointer-events-none"
+                                priority
+                                quality={100}
+                            />
 
-                        {/* Cinematic Overlay - Dark edges */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 opacity-0 group-hover/modal:opacity-100 transition-opacity" />
+                            {/* Cinematic Overlay - Dark edges */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 opacity-0 group-hover/modal:opacity-100 transition-opacity" />
 
-                        {/* Navigation Overlay Hints */}
-                        <div className="absolute inset-y-0 left-0 w-1/4 flex items-center justify-start pl-8 opacity-0 group-hover/modal:opacity-100 transition-opacity">
-                            <ChevronLeft className="w-12 h-12 text-white/50" />
-                        </div>
-                        <div className="absolute inset-y-0 right-0 w-1/4 flex items-center justify-end pr-8 opacity-0 group-hover/modal:opacity-100 transition-opacity">
-                            <ChevronRight className="w-12 h-12 text-white/50" />
-                        </div>
+                            {/* Navigation Overlay Hints */}
+                            <div className="absolute inset-y-0 left-0 w-1/4 flex items-center justify-start pl-8 opacity-0 group-hover/modal:opacity-100 transition-opacity">
+                                <ChevronLeft className="w-12 h-12 text-white/50" />
+                            </div>
+                            <div className="absolute inset-y-0 right-0 w-1/4 flex items-center justify-end pr-8 opacity-0 group-hover/modal:opacity-100 transition-opacity">
+                                <ChevronRight className="w-12 h-12 text-white/50" />
+                            </div>
 
-                        {/* HUD / UI */}
-                        <div className="absolute top-8 right-8 flex gap-4 z-50">
-                            <button
-                                onClick={(e) => { e.stopPropagation(); setIsAutoPlaying(!isAutoPlaying); }}
-                                className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-colors text-white"
-                            >
-                                <Play className={cn("w-6 h-6", isAutoPlaying && "fill-current")} />
-                            </button>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
-                                className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-colors text-white"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
+                            {/* HUD / UI */}
+                            <div className="absolute top-8 right-8 flex gap-4 z-50">
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); setIsAutoPlaying(!isAutoPlaying); }}
+                                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-colors text-white"
+                                    aria-label={isAutoPlaying ? "Pause autoplay" : "Start autoplay"}
+                                >
+                                    <Play className={cn("w-6 h-6", isAutoPlaying && "fill-current")} />
+                                </button>
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+                                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-colors text-white"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
 
-                        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10">
-                            {setupImages.map((_, i) => (
-                                <div key={i} className={cn("h-1 w-8 rounded-full transition-all duration-300", i === currentIndex ? "bg-primary w-12" : "bg-white/20")} />
-                            ))}
+                            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10">
+                                {setupImages.map((_, i) => (
+                                    <div key={i} className={cn("h-1 w-8 rounded-full transition-all duration-300", i === currentIndex ? "bg-primary w-12" : "bg-white/20")} />
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </section>
+                )
+            }
+        </section >
     )
 }

@@ -363,7 +363,12 @@ export default function OperatorDashboardClient({
                                         {pendingInvoices.slice(0, 5).map((inv: any) => (
                                             <div key={inv.id} className="flex items-center justify-between px-6 py-3 hover:bg-muted/30">
                                                 <div>
-                                                    <p className="font-mono text-sm font-bold">{inv.invoiceNumber}</p>
+                                                    <p
+                                                        className="font-mono text-sm font-bold text-primary hover:underline cursor-pointer"
+                                                        onClick={() => window.open(`/tracking/${inv.invoiceNumber}`, '_blank')}
+                                                    >
+                                                        {inv.invoiceNumber}
+                                                    </p>
                                                     <p className="text-xs text-muted-foreground">{inv.user?.fullName || inv.guestName || 'Guest'}</p>
                                                 </div>
                                                 <div className="flex items-center gap-3">
@@ -389,7 +394,12 @@ export default function OperatorDashboardClient({
                                         {deliveries.slice(0, 5).map((d: any) => (
                                             <div key={d.id} className="flex items-center justify-between px-6 py-3 hover:bg-muted/30">
                                                 <div>
-                                                    <p className="font-mono text-xs font-bold">{d.trackingCode || 'No code'}</p>
+                                                    <p
+                                                        className="font-mono text-xs font-bold text-primary hover:underline cursor-pointer"
+                                                        onClick={() => d.trackingCode && window.open(`/tracking/${d.trackingCode}`, '_blank')}
+                                                    >
+                                                        {d.trackingCode || 'No code'}
+                                                    </p>
                                                     <p className="text-xs text-muted-foreground">{d.invoice?.user?.fullName || d.invoice?.guestName || 'Guest'}</p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
@@ -421,7 +431,12 @@ export default function OperatorDashboardClient({
                                         <tbody className="divide-y">
                                             {pendingInvoices.map((inv: any) => (
                                                 <tr key={inv.id} className="hover:bg-muted/20">
-                                                    <td className="px-4 py-3 font-mono text-xs font-bold">{inv.invoiceNumber}</td>
+                                                    <td
+                                                        className="px-4 py-3 font-mono text-xs font-bold text-primary hover:underline cursor-pointer"
+                                                        onClick={() => window.open(`/tracking/${inv.invoiceNumber}`, '_blank')}
+                                                    >
+                                                        {inv.invoiceNumber}
+                                                    </td>
                                                     <td className="px-4 py-3 text-xs">{inv.user?.fullName || inv.guestName || 'Guest'}<br /><span className="text-muted-foreground">{inv.user?.email || inv.guestEmail}</span></td>
                                                     <td className="px-4 py-3 font-bold text-xs">{fmt(Number(inv.total))}</td>
                                                     <td className="px-4 py-3"><Badge className={`text-[9px] border ${getStatusColor(inv.status)}`}>{inv.status}</Badge></td>
@@ -557,7 +572,12 @@ export default function OperatorDashboardClient({
                                                 <tbody className="divide-y">
                                                     {report.invoices.map((inv: any) => (
                                                         <tr key={inv.id} className="hover:bg-muted/20">
-                                                            <td className="px-3 py-2 font-mono font-bold whitespace-nowrap">{inv.invoiceNumber}</td>
+                                                            <td
+                                                                className="px-3 py-2 font-mono font-bold whitespace-nowrap text-primary hover:underline cursor-pointer"
+                                                                onClick={() => window.open(`/tracking/${inv.invoiceNumber}`, '_blank')}
+                                                            >
+                                                                {inv.invoiceNumber}
+                                                            </td>
                                                             <td className="px-3 py-2 whitespace-nowrap max-w-[120px] truncate" title={inv.customer}>{inv.customer}</td>
                                                             <td className="px-3 py-2 text-right whitespace-nowrap">{fmt(inv.subtotal)}</td>
                                                             <td className="px-3 py-2 text-right whitespace-nowrap text-blue-600">{fmt(inv.tax)}</td>
@@ -752,7 +772,7 @@ export default function OperatorDashboardClient({
                                 const data = await safeFetch('/api/orders', {
                                     method: 'POST',
                                     body: JSON.stringify({
-                                        items: createItems.flatMap(i => Array(i.qty).fill({ id: i.id, price: i.price, name: i.name })),
+                                        items: createItems.map(i => ({ id: i.id, price: i.price, quantity: i.qty })),
                                         paymentMethod: createForm.paymentMethod,
                                         deliveryAddress: createForm.address,
                                         notes: createForm.notes,
@@ -760,7 +780,14 @@ export default function OperatorDashboardClient({
                                             fullName: createForm.customerName,
                                             email: createForm.email,
                                             whatsapp: createForm.whatsapp,
-                                        }
+                                        },
+                                        lineItems: createItems.map(i => ({
+                                            id: i.id,
+                                            name: i.name,
+                                            price: i.price,
+                                            quantity: i.qty,
+                                            duration: 30 // Default duration for manual invoices
+                                        }))
                                     })
                                 })
                                 const inv = data.invoice || data

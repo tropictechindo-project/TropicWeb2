@@ -248,6 +248,7 @@ export default function Header() {
                                 onTouchEnd={handleGlobeMouseUp}
                                 onClick={handleGlobeClick}
                                 className="relative transition-all duration-300"
+                                aria-label="Change language or theme"
                               >
                                 <Globe className="h-5 w-5 transition-transform duration-500 hover:rotate-180" />
                               </Button>
@@ -318,9 +319,9 @@ export default function Header() {
                       </Button>
                       <Button
                         onClick={() => setShowContactModal(true)}
-                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold uppercase tracking-widest px-6 h-10 rounded-md shadow-sm"
+                        className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold tracking-widest px-6 h-10 rounded-md shadow-sm"
                       >
-                        Contact Us
+                        {t('ContactUs')}
                       </Button>
 
                       {/* Globe with Tooltip and Hover-to-Language */}
@@ -473,7 +474,7 @@ export default function Header() {
                         setShowContactModal(true);
                       }}
                     >
-                      Contact Us
+                      {t('ContactUs')}
                     </Button>
                   </div>
                 )}

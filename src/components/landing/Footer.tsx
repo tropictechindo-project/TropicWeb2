@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-primary">Tropic Tech Bali</h3>
+            <h3 className="text-xl font-bold text-primary">Tropic Tech</h3>
 
             <div className="text-sm text-muted-foreground">
               <span className="text-xs block">Operated By</span>
@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
 
             <p className="text-sm text-muted-foreground">
-              On-demand Office Setup in Bali
+              Remote Work Infrastructure Service
             </p>
             <p className="text-sm text-balance">
               Workstation installed within 24 hours anywhere in Bali.
