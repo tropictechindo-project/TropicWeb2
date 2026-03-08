@@ -4,6 +4,7 @@ import { verifyToken } from '@/lib/auth/utils'
 import { sendInvoiceEmail } from '@/lib/email'
 import { calculateETA } from '@/lib/google-maps'
 import { calculateInvoiceTotals, getInvoiceRecipients } from '@/lib/invoice-utils'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 export const dynamic = 'force-dynamic'
 
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
             }
 
             // Create SPI notifications for Admin & Operator
-            await tx.notification.createMany({
+            await tx.spiNotification.createMany({
                 data: [
                     {
                         title: 'New Order Received',
@@ -133,6 +134,16 @@ export async function POST(request: Request) {
         setTimeout(async () => {
             try {
                 const recipients = await getInvoiceRecipients(invoice)
+
+                // Send Google Report (non-blocking)
+                sendGoogleReport('ORDER', {
+                    invoiceNumber: invoice.invoiceNumber,
+                    customerName: guestInfo?.fullName || 'Customer',
+                    amount: Number(invoice.total),
+                    paymentMethod: invoice.paymentMethod,
+                    status: 'PENDING',
+                    timestamp: new Date().toISOString()
+                }).catch(err => console.error('[REPORTING_ERROR] Google Sheet Error:', err))
 
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
                 await sendInvoiceEmail({

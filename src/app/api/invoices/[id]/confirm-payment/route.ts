@@ -4,6 +4,7 @@ import { verifyAuth } from '@/lib/auth/auth-helper'
 import { sendInvoiceEmail } from '@/lib/email'
 import { logActivity } from '@/lib/logger'
 import { getInvoiceRecipients } from '@/lib/invoice-utils'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 
 export const dynamic = 'force-dynamic'
@@ -186,6 +187,17 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 console.error('[CONFIRM_PAYMENT] Email error:', e)
             }
         }, 0)
+
+        // I. Send Google Report (non-blocking)
+        sendGoogleReport('ORDER', {
+            orderId: result.order.id,
+            invoiceNumber: invoice.invoiceNumber,
+            customerName: invoice.guestName || 'Customer',
+            amount: Number(invoice.total),
+            paymentMethod: invoice.paymentMethod,
+            status: 'PAID',
+            timestamp: new Date().toISOString()
+        }).catch(err => console.error('[REPORTING_ERROR] Google Sheet Error:', err))
 
         await logActivity({ userId: auth.userId, action: 'CONFIRM_PAYMENT', entity: 'INVOICE', details: `Invoice ${invoice.invoiceNumber} marked PAID → Order ${result.order.orderNumber} created by ${auth.role}` })
         return NextResponse.json({
