@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 import { verifyToken } from '@/lib/auth/utils'
 import { sendInvoiceEmail } from '@/lib/email'
 import { calculateETA } from '@/lib/google-maps'
-import { calculateInvoiceTotals } from '@/lib/invoice-utils'
+import { calculateInvoiceTotals, getInvoiceRecipients } from '@/lib/invoice-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -132,12 +132,7 @@ export async function POST(request: Request) {
         // 5. Send confirmation email (non-blocking)
         setTimeout(async () => {
             try {
-                const recipients: string[] = []
-                const customerEmail = userId
-                    ? (await db.user.findUnique({ where: { id: userId } }))?.email
-                    : guestInfo?.email
-                if (customerEmail) recipients.push(customerEmail)
-                recipients.push('contact@tropictech.online')
+                const recipients = await getInvoiceRecipients(invoice)
 
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
                 await sendInvoiceEmail({

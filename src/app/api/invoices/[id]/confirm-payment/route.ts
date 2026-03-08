@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { verifyAuth } from '@/lib/auth/auth-helper'
 import { sendInvoiceEmail } from '@/lib/email'
 import { logActivity } from '@/lib/logger'
+import { getInvoiceRecipients } from '@/lib/invoice-utils'
 
 
 export const dynamic = 'force-dynamic'
@@ -171,22 +172,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         // H. Send confirmation email (non-blocking)
         setTimeout(async () => {
             try {
-                const recipients: string[] = []
-                if (invoice.userId) {
-                    const user = await db.user.findUnique({ where: { id: invoice.userId } })
-                    if (user?.email) recipients.push(user.email)
-                } else if (invoice.guestEmail) {
-                    recipients.push(invoice.guestEmail)
-                }
-
-                // Also notify workers
-                const workers = await db.user.findMany({
-                    where: { role: 'WORKER' },
-                    select: { email: true }
-                })
-                workers.forEach(w => recipients.push(w.email))
-
-                recipients.push('contact@tropictech.online')
+                const recipients = await getInvoiceRecipients(invoice)
 
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
                 await sendInvoiceEmail({

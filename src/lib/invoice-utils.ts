@@ -161,8 +161,9 @@ export async function getInvoiceRecipients(invoice: any) {
     })
     recipients.push(...workers.map(w => w.email))
 
-    // Add admin email
-    recipients.push('contact@tropictech.online')
+    // Add team emails from env
+    const teamEmails = process.env.SMTP_TEAM_EMAILS?.split(',') || ['contact@tropictech.online']
+    recipients.push(...teamEmails)
 
     // Remove duplicates
     return Array.from(new Set(recipients))
