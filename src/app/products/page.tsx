@@ -4,7 +4,7 @@ import Footer from '@/components/landing/Footer'
 import { db } from '@/lib/db'
 import { ProductsClientView } from './ProductsClientView'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export const metadata: Metadata = {
     title: 'Products | PT Tropic Tech International',
