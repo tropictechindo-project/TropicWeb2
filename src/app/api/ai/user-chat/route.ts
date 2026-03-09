@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
             db.delivery.findMany({
                 where: {
                     invoice: { userId: auth.userId },
-                    status: { not: 'DELIVERED' }
+                    status: { not: 'COMPLETED' }
                 },
                 include: { invoice: true }
             })
@@ -35,7 +35,7 @@ You are the TropicTech Personal Assistant. You help customers track their orders
 User Context:
 - Recent Invoices: ${recentInvoices.map(i => `${i.invoiceNumber} (${i.status})`).join(', ') || 'None'}
 - Active Deliveries: ${activeDeliveries.length} in progress
-${activeDeliveries.map(d => `  • ${d.invoice?.invoiceNumber}: ${d.status}`).join('\n')}
+${activeDeliveries.map(d => `  • ${d.invoice?.invoiceNumber || 'N/A'}: ${d.status}`).join('\n')}
 
 Be extremely polite, helpful, and premium in your tone. Focus on customer satisfaction and clear status updates.
 `.trim()

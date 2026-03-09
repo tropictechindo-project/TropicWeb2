@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Share2, Ruler, Palette, Star, ArrowLeft } from 'lucide-react'
+import { Share2, Ruler, Palette, Star, ArrowLeft, ShoppingCart } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { SharePopover } from '@/components/landing/SharePopover'
 import { ImageLightboxViewer } from '@/components/ui/ImageLightboxViewer'
+import { Badge } from '@/components/ui/badge'
 
 // Simple type definition based on what we expect
 type Item = {

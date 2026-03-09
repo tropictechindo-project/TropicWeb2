@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
         const [assignedDeliveries, pendingPickups, workerStats] = await Promise.all([
             db.delivery.findMany({
                 where: {
-                    workerId: auth.userId,
-                    status: { in: ['ASSIGNED', 'PICKED_UP', 'EN_ROUTE'] }
+                    claimedByWorkerId: auth.userId,
+                    status: { in: ['CLAIMED', 'OUT_FOR_DELIVERY'] }
                 },
                 include: { invoice: true }
             }),
@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
             }),
             db.delivery.count({
                 where: {
-                    workerId: auth.userId,
-                    status: 'DELIVERED',
+                    claimedByWorkerId: auth.userId,
+                    status: 'COMPLETED',
                     updatedAt: { gte: new Date(new Date().setHours(0, 0, 0, 0)) }
                 }
             })
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 You are the TropicTech Worker AI Assistant. You help field workers manage deliveries and logistics.
 Your current status:
 - Assigned tasks: ${assignedDeliveries.length} active deliveries
-${assignedDeliveries.map(d => `  • ${d.invoice?.invoiceNumber} — ${d.status} — ${d.deliveryAddress}`).join('\n')}
+${assignedDeliveries.map(d => `  • ${d.invoice?.invoiceNumber || 'N/A'} — ${d.status} — ${d.invoice?.deliveryAddress || 'No Address'}`).join('\n')}
 - Available in queue: ${pendingPickups} tasks waiting for assignment
 - Completed today: ${workerStats} deliveries
 

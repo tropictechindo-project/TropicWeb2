@@ -48,7 +48,7 @@ async function getStats() {
     // Serialization Fix: Convert Date objects to strings for Client Component boundary
     const serializedNotifications = notifications.map(n => ({
         ...n,
-        createdAt: n.createdAt.toISOString()
+        createdAt: n.createdAt ? n.createdAt.toISOString() : new Date().toISOString()
     }))
 
     return {
