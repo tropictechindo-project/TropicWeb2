@@ -9,11 +9,19 @@ export async function PATCH(
 ) {
     try {
         const authHeader = req.headers.get('authorization')
-        let adminId: string | undefined
+        let actorId: string | undefined
+        let actorRole: string | undefined
         if (authHeader?.startsWith('Bearer ')) {
             const token = authHeader.substring(7)
             const payload = await verifyToken(token)
-            if (payload) adminId = payload.userId
+            if (payload) {
+                actorId = payload.userId
+                actorRole = payload.role
+            }
+        }
+
+        if (actorRole !== 'ADMIN' && actorRole !== 'OPERATOR') {
+            return new NextResponse("Unauthorized", { status: 401 })
         }
 
         const { id } = await params
@@ -45,10 +53,10 @@ export async function PATCH(
         }
 
         await logActivity({
-            userId: adminId,
+            userId: actorId,
             action: 'UPDATE_INVOICE',
             entity: 'INVOICE',
-            details: `Updated invoice ${invoice.invoiceNumber}. New Status: ${status}`
+            details: `Updated invoice ${invoice.invoiceNumber} by ${actorRole}. New Status: ${status}`
         })
 
         return NextResponse.json(invoice)
@@ -64,11 +72,19 @@ export async function DELETE(
 ) {
     try {
         const authHeader = req.headers.get('authorization')
-        let adminId: string | undefined
+        let actorId: string | undefined
+        let actorRole: string | undefined
         if (authHeader?.startsWith('Bearer ')) {
             const token = authHeader.substring(7)
             const payload = await verifyToken(token)
-            if (payload) adminId = payload.userId
+            if (payload) {
+                actorId = payload.userId
+                actorRole = payload.role
+            }
+        }
+
+        if (actorRole !== 'ADMIN' && actorRole !== 'OPERATOR') {
+            return new NextResponse("Unauthorized", { status: 401 })
         }
 
         const { id } = await params
@@ -88,10 +104,10 @@ export async function DELETE(
         }
 
         await logActivity({
-            userId: adminId,
+            userId: actorId,
             action: 'DELETE_INVOICE',
             entity: 'INVOICE',
-            details: `Deleted invoice ${invoiceNumber}`
+            details: `Deleted invoice ${invoiceNumber} by ${actorRole}`
         })
 
         return new NextResponse("Deleted", { status: 200 })

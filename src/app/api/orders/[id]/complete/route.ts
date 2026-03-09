@@ -54,28 +54,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 })
             }
 
-            // Release reserved units → IN_USE (actively rented)
-            const rentalItems = await tx.rentalItem.findMany({
-                where: { orderId: id },
-                include: { unit: true }
-            })
-            for (const item of rentalItems) {
-                if (item.unit && item.unit.status === 'RESERVED') {
-                    await tx.productUnit.update({
-                        where: { id: item.unit.id },
-                        data: { status: 'RENTED' }
-                    })
-                    await tx.unitHistory.create({
-                        data: {
-                            unitId: item.unit.id,
-                            oldStatus: 'RESERVED',
-                            newStatus: 'RENTED',
-                            details: `Order ${order.orderNumber} confirmed complete by ${isOwner ? 'customer' : 'staff'}.`,
-                            userId
-                        }
-                    })
-                }
-            }
+            // Note: Unit lifecycle is driven by delivery completion, not order status.
+            // DROPOFF completion → RESERVED→RENTED (worker endpoint)
+            // PICKUP completion → RENTED→AVAILABLE (worker endpoint)
+            // No unit transitions needed here.
 
             // Notify the customer (if admin/operator completed it)
             if (isStaff && !isOwner && order.userId) {

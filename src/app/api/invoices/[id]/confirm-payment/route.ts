@@ -70,31 +70,37 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 data: { orderId: order.id, status: 'PAID' }
             })
 
-            // C. Reserve stock for EVERY line item
-            const rentalItems: any[] = []
+            // C. PRE-VALIDATE STOCK — Hard block overselling
+            // Check ALL items have available units BEFORE reserving any
+            const stockCheck: { item: any; variant: any; units: any[] }[] = []
             for (const item of cartItems) {
-                // Find first available unit for this product's variant
+                const qty = item.quantity || 1
                 const variant = await tx.productVariant.findFirst({
                     where: { productId: item.id },
                     include: {
-                        units: { where: { status: 'AVAILABLE' }, take: 1, orderBy: { createdAt: 'asc' } }
+                        units: { where: { status: 'AVAILABLE' }, take: qty, orderBy: { createdAt: 'asc' } }
                     }
                 })
 
                 if (!variant) {
-                    console.warn(`[CONFIRM_PAYMENT] No variant for product ${item.id} (${item.name}) — skipping reservation`)
-                    continue
+                    throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" (${item.id}) has no variant configured. Cannot fulfill order.`)
                 }
 
-                const unit = variant.units[0] || null
+                if (variant.units.length < qty) {
+                    throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" requires ${qty} unit(s) but only ${variant.units.length} available. Cannot fulfill order.`)
+                }
 
-                if (unit) {
-                    // Reserve the unit
+                stockCheck.push({ item, variant, units: variant.units })
+            }
+
+            // D. RESERVE UNITS — All items validated, now lock them
+            const rentalItems: any[] = []
+            for (const { item, variant, units } of stockCheck) {
+                for (const unit of units) {
                     await tx.productUnit.update({
                         where: { id: unit.id },
                         data: { status: 'RESERVED', assignedOrderId: order.id }
                     })
-                    // Log the reservation
                     await tx.unitHistory.create({
                         data: {
                             unitId: unit.id,
@@ -106,12 +112,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                     })
                 }
 
-                // Create RentalItem regardless of stock (handles out-of-stock items gracefully)
                 const rentalItem = await tx.rentalItem.create({
                     data: {
                         orderId: order.id,
                         variantId: variant.id,
-                        unitId: unit?.id || null,
+                        unitId: units[0]?.id,
                         quantity: item.quantity || 1,
                     }
                 })
@@ -210,6 +215,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     } catch (error: any) {
         console.error('[CONFIRM_PAYMENT] Error:', error)
+        if (error.message?.startsWith('OVERSALE_BLOCKED')) {
+            return NextResponse.json({ error: error.message, code: 'OVERSALE_BLOCKED' }, { status: 409 })
+        }
         return NextResponse.json({ error: error.message || 'Failed to confirm payment' }, { status: 500 })
     }
 }

@@ -7,11 +7,21 @@ import { verifyToken } from "@/lib/auth/utils"
 export async function POST(req: Request) {
     try {
         const authHeader = req.headers.get('authorization')
-        let adminId: string | undefined
+        let actorId: string | undefined
+        let actorRole: string | undefined
+
         if (authHeader?.startsWith('Bearer ')) {
             const token = authHeader.substring(7)
             const payload = await verifyToken(token)
-            if (payload) adminId = payload.userId
+            if (payload) {
+                actorId = payload.userId
+                actorRole = payload.role
+            }
+        }
+
+        // Allow ADMIN or OPERATOR
+        if (actorRole !== 'ADMIN' && actorRole !== 'OPERATOR') {
+            return new NextResponse("Unauthorized", { status: 401 })
         }
 
         const body = await req.json()
@@ -44,7 +54,7 @@ export async function POST(req: Request) {
                         startDate,
                         endDate,
                         duration: 30,
-                        userId: type === 'registered' ? userId : (adminId || userId), // Use admin as fallback if guest
+                        userId: type === 'registered' ? userId : (actorId || userId), // Use actor as fallback if guest
                     }
                 })
                 orderId = order.id
@@ -170,10 +180,10 @@ export async function POST(req: Request) {
         }
 
         await logActivity({
-            userId: adminId,
+            userId: actorId,
             action: 'CREATE_INVOICE_MANUAL',
             entity: 'INVOICE',
-            details: `Created manual invoice ${result.invoice.invoiceNumber} (Order: ${activateOrderFlow ? 'Yes' : 'No'})`
+            details: `Created manual invoice ${result.invoice.invoiceNumber} by ${actorRole} (Order: ${activateOrderFlow ? 'Yes' : 'No'})`
         })
 
         return NextResponse.json(result.invoice)

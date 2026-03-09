@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Download, Share2, ShoppingCart, Info, Search, Printer, Link as LinkIcon, Loader2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 interface CatalogItem {
@@ -143,7 +144,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
         }
     }
 
-    const renderProductCard = (item: CatalogItem, isPrint = false) => {
+    const renderProductCard = (item: CatalogItem, index: number, isPrint = false) => {
         const originalPrice = item.price
         const discountedPrice = item.discountPercentage > 0
             ? originalPrice * (1 - item.discountPercentage / 100)
@@ -151,104 +152,93 @@ export function ProductsClientView({ products, packages, offers, categories, cat
 
         const itemLink = `/${item.type === 'PRODUCT' ? 'product' : item.type === 'PACKAGE' ? 'package' : 'offer'}/${item.id}`
 
+        if (isPrint) {
+            return (
+                <Card key={item.id} className="p-0 border-none flex flex-col">
+                    <div className="relative aspect-square overflow-hidden bg-muted p-0 mb-0.5">
+                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex-1 flex flex-col p-1 space-y-0.5">
+                        <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
+                        <p className="text-[5.5pt] text-slate-500 line-clamp-2 leading-tight">{item.description}</p>
+                        <div className="pt-1.5 border-t border-slate-100 mt-auto">
+                            <span className="text-[8.5pt] font-black text-blue-800">Rp {discountedPrice.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+                </Card>
+            )
+        }
+
         return (
-            <Card key={item.id} className={`group overflow-hidden flex flex-col transition-all duration-300 ${isPrint ? 'p-0 border-none' : 'hover:shadow-2xl border-primary/10 bg-card rounded-2xl h-full'}`}>
-                {/* Image Box */}
-                <div className={`relative aspect-square overflow-hidden bg-muted card-image-container ${isPrint ? 'p-0 mb-0.5' : 'p-6'}`}>
-                    {item.discountPercentage > 0 && !isPrint && (
-                        <Badge className="absolute top-4 left-4 z-10 bg-red-500 hover:bg-red-600 text-white font-bold px-3 py-1 shadow-lg badge no-print">
-                            -{item.discountPercentage}% OFF
-                        </Badge>
-                    )}
-                    {!isPrint && (
-                        <Badge variant="outline" className="absolute top-4 right-4 z-10 bg-background/80 backdrop-blur-sm border-primary/20 font-semibold shadow-sm badge no-print">
+            <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+            >
+                <Card className="group relative overflow-hidden flex flex-col transition-all duration-500 hover:shadow-2xl border-none bg-white dark:bg-zinc-900 rounded-[1.5rem] h-full no-print">
+
+                    {/* Image Box - Optimized for Real Set-Up (Horizontal/Landscape friendly) */}
+                    <div className="relative aspect-video overflow-hidden card-image-container">
+                        {item.discountPercentage > 0 && (
+                            <Badge className="absolute top-3 left-3 z-20 bg-red-600 text-white font-black text-[9px] uppercase tracking-tighter px-2 py-0.5 rounded-sm">
+                                -{item.discountPercentage}%
+                            </Badge>
+                        )}
+                        <Badge variant="secondary" className="absolute top-3 right-3 z-20 bg-black/60 backdrop-blur-md text-white border-transparent font-black text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-sm">
                             {item.category}
                         </Badge>
-                    )}
 
-                    <Link href={itemLink} className="block w-full h-full no-print">
-                        <Image
-                            src={item.imageUrl}
-                            alt={item.name}
-                            fill
-                            className="object-contain transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
-                        />
-                    </Link>
-                    <div className="hidden print-only relative w-full h-full">
-                        <img
-                            src={item.imageUrl}
-                            alt={item.name}
-                            className="w-full h-full object-contain"
-                        />
+                        <Link href={itemLink} className="block w-full h-full relative group/img">
+                            <Image
+                                src={item.imageUrl}
+                                alt={item.name}
+                                fill
+                                className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                            />
+                            {/* Subtle Overlay */}
+                            <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+                        </Link>
                     </div>
-                </div>
 
-                {/* Content Box - Web Only */}
-                {!isPrint && (
-                    <div className="flex-1 flex flex-col p-6 space-y-4 no-print">
-                        <div className="flex-1">
-                            <Link href={itemLink} className="no-print">
-                                <h3 className="font-bold text-xl line-clamp-2 hover:text-primary transition-colors leading-tight mb-2">
+                    {/* Content Box - Professional Minimalist */}
+                    <div className="relative flex-1 flex flex-col p-4 sm:p-5 space-y-3">
+                        <div className="flex-1 space-y-1">
+                            <Link href={itemLink}>
+                                <h3 className="font-bold text-base sm:text-lg line-clamp-1 hover:text-primary transition-colors tracking-tight leading-tight">
                                     {item.name}
                                 </h3>
                             </Link>
-                            <p className="text-sm text-muted-foreground line-clamp-2 description">
+                            <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 font-medium leading-relaxed opacity-80">
                                 {item.description}
                             </p>
                         </div>
 
-                        {/* Pricing Layout - Total Focus */}
-                        <div className="pt-4 border-t border-border/50 price-block">
-                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-1 no-print">Total Price</div>
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-2xl font-black text-primary price-total">
-                                    Rp {discountedPrice.toLocaleString('id-ID')}
-                                </span>
-                                {item.discountPercentage > 0 && (
-                                    <span className="text-sm line-through text-muted-foreground font-medium no-print">
-                                        Rp {originalPrice.toLocaleString('id-ID')}
+                        {/* Pricing & CTA */}
+                        <div className="pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between">
+                            <div className="flex flex-col">
+                                <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">Monthly Rent</span>
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-lg font-black text-primary italic">
+                                        Rp {(discountedPrice / 1000).toLocaleString('id-ID')}k
                                     </span>
-                                )}
+                                    {item.discountPercentage > 0 && (
+                                        <span className="text-[9px] line-through text-muted-foreground/50 font-bold">
+                                            {Math.round(originalPrice / 1000)}k
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-
-                        {/* Advanced Action Bar */}
-                        <div className="grid grid-cols-2 gap-3 pt-2 no-print">
-                            <Button asChild className="w-full font-bold shadow-md hover:shadow-lg transition-all" variant="default">
+                            <Button asChild size="sm" className="rounded-lg font-black uppercase tracking-widest text-[9px] h-9 px-4 shadow-lg shadow-primary/20" variant="default">
                                 <Link href={itemLink}>
-                                    <ShoppingCart className="mr-2 h-4 w-4" />
-                                    Order Now
+                                    Rent
                                 </Link>
                             </Button>
-                            <div className="flex gap-2">
-                                <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" onClick={() => handleShare(item)} title="Share Product">
-                                    <Share2 className="h-4 w-4" />
-                                </Button>
-                                <Button variant="outline" size="icon" className="w-full flex-1 border-primary/20 hover:bg-primary/5 text-primary" asChild title="View Details">
-                                    <Link href={itemLink}>
-                                        <Info className="h-4 w-4" />
-                                    </Link>
-                                </Button>
-                            </div>
                         </div>
                     </div>
-                )}
-
-                {/* Print-Only Content Box - TOTAL CTA REMOVAL */}
-                {isPrint && (
-                    <div className="hidden print-only flex-1 flex flex-col p-1 space-y-0.5">
-                        <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
-                        <p className="text-[5.5pt] text-slate-500 line-clamp-2 description leading-tight">
-                            {item.description}
-                        </p>
-                        <div className="pt-1.5 border-t border-slate-100 mt-auto price-block">
-                            <span className="text-[8.5pt] font-black text-blue-800 price-total">
-                                Rp {discountedPrice.toLocaleString('id-ID')}
-                            </span>
-                        </div>
-                    </div>
-                )}
-            </Card>
+                </Card>
+            </motion.div>
         )
     }
 
@@ -257,52 +247,74 @@ export function ProductsClientView({ products, packages, offers, categories, cat
             <div className="container mx-auto px-4 max-w-7xl">
 
                 {/* Advanced Brochure Header */}
-                <div className="text-center mb-16 space-y-6 no-print">
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight text-foreground">
-                        Our Complete Catalog
-                    </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        High-performance workstations, ergonomic furniture, and complete office bundles ready for deployment anywhere in Bali.
-                    </p>
+                <div className="text-center mb-16 space-y-8 no-print pt-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="inline-block"
+                    >
+                        <Badge variant="outline" className="mb-4 px-4 py-1.5 rounded-full border-primary/30 text-primary font-black uppercase tracking-[0.3em] text-[10px] bg-primary/5 italic">
+                            Official Workspace Catalog
+                        </Badge>
+                    </motion.div>
+
+                    <motion.h1
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="text-4xl md:text-6xl font-black tracking-tighter text-foreground uppercase italic leading-none"
+                    >
+                        Real <span className="text-primary">Set-Up</span> Experience
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto font-medium"
+                    >
+                        Hardware tailored for the digital nomad. Rent high-end workstations with same-day Bali dispatch.
+                    </motion.p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 no-print">
                         {catalogUrl && (
-                            <Button size="lg" className="rounded-full shadow-lg font-bold px-8 bg-blue-600 hover:bg-blue-700" asChild>
+                            <Button size="lg" className="rounded-2xl shadow-2xl font-black uppercase tracking-widest text-[10px] px-8 bg-primary hover:scale-105 transition-transform" asChild>
                                 <a href={catalogUrl} target="_blank" rel="noopener noreferrer">
-                                    <Download className="mr-2 h-5 w-5" />
-                                    Download PDF Catalog
+                                    <Download className="mr-2 h-4 w-4" />
+                                    Get PDF Catalog
                                 </a>
                             </Button>
                         )}
                         <Button
                             size="lg"
                             variant="outline"
-                            className="rounded-full shadow-md font-bold px-8 border-primary/20 disabled:opacity-50"
+                            className="rounded-2xl shadow-xl font-black uppercase tracking-widest text-[10px] px-8 border-white/20 backdrop-blur-md bg-white/5 hover:bg-white/10"
                             onClick={handlePrint}
                             disabled={isGeneratingPdf}
                         >
                             {isGeneratingPdf ? (
                                 <>
-                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                    Preparing PDF...
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Preparing...
                                 </>
                             ) : (
                                 <>
-                                    <Printer className="mr-2 h-5 w-5" />
-                                    Download / Print
+                                    <Printer className="mr-2 h-4 w-4" />
+                                    Print View
                                 </>
                             )}
                         </Button>
-                        <Button size="lg" variant="ghost" className="rounded-full font-bold px-8 text-primary hover:bg-primary/5" onClick={handleSharePage}>
-                            <Share2 className="mr-2 h-5 w-5" />
-                            Share Catalog
+                        <Button size="lg" variant="ghost" className="rounded-2xl font-black uppercase tracking-widest text-[10px] px-8 text-primary/80 hover:bg-primary/5" onClick={handleSharePage}>
+                            <Share2 className="mr-2 h-4 w-4" />
+                            Share
                         </Button>
 
                         <div className="relative w-full sm:w-auto mt-4 sm:mt-0">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
-                                placeholder="Search products..."
-                                className="pl-10 h-12 rounded-full w-full sm:w-80 shadow-sm bg-background border-primary/20 focus-visible:ring-primary/50"
+                                placeholder="Search inventory..."
+                                className="pl-12 h-14 rounded-2xl w-full sm:w-80 shadow-2xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border-white/20 focus-visible:ring-primary/50 font-medium text-sm"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -515,10 +527,12 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         ))}
                     </div>
 
-                    {/* Unified Product Grid - Web Version */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 catalog-grid no-print">
-                        {filteredItems.map(item => renderProductCard(item))}
-                    </div>
+                    {/* Unified Product Grid - Optimized for Landscape Phones */}
+                    <AnimatePresence mode='popLayout'>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 catalog-grid no-print">
+                            {filteredItems.map((item, idx) => renderProductCard(item, idx))}
+                        </div>
+                    </AnimatePresence>
 
                     {/* Categorized Brochure - Print Version Only */}
                     <div className="hidden print-only space-y-8">
@@ -528,7 +542,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                                     {category.title}
                                 </h2>
                                 <div className="grid grid-cols-6 gap-3 catalog-grid">
-                                    {category.items.map(item => renderProductCard(item, true))}
+                                    {category.items.map((item, idx) => renderProductCard(item, idx, true))}
                                 </div>
                             </div>
                         ))}

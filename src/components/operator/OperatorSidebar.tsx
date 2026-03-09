@@ -11,7 +11,8 @@ import {
     MessageSquare,
     ClipboardCheck,
     Bot,
-    Map as MapIcon
+    Map as MapIcon,
+    FileText
 } from "lucide-react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useTheme } from "next-themes"
@@ -48,6 +49,11 @@ const items = [
         title: "Team Chat",
         url: "?tab=chat",
         icon: MessageSquare,
+    },
+    {
+        title: "Invoices",
+        url: "?tab=invoices",
+        icon: FileText,
     },
     {
         title: "Orders / Rentals",

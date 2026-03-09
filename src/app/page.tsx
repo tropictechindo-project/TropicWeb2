@@ -47,7 +47,7 @@ const SellerChatBubble = dynamic(() =>
   import('@/components/ai/SellerChatBubble').then(m => ({ default: m.SellerChatBubble }))
 )
 
-export const revalidate = 0
+export const revalidate = 60
 
 // ─── Data fetching ──────────────────────────────────────────────────────────
 async function getHeroSettings() {
@@ -136,11 +136,11 @@ export default async function Home() {
   const SITE_URL = 'https://tropictech.online'
 
   return (
-    <div className="min-h-screen flex flex-col" suppressHydrationWarning>
+    <div className="min-h-screen flex flex-col">
       {/* ── Critical: Header NOT lazy loaded per user requirement ── */}
       <Header />
 
-      <main id="main-content" className="flex-1" suppressHydrationWarning>
+      <main id="main-content" className="flex-1">
         {/* ── LCP: Hero above fold, eager ── */}
         <Hero initialSettings={heroSettings} />
 

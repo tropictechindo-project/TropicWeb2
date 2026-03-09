@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
+import { verifyToken } from '@/lib/auth/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,9 +10,15 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(request: NextRequest) {
     try {
-        const token = request.headers.get('Authorization')?.replace('Bearer ', '')
+        const authHeader = request.headers.get('Authorization')
+        const token = authHeader?.replace('Bearer ', '')
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
+        const payload = await verifyToken(token)
+        if (!payload || (payload.role !== 'ADMIN' && payload.role !== 'OPERATOR' && payload.role !== 'WORKER')) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
         const { searchParams } = new URL(request.url)
@@ -67,10 +74,17 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
     try {
-        const token = request.headers.get('Authorization')?.replace('Bearer ', '')
+        const authHeader = request.headers.get('Authorization')
+        const token = authHeader?.replace('Bearer ', '')
         if (!token) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
+
+        const payload = await verifyToken(token)
+        if (!payload || (payload.role !== 'ADMIN' && payload.role !== 'OPERATOR')) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+        }
+        const actorId = payload.userId
 
         const body = await request.json()
         const {
@@ -122,7 +136,7 @@ export async function POST(request: NextRequest) {
         })
 
         await logActivity({
-            userId: 'admin', // Ideally extracted from token
+            userId: actorId,
             action: 'CREATE_DELIVERY',
             entity: 'DELIVERY',
             details: `Created delivery ${delivery.id} for Invoice ${invoiceId}`

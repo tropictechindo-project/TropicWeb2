@@ -18,7 +18,8 @@ export default async function OperatorDashboardPage() {
     }
 
     // Fetch overview data
-    const [pendingInvoices, queuedDeliveries, allOrders, lowStockVariants, workers] = await Promise.all([
+    // Fetch overview data
+    const [pendingInvoices, queuedDeliveries, allOrders, lowStockVariants, workers, allUsers, allSystemInvoices] = await Promise.all([
         db.invoice.findMany({
             where: { status: 'PENDING' },
             orderBy: { createdAt: 'desc' },
@@ -92,6 +93,25 @@ export default async function OperatorDashboardPage() {
         db.user.findMany({
             where: { role: 'WORKER', isActive: true },
             select: { id: true, fullName: true, email: true, whatsapp: true }
+        }),
+        db.user.findMany({
+            orderBy: { fullName: 'asc' }
+        }),
+        db.invoice.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: {
+                user: true,
+                order: {
+                    include: {
+                        rentalItems: {
+                            include: {
+                                variant: { include: { product: true } },
+                                rentalPackage: true
+                            }
+                        }
+                    }
+                }
+            }
         })
     ])
 
@@ -136,6 +156,41 @@ export default async function OperatorDashboardPage() {
         lowStockCount: lowStockVariants.filter(v => v.units.filter(u => u.status === 'AVAILABLE').length === 0).length,
     }
 
+    const formattedInvoicesForClient = allSystemInvoices.map(inv => ({
+        id: inv.id,
+        invoiceNumber: inv.invoiceNumber,
+        date: inv.createdAt?.toISOString() || new Date().toISOString(),
+        customerName: inv.user?.fullName || inv.guestName || "Unknown",
+        customerEmail: inv.user?.email || inv.guestEmail || "No Email",
+        customerWhatsApp: inv.user?.whatsapp || inv.guestWhatsapp,
+        total: Number(inv.total),
+        subtotal: Number(inv.subtotal),
+        tax: Number(inv.tax),
+        deliveryFee: Number(inv.deliveryFee),
+        status: inv.status,
+        orderNumber: inv.order?.orderNumber || "MANUAL",
+        startDate: inv.order?.startDate?.toISOString() || inv.createdAt?.toISOString() || new Date().toISOString(),
+        endDate: inv.order?.endDate?.toISOString() || new Date().toISOString(),
+        userId: inv.userId,
+        guestName: inv.guestName,
+        guestEmail: inv.guestEmail,
+        guestWhatsapp: inv.guestWhatsapp,
+        guestAddress: inv.guestAddress,
+        items: inv.order?.rentalItems.map(item => ({
+            name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
+            quantity: item.quantity || 1,
+            unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || inv.total),
+            totalPrice: Number(inv.total)
+        })) || [
+                {
+                    name: "Manual Service / Rental",
+                    quantity: 1,
+                    unitPrice: Number(inv.total),
+                    totalPrice: Number(inv.total)
+                }
+            ]
+    }))
+
     return (
         <OperatorDashboardClient
             operatorName={typeof payload.username === 'string' ? payload.username : (typeof (payload as any).fullName === 'string' ? (payload as any).fullName : 'Operator')}
@@ -146,6 +201,8 @@ export default async function OperatorDashboardPage() {
             productAssets={JSON.parse(JSON.stringify(productAssets))}
             workers={JSON.parse(JSON.stringify(workers))}
             variants={JSON.parse(JSON.stringify(lowStockVariants))}
+            users={JSON.parse(JSON.stringify(allUsers))}
+            allInvoices={JSON.parse(JSON.stringify(formattedInvoicesForClient))}
         />
     )
 }

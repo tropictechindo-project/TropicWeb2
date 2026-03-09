@@ -154,7 +154,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://ivszititvwyxeglntscj.supabase.co" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg - background text - foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         {/* Skip to content - Accessibility (keyboard users & screen readers) */}
         <a

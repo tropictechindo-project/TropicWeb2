@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { OrdersClient } from "@/components/admin/orders/OrdersClient"
 import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 import { InventoryClient } from "@/components/admin/inventory/InventoryClient"
+import { InvoicesClient } from "@/components/admin/invoices/InvoicesClient"
 import { ServiceRequestsClient } from "@/components/admin/ServiceRequestsClient"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import {
@@ -32,6 +33,8 @@ interface Props {
     variants: any[]
     productAssets: any[]
     workers: any[]
+    users: any[]
+    allInvoices: any[]
 }
 
 type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests' | 'chat'
@@ -70,7 +73,9 @@ export default function OperatorDashboardClient({
     orders: initialOrders,
     variants: initialVariants,
     productAssets: initialProductAssets,
-    workers: initialWorkers
+    workers: initialWorkers,
+    users: initialUsers,
+    allInvoices: initialAllInvoices
 }: Props) {
     const [activeTab, setActiveTab] = useState<Tab>('overview')
 
@@ -82,6 +87,8 @@ export default function OperatorDashboardClient({
     const [productAssets, setProductAssets] = useState(initialProductAssets)
     const [workers, setWorkers] = useState(initialWorkers)
     const [variants, setVariants] = useState(initialVariants)
+    const [users, setUsers] = useState(initialUsers)
+    const [allInvoices, setAllInvoices] = useState(initialAllInvoices)
 
     const [isPolling, setIsPolling] = useState(false)
 
@@ -97,6 +104,8 @@ export default function OperatorDashboardClient({
             setProductAssets(data.productAssets)
             setWorkers(data.workers)
             setVariants(data.variants)
+            setUsers(data.users)
+            setAllInvoices(data.allInvoices)
         } catch (err) {
             console.error('Polling error:', err)
         } finally {
@@ -116,15 +125,6 @@ export default function OperatorDashboardClient({
 
     // Invoice confirmation state
     const [confirmingInvoice, setConfirmingInvoice] = useState<string | null>(null)
-
-    // ─── Create Invoice state ───────────────────────────────────────────────────
-    const [createForm, setCreateForm] = useState({
-        customerName: '', email: '', whatsapp: '', address: '', notes: '', paymentMethod: 'BANK_TRANSFER'
-    })
-    const [createItems, setCreateItems] = useState<{ id: string; name: string; price: number; qty: number }[]>([])
-    const [createLoading, setCreateLoading] = useState(false)
-    const [availableProducts, setAvailableProducts] = useState<any[]>([])
-    const [productsLoaded, setProductsLoaded] = useState(false)
 
     // Report state
     const [report, setReport] = useState<any>(null)
@@ -250,8 +250,7 @@ export default function OperatorDashboardClient({
     const tabs = [
         { id: 'overview', label: 'Overview', icon: LayoutDashboard },
         { id: 'orders', label: 'Orders', icon: ListOrdered },
-        { id: 'create', label: '+ Create Invoice', icon: FileText },
-        { id: 'invoices', label: 'Invoices', icon: FileText },
+        { id: 'invoices', label: 'Invoices & Creation', icon: FileText },
         { id: 'deliveries', label: 'Deliveries', icon: Truck },
         { id: 'inventory', label: 'Inventory', icon: Package },
         { id: 'report', label: 'Report', icon: BarChart3 },
@@ -417,43 +416,7 @@ export default function OperatorDashboardClient({
                     {/* ═══ INVOICES ═══════════════════════════════════════════════════════ */}
                     {activeTab === 'invoices' && (
                         <div className="space-y-4">
-                            <h2 className="text-lg font-black uppercase tracking-tight">Invoice Management</h2>
-                            <div className="bg-card border rounded-2xl overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                        <thead className="border-b bg-muted/30">
-                                            <tr>
-                                                {['Invoice', 'Customer', 'Amount', 'Status', 'Action'].map(h => (
-                                                    <th key={h} className="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-muted-foreground">{h}</th>
-                                                ))}
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y">
-                                            {pendingInvoices.map((inv: any) => (
-                                                <tr key={inv.id} className="hover:bg-muted/20">
-                                                    <td
-                                                        className="px-4 py-3 font-mono text-xs font-bold text-primary hover:underline cursor-pointer"
-                                                        onClick={() => window.open(`/tracking/${inv.invoiceNumber}`, '_blank')}
-                                                    >
-                                                        {inv.invoiceNumber}
-                                                    </td>
-                                                    <td className="px-4 py-3 text-xs">{inv.user?.fullName || inv.guestName || 'Guest'}<br /><span className="text-muted-foreground">{inv.user?.email || inv.guestEmail}</span></td>
-                                                    <td className="px-4 py-3 font-bold text-xs">{fmt(Number(inv.total))}</td>
-                                                    <td className="px-4 py-3"><Badge className={`text-[9px] border ${getStatusColor(inv.status)}`}>{inv.status}</Badge></td>
-                                                    <td className="px-4 py-3">
-                                                        {inv.status === 'PENDING' && (
-                                                            <Button size="sm" className="h-7 text-xs font-bold" onClick={() => confirmPayment(inv.id, inv.invoiceNumber)} disabled={confirmingInvoice === inv.id}>
-                                                                {confirmingInvoice === inv.id ? <Loader2 className="h-3 w-3 animate-spin" /> : '✓ Mark Paid'}
-                                                            </Button>
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    {pendingInvoices.length === 0 && <div className="p-8 text-center text-muted-foreground text-sm">No pending invoices.</div>}
-                                </div>
-                            </div>
+                            <InvoicesClient initialInvoices={allInvoices} users={users} />
                         </div>
                     )}
 
@@ -735,183 +698,6 @@ export default function OperatorDashboardClient({
                             />
                         </div>
                     )}
-                    {/* ═══ CREATE INVOICE ══════════════════════════════════════════════════ */}
-                    {activeTab === 'create' && (() => {
-                        // Load products on tab open
-                        if (!productsLoaded) {
-                            setProductsLoaded(true)
-                            safeFetch('/api/products').then((data: any) => {
-                                setAvailableProducts(Array.isArray(data) ? data : data.products || [])
-                            }).catch(() => { })
-                        }
-
-                        const addItem = (product: any) => {
-                            const existing = createItems.find(i => i.id === product.id)
-                            if (existing) {
-                                setCreateItems(prev => prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i))
-                            } else {
-                                setCreateItems(prev => [...prev, { id: product.id, name: product.name, price: Number(product.monthlyPrice || product.price || 0), qty: 1 }])
-                            }
-                        }
-
-                        const removeItem = (id: string) => setCreateItems(prev => prev.filter(i => i.id !== id))
-
-                        const subtotal = createItems.reduce((s, i) => s + i.price * i.qty, 0)
-
-                        const handleCreateInvoice = async () => {
-                            if (!createForm.customerName || !createForm.email || !createForm.whatsapp || !createForm.address) {
-                                toast.error('Please fill in all customer fields')
-                                return
-                            }
-                            if (createItems.length === 0) {
-                                toast.error('Add at least one product')
-                                return
-                            }
-                            setCreateLoading(true)
-                            try {
-                                const data = await safeFetch('/api/orders', {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        items: createItems.map(i => ({ id: i.id, price: i.price, quantity: i.qty })),
-                                        paymentMethod: createForm.paymentMethod,
-                                        deliveryAddress: createForm.address,
-                                        notes: createForm.notes,
-                                        guestInfo: {
-                                            fullName: createForm.customerName,
-                                            email: createForm.email,
-                                            whatsapp: createForm.whatsapp,
-                                        },
-                                        lineItems: createItems.map(i => ({
-                                            id: i.id,
-                                            name: i.name,
-                                            price: i.price,
-                                            quantity: i.qty,
-                                            duration: 30 // Default duration for manual invoices
-                                        }))
-                                    })
-                                })
-                                const inv = data.invoice || data
-                                toast.success(`✅ Invoice ${inv.invoiceNumber || inv.id} created successfully!`)
-                                setCreateForm({ customerName: '', email: '', whatsapp: '', address: '', notes: '', paymentMethod: 'BANK_TRANSFER' })
-                                setCreateItems([])
-                                setTimeout(() => window.location.reload(), 1500)
-                            } catch (err: any) {
-                                toast.error(err.message || 'Failed to create invoice')
-                            } finally {
-                                setCreateLoading(false)
-                            }
-                        }
-
-                        return (
-                            <div className="grid lg:grid-cols-2 gap-6">
-                                {/* Left: Customer Info */}
-                                <div className="space-y-4">
-                                    <div className="bg-card border rounded-2xl p-5 space-y-4">
-                                        <h2 className="text-sm font-black uppercase tracking-widest text-primary">Customer Info</h2>
-                                        {([
-                                            { key: 'customerName', label: 'Full Name', placeholder: 'John Doe' },
-                                            { key: 'email', label: 'Email', placeholder: 'john@email.com' },
-                                            { key: 'whatsapp', label: 'WhatsApp', placeholder: '+628...' },
-                                            { key: 'address', label: 'Delivery Address', placeholder: 'Jl. Pantai Berawa...' },
-                                        ] as const).map(field => (
-                                            <div key={field.key} className="space-y-1">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{field.label}</label>
-                                                <input
-                                                    className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                                                    placeholder={field.placeholder}
-                                                    value={createForm[field.key]}
-                                                    onChange={e => setCreateForm(f => ({ ...f, [field.key]: e.target.value }))}
-                                                />
-                                            </div>
-                                        ))}
-                                        <div className="space-y-1">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Payment Method</label>
-                                            <select
-                                                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                                                value={createForm.paymentMethod}
-                                                onChange={e => setCreateForm(f => ({ ...f, paymentMethod: e.target.value }))}
-                                            >
-                                                <option value="BANK_TRANSFER">Bank Transfer</option>
-                                                <option value="CASH">Cash</option>
-                                                <option value="QRIS">QRIS</option>
-                                                <option value="CREDIT_CARD">Credit Card</option>
-                                            </select>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Notes (optional)</label>
-                                            <textarea
-                                                rows={2}
-                                                className="w-full rounded-lg border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
-                                                placeholder="Special requests..."
-                                                value={createForm.notes}
-                                                onChange={e => setCreateForm(f => ({ ...f, notes: e.target.value }))}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Order Summary */}
-                                    <div className="bg-card border rounded-2xl p-5 space-y-3">
-                                        <h2 className="text-sm font-black uppercase tracking-widest text-primary">Order Summary</h2>
-                                        {createItems.length === 0 ? (
-                                            <p className="text-xs text-muted-foreground">No items added yet</p>
-                                        ) : (
-                                            <div className="space-y-2">
-                                                {createItems.map(item => (
-                                                    <div key={item.id} className="flex items-center justify-between text-sm">
-                                                        <span className="font-medium">{item.name} ×{item.qty}</span>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-muted-foreground">Rp {(item.price * item.qty).toLocaleString('id-ID')}</span>
-                                                            <button onClick={() => removeItem(item.id)} className="text-destructive hover:text-red-700 text-xs">✕</button>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                                <div className="border-t pt-2 flex justify-between font-black">
-                                                    <span>Subtotal</span>
-                                                    <span className="text-primary">Rp {subtotal.toLocaleString('id-ID')}</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                        <Button
-                                            className="w-full font-black rounded-xl"
-                                            disabled={createLoading || createItems.length === 0}
-                                            onClick={handleCreateInvoice}
-                                        >
-                                            {createLoading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Creating...</> : '🧾 Create Invoice'}
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                {/* Right: Product Picker */}
-                                <div className="bg-card border rounded-2xl p-5 space-y-3">
-                                    <h2 className="text-sm font-black uppercase tracking-widest text-primary">Select Products</h2>
-                                    {availableProducts.length === 0 ? (
-                                        <div className="text-center py-8 text-muted-foreground text-sm"><Loader2 className="h-5 w-5 animate-spin mx-auto mb-2" />Loading products...</div>
-                                    ) : (
-                                        <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
-                                            {availableProducts.map((p: any) => (
-                                                <div key={p.id} className="flex items-center justify-between p-3 border rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all">
-                                                    <div>
-                                                        <p className="text-sm font-bold">{p.name}</p>
-                                                        <p className="text-xs text-muted-foreground">{p.category} • Rp {Number(p.monthlyPrice || p.price || 0).toLocaleString('id-ID')}/mo</p>
-                                                        {p.stock !== undefined && <p className={`text-[10px] font-bold mt-0.5 ${p.stock === 0 ? 'text-red-500' : 'text-green-600'}`}>{p.stock === 0 ? 'OUT OF STOCK' : `${p.stock} available`}</p>}
-                                                    </div>
-                                                    <Button
-                                                        size="sm"
-                                                        variant={createItems.find(i => i.id === p.id) ? 'default' : 'outline'}
-                                                        className="shrink-0 text-xs font-black"
-                                                        onClick={() => addItem(p)}
-                                                        disabled={p.stock === 0}
-                                                    >
-                                                        {createItems.find(i => i.id === p.id) ? `+1 (${createItems.find(i => i.id === p.id)?.qty})` : '+ Add'}
-                                                    </Button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )
-                    })()}
 
                 </div>
             </SidebarInset>
