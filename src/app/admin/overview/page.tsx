@@ -35,7 +35,7 @@ async function getStats() {
         }),
         db.product.count(),
         db.rentalPackage.count(),
-        db.order.count({ where: { status: 'ACTIVE' } }),
+        db.order.count({ where: { status: { in: ['ACTIVE', 'PAID', 'PENDING'] } } }),
         db.inventorySyncLog.count({ where: { conflict: true, resolved: false } }),
         db.activityLog.findFirst({
             orderBy: { createdAt: 'desc' },

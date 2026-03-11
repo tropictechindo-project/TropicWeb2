@@ -44,8 +44,9 @@ export async function POST(request: NextRequest) {
         const isMatch = await bcrypt.compare(password, prismaUser.password)
         if (isMatch) {
           // Verify success! Generate token manually
-          // Security Hardening: ONLY tropictechindo@gmail.com can be ADMIN
-          const userRole = prismaUser.email === 'tropictechindo@gmail.com' ? 'ADMIN' : prismaUser.role === 'ADMIN' ? 'USER' : prismaUser.role
+          // Security Hardening: ONLY specific emails can be ADMIN
+          const adminEmails = ['tropictechindo@gmail.com', 'Damnbayu@gmail.com']
+          const userRole = adminEmails.includes(prismaUser.email) ? 'ADMIN' : (prismaUser.role === 'ADMIN' ? 'USER' : prismaUser.role)
 
           const token = await generateToken({
             userId: prismaUser.id,
@@ -140,8 +141,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Security Hardening: ONLY tropictechindo@gmail.com can be ADMIN
-    const userRole = user.email === 'tropictechindo@gmail.com' ? 'ADMIN' : user.role === 'ADMIN' ? 'USER' : user.role
+    // Security Hardening: ONLY specific emails can be ADMIN
+    const adminEmails = ['tropictechindo@gmail.com', 'Damnbayu@gmail.com']
+    const userRole = adminEmails.includes(user.email) ? 'ADMIN' : (user.role === 'ADMIN' ? 'USER' : user.role)
 
     // Generate our custom application token for session management
     const token = await generateToken({

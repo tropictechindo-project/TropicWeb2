@@ -6,6 +6,7 @@ import { OrdersClient } from "@/components/admin/orders/OrdersClient"
 
 export default async function AdminOrdersPage() {
     const orders = await db.order.findMany({
+        where: { status: { in: ['PAID', 'AWAITING_PAYMENT', 'ACTIVE', 'PENDING', 'CONFIRMED'] } },
         orderBy: { createdAt: 'desc' },
         include: {
             user: {
@@ -35,6 +36,7 @@ export default async function AdminOrdersPage() {
 
     const formattedOrders = orders.map(order => ({
         id: order.id,
+        orderNumber: order.orderNumber || `ORD-${order.id.substring(0, 8).toUpperCase()}`,
         user: order.user ? (order.user.fullName || order.user.email) : 'Unknown',
         email: order.user ? order.user.email : '',
         whatsapp: order.user?.whatsapp || '',

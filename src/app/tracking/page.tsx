@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Search, Package, ArrowRight, Loader2, MapPin, CheckCircle, Home, ChevronLeft } from 'lucide-react'
 import { toast } from 'sonner'
+import { LocationPrompt } from '@/components/location/LocationPrompt'
 
 function TrackingSearchPageInner() {
     const router = useRouter()
@@ -53,6 +54,7 @@ function TrackingSearchPageInner() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background flex flex-col items-center justify-center p-6">
+            <LocationPrompt />
             <div className="absolute top-6 left-6 flex gap-2">
                 <Button variant="ghost" size="sm" asChild className="rounded-full font-bold text-[10px] uppercase tracking-widest gap-2 bg-background border shadow-sm">
                     <a href="/">

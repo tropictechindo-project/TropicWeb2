@@ -33,6 +33,7 @@ import { countries, normalizeWhatsApp, getCountryInfo } from '@/lib/utils/whatsa
 import ProductSuggestions from '@/components/checkout/ProductSuggestions'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { LocationPrompt } from '@/components/location/LocationPrompt'
 
 const paymentMethods = [
     { id: 'WISE', name: 'Wise', icon: <Globe className="h-6 w-6" />, desc: 'International transfer' },
@@ -232,6 +233,7 @@ export default function CheckoutPage() {
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <Header />
+            <LocationPrompt />
 
             <main className="flex-1 container mx-auto px-4 py-24 md:py-32">
                 <Button variant="ghost" className="mb-6 pl-0 hover:bg-transparent" onClick={() => router.push('/')}>

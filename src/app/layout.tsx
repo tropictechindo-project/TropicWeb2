@@ -8,7 +8,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { StickyPanelInfo } from "@/components/StickyPanelInfo";
-import { LocationPrompt } from "@/components/location/LocationPrompt";
 import { NotificationPrompt } from "@/components/NotificationPrompt";
 import { IslandHub } from "@/components/ui/IslandHub";
 import { PWAInstallPrompt } from "@/components/shared/PWAInstallPrompt";
@@ -172,7 +171,6 @@ export default function RootLayout({
           <QueryProvider>
             <LanguageProvider>
               <AuthProvider>
-                <LocationPrompt />
                 <NotificationPrompt />
                 <NotificationProvider>
                   <CartProvider>
