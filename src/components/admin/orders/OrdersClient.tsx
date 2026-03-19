@@ -40,6 +40,79 @@ interface Order {
     }[]
 }
 
+function AssetAssignDropdown({ itemId, productId }: { itemId: string, productId?: string }) {
+    const [units, setUnits] = useState<any[]>([])
+    const [selectedUnit, setSelectedUnit] = useState<string>("")
+    const [loading, setLoading] = useState(false)
+    const [assigned, setAssigned] = useState(false)
+
+    const fetchUnits = async () => {
+        const url = productId 
+            ? `/api/admin/inventory-units?productId=${productId}&status=available`
+            : `/api/admin/inventory-units?status=available`
+        const res = await fetch(url)
+        if (res.ok) setUnits(await res.json())
+    }
+
+    const handleAssign = async () => {
+        if (!selectedUnit) return
+        setLoading(true)
+        try {
+            const res = await fetch(`/api/admin/order-items/${itemId}/assign`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ unitId: selectedUnit })
+            })
+            if (res.ok) {
+                toast.success("Asset assigned successfully")
+                setAssigned(true)
+                fetchUnits() // Refresh available
+            } else {
+                toast.error("Failed to assign")
+            }
+        } catch {
+            toast.error("Error connecting")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <div className="flex flex-col gap-1" onClick={(e) => e.stopPropagation()}>
+            {!assigned && <span className="text-[8px] text-red-500 font-black uppercase tracking-wider">Not linked to asset</span>}
+            <div className="flex items-center gap-1">
+                {assigned ? (
+                    <Badge variant="outline" className="text-[8px] bg-green-50 text-green-700 border-green-200">Linked</Badge>
+                ) : units.length === 0 ? (
+                    <p className="text-[8px] text-muted-foreground italic h-6 flex items-center" onMouseEnter={fetchUnits}>Load Assets</p>
+                ) : (
+                    <>
+                        <Select value={selectedUnit} onValueChange={setSelectedUnit}>
+                            <SelectTrigger className="h-6 text-[9px] w-[110px] bg-background border-dashed">
+                                <SelectValue placeholder="Assign Asset" />
+                            </SelectTrigger>
+                            <SelectContent className="text-[10px]">
+                                {units.map((u: any) => (
+                                    <SelectItem key={u.id} value={u.id} className="text-[10px]">{u.serialCode}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Button 
+                            size="sm" 
+                            variant="secondary"
+                            className="h-6 text-[8px] px-1 font-black uppercase hover:bg-primary hover:text-white" 
+                            onClick={handleAssign} 
+                            disabled={loading || !selectedUnit}
+                        >
+                            {loading ? "..." : "Link"}
+                        </Button>
+                    </>
+                )}
+            </div>
+        </div>
+    )
+}
+
 interface OrdersClientProps {
     initialOrders: Order[]
 }
@@ -387,6 +460,11 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                                                             <Badge variant="secondary" className="text-[9px] h-4 font-mono px-1">SN: {item.serialNumber}</Badge>
                                                         )}
                                                     </div>
+                                                    {item.type === 'Snapshot' && (
+                                                        <div className="mt-1">
+                                                            <AssetAssignDropdown itemId={item.id} productId={item.productId} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="text-right">

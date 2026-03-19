@@ -7,40 +7,40 @@ import { Suspense } from 'react'
 
 // ─── Below-fold: dynamic imports with skeletons ───
 const Products = dynamic(() => import('@/components/landing/Products'), {
-  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const Packages = dynamic(() => import('@/components/landing/Packages'), {
-  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const SpecialOffers = dynamic(() => import('@/components/landing/SpecialOffers'), {
-  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const TrackerSection = dynamic(() => import('@/components/landing/TrackerSection'), {
-  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const Services = dynamic(() => import('@/components/landing/Services'), {
-  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const FAQ = dynamic(() => import('@/components/landing/FAQ'), {
-  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const AboutUs = dynamic(() => import('@/components/landing/AboutUs'), {
-  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const Reviews = dynamic(() => import('@/components/landing/Reviews'), {
-  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const ContactLandingSection = dynamic(() => import('@/components/landing/ContactLandingSection'), {
-  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const ClientLogos = dynamic(() => import('@/components/landing/ClientLogos'), {
-  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection'), {
-  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const RealSetupGallery = dynamic(() => import('@/components/landing/RealSetupGallery'), {
-  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />,
+  loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const Footer = dynamic(() => import('@/components/landing/Footer'))
 const SellerChatBubble = dynamic(() =>
@@ -88,7 +88,7 @@ async function getPackages() {
       orderBy: { price: 'desc' },
       include: { rentalPackageItems: { include: { product: true } } }
     })
-    return packages.map(pkg => ({
+    const result = packages.map(pkg => ({
       id: pkg.id,
       name: pkg.name,
       description: pkg.description,
@@ -104,6 +104,9 @@ async function getPackages() {
         product: { name: item.product.name }
       }))
     }))
+    // console.log('--- DEBUG PACKAGES ---', JSON.stringify(result, null, 2))
+    return result
+
   } catch { return [] }
 }
 
@@ -145,18 +148,18 @@ export default async function Home() {
         <Hero initialSettings={heroSettings} />
 
         {/* ── Below fold with Suspense boundaries ── */}
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />}>
           <LandingClient>
             <Products initialProducts={serializedProducts} />
             <Packages initialPackages={serializedPackages} />
           </LandingClient>
         </Suspense>
 
-        <Suspense fallback={<div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+        <Suspense fallback={<div className="h-80 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />}>
           <SpecialOffers initialSettings={specialOffersSettings} />
         </Suspense>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />}>
           <TrackerSection />
         </Suspense>
 
@@ -164,7 +167,7 @@ export default async function Home() {
           <RealSetupGallery />
         </Suspense>
 
-        <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" aria-hidden="true" />}>
+        <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />}>
           <Services initialSettings={serviceSettings} />
         </Suspense>
 

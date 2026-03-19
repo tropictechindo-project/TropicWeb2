@@ -599,6 +599,44 @@ exports.Prisma.ItemRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EmailAuditScalarFieldEnum = {
+  id: 'id',
+  to: 'to',
+  subject: 'subject',
+  body: 'body',
+  invoiceId: 'invoiceId',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  productId: 'productId',
+  inventoryUnitId: 'inventoryUnitId',
+  nameSnapshot: 'nameSnapshot',
+  price: 'price',
+  quantity: 'quantity',
+  rentalStart: 'rentalStart',
+  rentalEnd: 'rentalEnd',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.InventoryUnitScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  serialCode: 'serialCode',
+  purchasePrice: 'purchasePrice',
+  purchaseDate: 'purchaseDate',
+  installmentMonthly: 'installmentMonthly',
+  installmentDuration: 'installmentDuration',
+  installmentStartDate: 'installmentStartDate',
+  installmentPaidAmount: 'installmentPaidAmount',
+  installmentRemaining: 'installmentRemaining',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -778,7 +816,10 @@ exports.Prisma.ModelName = {
   DeliveryEditLog: 'DeliveryEditLog',
   SpecialOffer: 'SpecialOffer',
   ContactMessage: 'ContactMessage',
-  ItemRequest: 'ItemRequest'
+  ItemRequest: 'ItemRequest',
+  EmailAudit: 'EmailAudit',
+  OrderItem: 'OrderItem',
+  InventoryUnit: 'InventoryUnit'
 };
 
 /**

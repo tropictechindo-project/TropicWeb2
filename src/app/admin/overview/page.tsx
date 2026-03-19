@@ -9,6 +9,7 @@ import { ActivityLogPanel } from "@/components/admin/ActivityLogPanel"
 import { InfoCenter } from "@/components/admin/overview/InfoCenter"
 import { ApiStatusPanel } from "@/components/admin/overview/ApiStatusPanel"
 import { MessagesCTA } from "@/components/admin/overview/MessagesCTA"
+import { RoiSummaryPanel } from "@/components/admin/overview/RoiSummaryPanel"
 
 async function getStats() {
     const [
@@ -119,10 +120,51 @@ async function getAnalyticsData() {
     return { revenueData, userData }
 }
 
+async function getRoiStats() {
+    const [allUnits, orderItems] = await Promise.all([
+        (db as any).inventoryUnit.findMany({}),
+        (db as any).orderItem.findMany({
+            where: { inventoryUnitId: { not: null } },
+            select: { price: true, createdAt: true, inventoryUnitId: true }
+        })
+    ])
+
+    const now = new Date()
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+    const total_units = allUnits.length
+    const trackedUnitIds = new Set(orderItems.map((item: any) => item.inventoryUnitId))
+    const tracked_units = trackedUnitIds.size
+    const coverage_percentage = total_units > 0 ? (tracked_units / total_units) * 100 : 0
+
+    const total_earned = orderItems.reduce((sum: number, item: any) => sum + Number(item.price), 0)
+    
+    const monthly_revenue = orderItems
+        .filter((item: any) => item.createdAt && new Date(item.createdAt) >= startOfMonth)
+        .reduce((sum: number, item: any) => sum + Number(item.price), 0)
+
+    const total_installment = allUnits
+        .filter(u => trackedUnitIds.has(u.id) && u.installmentMonthly !== null) // Strictly filter nulls
+        .reduce((sum, u) => sum + Number(u.installmentMonthly), 0)
+
+    const net_cashflow = monthly_revenue - total_installment
+
+    return {
+        total_units,
+        tracked_units,
+        coverage_percentage,
+        total_earned,
+        monthly_revenue,
+        total_installment,
+        net_cashflow
+    }
+}
+
 export default async function AdminOverviewPage() {
-    const [data, analytics] = await Promise.all([
+    const [data, analytics, roiStats] = await Promise.all([
         getStats(),
-        getAnalyticsData()
+        getAnalyticsData(),
+        getRoiStats()
     ])
 
     return (
@@ -140,6 +182,7 @@ export default async function AdminOverviewPage() {
             >
                 <div className="grid gap-8 grid-cols-1">
                     <div className="space-y-8">
+                        <RoiSummaryPanel roi={roiStats} />
                         <OverviewCharts userData={analytics.userData} revenueData={analytics.revenueData} />
                     </div>
                     {/* InfoCenter moved below charts, full width */}

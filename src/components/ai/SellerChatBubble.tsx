@@ -8,6 +8,7 @@ import { X, Send, Bot, Loader2, Sparkles } from "lucide-react"
 
 export function SellerChatBubble() {
     const [isOpen, setIsOpen] = useState(false)
+    const [isDismissed, setIsDismissed] = useState(false)
     const [messages, setMessages] = useState<any[]>([
         { role: 'assistant', content: 'Hi! I am T-TechAi, your Tropic Tech AI assistant. Looking for the perfect remote setup in Bali?' }
     ])
@@ -44,6 +45,8 @@ export function SellerChatBubble() {
             setIsLoading(false)
         }
     }
+
+    if (isDismissed) return null;
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 pointer-events-none">
@@ -130,20 +133,29 @@ export function SellerChatBubble() {
             )}
 
             {/* Trigger Button — "T-Tech.Ai" name integrated inside the button */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Open T-Tech.Ai AI Assistant"
-                className={`pointer-events-auto flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-xl shadow-2xl border border-zinc-700 transition-all duration-300 ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}
-            >
-                <div className="relative">
-                    <Sparkles className="h-4 w-4 text-white" />
-                    <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white" />
-                    </span>
-                </div>
-                <span className="text-sm font-black uppercase tracking-tighter whitespace-nowrap">T-Tech.Ai</span>
-            </button>
+            <div className={`pointer-events-auto relative ${isOpen ? 'opacity-0 scale-0 pointer-events-none absolute' : 'opacity-100 scale-100'}`}>
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="Open T-Tech.Ai AI Assistant"
+                    className={`flex items-center gap-2.5 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-3 rounded-xl shadow-2xl border border-zinc-700 transition-all duration-300`}
+                >
+                    <div className="relative">
+                        <Sparkles className="h-4 w-4 text-white" />
+                        <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white" />
+                        </span>
+                    </div>
+                    <span className="text-sm font-black uppercase tracking-tighter whitespace-nowrap">T-Tech.Ai</span>
+                </button>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); setIsDismissed(true); }}
+                    className="absolute -top-1.5 -right-1.5 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow-md transition-colors border border-white/20"
+                    aria-label="Close Chat bubble completely"
+                >
+                    <X className="h-2.5 w-2.5" />
+                </button>
+            </div>
         </div>
     )
 }

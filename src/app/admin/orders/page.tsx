@@ -30,11 +30,12 @@ export default async function AdminOrdersPage() {
                         }
                     }
                 }
-            }
-        }
+            },
+            orderItems: true
+        } as any
     })
 
-    const formattedOrders = orders.map(order => ({
+    const formattedOrders = orders.map((order: any) => ({
         id: order.id,
         orderNumber: order.orderNumber || `ORD-${order.id.substring(0, 8).toUpperCase()}`,
         user: order.user ? (order.user.fullName || order.user.email) : 'Unknown',
@@ -42,17 +43,27 @@ export default async function AdminOrdersPage() {
         whatsapp: order.user?.whatsapp || '',
         period: `${new Date(order.startDate).toLocaleDateString()} - ${new Date(order.endDate).toLocaleDateString()}`,
         status: order.status,
-        itemCount: order.rentalItems.length,
+        itemCount: (order as any).orderItems && (order as any).orderItems.length > 0 ? (order as any).orderItems.length : order.rentalItems.length,
         totalAmount: Number(order.totalAmount),
         createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
-        items: order.rentalItems.map(item => ({
-            id: item.id,
-            name: item.variant?.product?.name || item.rentalPackage?.name || 'Unknown Item',
-            quantity: item.quantity,
-            type: item.variant?.product ? 'PRODUCT' : 'PACKAGE',
-            price: Number(item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0),
-            serialNumber: item.unit?.serialNumber || 'PENDING'
-        }))
+        items: (order as any).orderItems && (order as any).orderItems.length > 0 
+            ? (order as any).orderItems.map((item: any) => ({
+                id: item.id,
+                productId: item.productId, // Adding this!
+                name: item.nameSnapshot,
+                quantity: item.quantity,
+                type: 'Snapshot',
+                price: Number(item.price),
+                serialNumber: 'SN-N/A'
+            }))
+            : order.rentalItems.map(item => ({
+                id: item.id,
+                name: item.variant?.product?.name || item.rentalPackage?.name || 'Unknown Item',
+                quantity: item.quantity || 1,
+                type: item.variant?.product ? 'PRODUCT' : 'PACKAGE',
+                price: Number(item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0),
+                serialNumber: item.unit?.serialNumber || 'PENDING'
+            }))
     }))
 
     return (

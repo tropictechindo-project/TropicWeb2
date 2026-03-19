@@ -66,6 +66,31 @@ export default function PublicInvoicePage() {
     const customerName = invoice.user?.fullName || invoice.guestName || 'Customer'
     const customerEmail = invoice.user?.email || invoice.guestEmail
     const customerAddress = invoice.user?.baliAddress || invoice.guestAddress
+    
+    // Backward-compatible fallback rollup
+    const displayItems = (invoice.order?.orderItems && invoice.order.orderItems.length > 0)
+        ? invoice.order.orderItems.map((item: any) => ({
+            id: item.id,
+            name: item.nameSnapshot,
+            duration: item.rentalStart && item.rentalEnd 
+                ? Math.ceil((new Date(item.rentalEnd).getTime() - new Date(item.rentalStart).getTime()) / (1000 * 60 * 60 * 24)) 
+                : (invoice.order?.duration || 30),
+            startDate: item.rentalStart,
+            endDate: item.rentalEnd,
+            price: item.price,
+            quantity: item.quantity || 1,
+            totalPrice: parseFloat(item.price) * (item.quantity || 1)
+        }))
+        : invoice.order?.rentalItems?.map((item: any) => ({
+            id: item.id,
+            name: item.product?.name || item.rentalPackage?.name || 'Unknown Item',
+            duration: item.duration || 30,
+            startDate: item.startDate || invoice.order?.startDate,
+            endDate: item.endDate || invoice.order?.endDate,
+            price: item.price || (item.totalPrice / (item.quantity || 1)),
+            quantity: item.quantity || 1,
+            totalPrice: item.totalPrice
+        })) || []
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 py-8 px-4">
@@ -135,7 +160,7 @@ export default function PublicInvoicePage() {
                     </div>
 
                     {/* Items Table */}
-                    {invoice.order?.rentalItems && invoice.order.rentalItems.length > 0 && (
+                    {displayItems.length > 0 && (
                         <div className="mb-8">
                             <h3 className="font-semibold text-sm text-muted-foreground mb-4 flex items-center gap-2">
                                 <Package className="w-4 h-4" />
@@ -146,20 +171,24 @@ export default function PublicInvoicePage() {
                                     <thead className="bg-muted">
                                         <tr>
                                             <th className="text-left p-4 font-semibold">Item</th>
+                                            <th className="text-right p-4 font-semibold">Qty</th>
                                             <th className="text-right p-4 font-semibold">Duration</th>
                                             <th className="text-right p-4 font-semibold">Price</th>
                                             <th className="text-right p-4 font-semibold">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {invoice.order.rentalItems.map((item: any) => (
+                                        {displayItems.map((item: any) => (
                                             <tr key={item.id} className="border-t">
                                                 <td className="p-4">
-                                                    <p className="font-medium">{item.product?.name || item.rentalPackage?.name}</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {new Date(item.startDate).toLocaleDateString()} - {new Date(item.endDate).toLocaleDateString()}
-                                                    </p>
+                                                    <p className="font-medium">{item.name}</p>
+                                                    {item.startDate && item.endDate && (
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {new Date(item.startDate).toLocaleDateString()} - {new Date(item.endDate).toLocaleDateString()}
+                                                        </p>
+                                                    )}
                                                 </td>
+                                                <td className="text-right p-4">{item.quantity}</td>
                                                 <td className="text-right p-4">{item.duration} days</td>
                                                 <td className="text-right p-4">IDR {parseFloat(item.price).toLocaleString()}</td>
                                                 <td className="text-right p-4 font-semibold">

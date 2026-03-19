@@ -83,6 +83,7 @@ model Order {
   paymentTransactions                      PaymentTransaction[]
   assignedUnits                            ProductUnit[]
   rentalItems                              RentalItem[]
+  orderItems                               OrderItem[]
 
   @@index([paymentStatus], map: "idx_orders_payment_status")
   @@index([userId], map: "idx_orders_user_id")
@@ -174,6 +175,8 @@ model Product {
   productRelations   ProductRelation[]   @relation("ProductToRelation")
   relatedTo          ProductRelation[]   @relation("RelatedProductToRelation")
   variants           ProductVariant[]
+  inventoryUnits     InventoryUnit[]
+  orderItems         OrderItem[]
 
   @@map("products")
 }
@@ -832,4 +835,53 @@ enum DeliveryRole {
   ADMIN
   WORKER
   SYSTEM
+}
+
+model EmailAudit {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  to        String
+  subject   String
+  body      String?
+  invoiceId String?  @map("invoice_id") @db.Uuid
+  status    String?  @default("SENT")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("email_audits")
+}
+
+model OrderItem {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId         String    @map("order_id") @db.Uuid
+  productId       String?   @map("product_id") @db.Uuid
+  inventoryUnitId String?   @map("inventory_unit_id") @db.Uuid
+  nameSnapshot    String    @map("name_snapshot")
+  price           Decimal   @db.Decimal(10, 2)
+  quantity        Int
+  rentalStart     DateTime? @map("rental_start") @db.Timestamptz(6)
+  rentalEnd       DateTime? @map("rental_end") @db.Timestamptz(6)
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+model InventoryUnit {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId             String   @map("product_id") @db.Uuid
+  serialCode            String   @unique @map("serial_code")
+  purchasePrice         Decimal  @map("purchase_price") @db.Decimal(10, 2)
+  purchaseDate          DateTime @map("purchase_date") @db.Timestamptz(6)
+  installmentMonthly    Decimal  @map("installment_monthly") @db.Decimal(10, 2)
+  installmentDuration   Int      @map("installment_duration")
+  installmentStartDate  DateTime @map("installment_start_date") @db.Timestamptz(6)
+  installmentPaidAmount Decimal  @default(0) @map("installment_paid_amount") @db.Decimal(10, 2)
+  installmentRemaining  Decimal  @map("installment_remaining") @db.Decimal(10, 2)
+  status                String   @default("available")
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("inventory_units")
 }

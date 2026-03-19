@@ -26,6 +26,9 @@ export default function Footer() {
             <p className="text-sm text-balance">
               Workstation installed within 24 hours anywhere in Bali.
             </p>
+            <Link href="/html-sitemap" className="text-xs text-muted-foreground underline hover:text-primary transition-colors">
+              Sitemap
+            </Link>
           </div>
 
           {/* Get in Touch */}

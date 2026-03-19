@@ -48,6 +48,8 @@ export default function Header() {
   const [showGlobeTooltip, setShowGlobeTooltip] = useState(false)
   const { theme, setTheme } = useTheme()
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null)
+
 
   const router = useRouter()
   const { items, removeItem, itemCount, totalPrice } = useCart()
@@ -79,6 +81,7 @@ export default function Header() {
       clearTimeout(tooltipTimer)
       if (tooltipTimer2) clearTimeout(tooltipTimer2)
       if (timerRef.current) clearTimeout(timerRef.current)
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
     }
   }, [])
 
@@ -232,10 +235,15 @@ export default function Header() {
                           <div
                             className="relative inline-block"
                             onMouseEnter={() => {
-                              if (window.innerWidth >= 768) setGlobeOpen(true)
+                              if (window.innerWidth >= 768) {
+                                hoverTimerRef.current = setTimeout(() => setGlobeOpen(true), 2000)
+                              }
                             }}
                             onMouseLeave={() => {
-                              if (window.innerWidth >= 768) setGlobeOpen(false)
+                              if (window.innerWidth >= 768) {
+                                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+                                setGlobeOpen(false)
+                              }
                             }}
                           >
                             <TooltipTrigger asChild>
@@ -330,10 +338,15 @@ export default function Header() {
                           <div
                             className="relative inline-block"
                             onMouseEnter={() => {
-                              if (window.innerWidth >= 768) setGlobeOpen(true)
+                              if (window.innerWidth >= 768) {
+                                hoverTimerRef.current = setTimeout(() => setGlobeOpen(true), 2000)
+                              }
                             }}
                             onMouseLeave={() => {
-                              if (window.innerWidth >= 768) setGlobeOpen(false)
+                              if (window.innerWidth >= 768) {
+                                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+                                setGlobeOpen(false)
+                              }
                             }}
                           >
                             <TooltipTrigger asChild>

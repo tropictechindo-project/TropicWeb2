@@ -37,10 +37,11 @@ export async function GET(
                                     }
                                 }
                             }
-                        }
+                        },
+                        orderItems: true
                     }
                 }
-            }
+            } as any
         })
 
         if (!invoice) {

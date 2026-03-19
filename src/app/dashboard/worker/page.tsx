@@ -43,6 +43,7 @@ import { GroupChatDialog } from '@/components/chat/GroupChatDialog'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
 import { DeliveriesClient } from '@/components/admin/deliveries/DeliveriesClient'
 import { RealtimePoller } from '@/lib/realtime'
+import { DashboardGuide } from '@/components/dashboard/DashboardGuide'
 
 export default function WorkerDashboard() {
   const { user, isLoading, isAuthenticated, logout } = useAuth()
@@ -417,6 +418,7 @@ export default function WorkerDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <DashboardGuide role="WORKER" />
               <Button
                 variant="outline"
                 size="sm"

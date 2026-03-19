@@ -59,6 +59,7 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
 import { Bot } from 'lucide-react'
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { DashboardGuide } from '@/components/dashboard/DashboardGuide'
 
 import {
   Select,
@@ -440,17 +441,20 @@ export default function UserDashboard() {
               </h1>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => window.location.href = '/tracking'} className="h-8 gap-1.5 flex text-xs">
-            <MapIcon className="w-3.5 h-3.5" />Global Tracker
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => {
-            if (supportGroup) setDefaultSupportGroup(supportGroup.id)
-            setShowSupportHub(true)
-          }} className="h-8 gap-1.5 flex text-xs">
-            <Headset className="w-3.5 h-3.5" />Support
-            {unreadMessagesCount > 0 && <Badge className="ml-0.5 h-4 px-1" variant="destructive">{unreadMessagesCount}</Badge>}
-          </Button>
-          <NotificationBell />
+          <div className="flex items-center gap-2">
+            <DashboardGuide role="USER" />
+            <Button variant="outline" size="sm" onClick={() => window.location.href = '/tracking'} className="h-8 gap-1.5 flex text-xs">
+              <MapIcon className="w-3.5 h-3.5" />Global Tracker
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => {
+              if (supportGroup) setDefaultSupportGroup(supportGroup.id)
+              setShowSupportHub(true)
+            }} className="h-8 gap-1.5 flex text-xs">
+              <Headset className="w-3.5 h-3.5" />Support
+              {unreadMessagesCount > 0 && <Badge className="ml-0.5 h-4 px-1" variant="destructive">{unreadMessagesCount}</Badge>}
+            </Button>
+            <NotificationBell />
+          </div>
         </header>
 
         <main className="flex-1 p-4 lg:p-8 max-w-5xl w-full mx-auto space-y-6">

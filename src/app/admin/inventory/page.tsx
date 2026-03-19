@@ -15,21 +15,28 @@ export default async function AdminInventoryPage() {
         orderBy: { name: 'asc' }
     })
 
-    const productAssets = products.flatMap(p =>
-        p.variants.map(v => ({
-            id: v.id,
+    const productAssets = products.map(p => {
+        const allUnits = p.variants.flatMap(v => v.units)
+        
+        return {
+            id: p.id,
             productId: p.id,
-            name: `${p.name} (${v.color})`,
+            name: p.name,
             category: p.category,
-            total: v.units.length,
-            available: v.units.filter(u => u.status === 'AVAILABLE').length,
-            reserved: v.units.filter(u => u.status === 'RESERVED').length,
-            rented: v.units.filter(u => u.status === 'RENTED').length,
-            maintenance: v.units.filter(u => u.status === 'MAINTENANCE').length,
-            lost: v.units.filter(u => u.status === 'LOST').length,
-            status: (v.units.filter(u => u.status === 'AVAILABLE').length > 0) ? 'HEALTHY' : 'OUT_OF_STOCK'
-        }))
-    )
+            total: allUnits.length,
+            available: allUnits.filter(u => u.status === 'AVAILABLE').length,
+            reserved: allUnits.filter(u => u.status === 'RESERVED').length,
+            rented: allUnits.filter(u => u.status === 'RENTED').length,
+            maintenance: allUnits.filter(u => u.status === 'MAINTENANCE').length,
+            lost: allUnits.filter(u => u.status === 'LOST').length,
+            status: (allUnits.filter(u => u.status === 'AVAILABLE').length > 0) ? 'HEALTHY' : 'OUT_OF_STOCK'
+        }
+    })
+
+    const inventoryUnits = await (db as any).inventoryUnit.findMany({
+        orderBy: { serialCode: 'asc' },
+        include: { product: { select: { name: true } } }
+    })
 
     return (
         <div className="space-y-6">
@@ -40,6 +47,7 @@ export default async function AdminInventoryPage() {
             <InventoryClient
                 productAssets={productAssets}
                 products={products.map(p => ({ id: p.id, name: p.name }))}
+                inventoryUnits={inventoryUnits || []}
             />
         </div>
     )

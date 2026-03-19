@@ -11,7 +11,7 @@ export function useSiteSettings() {
     const [settings, setSettings] = useState<Record<string, any>>({})
     const [loading, setLoading] = useState(true)
 
-    console.log('--- useSiteSettings Initializing ---');
+    // console.log('--- useSiteSettings Initializing ---');
 
     const fetchSettings = async () => {
         try {
@@ -25,7 +25,7 @@ export function useSiteSettings() {
             }
 
             if (data) {
-                console.log('--- useSiteSettings Data Received ---', data.length, 'keys');
+                // console.log('--- useSiteSettings Data Received ---', data.length, 'keys');
                 const settingsMap = data.reduce((acc, curr) => {
                     let val = curr.value;
                     if (typeof val === 'string' && (val.startsWith('[') || val.startsWith('{'))) {
@@ -38,7 +38,7 @@ export function useSiteSettings() {
                     acc[curr.key] = val
                     return acc
                 }, {} as Record<string, any>)
-                console.log('--- useSiteSettings Map ---', Object.keys(settingsMap));
+                // console.log('--- useSiteSettings Map ---', Object.keys(settingsMap));
                 setSettings(settingsMap)
             }
         } catch (error) {

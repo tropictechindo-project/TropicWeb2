@@ -7,11 +7,18 @@ export async function POST(request: Request) {
         const { name, description, category, monthlyPrice, stock, imageUrl } = body
 
         const product = await db.$transaction(async (tx) => {
-            const newProduct = await tx.product.create({
+            // Generate Product Code (Step 8)
+            const count = await tx.product.count({ where: { category } })
+            const runningNumber = (count + 1).toString().padStart(3, '0')
+            const categoryCode = (category || 'GEN').substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X')
+            const productCode = `PRD-${categoryCode}-${runningNumber}`
+
+            const newProduct = await (tx as any).product.create({
                 data: {
                     name,
                     description,
                     category,
+                    productCode,
                     monthlyPrice,
                     imageUrl,
                 },

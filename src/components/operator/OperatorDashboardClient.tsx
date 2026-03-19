@@ -9,6 +9,7 @@ import { useRealtimePoller } from '@/hooks/useRealtimePoller'
 import { AiDashboardPanel } from '@/components/ai/AiDashboardPanel'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { DashboardGuide } from '../dashboard/DashboardGuide'
 import { OrdersClient } from "@/components/admin/orders/OrdersClient"
 import { DeliveriesClient } from "@/components/admin/deliveries/DeliveriesClient"
 import { InventoryClient } from "@/components/admin/inventory/InventoryClient"
@@ -314,6 +315,7 @@ export default function OperatorDashboardClient({
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
+                        <DashboardGuide role="OPERATOR" />
                         <Button
                             variant="outline"
                             size="sm"

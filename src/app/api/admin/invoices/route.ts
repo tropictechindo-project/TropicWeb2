@@ -67,6 +67,18 @@ export async function POST(req: Request) {
                         // Note: Variant or Package would need selection for full inventory sync
                     }
                 })
+
+                const anyTx = tx as any
+                await anyTx.orderItem.create({
+                    data: {
+                        orderId: order.id,
+                        nameSnapshot: itemName || 'Manual Invoice Item',
+                        price: amount || 0,
+                        quantity: 1,
+                        rentalStart: startDate,
+                        rentalEnd: endDate,
+                    }
+                })
             }
 
             // 2. Create Invoice

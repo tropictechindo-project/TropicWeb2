@@ -151,7 +151,8 @@ export async function POST(request: Request) {
                     invoiceNumber: invoice.invoiceNumber,
                     customerName: guestInfo?.fullName || 'Valued Customer',
                     amount: Number(invoice.total),
-                    invoiceLink: `${baseUrl}/invoice/${invoice.id}`
+                    invoiceLink: `${baseUrl}/invoice/${invoice.id}`,
+                    invoiceId: invoice.id
                 })
             } catch (emailError) {
                 console.error('[ORDERS] Failed to send invoice email:', emailError)

@@ -37,9 +37,10 @@ interface Product {
 interface InventoryClientProps {
     productAssets: ProductAsset[]
     products: Product[]
+    inventoryUnits?: any[] // Support Discrete Rows
 }
 
-export function InventoryClient({ productAssets, products }: InventoryClientProps) {
+export function InventoryClient({ productAssets, products, inventoryUnits = [] }: InventoryClientProps) {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [isEditAssetOpen, setIsEditAssetOpen] = useState(false)
@@ -196,6 +197,60 @@ export function InventoryClient({ productAssets, products }: InventoryClientProp
                     </TableBody>
                 </Table>
             </div>
+
+            {inventoryUnits && inventoryUnits.length > 0 && (
+                <div className="mt-8 space-y-4">
+                    <div className="flex flex-col gap-1">
+                        <h3 className="text-lg font-black tracking-tight uppercase text-orange-600">Discrete Asset Units (Single Tracking)</h3>
+                        <p className="text-xs text-muted-foreground italic font-medium">Individual tracking of serialized items and financial breakdown</p>
+                    </div>
+                    <div className="rounded-xl border bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm">
+                        <Table>
+                            <TableHeader className="bg-muted/30">
+                                <TableRow>
+                                    <TableHead className="text-[10px] uppercase font-black">Serial Code</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black">Product</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black">Purchase Price</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-center">Status</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-center">Installments</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-center">Revenue</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-right">Insights</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {inventoryUnits.map((u: any) => (
+                                    <TableRow key={u.id} className="hover:bg-muted/20 transition-colors">
+                                        <TableCell className="font-mono text-xs font-bold">{u.serialCode}</TableCell>
+                                        <TableCell className="font-medium text-xs">{u.product?.name || 'Generic / Unlinked'}</TableCell>
+                                        <TableCell className="text-xs font-bold">Rp {(u.purchasePrice || 0).toLocaleString('id-ID')}</TableCell>
+                                        <TableCell className="text-center">
+                                            <Badge 
+                                                variant={u.status === 'available' ? 'default' : u.status === 'rented' ? 'destructive' : 'secondary'}
+                                                className="text-[9px] font-black px-2 uppercase h-5"
+                                            >
+                                                {u.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-center text-xs">
+                                            {u.installmentDuration ? `${u.installmentDuration} mo` : '-'}
+                                        </TableCell>
+                                        <TableCell className="text-center text-xs font-black text-green-600">
+                                            Rp {(u.revenue || 0).toLocaleString('id-ID')}
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            {u.insightLabel && (
+                                                <Badge variant="outline" className="text-[9px] bg-red-50 text-red-600 border-red-200 font-bold px-1.5 h-5">
+                                                    {u.insightLabel}
+                                                </Badge>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

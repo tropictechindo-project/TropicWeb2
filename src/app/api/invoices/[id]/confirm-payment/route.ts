@@ -121,6 +121,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                     }
                 })
                 rentalItems.push(rentalItem)
+
+                const anyTx = tx as any
+                await anyTx.orderItem.create({
+                    data: {
+                        orderId: order.id,
+                        productId: item.id,
+                        nameSnapshot: item.name || 'Unknown Item',
+                        price: item.price || 0,
+                        quantity: item.quantity || 1,
+                        rentalStart: startDate,
+                        rentalEnd: endDate,
+                    }
+                })
             }
 
             // D. Create Delivery Job

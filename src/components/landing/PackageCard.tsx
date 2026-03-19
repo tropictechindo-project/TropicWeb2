@@ -47,7 +47,7 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
 
   // Production Fix: Use local fallback for 'Rental Bali' images which often fail on Supabase
   let displayImage = (pkg.images && pkg.images.length > 0) ? pkg.images[0] : (pkg.imageUrl || pkg.image_url || '/MyAi.webp')
-  if (displayImage.includes('Rental%20Bali') || displayImage.includes('Rental Bali')) {
+  if ((displayImage.includes('Rental%20Bali') || displayImage.includes('Rental Bali')) && !displayImage.startsWith('http')) {
     const fileName = displayImage.split('/').pop()?.replace(/%20/g, ' ')
     displayImage = `/packages/${fileName}`
   }

@@ -5,6 +5,11 @@ The TropicTech ecosystem has matured into a professional, high-performance works
 
 ---
 
+## 📦 0. Order Transparency & Inventory Tracking (NEW v2.6.0)
+- **Normalized Order Item Snapshots**: Introduced explicit `OrderItem` databases rows mapping locking item snapshots, final loaded prices & quantities seamlessly during `.create()` invocations to prevent downstream discrepancies.
+- **Backwards-Compatible Frontends**: Reconfigured public shareable invoice lists with fallback array mappings capable of rendering standalone snapshots gracefully without forcing legacy breakouts locks errors.
+- **Grouped Inventory Asset Sync**: Aggregated `.flatMap` flattens in dashboard views into single-tier aggregates grouped by `product_id` to provide accurate operational counting metrics flawless.
+
 ## 🤖 0. Role-Specific Intelligence & Auth Hardening (NEW v2.5.0)
 - **Tailored AI Assistants**: Integrated context-aware AI agents for every dashboard tier (Worker, Operator, User), providing role-specific data such as active deliveries or rental history.
 - **Auth Synchronization**: Resolved the "multi-login" requirement by enforcing immediate synchronous token/cookie handshakes in `AuthContext`.

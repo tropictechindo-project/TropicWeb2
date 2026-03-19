@@ -8,6 +8,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+import { DashboardGuide } from '../../dashboard/DashboardGuide'
+
 export function RealtimeOverview({ initialData, children, sidePanel }: { initialData: any, children: React.ReactNode, sidePanel?: React.ReactNode }) {
     const [stats, setStats] = useState(initialData.cards)
     const [notifications, setNotifications] = useState(initialData.notifications)
@@ -93,16 +95,19 @@ export function RealtimeOverview({ initialData, children, sidePanel }: { initial
                     <h1 className="text-4xl font-black tracking-tight uppercase">Dashboard Overview</h1>
                     <p className="text-muted-foreground font-medium italic">Command Center</p>
                 </div>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-[10px] font-black uppercase tracking-widest gap-2 opacity-50 hover:opacity-100 self-start md:self-end"
-                    onClick={manualRefresh}
-                    disabled={isRefreshing}
-                >
-                    <RefreshCw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    {isRefreshing ? 'Refreshing...' : 'Live Sync Active'}
-                </Button>
+                <div className="flex items-center gap-2 self-start md:self-end">
+                    <DashboardGuide role="ADMIN" />
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-[10px] font-black uppercase tracking-widest gap-2 opacity-50 hover:opacity-100"
+                        onClick={manualRefresh}
+                        disabled={isRefreshing}
+                    >
+                        <RefreshCw className={`h-3 w-3 ${isRefreshing ? 'animate-spin' : ''}`} />
+                        {isRefreshing ? 'Refreshing...' : 'Live Sync Active'}
+                    </Button>
+                </div>
             </div>
 
             {stats.unresolvedConflicts > 0 && (

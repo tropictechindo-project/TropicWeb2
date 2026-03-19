@@ -20,7 +20,8 @@ import {
     Truck,
     Navigation as NavigationIcon,
     ClipboardCheck,
-    Map as MapIcon
+    Map as MapIcon,
+    Mail
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
@@ -111,6 +112,11 @@ const items = [
         title: "Invoices",
         url: "/admin/invoices",
         icon: FileText,
+    },
+    {
+        title: "Email Audit",
+        url: "/admin/emails",
+        icon: Mail,
     },
     {
         title: "Reports",

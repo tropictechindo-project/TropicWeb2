@@ -1,4 +1,22 @@
 import nodemailer from 'nodemailer'
+import { db } from './db'
+
+async function logEmail(to: string, subject: string, html: string, status: string = 'SENT', invoiceId?: string) {
+  try {
+    const anyDb = db as any;
+    await anyDb.emailAudit.create({
+      data: {
+        to,
+        subject,
+        body: html,
+        status,
+        ...(invoiceId && { invoiceId }),
+      }
+    })
+  } catch (error) {
+    console.error('Failed to create email audit log:', error)
+  }
+}
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -15,7 +33,8 @@ export async function sendInvoiceEmail(data: {
   invoiceNumber: string,
   customerName: string,
   amount: number,
-  invoiceLink: string
+  invoiceLink: string,
+  invoiceId?: string
 }) {
   // If 'to' is an array, assuming first one is customer, rest are team
   // This is a simplification based on how getInvoiceRecipients works
@@ -88,9 +107,44 @@ export async function sendInvoiceEmail(data: {
 
     await transporter.sendMail(mailOptions)
     console.log(`Invoice email sent to ${customerEmail} (BCC: ${bcc.length})`)
+    
+    // Structured Non-Blocking Log (Step 8)
+    try {
+      console.log({
+        type: "SYSTEM_EVENT",
+        event: "EMAIL_SENT",
+        payload: {
+          email: customerEmail,
+          invoice_id: data.invoiceId || null,
+          timestamp: new Date().toISOString()
+        }
+      })
+    } catch (logError) {
+      console.warn('[EMAIL_LOG_ERROR] Logging event failed non-blocking:', logError)
+    }
+
+    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, 'SENT', data.invoiceId)
     return true
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending invoice email:', error)
+
+    // Structured Non-Blocking Log failed state
+    try {
+      console.log({
+        type: "SYSTEM_EVENT",
+        event: "EMAIL_FAILED",
+        payload: {
+          email: customerEmail,
+          invoice_id: data.invoiceId || null,
+          error: error.message || String(error),
+          timestamp: new Date().toISOString()
+        }
+      })
+    } catch (logError) {
+      console.warn('[EMAIL_LOG_ERROR] Logging failed event failed non-blocking:', logError)
+    }
+
+    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, 'FAILED', data.invoiceId)
     return false
   }
 }
@@ -132,9 +186,11 @@ export async function sendResetPasswordEmail(to: string, resetLink: string) {
       return true
     }
     await transporter.sendMail(mailOptions)
+    await logEmail(to, mailOptions.subject, mailOptions.html, 'SENT')
     return true
   } catch (error) {
     console.error('Error sending reset email:', error)
+    await logEmail(to, mailOptions.subject, mailOptions.html, 'FAILED')
     return false
   }
 }
@@ -179,9 +235,11 @@ export async function sendVerificationEmail(to: string, verificationLink: string
       return true
     }
     await transporter.sendMail(mailOptions)
+    await logEmail(to, mailOptions.subject, mailOptions.html, 'SENT')
     return true
   } catch (error) {
     console.error('Error sending verification email:', error)
+    await logEmail(to, mailOptions.subject, mailOptions.html, 'FAILED')
     return false
   }
 }
@@ -207,9 +265,11 @@ export async function sendEmail(data: {
       return true
     }
     await transporter.sendMail(mailOptions)
+    await logEmail(data.to, mailOptions.subject, mailOptions.html, 'SENT')
     return true
   } catch (error) {
     console.error('Error sending generic email:', error)
+    await logEmail(data.to, mailOptions.subject, mailOptions.html, 'FAILED')
     return false
   }
 }
