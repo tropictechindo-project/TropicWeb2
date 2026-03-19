@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  outputFileTracingExcludes: {
+    "*": [
+      "public/Real-View Products 101/**/*",
+      "public/ProductsReal/**/*",
+      "public/Real-View-WebP/**/*",
+      "public/products/**/*",
+      "public/Real-View Products 101/**/*"
+    ],
+  },
+
 
   serverExternalPackages: ["@prisma/client"],
 
