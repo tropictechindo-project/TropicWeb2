@@ -33,11 +33,13 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                 startDate: new Date(invoice.startDate).toLocaleDateString(),
                 endDate: new Date(invoice.endDate).toLocaleDateString(),
                 currency: 'Rp',
-                subtotal: invoice.total,
-                tax: 0,
+                subtotal: invoice.subtotal || invoice.total,
+                tax: invoice.tax || 0,
+                deliveryFee: invoice.deliveryFee || 0,
                 total: invoice.total,
                 items: invoice.items,
                 isRegistered: !!invoice.userId
+
             } as any)
             pdf.save(`${invoice.invoiceNumber}.pdf`)
             toast.success("Invoice downloaded")
@@ -144,13 +146,26 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                         <div className="bg-muted/50 p-8 flex flex-col items-end space-y-2 border-t">
                             <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
                                 <span>Subtotal</span>
-                                <span>Rp {invoice.total.toLocaleString('id-ID')}</span>
+                                <span>Rp {(invoice.subtotal || invoice.items.reduce((acc: number, item: any) => acc + item.totalPrice, 0)).toLocaleString('id-ID')}</span>
                             </div>
+                            {invoice.tax > 0 && (
+                                <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
+                                    <span>Tax (2%)</span>
+                                    <span>Rp {invoice.tax.toLocaleString('id-ID')}</span>
+                                </div>
+                            )}
+                            {invoice.deliveryFee > 0 && (
+                                <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
+                                    <span>Delivery Fee</span>
+                                    <span>Rp {invoice.deliveryFee.toLocaleString('id-ID')}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between w-full max-w-xs text-2xl font-black py-4 border-t border-muted">
                                 <span className="uppercase">Total Amount</span>
                                 <span className="text-primary">Rp {invoice.total.toLocaleString('id-ID')}</span>
                             </div>
                         </div>
+
                     </CardContent>
                 </Card>
 

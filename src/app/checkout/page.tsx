@@ -34,6 +34,7 @@ import ProductSuggestions from '@/components/checkout/ProductSuggestions'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { LocationPrompt } from '@/components/location/LocationPrompt'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const paymentMethods = [
     { id: 'WISE', name: 'Wise', icon: <Globe className="h-6 w-6" />, desc: 'International transfer' },
@@ -70,6 +71,8 @@ export default function CheckoutPage() {
     const [selectedCurrency, setSelectedCurrency] = useState('IDR')
     const [isCheckingPrice, setIsCheckingPrice] = useState(false)
     const [convertedTotal, setConvertedTotal] = useState<string | null>(null)
+    const [isPriority, setIsPriority] = useState(false)
+
 
     const handleCurrencyCheck = async (currency: string) => {
         setIsCheckingPrice(true)
@@ -182,7 +185,16 @@ export default function CheckoutPage() {
                     'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
                 },
                 body: JSON.stringify({
-                    items: items.map(item => ({ id: item.id, price: item.price, name: item.name })),
+                    items: [
+                        ...items.map(item => ({ id: item.id, price: item.price, name: item.name, quantity: item.quantity })),
+                        ...(isPriority ? [{
+                            id: 'ADD_ON_PRIORITY_DELIVERY',
+                            name: 'Quick Delivery / Priority',
+                            price: 100000,
+                            quantity: 1,
+                            type: 'ADDON'
+                        }] : [])
+                    ],
                     paymentMethod,
                     deliveryAddress: formData.address,
                     guestInfo: {
@@ -229,6 +241,10 @@ export default function CheckoutPage() {
             </div>
         )
     }
+
+    const finalTotalValue = (breakdown ? Number(breakdown.total) : totalPrice) 
+        + (isPriority ? 100000 : 0)
+        + (paymentMethod === 'EDC' ? (breakdown ? Number(breakdown.subtotal) : totalPrice) * 0.02 : 0)
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -286,7 +302,7 @@ export default function CheckoutPage() {
                                     <Textarea id="address" name="address" value={formData.address} onChange={handleInputChange} placeholder="Villa address, street, etc." />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="linkAddress">Google Maps Link (Optional)</Label>
+                                    <Label htmlFor="linkAddress">Paste Google Maps Link For Delivery</Label>
                                     <Input id="linkAddress" name="linkAddress" value={formData.linkAddress} onChange={handleInputChange} placeholder="https://maps.google.com/..." />
                                 </div>
                             </div>
@@ -416,11 +432,34 @@ export default function CheckoutPage() {
 
                             <Separator className="my-6" />
 
+                            <div className="mb-4 flex items-center space-x-2 p-3 bg-primary/5 rounded-xl border border-primary/10 border-dashed">
+                                <Checkbox 
+                                    id="priority" 
+                                    checked={isPriority} 
+                                    onCheckedChange={(checked) => setIsPriority(!!checked)} 
+                                />
+                                <label htmlFor="priority" className="text-xs font-bold cursor-pointer text-primary">
+                                    🚀 Add "Quick Delivery / Priority" (+Rp 100,000)
+                                </label>
+                            </div>
+
                             <div className="space-y-2">
                                 <div className="flex justify-between text-muted-foreground text-sm">
                                     <span>Equipment Subtotal</span>
                                     <span>Rp {totalPrice.toLocaleString('id-ID')}</span>
                                 </div>
+                                {isPriority && (
+                                    <div className="flex justify-between text-muted-foreground text-sm font-semibold text-primary">
+                                        <span>Quick Delivery / Priority</span>
+                                        <span>Rp 100,000</span>
+                                    </div>
+                                )}
+                                {paymentMethod === 'EDC' && (
+                                    <div className="flex justify-between text-muted-foreground text-sm font-semibold text-emerald-600">
+                                        <span>EDC Machine Surcharge (2%)</span>
+                                        <span>Rp {((breakdown ? Number(breakdown.subtotal) : totalPrice) * 0.02).toLocaleString('id-ID')}</span>
+                                    </div>
+                                )}
                                 {breakdown ? (
                                     <>
                                         <div className="flex justify-between text-muted-foreground text-sm">
@@ -440,7 +479,7 @@ export default function CheckoutPage() {
                                                 <span className="text-[10px] text-muted-foreground font-normal italic">*Based on IDR</span>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-primary font-black text-2xl">Rp {breakdown.formattedTotal}</span>
+                                                <span className="text-primary font-black text-2xl">Rp {finalTotalValue.toLocaleString('id-ID')}</span>
                                                 {convertedTotal && (
                                                     <p className="text-xs text-emerald-600 font-bold">≈ {selectedCurrency} {convertedTotal}</p>
                                                 )}
@@ -450,7 +489,7 @@ export default function CheckoutPage() {
                                 ) : (
                                     <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
                                         <span>Total</span>
-                                        <span className="text-primary">Rp {totalPrice.toLocaleString('id-ID')}</span>
+                                        <span className="text-primary font-black">Rp {finalTotalValue.toLocaleString('id-ID')}</span>
                                     </div>
                                 )}
                                 {!breakdown && (

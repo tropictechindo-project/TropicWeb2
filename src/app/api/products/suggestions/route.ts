@@ -39,22 +39,44 @@ export async function GET(request: NextRequest) {
         // 4. Limit to 6 results
 
         const suggestionsMap = new Map()
+        const cartProducts = await db.product.findMany({
+            where: { id: { in: productIds } },
+            select: { category: true }
+        })
+        const cartCategories = cartProducts.map(p => p.category.toLowerCase())
 
         relations.forEach(rel => {
             const relId = rel.relatedProductId
-
-            // Skip if already in cart
             if (productIds.includes(relId)) return
-
-            // If not in map, or this relation has higher priority (logic can be refined)
             if (!suggestionsMap.has(relId)) {
                 suggestionsMap.set(relId, rel.relatedProduct)
             }
         })
 
-        let uniqueSuggestions = Array.from(suggestionsMap.values()).slice(0, 6)
+        let uniqueSuggestions = Array.from(suggestionsMap.values())
 
-        // Fallback: If no relations found (e.g., cart only contains packages), provide generic top suggestions
+        // Explicit Category Upsell (If missing Chair / Desk)
+        const categoriesToCheck = ['chair', 'desk', 'monitor']
+        for (const cat of categoriesToCheck) {
+            const hasCat = cartCategories.some(c => c.includes(cat))
+            const suggestedHasCat = uniqueSuggestions.some(p => p.category.toLowerCase().includes(cat))
+
+            if (!hasCat && !suggestedHasCat) {
+                const explicitItem = await db.product.findFirst({
+                    where: {
+                        category: { contains: cat, mode: 'insensitive' },
+                        id: { notIn: productIds }
+                    },
+                    orderBy: { monthlyPrice: 'desc' }
+                })
+                if (explicitItem) {
+                    uniqueSuggestions.unshift(explicitItem)
+                }
+            }
+        }
+
+        uniqueSuggestions = uniqueSuggestions.slice(0, 6)
+
         if (uniqueSuggestions.length === 0) {
             const fallbackRelations = await (db as any).productRelation.findMany({
                 include: { relatedProduct: true },
@@ -70,7 +92,6 @@ export async function GET(request: NextRequest) {
             uniqueSuggestions = Array.from(suggestionsMap.values()).slice(0, 4)
         }
 
-        // Final Fallback: if database has ZERO relations, just grab some top products
         if (uniqueSuggestions.length === 0) {
             const randomProducts = await db.product.findMany({
                 where: {
@@ -80,6 +101,7 @@ export async function GET(request: NextRequest) {
             })
             uniqueSuggestions = randomProducts
         }
+
 
 
         return NextResponse.json({

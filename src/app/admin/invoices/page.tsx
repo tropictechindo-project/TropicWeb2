@@ -43,15 +43,20 @@ export default async function AdminInvoicesPage() {
             name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
             quantity: item.quantity || 1,
             unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || inv.total),
-            totalPrice: Number(inv.total)
-        })) || [
+            totalPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || inv.total) * (item.quantity || 1)
+        })) || ((inv as any).lineItems ? ((inv as any).lineItems as any[]).map(item => ({
+            name: item.name,
+            quantity: item.quantity || 1,
+            unitPrice: Number(item.price),
+            totalPrice: Number(item.price) * (item.quantity || 1)
+        })) : [
                 {
                     name: "Manual Service / Rental",
                     quantity: 1,
                     unitPrice: Number(inv.total),
                     totalPrice: Number(inv.total)
                 }
-            ]
+            ])
     }))
 
     return (

@@ -12,6 +12,9 @@ export default async function AdminOrdersPage() {
             user: {
                 select: { fullName: true, email: true, whatsapp: true }
             },
+            invoices: {
+                select: { id: true }
+            },
             rentalItems: {
                 include: {
                     unit: true,
@@ -46,6 +49,7 @@ export default async function AdminOrdersPage() {
         itemCount: (order as any).orderItems && (order as any).orderItems.length > 0 ? (order as any).orderItems.length : order.rentalItems.length,
         totalAmount: Number(order.totalAmount),
         createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
+        invoiceId: order.invoices?.[0]?.id || null,
         items: (order as any).orderItems && (order as any).orderItems.length > 0 
             ? (order as any).orderItems.map((item: any) => ({
                 id: item.id,

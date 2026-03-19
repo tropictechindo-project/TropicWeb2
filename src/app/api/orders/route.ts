@@ -71,8 +71,28 @@ export async function POST(request: Request) {
             }
         }
 
-        const subtotalValue = cartItems.reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.quantity || 1)), 0)
-        const { tax, deliveryFee, total } = calculateInvoiceTotals(subtotalValue, distanceKm)
+        const nonAddonSubtotal = cartItems.filter((i: any) => i.type !== 'ADDON').reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.quantity || 1)), 0)
+        const addonSubtotal = cartItems.filter((i: any) => i.type === 'ADDON').reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.quantity || 1)), 0)
+        const subtotalValue = nonAddonSubtotal + addonSubtotal
+
+        const { tax, deliveryFee, total: baseTotal } = calculateInvoiceTotals(nonAddonSubtotal, distanceKm)
+
+        // Calculate EDC Fee if applicable
+        const isEdc = paymentMethod === 'EDC'
+        const edcFee = isEdc ? subtotalValue * 0.02 : 0
+        const finalTotal = baseTotal + addonSubtotal + edcFee
+
+        // Inject EDC_FEE line item so it mirrors in list PDFs
+        const finalLineItems = [
+            ...cartItems,
+            ...(isEdc ? [{
+                id: 'EDC_FEE',
+                name: 'EDC Machine Fee (2%)',
+                price: edcFee,
+                quantity: 1,
+                type: 'ADDON'
+            }] : [])
+        ]
 
         const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
 
@@ -85,7 +105,7 @@ export async function POST(request: Request) {
                     subtotal: subtotalValue,
                     tax,
                     deliveryFee,
-                    total,
+                    total: finalTotal,
                     currency: currency || 'IDR',
                     paymentMethod: paymentMethod,
                     deliveryAddress: deliveryAddress,
@@ -96,9 +116,11 @@ export async function POST(request: Request) {
                     guestEmail: guestInfo?.email || null,
                     guestWhatsapp: guestInfo?.whatsapp || null,
                     guestAddress: deliveryAddress,
-                    lineItems: cartItems, // Store all cart items for later stock reservation
+                    lineItems: finalLineItems as any,
                 }
             })
+
+
 
             // Store idempotency key referencing the invoice
             if (idempotencyKey) {

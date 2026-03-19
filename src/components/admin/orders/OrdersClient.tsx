@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useRealtimePoller } from "@/hooks/useRealtimePoller"
 import {
     Table,
     TableBody,
@@ -10,7 +12,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Eye, CheckCircle2, CreditCard, Filter, Package } from "lucide-react"
+import { Eye, CheckCircle2, CreditCard, Filter, Package, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -30,6 +32,7 @@ interface Order {
     orderNumber: string // Missing in previous interface
     createdAt: string
     whatsapp: string
+    invoiceId?: string
     items: {
         id: string
         name: string
@@ -118,7 +121,20 @@ interface OrdersClientProps {
 }
 
 export function OrdersClient({ initialOrders }: OrdersClientProps) {
+    const router = useRouter()
     const [orders, setOrders] = useState<Order[]>(initialOrders)
+
+    // Real-time synchronization
+    useEffect(() => {
+        if (initialOrders.length > orders.length && orders.length > 0) {
+            toast.info("🔔 New incoming order received!")
+        }
+        setOrders(initialOrders)
+    }, [initialOrders])
+
+    useRealtimePoller(() => {
+        router.refresh()
+    }, 15000)
     const [filterStatus, setFilterStatus] = useState<string>("ALL")
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
     const [detailsDialogOpen, setDetailsDialogOpen] = useState(false)
@@ -264,6 +280,11 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                                             }}>
                                                 <Eye className="h-4 w-4" />
                                             </Button>
+                                            {order.invoiceId && (
+                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-blue-500" onClick={() => window.open(`/invoice/${order.invoiceId}`, '_blank')}>
+                                                    <FileText className="h-4 w-4" />
+                                                </Button>
+                                            )}
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -409,7 +430,7 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
             </Dialog>
             {/* Order Details Dialog */}
             <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
-                <DialogContent className="max-w-2xl bg-card border-border text-foreground">
+                <DialogContent className="max-w-4xl bg-card border-border text-foreground">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-black uppercase tracking-tighter italic">Order <span className="text-primary text-3xl">Details</span></DialogTitle>
                         <DialogDescription className="text-muted-foreground font-medium font-mono text-[10px]">
