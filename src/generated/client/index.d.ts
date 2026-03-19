@@ -13389,6 +13389,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     category: string | null
+    productCode: string | null
     monthlyPrice: Decimal | null
     imageUrl: string | null
     createdAt: Date | null
@@ -13400,6 +13401,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     category: string | null
+    productCode: string | null
     monthlyPrice: Decimal | null
     imageUrl: string | null
     createdAt: Date | null
@@ -13411,6 +13413,7 @@ export namespace Prisma {
     name: number
     description: number
     category: number
+    productCode: number
     monthlyPrice: number
     imageUrl: number
     createdAt: number
@@ -13436,6 +13439,7 @@ export namespace Prisma {
     name?: true
     description?: true
     category?: true
+    productCode?: true
     monthlyPrice?: true
     imageUrl?: true
     createdAt?: true
@@ -13447,6 +13451,7 @@ export namespace Prisma {
     name?: true
     description?: true
     category?: true
+    productCode?: true
     monthlyPrice?: true
     imageUrl?: true
     createdAt?: true
@@ -13458,6 +13463,7 @@ export namespace Prisma {
     name?: true
     description?: true
     category?: true
+    productCode?: true
     monthlyPrice?: true
     imageUrl?: true
     createdAt?: true
@@ -13558,6 +13564,7 @@ export namespace Prisma {
     name: string
     description: string | null
     category: string
+    productCode: string | null
     monthlyPrice: Decimal
     imageUrl: string | null
     createdAt: Date | null
@@ -13590,6 +13597,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     category?: boolean
+    productCode?: boolean
     monthlyPrice?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -13611,6 +13619,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     category?: boolean
+    productCode?: boolean
     monthlyPrice?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -13624,6 +13633,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     category?: boolean
+    productCode?: boolean
     monthlyPrice?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -13637,6 +13647,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     category?: boolean
+    productCode?: boolean
     monthlyPrice?: boolean
     imageUrl?: boolean
     createdAt?: boolean
@@ -13645,7 +13656,7 @@ export namespace Prisma {
     discountPercentage?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "category" | "monthlyPrice" | "imageUrl" | "createdAt" | "images" | "specs" | "discountPercentage", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "category" | "productCode" | "monthlyPrice" | "imageUrl" | "createdAt" | "images" | "specs" | "discountPercentage", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inventorySyncLogs?: boolean | Product$inventorySyncLogsArgs<ExtArgs>
     rentalPackageItems?: boolean | Product$rentalPackageItemsArgs<ExtArgs>
@@ -13675,6 +13686,7 @@ export namespace Prisma {
       name: string
       description: string | null
       category: string
+      productCode: string | null
       monthlyPrice: Prisma.Decimal
       imageUrl: string | null
       createdAt: Date | null
@@ -14115,6 +14127,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
     readonly category: FieldRef<"Product", 'String'>
+    readonly productCode: FieldRef<"Product", 'String'>
     readonly monthlyPrice: FieldRef<"Product", 'Decimal'>
     readonly imageUrl: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
@@ -55662,6 +55675,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     category: 'category',
+    productCode: 'productCode',
     monthlyPrice: 'monthlyPrice',
     imageUrl: 'imageUrl',
     createdAt: 'createdAt',
@@ -57208,6 +57222,7 @@ export namespace Prisma {
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     category?: StringFilter<"Product"> | string
+    productCode?: StringNullableFilter<"Product"> | string | null
     monthlyPrice?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     imageUrl?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeNullableFilter<"Product"> | Date | string | null
@@ -57228,6 +57243,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     category?: SortOrder
+    productCode?: SortOrderInput | SortOrder
     monthlyPrice?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
@@ -57245,6 +57261,7 @@ export namespace Prisma {
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    productCode?: string
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
@@ -57264,13 +57281,14 @@ export namespace Prisma {
     variants?: ProductVariantListRelationFilter
     inventoryUnits?: InventoryUnitListRelationFilter
     orderItems?: OrderItemListRelationFilter
-  }, "id">
+  }, "id" | "productCode">
 
   export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     category?: SortOrder
+    productCode?: SortOrderInput | SortOrder
     monthlyPrice?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrderInput | SortOrder
@@ -57292,6 +57310,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     category?: StringWithAggregatesFilter<"Product"> | string
+    productCode?: StringNullableWithAggregatesFilter<"Product"> | string | null
     monthlyPrice?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     imageUrl?: StringNullableWithAggregatesFilter<"Product"> | string | null
     createdAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
@@ -60751,6 +60770,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -60771,6 +60791,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -60791,6 +60812,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60811,6 +60833,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60831,6 +60854,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -60844,6 +60868,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -60857,6 +60882,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -64733,6 +64759,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    productCode?: SortOrder
     monthlyPrice?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -64751,6 +64778,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    productCode?: SortOrder
     monthlyPrice?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -64762,6 +64790,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     category?: SortOrder
+    productCode?: SortOrder
     monthlyPrice?: SortOrder
     imageUrl?: SortOrder
     createdAt?: SortOrder
@@ -71902,6 +71931,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -71921,6 +71951,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -71945,6 +71976,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -71964,6 +71996,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -71999,6 +72032,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72018,6 +72052,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72048,6 +72083,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72067,6 +72103,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72119,6 +72156,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -72138,6 +72176,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -72212,6 +72251,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72231,6 +72271,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72780,6 +72821,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -72799,6 +72841,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -72882,6 +72925,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72901,6 +72945,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76504,6 +76549,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -76523,6 +76569,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -76740,6 +76787,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76759,6 +76807,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -80341,6 +80390,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -80360,6 +80410,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -80468,6 +80519,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -80487,6 +80539,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -80506,6 +80559,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -80525,6 +80579,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     category: string
+    productCode?: string | null
     monthlyPrice: Decimal | DecimalJsLike | number | string
     imageUrl?: string | null
     createdAt?: Date | string | null
@@ -80560,6 +80615,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -80579,6 +80635,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     category?: StringFieldUpdateOperationsInput | string
+    productCode?: NullableStringFieldUpdateOperationsInput | string | null
     monthlyPrice?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
