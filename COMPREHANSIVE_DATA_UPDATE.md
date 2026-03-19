@@ -105,6 +105,12 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 ## 📅 Complete System Update History
 
+### ✅ v2.6.0 — Inventory ROI & SEO Finishing Mode (2026-03-19)
+- **Bilingual Action Guides**: Standardized Operator & Worker dashboard walkthroughs (EN/ID) flawlessly.
+- **Audit System Logs**: Track for assigned OrderItem to Inventory unit linkages, and non-blocking `sendInvoiceEmail` structured logging event streams index flawlesslywards.
+- **15 Dynamic SEO Landing Grids**: High-speed metadata nodes mapping 10-18 continuous layouts accurately flawlessly.
+- **Visual Site-map Layout Setup**: Accessible user-facing design layouts inside `/site-map` accurately flawlessly.
+
 ### ✅ v2.5.0 — Role-Specific Intelligence & Auth Hardening (2026-03-07)
 - **Tailored AI Agents**: Integrated specialized AI assistants in User, Worker, and Operator dashboards with deep context sync.
 - **Auth Hardening**: Fixed intermittent multi-login issues; standardized logout logic site-wide.
