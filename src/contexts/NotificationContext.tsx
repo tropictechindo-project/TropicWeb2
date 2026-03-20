@@ -55,15 +55,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         setPrevNotificationsCount(spiNotifications.length)
     }, [spiNotifications])
 
+    const isFetchingRef = React.useRef(false)
+    
     const fetchUnreadCounts = async () => {
-        if (!user) {
-            setUnreadMessagesCount(0)
-            setUnreadOrdersCount(0)
-            setUnreadDeliveriesCount(0)
-            setSpiNotifications([])
+        if (!user || isFetchingRef.current) {
+            if (!user) {
+                setUnreadMessagesCount(0)
+                setUnreadOrdersCount(0)
+                setUnreadDeliveriesCount(0)
+                setSpiNotifications([])
+            }
             return
         }
-
+        
+        isFetchingRef.current = true
         try {
             const token = localStorage.getItem('token')
             if (!token) return
@@ -98,8 +103,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                 setSpiNotifications(spiData)
             }
 
-        } catch (error) {
-            console.error('Failed to fetch notification counts', error)
+        } catch (error: any) {
+            // Silence background polling interval failures
+        } finally {
+            isFetchingRef.current = false
         }
     }
 

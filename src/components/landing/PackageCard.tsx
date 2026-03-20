@@ -93,8 +93,8 @@ export default function PackageCard({ package: pkg, isMounted = true }: PackageC
               fill
               decoding="async"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
-              sizes="(max-width: 640px) 82vw, (max-width: 1024px) 45vw, 25vw"
-              quality={80}
+              sizes="(max-width: 640px) 384px, (max-width: 1024px) 384px, 256px"
+              quality={75}
             />
           </div>
           <CardTitle className="line-clamp-1">{pkg.name}</CardTitle>

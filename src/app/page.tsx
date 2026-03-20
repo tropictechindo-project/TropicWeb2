@@ -17,30 +17,37 @@ const SpecialOffers = dynamic(() => import('@/components/landing/SpecialOffers')
 })
 const TrackerSection = dynamic(() => import('@/components/landing/TrackerSection'), {
   loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const Services = dynamic(() => import('@/components/landing/Services'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const FAQ = dynamic(() => import('@/components/landing/FAQ'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const AboutUs = dynamic(() => import('@/components/landing/AboutUs'), {
   loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
 })
 const Reviews = dynamic(() => import('@/components/landing/Reviews'), {
   loading: () => <div className="h-64 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const ContactLandingSection = dynamic(() => import('@/components/landing/ContactLandingSection'), {
   loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const ClientLogos = dynamic(() => import('@/components/landing/ClientLogos'), {
   loading: () => <div className="h-48 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const FeaturesSection = dynamic(() => import('@/components/landing/FeaturesSection'), {
   loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const RealSetupGallery = dynamic(() => import('@/components/landing/RealSetupGallery'), {
   loading: () => <div className="h-96 bg-muted/20 animate-pulse rounded-lg mx-4 my-8" />,
+  ssr: false
 })
 const Footer = dynamic(() => import('@/components/landing/Footer'))
 const SellerChatBubble = dynamic(() =>
