@@ -25,6 +25,8 @@ import {
 import { StatCardWithPopup } from '@/components/ui/stat-card'
 import { UnifiedMessagingHub } from '@/components/chat/UnifiedMessagingHub'
 
+import { ProductsClient } from "@/components/admin/products/ProductsClient"
+
 interface Props {
     operatorName: string
     stats: { pendingPayments: number; queuedDeliveries: number; activeOrders: number; lowStockCount: number }
@@ -36,9 +38,10 @@ interface Props {
     workers: any[]
     users: any[]
     allInvoices: any[]
+    products: any[]
 }
 
-type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests' | 'chat'
+type Tab = 'overview' | 'orders' | 'invoices' | 'deliveries' | 'inventory' | 'report' | 'logs' | 'ai' | 'create' | 'logout' | 'requests' | 'chat' | 'products'
 
 function getToken() {
     if (typeof document === 'undefined') return ''
@@ -76,7 +79,8 @@ export default function OperatorDashboardClient({
     productAssets: initialProductAssets,
     workers: initialWorkers,
     users: initialUsers,
-    allInvoices: initialAllInvoices
+    allInvoices: initialAllInvoices,
+    products: initialProducts
 }: Props) {
     const [activeTab, setActiveTab] = useState<Tab>('overview')
 
@@ -90,6 +94,7 @@ export default function OperatorDashboardClient({
     const [variants, setVariants] = useState(initialVariants)
     const [users, setUsers] = useState(initialUsers)
     const [allInvoices, setAllInvoices] = useState(initialAllInvoices)
+    const [products, setProducts] = useState(initialProducts)
 
     const [isPolling, setIsPolling] = useState(false)
 
@@ -107,6 +112,7 @@ export default function OperatorDashboardClient({
             setVariants(data.variants)
             setUsers(data.users)
             setAllInvoices(data.allInvoices)
+            setProducts(data.products || [])
         } catch (err) {
             console.error('Polling error:', err)
         } finally {
@@ -457,6 +463,15 @@ export default function OperatorDashboardClient({
                         <div className="space-y-4">
                             <h2 className="text-lg font-black uppercase tracking-tight">Stock Management</h2>
                             <InventoryClient productAssets={productAssets} products={variants.map(v => v.product)} />
+                        </div>
+                    )}
+
+                    {activeTab === 'products' && (
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-lg font-black uppercase tracking-tight">Products Management</h2>
+                            </div>
+                            <ProductsClient initialProducts={products} />
                         </div>
                     )}
 

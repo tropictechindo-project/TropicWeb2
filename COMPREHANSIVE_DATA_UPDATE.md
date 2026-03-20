@@ -105,6 +105,11 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 ## 📅 Complete System Update History
 
+### ✅ v2.8.0 — Dashboard Hardening & Guides Translation (2026-03-24)
+- **Operator Dashboard Expansion**: Added Products Management panel, mirroring 70% Admin operations capability for stock/catalog administration natively.
+- **Worker Dashboard CTA Geolocation**: Added "Sabungkan Perangkat" CTA requesting location tracking permissions with live diagnostics status dot indicators.
+- **Bilingual System Guides**: Translated absolute coordinates of all Role dashboards (Admin, Operator, Worker, User) guides to full Indonesian (`ID`) coverage safely accurately.
+
 ### ✅ v2.7.0 — PageSpeed Optimizations & Smart QR (2026-03-21)
 - **Smart QR System**: Injected dynamic client state hooks building QR tracking links mapped on public list footers securely.
 - **Removed Stale Preconnects**: Cleared 5 layout warming tags reducing established connection start triggers overhead cycles.
@@ -193,7 +198,7 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 |-----------|--------|-------|
 | Landing Page | ✅ v2.2.0 Hardened | Instant Page, Minimal CTAs, Deep Sync |
 | Admin Dashboard | ✅ Fully Operational | Global Tracker, All CRUD, Analytics |
-| Operator Dashboard | ✅ Fully Operational | Orders + Deliveries management |
+| Operator Dashboard | ✅ Fully Operational | Orders + Deliveries + Products management |
 | Worker Dashboard | ✅ Fully Operational | GPS, Proof Upload, AI Chat |
 | User Dashboard | ✅ Fully Operational | Rentals, History, Live Tracking CTA |
 | Tracking System | ✅ Real-time | GPS polling, maps, invoice/order lookup |

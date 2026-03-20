@@ -3,6 +3,11 @@
 ## 📌 Executive Summary
 The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Role-Specific Intelligence & Auth Hardening (v2.5.0)** milestone. The system is now significantly more intelligent (Tailored AI Agents), reliable (Auth debugging), and operationally robust (Fixed manual invoicing).
 
+## 🛠️ 0. Dashboard Hardening & Guides Translation (NEW v2.8.0)
+- **Operator Dashboard Expansion**: Added Products Management panel, mirroring 70% Admin operations capability for stock/catalog administration natively.
+- **Worker Dashboard CTA Geolocation**: Added "Sabungkan Perangkat" CTA requesting location tracking permissions with live diagnostics status dot indicators.
+- **Bilingual System Guides**: Translated absolute coordinates of all Role dashboards (Admin, Operator, Worker, User) guides to full Indonesian (`ID`) coverage safely accurately.
+
 ---
 
 ## ⚡ 0. PageSpeed Optimizations & Smart QR (NEW v2.7.0)

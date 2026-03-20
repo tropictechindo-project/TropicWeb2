@@ -19,7 +19,7 @@ export default async function OperatorDashboardPage() {
 
     // Fetch overview data
     // Fetch overview data
-    const [pendingInvoices, queuedDeliveries, allOrders, lowStockVariants, workers, allUsers, allSystemInvoices] = await Promise.all([
+    const [pendingInvoices, queuedDeliveries, allOrders, lowStockVariants, workers, allUsers, allSystemInvoices, allProducts] = await Promise.all([
         db.invoice.findMany({
             where: { status: 'PENDING' },
             orderBy: { createdAt: 'desc' },
@@ -112,6 +112,16 @@ export default async function OperatorDashboardPage() {
                     }
                 }
             }
+        }),
+        db.product.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: {
+                variants: {
+                    include: {
+                        units: true
+                    }
+                }
+            }
         })
     ])
 
@@ -191,6 +201,30 @@ export default async function OperatorDashboardPage() {
             ]
     }))
 
+    const formattedProducts = (allProducts || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        category: p.category,
+        monthlyPrice: Number(p.monthlyPrice),
+        stock: p.variants ? p.variants.reduce((acc: number, v: any) => acc + (v.units?.filter((u: any) => u.status === 'AVAILABLE').length || 0), 0) : 0,
+        imageUrl: p.imageUrl,
+        images: p.images,
+        specs: p.specs,
+        discountPercentage: p.discountPercentage || 0,
+        createdAt: p.createdAt?.toISOString(),
+        variants: p.variants ? p.variants.map((v: any) => ({
+            id: v.id,
+            sku: v.sku,
+            color: v.color,
+            availableCount: v.units?.filter((u: any) => u.status === 'AVAILABLE').length || 0,
+            rentedCount: v.units?.filter((u: any) => u.status === 'RENTED').length || 0,
+            reservedCount: v.units?.filter((u: any) => u.status === 'RESERVED').length || 0,
+            totalCount: v.units?.length || 0
+        })) : [],
+        price: Number(p.monthlyPrice)
+    }))
+
     return (
         <OperatorDashboardClient
             operatorName={typeof payload.username === 'string' ? payload.username : (typeof (payload as any).fullName === 'string' ? (payload as any).fullName : 'Operator')}
@@ -203,6 +237,7 @@ export default async function OperatorDashboardPage() {
             variants={JSON.parse(JSON.stringify(lowStockVariants))}
             users={JSON.parse(JSON.stringify(allUsers))}
             allInvoices={JSON.parse(JSON.stringify(formattedInvoicesForClient))}
+            products={JSON.parse(JSON.stringify(formattedProducts))}
         />
     )
 }

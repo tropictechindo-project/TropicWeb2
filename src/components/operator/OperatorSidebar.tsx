@@ -71,6 +71,11 @@ const items = [
         icon: Package,
     },
     {
+        title: "Products Management",
+        url: "?tab=products",
+        icon: Package,
+    },
+    {
         title: "Service Requests",
         url: "?tab=requests",
         icon: ClipboardCheck,

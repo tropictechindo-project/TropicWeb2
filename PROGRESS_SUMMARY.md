@@ -91,9 +91,14 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-**Last Updated**: 2026-03-21 05:24:00 (WITA/GMT+8)
-**System Version**: 2.7.0-hardened
-**Environment**: Global Production Stable (PageSpeed Optimized + Smart QR)
+**Last Updated**: 2026-03-24 16:30:00 (WITA/GMT+8)
+**System Version**: 2.8.0-hardened
+**Environment**: Global Production Stable (Dashboard Hardening & Translated Guides)
+
+- ✅ **Dashboard Hardening & Guides Translation (v2.8.0)**:
+    - ✅ **Operator Dashboard Expansion**: Added Products Management panel, mirroring 70% Admin operations capability for stock/catalog administration natively.
+    - ✅ **Worker Dashboard CTA Geolocation**: Added "Sabungkan Perangkat" CTA requesting location tracking permissions with live diagnostics status dot indicators.
+    - ✅ **Bilingual System Guides**: Translated absolute coordinates of all Role dashboards (Admin, Operator, Worker, User) guides to full Indonesian (`ID`) coverage safely accurately.
 
 - ✅ **PageSpeed Optimizations & Smart QR (v2.7.0)**:
     - ✅ **Smart QR Subtotals**: Injected dynamic client state hooks building tracking links on public invoice states flawlessly.

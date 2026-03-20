@@ -122,7 +122,9 @@ async function getAnalyticsData() {
 
 async function getRoiStats() {
     const [allUnits, orderItems] = await Promise.all([
-        (db as any).inventoryUnit.findMany({}),
+        (db as any).inventoryUnit.findMany({
+            include: { product: { select: { name: true } } }
+        }),
         (db as any).orderItem.findMany({
             where: { inventoryUnitId: { not: null } },
             select: { price: true, createdAt: true, inventoryUnitId: true }
@@ -144,10 +146,29 @@ async function getRoiStats() {
         .reduce((sum: number, item: any) => sum + Number(item.price), 0)
 
     const total_installment = allUnits
-        .filter(u => trackedUnitIds.has(u.id) && u.installmentMonthly !== null) // Strictly filter nulls
-        .reduce((sum, u) => sum + Number(u.installmentMonthly), 0)
+        .filter(u => trackedUnitIds.has(u.id) && u.installmentMonthly !== null)
+        .reduce((sum, u) => sum + Number(u.installmentMonthly || 0), 0)
 
     const net_cashflow = monthly_revenue - total_installment
+
+    const itemsBreakdown = allUnits.map((u: any) => {
+        const itemOrders = orderItems.filter((item: any) => item.inventoryUnitId === u.id)
+        const earned = itemOrders.reduce((sum: number, item: any) => sum + Number(item.price), 0)
+        const monthly = itemOrders
+            .filter((item: any) => item.createdAt && new Date(item.createdAt) >= startOfMonth)
+            .reduce((sum: number, item: any) => sum + Number(item.price), 0)
+        const installment = Number(u.installmentMonthly || 0)
+
+        return {
+            id: u.id,
+            name: u.product?.name || "Unknown Item",
+            serialCode: u.serialCode,
+            totalEarned: earned,
+            monthlyRevenue: monthly,
+            installment: installment,
+            netCashflow: monthly - installment
+        }
+    })
 
     return {
         total_units,
@@ -156,7 +177,8 @@ async function getRoiStats() {
         total_earned,
         monthly_revenue,
         total_installment,
-        net_cashflow
+        net_cashflow,
+        itemsBreakdown
     }
 }
 

@@ -91,6 +91,42 @@ export default function WorkerDashboard() {
   const [selectedLogToEdit, setSelectedLogToEdit] = useState<any>(null)
   const [editLogNotes, setEditLogNotes] = useState('')
 
+  const [isConnected, setIsConnected] = useState(false)
+  const [permissionLoading, setPermissionLoading] = useState(false)
+
+  const checkPermissions = async () => {
+    try {
+      if (typeof window === 'undefined' || !navigator.permissions) return
+      const geoStatus = await navigator.permissions.query({ name: 'geolocation' })
+      const notifStatus = Notification.permission
+      setIsConnected(geoStatus.state === 'granted' && notifStatus === 'granted')
+
+      geoStatus.onchange = () => {
+        setIsConnected(geoStatus.state === 'granted' && Notification.permission === 'granted')
+      }
+    } catch (e) { console.error('Permission check failed', e) }
+  }
+
+  useEffect(() => {
+    checkPermissions()
+  }, [])
+
+  const handleConnect = async () => {
+    setPermissionLoading(true)
+    try {
+      await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true })
+      })
+      await Notification.requestPermission()
+      checkPermissions()
+      toast.success("Perangkat Tersambung")
+    } catch (e) {
+      toast.error("Gagal Menyambungkan Perangkat. Cek izin browser.")
+    } finally {
+      setPermissionLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push('/auth/login')
@@ -418,6 +454,16 @@ export default function WorkerDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleConnect} 
+                disabled={permissionLoading} 
+                className={cn("h-8 gap-1.5 flex text-[10px] font-black uppercase", isConnected ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100" : "border-red-200 bg-red-50 text-red-700 hover:bg-red-100")}
+              >
+                <span className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                Sambungkan Perangkat
+              </Button>
               <DashboardGuide role="WORKER" />
               <Button
                 variant="outline"
