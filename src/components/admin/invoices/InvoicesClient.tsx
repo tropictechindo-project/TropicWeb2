@@ -142,9 +142,10 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         inv.customerName.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    const handleDownload = (invoice: Invoice) => {
+    const handleDownload = async (invoice: Invoice) => {
         try {
-            const pdf = generateInvoicePDF({
+            const pdf = await generateInvoicePDF({
+                invoiceId: invoice.id,
                 invoiceNumber: invoice.invoiceNumber,
                 invoiceDate: new Date(invoice.date).toLocaleDateString(),
                 customerName: invoice.customerName,

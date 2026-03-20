@@ -15,15 +15,25 @@ import {
 import Link from "next/link"
 import { generateInvoicePDF } from "@/lib/pdf/invoice"
 import { toast } from "sonner"
+import { useState, useEffect } from "react"
+import { toDataURL } from "qrcode"
 
 interface InvoicePublicClientProps {
     invoice: any
 }
 
 export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
-    const handleDownload = () => {
+    const [qrUrl, setQrUrl] = useState("")
+
+    useEffect(() => {
+        const trackingUrl = `${window.location.origin}/tracking/${invoice.invoiceNumber}`
+        toDataURL(trackingUrl).then(setQrUrl).catch(console.error)
+    }, [invoice.invoiceNumber])
+
+    const handleDownload = async () => {
         try {
-            const pdf = generateInvoicePDF({
+            const pdf = await generateInvoicePDF({
+                invoiceId: invoice.id,
                 invoiceNumber: invoice.invoiceNumber,
                 invoiceDate: new Date(invoice.date).toLocaleDateString(),
                 customerName: invoice.customerName,
@@ -39,9 +49,10 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                 total: invoice.total,
                 items: invoice.items,
                 isRegistered: !!invoice.userId
-
             } as any)
             pdf.save(`${invoice.invoiceNumber}.pdf`)
+            // pdf.output('dataurlnewwindow') // Alternative
+            
             toast.success("Invoice downloaded")
         } catch (error) {
             console.error(error)
@@ -143,26 +154,34 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                         </div>
 
                         {/* Footer Summary */}
-                        <div className="bg-muted/50 p-8 flex flex-col items-end space-y-2 border-t">
-                            <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
-                                <span>Subtotal</span>
-                                <span>Rp {(invoice.subtotal || invoice.items.reduce((acc: number, item: any) => acc + item.totalPrice, 0)).toLocaleString('id-ID')}</span>
-                            </div>
-                            {invoice.tax > 0 && (
-                                <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
-                                    <span>Tax (2%)</span>
-                                    <span>Rp {invoice.tax.toLocaleString('id-ID')}</span>
+                        <div className="bg-muted/50 p-8 flex flex-col md:flex-row justify-between items-start md:items-end border-t gap-6">
+                            {qrUrl && (
+                                <div className="flex flex-col items-center gap-2 bg-white p-3 rounded-2xl border shadow-sm self-start md:self-auto">
+                                    <img src={qrUrl} alt="Tracking QR" className="w-24 h-24" />
+                                    <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest text-center">Smart QR - Scan to Track</span>
                                 </div>
                             )}
-                            {invoice.deliveryFee > 0 && (
+                            <div className="flex flex-col items-end space-y-2 w-full max-w-xs md:ml-auto">
                                 <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
-                                    <span>Delivery Fee</span>
-                                    <span>Rp {invoice.deliveryFee.toLocaleString('id-ID')}</span>
+                                    <span>Subtotal</span>
+                                    <span>Rp {(invoice.subtotal || invoice.items.reduce((acc: number, item: any) => acc + item.totalPrice, 0)).toLocaleString('id-ID')}</span>
                                 </div>
-                            )}
-                            <div className="flex justify-between w-full max-w-xs text-2xl font-black py-4 border-t border-muted">
-                                <span className="uppercase">Total Amount</span>
-                                <span className="text-primary">Rp {invoice.total.toLocaleString('id-ID')}</span>
+                                {invoice.tax > 0 && (
+                                    <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
+                                        <span>Tax (2%)</span>
+                                        <span>Rp {invoice.tax.toLocaleString('id-ID')}</span>
+                                    </div>
+                                )}
+                                {invoice.deliveryFee > 0 && (
+                                    <div className="flex justify-between w-full max-w-xs text-sm font-bold italic text-muted-foreground">
+                                        <span>Delivery Fee</span>
+                                        <span>Rp {invoice.deliveryFee.toLocaleString('id-ID')}</span>
+                                    </div>
+                                )}
+                                <div className="flex justify-between w-full max-w-xs text-2xl font-black py-4 border-t border-muted">
+                                    <span className="uppercase">Total Amount</span>
+                                    <span className="text-primary">Rp {invoice.total.toLocaleString('id-ID')}</span>
+                                </div>
                             </div>
                         </div>
 

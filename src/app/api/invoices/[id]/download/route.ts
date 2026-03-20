@@ -48,12 +48,13 @@ export async function GET(
     }
 
     // Generate PDF
-    const pdf = generateInvoicePDF({
+    const pdf = await generateInvoicePDF({
+      invoiceId: invoice.id,
       invoiceNumber: invoice.invoiceNumber,
       invoiceDate: (invoice.createdAt || new Date()).toLocaleDateString(),
-      customerName: invoice.user?.fullName || 'Guest',
-      customerEmail: invoice.user?.email || '',
-      customerWhatsApp: invoice.user?.whatsapp,
+      customerName: invoice.user?.fullName || invoice.guestName || 'Guest',
+      customerEmail: invoice.user?.email || invoice.guestEmail || '',
+      customerWhatsApp: invoice.user?.whatsapp || invoice.guestWhatsapp,
       items: (invoice.order?.rentalItems || []).map((item) => {
         const name = item.variant?.product?.name || item.rentalPackage?.name || 'Item';
         const price = Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0);

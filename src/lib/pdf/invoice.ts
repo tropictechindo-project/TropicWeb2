@@ -23,9 +23,14 @@ export interface InvoiceData {
   endDate: string
   isRegistered?: boolean
   status?: string
+  invoiceId: string
 }
 
-export function generateInvoicePDF(data: InvoiceData): jsPDF {
+export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
+    const QRCode = await import('qrcode')
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+    const qrCodeUrl = `${baseUrl}/invoice/${data.invoiceId}`
+    const qrCodeDataUrl = await QRCode.toDataURL(qrCodeUrl)
   const doc = new jsPDF()
   const pageWidth = doc.internal.pageSize.getWidth()
   const pageHeight = doc.internal.pageSize.getHeight()
@@ -142,6 +147,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
 
   data.items.forEach((item, index) => {
     if (index % 2 === 0) {
+      doc.setFillColor(250, 250, 250)
       doc.rect(startX, y - 5, pageWidth - 40, 8, 'F')
     }
 
@@ -165,24 +171,30 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.line(startX, y, pageWidth - 20, y)
   y += 8
 
+  // Render Smart QR
+  doc.addImage(qrCodeDataUrl, 'PNG', startX, y, 25, 25)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Smart QR - Scan to verify online', startX, y + 28)
+
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(10)
   const totalsX = pageWidth - 80
 
   doc.text(`Subtotal:`, totalsX, y)
   doc.text(`${data.currency} ${data.subtotal.toLocaleString()}`, pageWidth - 30, y)
-  y += 7
+  y += 9
 
   if (data.tax > 0) {
     doc.text(`Tax (${((data.tax / data.subtotal) * 100).toFixed(1)}%):`, totalsX, y)
     doc.text(`${data.currency} ${data.tax.toLocaleString()}`, pageWidth - 30, y)
-    y += 7
+    y += 9
   }
 
   if (data.deliveryFee > 0) {
     doc.text(`Delivery Fee:`, totalsX, y)
     doc.text(`${data.currency} ${data.deliveryFee.toLocaleString()}`, pageWidth - 30, y)
-    y += 7
+    y += 9
   }
 
   doc.setFont('helvetica', 'bold')
