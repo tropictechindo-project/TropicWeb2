@@ -133,7 +133,7 @@ export async function sendInvoiceEmail(data: {
     return true
   } catch (error: any) {
     console.error('Error sending email:', error)
-    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, 'FAILED', data.invoiceId)
+    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, `FAILED: ${error.message?.slice(0, 40) || 'Unknown'}`, data.invoiceId)
     return false
   }
 }
@@ -179,7 +179,7 @@ export async function sendResetPasswordEmail(to: string, resetLink: string) {
     return true
   } catch (error) {
     console.error('Error sending reset email:', error)
-    await logEmail(to, mailOptions.subject, mailOptions.html, 'FAILED')
+    await logEmail(to, mailOptions.subject, mailOptions.html, `FAILED: ${(error as any).message?.slice(0, 40) || 'Unknown'}`)
     return false
   }
 }
@@ -228,7 +228,7 @@ export async function sendVerificationEmail(to: string, verificationLink: string
     return true
   } catch (error) {
     console.error('Error sending verification email:', error)
-    await logEmail(to, mailOptions.subject, mailOptions.html, 'FAILED')
+    await logEmail(to, mailOptions.subject, mailOptions.html, `FAILED: ${(error as any).message?.slice(0, 40) || 'Unknown'}`)
     return false
   }
 }
@@ -258,7 +258,7 @@ export async function sendEmail(data: {
     return true
   } catch (error) {
     console.error('Error sending generic email:', error)
-    await logEmail(data.to, mailOptions.subject, mailOptions.html, 'FAILED')
+    await logEmail(data.to, mailOptions.subject, mailOptions.html, `FAILED: ${(error as any).message?.slice(0, 40) || 'Unknown'}`)
     return false
   }
 }

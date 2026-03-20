@@ -175,15 +175,14 @@ export async function POST(request: Request) {
                 data: [
                     {
                         title: 'New Order Received',
-                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${finalTotal}.`,
+                        message: `New Order from ${guestInfo?.fullName || 'Customer'} (${guestInfo?.email || 'Guest'}). Invoice ${invoiceNumber} created.`,
                         type: 'INFO',
                         role: 'ADMIN',
                         link: `/admin/orders`,
                     },
                     {
                         title: 'New Order Received',
-                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${finalTotal}.`,
-
+                        message: `New Order from ${guestInfo?.fullName || 'Customer'} (${guestInfo?.email || 'Guest'}). Invoice ${invoiceNumber} created.`,
                         type: 'INFO',
                         role: 'OPERATOR',
                         link: `/admin/orders`,

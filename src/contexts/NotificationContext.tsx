@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useAuth } from './AuthContext'
+import { toast } from 'sonner'
 
 interface SpiNotification {
     id: string
@@ -27,7 +28,32 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
     const [unreadOrdersCount, setUnreadOrdersCount] = useState(0)
     const [unreadDeliveriesCount, setUnreadDeliveriesCount] = useState(0)
+    const [prevUnreadOrders, setPrevUnreadOrders] = useState(0)
+    const [prevNotificationsCount, setPrevNotificationsCount] = useState(0)
     const [spiNotifications, setSpiNotifications] = useState<SpiNotification[]>([])
+
+    useEffect(() => {
+        if (unreadOrdersCount > prevUnreadOrders) {
+            // Find the most recent New Order SPI notification
+            const latestSpi = spiNotifications[0]
+            if (latestSpi && latestSpi.title === 'New Order Received') {
+                toast.success(latestSpi.message, { duration: 10000 })
+            } else {
+                toast.success("New order arrived!", { duration: 5000 })
+            }
+        }
+        setPrevUnreadOrders(unreadOrdersCount)
+    }, [unreadOrdersCount, spiNotifications])
+
+    useEffect(() => {
+        if (spiNotifications.length > prevNotificationsCount) {
+             const latestSpi = spiNotifications[0]
+             if (latestSpi && latestSpi.title !== 'New Order Received') { // Avoid duplicate toasts
+                 toast.info(`${latestSpi.title}: ${latestSpi.message}`, { duration: 8000 })
+             }
+        }
+        setPrevNotificationsCount(spiNotifications.length)
+    }, [spiNotifications])
 
     const fetchUnreadCounts = async () => {
         if (!user) {

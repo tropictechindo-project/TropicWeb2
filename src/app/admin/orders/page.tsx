@@ -13,7 +13,7 @@ export default async function AdminOrdersPage() {
                 select: { fullName: true, email: true, whatsapp: true }
             },
             invoices: {
-                select: { id: true, lineItems: true }
+                select: { id: true, lineItems: true, guestName: true, guestEmail: true, guestWhatsapp: true }
             },
             rentalItems: {
 
@@ -42,9 +42,9 @@ export default async function AdminOrdersPage() {
     const formattedOrders = orders.map((order: any) => ({
         id: order.id,
         orderNumber: order.orderNumber || `ORD-${order.id.substring(0, 8).toUpperCase()}`,
-        user: order.user ? (order.user.fullName || order.user.email) : 'Unknown',
-        email: order.user ? order.user.email : '',
-        whatsapp: order.user?.whatsapp || '',
+        user: order.user ? (order.user.fullName || order.user.email) : (order.invoices?.[0]?.guestName || 'Unknown'),
+        email: order.user ? order.user.email : (order.invoices?.[0]?.guestEmail || ''),
+        whatsapp: order.user?.whatsapp || order.invoices?.[0]?.guestWhatsapp || '',
         period: `${new Date(order.startDate).toLocaleDateString()} - ${new Date(order.endDate).toLocaleDateString()}`,
         startDate: order.startDate?.toISOString() || new Date().toISOString(),
         endDate: order.endDate?.toISOString() || new Date().toISOString(),

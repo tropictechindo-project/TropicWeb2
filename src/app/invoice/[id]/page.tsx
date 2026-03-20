@@ -39,24 +39,28 @@ export default async function PublicInvoicePage({ params }: { params: Promise<{ 
         subtotal: Number(invoice.subtotal),
         tax: Number(invoice.tax),
         deliveryFee: Number(invoice.deliveryFee),
-        items: invoice.order?.rentalItems.map(item => ({
-            name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
-            quantity: item.quantity || 1,
-            unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || invoice.total),
-            totalPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || invoice.total) * (item.quantity || 1)
-        })) || (invoice.lineItems ? (invoice.lineItems as any[]).map(item => ({
-            name: item.name,
-            quantity: item.quantity || 1,
-            unitPrice: Number(item.price),
-            totalPrice: Number(item.price) * (item.quantity || 1)
-        })) : [
-            {
-                name: "Manual Service / Rental",
-                quantity: 1,
-                unitPrice: Number(invoice.total),
-                totalPrice: Number(invoice.total)
-            }
-        ])
+        items: invoice.order?.rentalItems && invoice.order.rentalItems.length > 0
+            ? invoice.order.rentalItems.map(item => ({
+                name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
+                quantity: item.quantity || 1,
+                unitPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || invoice.total),
+                totalPrice: Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || invoice.total) * (item.quantity || 1)
+            }))
+            : invoice.lineItems
+                ? (invoice.lineItems as any[]).map(item => ({
+                    name: item.name,
+                    quantity: item.quantity || 1,
+                    unitPrice: Number(item.price),
+                    totalPrice: Number(item.price) * (item.quantity || 1)
+                }))
+                : [
+                    {
+                        name: "Manual Service / Rental",
+                        quantity: 1,
+                        unitPrice: Number(invoice.total),
+                        totalPrice: Number(invoice.total)
+                    }
+                ]
     }
 
     return <InvoicePublicClient invoice={formattedInvoice as any} />
