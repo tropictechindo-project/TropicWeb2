@@ -54,7 +54,7 @@ export async function GET(
       invoiceDate: (invoice.createdAt || new Date()).toLocaleDateString(),
       customerName: invoice.user?.fullName || invoice.guestName || 'Guest',
       customerEmail: invoice.user?.email || invoice.guestEmail || '',
-      customerWhatsApp: invoice.user?.whatsapp || invoice.guestWhatsapp,
+      customerWhatsApp: invoice.user?.whatsapp || invoice.guestWhatsapp || undefined,
       items: (invoice.order?.rentalItems || []).map((item) => {
         const name = item.variant?.product?.name || item.rentalPackage?.name || 'Item';
         const price = Number(item.variant?.monthlyPrice || item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0);
