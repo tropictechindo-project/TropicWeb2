@@ -13,9 +13,10 @@ export default async function AdminOrdersPage() {
                 select: { fullName: true, email: true, whatsapp: true }
             },
             invoices: {
-                select: { id: true }
+                select: { id: true, lineItems: true }
             },
             rentalItems: {
+
                 include: {
                     unit: true,
                     variant: {
@@ -45,29 +46,50 @@ export default async function AdminOrdersPage() {
         email: order.user ? order.user.email : '',
         whatsapp: order.user?.whatsapp || '',
         period: `${new Date(order.startDate).toLocaleDateString()} - ${new Date(order.endDate).toLocaleDateString()}`,
+        startDate: order.startDate?.toISOString() || new Date().toISOString(),
+        endDate: order.endDate?.toISOString() || new Date().toISOString(),
         status: order.status,
-        itemCount: (order as any).orderItems && (order as any).orderItems.length > 0 ? (order as any).orderItems.length : order.rentalItems.length,
+
+        itemCount: (order as any).orderItems && (order as any).orderItems.length > 0 
+            ? (order as any).orderItems.length 
+            : order.rentalItems?.length || (order.invoices?.[0]?.lineItems as any[])?.length || 0,
         totalAmount: Number(order.totalAmount),
+        subtotal: Number(order.subtotal || 0),
+        tax: Number(order.tax || 0),
+        deliveryFee: Number(order.deliveryFee || 0),
+        paymentMethod: order.paymentMethod || 'MANUAL',
         createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
         invoiceId: order.invoices?.[0]?.id || null,
         items: (order as any).orderItems && (order as any).orderItems.length > 0 
             ? (order as any).orderItems.map((item: any) => ({
                 id: item.id,
-                productId: item.productId, // Adding this!
+                productId: item.productId,
                 name: item.nameSnapshot,
                 quantity: item.quantity,
                 type: 'Snapshot',
                 price: Number(item.price),
                 serialNumber: 'SN-N/A'
             }))
-            : order.rentalItems.map(item => ({
-                id: item.id,
-                name: item.variant?.product?.name || item.rentalPackage?.name || 'Unknown Item',
-                quantity: item.quantity || 1,
-                type: item.variant?.product ? 'PRODUCT' : 'PACKAGE',
-                price: Number(item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0),
-                serialNumber: item.unit?.serialNumber || 'PENDING'
-            }))
+            : order.rentalItems && order.rentalItems.length > 0
+                ? order.rentalItems.map((item: any) => ({
+                    id: item.id,
+                    name: item.variant?.product?.name || item.rentalPackage?.name || 'Unknown Item',
+                    quantity: item.quantity || 1,
+                    type: item.variant?.product ? 'PRODUCT' : 'PACKAGE',
+                    price: Number(item.variant?.product?.monthlyPrice || item.rentalPackage?.price || 0),
+                    serialNumber: item.unit?.serialNumber || 'PENDING'
+                }))
+                : order.invoices?.[0]?.lineItems
+                    ? (order.invoices[0].lineItems as any[]).map((item: any) => ({
+                        id: item.id || `inv_item_${Math.random()}`,
+                        name: item.name || 'Rental Item',
+                        quantity: item.quantity || 1,
+                        type: 'InvoiceSnapshot',
+                        price: Number(item.price || 0),
+                        serialNumber: 'N/A'
+                    }))
+                    : []
+
     }))
 
     return (

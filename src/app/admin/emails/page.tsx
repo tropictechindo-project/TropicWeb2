@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
 import { Loader2, Mail, ExternalLink, ShieldCheck, AlertCircle } from 'lucide-react'
+
 import { toast } from 'sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -23,7 +25,72 @@ export default function EmailAuditPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [selectedEmail, setSelectedEmail] = useState<EmailLog | null>(null)
 
+    // Forwarding List State
+    const [forwardEmails, setForwardEmails] = useState<string[]>([])
+    const [newEmail, setNewEmail] = useState('')
+    const [isSaving, setIsSaving] = useState(false)
+
+    const fetchForwardEmails = async () => {
+        try {
+            const res = await fetch('/api/admin/settings/email-forward')
+            if (res.ok) {
+                const data = await res.json()
+                setForwardEmails(data.emails || [])
+            }
+        } catch (e) { console.error(e) }
+    }
+
+    const handleAddEmail = async () => {
+        const trimmed = newEmail.trim()
+        if (!trimmed || !trimmed.includes('@')) {
+            toast.error("Invalid email address")
+            return
+        }
+        if (forwardEmails.length >= 5) {
+            toast.error("Maximum 5 emails allowed")
+            return
+        }
+        if (forwardEmails.includes(trimmed)) {
+            toast.error("Email already in list")
+            return
+        }
+        
+        setIsSaving(true)
+        const updated = [...forwardEmails, trimmed]
+        try {
+            const res = await fetch('/api/admin/settings/email-forward', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ emails: updated })
+            })
+            if (res.ok) {
+                setForwardEmails(updated)
+                setNewEmail('')
+                toast.success("Forward email added")
+            }
+        } catch { toast.error("Failed to update") }
+        finally { setIsSaving(false) }
+    }
+
+    const handleRemoveEmail = async (email: string) => {
+        setIsSaving(true)
+        const updated = forwardEmails.filter(e => e !== email)
+        try {
+            const res = await fetch('/api/admin/settings/email-forward', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ emails: updated })
+            })
+            if (res.ok) {
+                setForwardEmails(updated)
+                toast.success("Forward email removed")
+            }
+        } catch { toast.error("Failed to update") }
+        finally { setIsSaving(false) }
+    }
+
     const fetchEmails = async () => {
+
         setIsLoading(true)
         try {
             const res = await fetch('/api/admin/emails', {
@@ -44,6 +111,7 @@ export default function EmailAuditPage() {
 
     useEffect(() => {
         fetchEmails()
+        fetchForwardEmails()
     }, [])
 
     return (
@@ -58,7 +126,48 @@ export default function EmailAuditPage() {
                 </Button>
             </div>
 
+            {/* Email Forward Management Card Node flawless safely */}
+            <Card className="shadow-lg border-border/40 bg-accent/5">
+                <CardHeader className="pb-3 border-b">
+                    <CardTitle className="text-sm font-bold uppercase tracking-wider text-primary flex items-center gap-2">
+                        <ShieldCheck className="h-4 w-4" /> AUTO INVOICE EMAIL FORWARDING (Max 5)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 pt-4">
+                    <div className="flex gap-2">
+                        <Input 
+                            placeholder="Add email to forward list..." 
+                            className="max-w-xs text-xs h-9" 
+                            value={newEmail} 
+                            onChange={e => setNewEmail(e.target.value)} 
+                        />
+                        <Button size="sm" className="h-9 font-bold text-xs" onClick={handleAddEmail} disabled={isSaving}>ADD</Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        {forwardEmails.length === 0 ? (
+                            <p className="text-xs text-muted-foreground">No automatic forwards configured.</p>
+                        ) : (
+                            forwardEmails.map((email, idx) => (
+                                <Badge key={idx} variant="secondary" className="gap-1 pl-2 pr-1 h-7 text-xs font-medium">
+                                    {email}
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon" 
+                                        className="h-5 w-5 p-0 hover:bg-destructive/10 text-destructive" 
+                                        onClick={() => handleRemoveEmail(email)}
+                                        disabled={isSaving}
+                                    >
+                                        <AlertCircle className="h-3 w-3" />
+                                    </Button>
+                                </Badge>
+                            ))
+                        )}
+                    </div>
+                </CardContent>
+            </Card>
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
                 {/* Email List */}
                 <Card className="lg:col-span-1 shadow-xl border-border/40">
                     <CardHeader className="bg-muted/30 pb-4">

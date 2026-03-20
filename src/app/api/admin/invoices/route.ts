@@ -27,9 +27,10 @@ export async function POST(req: Request) {
         const body = await req.json()
         const {
             type, userId, guestName, guestEmail, guestWhatsapp, guestAddress,
-            amount, items: itemName, status,
+            amount, subtotal, tax, deliveryFee, items, status,
             sendToCustomer, sendToWorkers, sendToCompany,
-            activateOrderFlow, sendSpiNotifications
+            activateOrderFlow, sendSpiNotifications,
+            startDate: startDateStr, endDate: endDateStr
         } = body
 
         const invoiceNumber = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`
@@ -38,47 +39,42 @@ export async function POST(req: Request) {
         const result = await db.$transaction(async (tx) => {
             let orderId: string | undefined
 
+            const startDate = startDateStr ? new Date(startDateStr) : new Date()
+            const endDate = endDateStr ? new Date(endDateStr) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+
             // 1. Create Order if requested
             if (activateOrderFlow) {
-                const startDate = new Date()
-                const endDate = new Date()
-                endDate.setDate(startDate.getDate() + 30) // Default 30 days for manual
-
                 const order = await tx.order.create({
                     data: {
                         orderNumber,
                         status: status === 'PAID' ? 'PAID' : 'AWAITING_PAYMENT',
                         totalAmount: amount,
-                        subtotal: amount,
+                        subtotal: subtotal || amount,
                         paymentMethod: 'MANUAL_INVOICE',
                         startDate,
                         endDate,
-                        duration: 30,
-                        userId: type === 'registered' ? userId : (actorId || userId), // Use actor as fallback if guest
+                        duration: Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)),
+                        userId: type === 'registered' ? userId : (actorId || userId),
                     }
                 })
                 orderId = order.id
 
-                // Add a generic rental item
-                await tx.rentalItem.create({
-                    data: {
-                        orderId: order.id,
-                        quantity: 1,
-                        // Note: Variant or Package would need selection for full inventory sync
-                    }
-                })
-
+                // Add item rows
                 const anyTx = tx as any
-                await anyTx.orderItem.create({
-                    data: {
-                        orderId: order.id,
-                        nameSnapshot: itemName || 'Manual Invoice Item',
-                        price: amount || 0,
-                        quantity: 1,
-                        rentalStart: startDate,
-                        rentalEnd: endDate,
+                if (Array.isArray(items)) {
+                    for (const item of items) {
+                        await anyTx.orderItem.create({
+                            data: {
+                                orderId: order.id,
+                                nameSnapshot: item.name || 'Manual Item',
+                                price: item.price || 0,
+                                quantity: item.quantity || 1,
+                                rentalStart: startDate,
+                                rentalEnd: endDate,
+                            }
+                        })
                     }
-                })
+                }
             }
 
             // 2. Create Invoice
@@ -92,11 +88,15 @@ export async function POST(req: Request) {
                     guestWhatsapp: type === 'guest' ? guestWhatsapp : null,
                     guestAddress: guestAddress,
                     total: amount,
-                    subtotal: amount,
+                    subtotal: subtotal || amount,
+                    tax: tax || 0,
+                    deliveryFee: deliveryFee || 0,
                     status: status || 'PAID',
                     currency: 'IDR',
+                    lineItems: items as any, // Save dynamic items list so PDFs read accurately
                 }
             })
+
 
             // 3. Create Delivery if order flow is active
             let deliveryId: string | undefined

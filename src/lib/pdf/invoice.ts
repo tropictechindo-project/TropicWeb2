@@ -192,10 +192,17 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   y += 20
 
   // Confirmation & Approval Section
-  y = pageHeight - 90
+  if (y > pageHeight - 80) {
+    doc.addPage()
+    y = 20
+  } else {
+    y += 15
+  }
+  
   doc.setDrawColor(200, 200, 200)
   doc.line(20, y, pageWidth - 20, y)
   y += 12
+
 
   doc.setFontSize(10)
   doc.setFont('helvetica', 'bold')

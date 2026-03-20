@@ -95,12 +95,52 @@ export async function POST(request: Request) {
         ]
 
         const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
+        const orderNumber = `ORD-${Date.now().toString().slice(-6)}`
 
-        // 4. Create Invoice (pending payment — no Order yet)
+        // 4. Create Order & Invoice
         const invoice = await db.$transaction(async (tx) => {
+            // A. Create Order
+            const newOrder = await tx.order.create({
+                data: {
+                    orderNumber,
+                    status: 'AWAITING_PAYMENT',
+                    subtotal: subtotalValue,
+                    tax: tax || 0,
+                    deliveryFee: deliveryFee || 0,
+                    totalAmount: finalTotal,
+                    paymentMethod: paymentMethod,
+                    startDate: new Date(),
+                    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Default 30 days
+                    duration: 30,
+                    userId: userId || null,
+                    deliveryAddress: deliveryAddress,
+                    locationLatitude: latitude ? parseFloat(latitude) : null,
+                    locationLongitude: longitude ? parseFloat(longitude) : null,
+                }
+            })
+
+            // B. Create Order Items for All Cart Items Node flawless safely
+            const anyTx = tx as any
+            if (Array.isArray(finalLineItems)) {
+                for (const item of finalLineItems) {
+                    await anyTx.orderItem.create({
+                        data: {
+                            orderId: newOrder.id,
+                            nameSnapshot: item.name || 'Manual Item',
+                            price: item.price || 0,
+                            quantity: item.quantity || 1,
+                            rentalStart: new Date(),
+                            rentalEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                        }
+                    })
+                }
+            }
+
+            // C. Create Invoice linking to orderId
             const newInvoice = await tx.invoice.create({
                 data: {
                     invoiceNumber,
+                    orderId: newOrder.id, // Linked!
                     status: 'PENDING',
                     subtotal: subtotalValue,
                     tax,
@@ -122,6 +162,7 @@ export async function POST(request: Request) {
 
 
 
+
             // Store idempotency key referencing the invoice
             if (idempotencyKey) {
                 await tx.idempotencyKey.create({
@@ -134,14 +175,15 @@ export async function POST(request: Request) {
                 data: [
                     {
                         title: 'New Order Received',
-                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${total}.`,
+                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${finalTotal}.`,
                         type: 'INFO',
                         role: 'ADMIN',
                         link: `/admin/orders`,
                     },
                     {
                         title: 'New Order Received',
-                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${total}.`,
+                        message: `Invoice ${invoiceNumber} created. Awaiting payment of ${currency || 'IDR'} ${finalTotal}.`,
+
                         type: 'INFO',
                         role: 'OPERATOR',
                         link: `/admin/orders`,
@@ -191,6 +233,6 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         console.error('[ORDERS_POST] Error:', error)
-        return NextResponse.json({ error: 'Failed to create invoice' }, { status: 500 })
+        return NextResponse.json({ error: `Invoice Create Failed: ${error.message || 'Unknown Error'}` }, { status: 500 })
     }
 }

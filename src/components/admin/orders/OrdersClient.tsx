@@ -18,21 +18,31 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { toast } from "sonner"
+
 
 interface Order {
     id: string
     user: string
     email: string
     period: string
+    startDate?: string
+    endDate?: string
+    paymentMethod?: string
+    deliveryAddress?: string
+    subtotal?: number
+    tax?: number
+    deliveryFee?: number
     status: string
     paymentStatus?: string
     itemCount: number
     totalAmount: number
-    orderNumber: string // Missing in previous interface
+    orderNumber: string
     createdAt: string
     whatsapp: string
     invoiceId?: string
+
     items: {
         id: string
         name: string
@@ -192,28 +202,39 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
         }
     }
 
-    const filteredOrders = filterStatus === "ALL"
-        ? orders
-        : orders.filter(o => o.status === filterStatus)
+    const filteredOrders = orders.filter(order => {
+        if (filterStatus === "ALL") return true
+        if (filterStatus === "NEW") {
+            return order.status === 'AWAITING_PAYMENT' || order.status === 'PENDING'
+        }
+        if (filterStatus === "ACTIVE") {
+            return order.status === 'ACTIVE' || order.status === 'DELIVERED' || order.status === 'CONFIRMED'
+        }
+        if (filterStatus === "PICKUP") {
+            if (!order.endDate) return false
+            const daysLeft = (new Date(order.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+            return (order.status === 'ACTIVE' || order.status === 'DELIVERED' || order.status === 'CONFIRMED') && daysLeft <= 3 && daysLeft >= 0
+        }
+
+        if (filterStatus === "NON_ACTIVE") {
+            return order.status === 'COMPLETED' || order.status === 'CANCELLED' || order.status === 'PICKED_UP'
+        }
+        return false
+    })
+
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                <Select value={filterStatus} onValueChange={setFilterStatus}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="ALL">All Orders</SelectItem>
-                        <SelectItem value="PENDING">Pending</SelectItem>
-                        <SelectItem value="CONFIRMED">Confirmed</SelectItem>
-                        <SelectItem value="ACTIVE">Active</SelectItem>
-                        <SelectItem value="COMPLETED">Completed</SelectItem>
-                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+            <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
+                <TabsList className="bg-muted/50 p-1 mb-2 flex flex-wrap h-auto gap-1">
+                    <TabsTrigger value="ALL" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">All Orders</TabsTrigger>
+                    <TabsTrigger value="NEW" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background flex items-center gap-1">New Orders {orders.filter(o => o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING').length > 0 && <Badge variant="destructive" className="h-4 w-4 p-0 flex items-center justify-center text-[8px]">{orders.filter(o => o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING').length}</Badge>}</TabsTrigger>
+                    <TabsTrigger value="ACTIVE" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">Active Rentals</TabsTrigger>
+                    <TabsTrigger value="PICKUP" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background flex items-center gap-1">Pick Up <Badge variant="outline" className="text-[8px] h-3.5 px-1 bg-amber-500/10 text-amber-600 border-amber-500/20">Soon</Badge></TabsTrigger>
+                    <TabsTrigger value="NON_ACTIVE" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">Non-Active</TabsTrigger>
+                </TabsList>
+            </Tabs>
+
 
             <div className="rounded-md border bg-card overflow-hidden">
                 <Table>
@@ -496,6 +517,35 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                                     ))}
                                 </div>
                             </div>
+
+                            <div className="border-t pt-4 grid grid-cols-2 gap-4 text-xs">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Payment Method</p>
+                                    <Badge variant="outline" className="font-bold uppercase text-[10px] tracking-wider px-2 py-0.5 bg-background">{selectedOrder.paymentMethod || "MANUAL"}</Badge>
+                                    
+                                    {selectedOrder.deliveryAddress && (
+                                        <div className="mt-2">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Delivery Address</p>
+                                            <p className="font-medium text-[11px] text-muted-foreground line-clamp-2">{selectedOrder.deliveryAddress}</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="space-y-1 text-right">
+                                    <div className="flex justify-between text-[11px]">
+                                        <span className="text-muted-foreground">Subtotal:</span>
+                                        <span className="font-bold">Rp {(selectedOrder as any).subtotal?.toLocaleString('id-ID') || "0"}</span>
+                                    </div>
+                                    <div className="flex justify-between text-[11px]">
+                                        <span className="text-muted-foreground">Delivery:</span>
+                                        <span className="font-bold">Rp {(selectedOrder as any).deliveryFee?.toLocaleString('id-ID') || "0"}</span>
+                                    </div>
+                                    <div className="flex justify-between text-[11px]">
+                                        <span className="text-muted-foreground">Tax (2%):</span>
+                                        <span className="font-bold">Rp {(selectedOrder as any).tax?.toLocaleString('id-ID') || "0"}</span>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 flex justify-between items-center">
                                 <div>

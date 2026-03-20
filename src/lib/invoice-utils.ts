@@ -161,10 +161,23 @@ export async function getInvoiceRecipients(invoice: any) {
     })
     recipients.push(...workers.map(w => w.email))
 
-    // Add team emails from env
     const teamEmails = process.env.SMTP_TEAM_EMAILS?.split(',') || ['contact@tropictech.online']
     recipients.push(...teamEmails)
 
+    // Add dynamic forwarded emails from SiteSetting
+    try {
+        const setting = await db.siteSetting.findUnique({ where: { key: 'FORWARD_EMAILS' } })
+        if (setting && setting.value) {
+            const forwardList = (setting.value as any).emails || []
+            if (Array.isArray(forwardList)) {
+                recipients.push(...forwardList)
+            }
+        }
+    } catch (e) {
+        console.error('Error fetching forward recipients:', e)
+    }
+
     // Remove duplicates
+
     return Array.from(new Set(recipients))
 }

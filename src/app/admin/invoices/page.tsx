@@ -26,7 +26,20 @@ export default async function AdminInvoicesPage() {
         orderBy: { fullName: 'asc' }
     })
 
+    const products = await db.product.findMany({
+        select: { id: true, name: true, monthlyPrice: true },
+        orderBy: { name: 'asc' }
+    })
+
+    const formattedProducts = products.map(p => ({
+        id: p.id,
+        name: p.name,
+        monthlyPrice: Number(p.monthlyPrice)
+    }))
+
     const formattedInvoices = invoices.map(inv => ({
+
+
         id: inv.id,
         invoiceNumber: inv.invoiceNumber,
         date: inv.createdAt?.toISOString() || new Date().toISOString(),
@@ -38,7 +51,13 @@ export default async function AdminInvoicesPage() {
         orderNumber: inv.order?.orderNumber || "MANUAL",
         startDate: inv.order?.startDate?.toISOString() || inv.createdAt?.toISOString() || new Date().toISOString(),
         endDate: inv.order?.endDate?.toISOString() || new Date().toISOString(),
+        deliveryAddress: inv.order?.deliveryAddress || inv.guestAddress || '',
+        paymentMethod: inv.order?.paymentMethod || inv.paymentMethod || 'MANUAL',
+        subtotal: Number(inv.subtotal),
+        tax: Number(inv.tax),
+        deliveryFee: Number(inv.deliveryFee),
         userId: inv.userId,
+
         items: inv.order?.rentalItems.map(item => ({
             name: item.variant?.product?.name || item.rentalPackage?.name || "Service Item",
             quantity: item.quantity || 1,
@@ -66,7 +85,13 @@ export default async function AdminInvoicesPage() {
                 <p className="text-muted-foreground">Automated and manual invoice generation with PDF support</p>
             </div>
 
-            <InvoicesClient initialInvoices={formattedInvoices as any} users={users} />
+            <InvoicesClient 
+                initialInvoices={formattedInvoices as any} 
+                users={users} 
+                products={formattedProducts as any} 
+            />
         </div>
     )
 }
+
+

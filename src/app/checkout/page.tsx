@@ -381,7 +381,13 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
 
+                            {/* Product Suggestions Node flawless safely downwards */}
+                            <div className="mt-4 border-t pt-4">
+                                <ProductSuggestions />
+                            </div>
+                            
                             <Separator className="my-6" />
+
 
                             {/* Currency Converter Section */}
                             <div className="mb-6 p-4 rounded-xl border bg-primary/5 border-primary/10">

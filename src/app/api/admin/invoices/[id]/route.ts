@@ -26,7 +26,7 @@ export async function PATCH(
 
         const { id } = await params
         const body = await req.json()
-        const { status, total, subtotal, tax, deliveryFee, guestName, guestEmail, guestWhatsapp, address } = body
+        const { status, total, subtotal, tax, deliveryFee, guestName, guestEmail, guestWhatsapp, address, startDate, endDate, items } = body
 
         const invoice = await db.invoice.update({
             where: { id },
@@ -39,13 +39,48 @@ export async function PATCH(
                 guestName,
                 guestEmail,
                 guestWhatsapp,
-                guestAddress: address
+                guestAddress: address,
+                lineItems: items !== undefined ? (items as any) : undefined // Sync lineItems JSON
             },
             include: { order: true }
         })
 
+        if (invoice.orderId) {
+            // Update Dates on Order
+            if (startDate || endDate) {
+                await db.order.update({
+                    where: { id: invoice.orderId },
+                    data: {
+                        startDate: startDate ? new Date(startDate) : undefined,
+                        endDate: endDate ? new Date(endDate) : undefined,
+                    }
+                })
+            }
+
+            // Sync OrderItems if items array passed
+            if (Array.isArray(items)) {
+                const anyTx = db as any
+                // Delete old items and insert updated ones
+                await anyTx.orderItem.deleteMany({ where: { orderId: invoice.orderId } })
+                for (const item of items) {
+                    await anyTx.orderItem.create({
+                        data: {
+                            orderId: invoice.orderId,
+                            nameSnapshot: item.name || 'Manual Item',
+                            price: item.price || 0,
+                            quantity: item.quantity || 1,
+                            rentalStart: startDate ? new Date(startDate) : invoice.order?.startDate || new Date(),
+                            rentalEnd: endDate ? new Date(endDate) : invoice.order?.endDate || new Date()
+                        }
+                    })
+                }
+            }
+        }
+
         // Sync with order if status is PAID
         if (status === 'PAID' && invoice.orderId) {
+
+
             await db.order.update({
                 where: { id: invoice.orderId },
                 data: { status: 'CONFIRMED' }
@@ -97,11 +132,22 @@ export async function DELETE(
         if (!invoice) return new NextResponse("Not Found", { status: 404 })
 
         const invoiceNumber = invoice.invoiceNumber
-        await db.invoice.delete({ where: { id } })
 
-        if (invoice.order && invoice.order.orderNumber.startsWith("MANUAL")) {
-            await db.order.delete({ where: { id: invoice.orderId! } })
-        }
+        await db.$transaction(async (tx) => {
+            // 1. Delete associated Delivery
+            await tx.delivery.deleteMany({ where: { invoiceId: id } })
+            
+            // 2. Delete associated EmailAudits
+            await tx.emailAudit.deleteMany({ where: { invoiceId: id } })
+
+            // 3. Delete the invoice
+            await tx.invoice.delete({ where: { id } })
+
+            if (invoice.order && invoice.order.orderNumber.startsWith("MANUAL")) {
+                await tx.order.delete({ where: { id: invoice.orderId! } })
+            }
+        })
+
 
         await logActivity({
             userId: actorId,
