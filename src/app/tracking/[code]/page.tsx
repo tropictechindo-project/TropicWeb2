@@ -60,6 +60,44 @@ export default async function PublicTrackingPage({
         })
     }
 
+    // Fallback 2: If no delivery at all, check if invoice exists to show Pre-Dispatch mockup
+    if (!delivery) {
+        const invoice = await db.invoice.findUnique({
+            where: { invoiceNumber: code },
+            include: {
+                order: {
+                    include: {
+                        rentalItems: {
+                            include: {
+                                variant: { include: { product: true } }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        if (invoice) {
+            const mockDelivery = {
+                id: `mock-${invoice.id}`,
+                trackingCode: invoice.invoiceNumber,
+                status: 'QUEUED', // Status text: "Preparing for Dispatch"
+                latitude: -8.65,
+                longitude: 115.216,
+                lastLocationUpdate: invoice.createdAt || new Date(),
+                updatedAt: invoice.createdAt || new Date(),
+                items: invoice.order?.rentalItems.map(item => ({
+                    productName: item.variant?.product?.name || "Equipment Rental",
+                    quantity: item.quantity
+                })) || [],
+                logs: [{ eventType: 'ORDER_CONFIRMED', newValue: { notes: 'Order placed, awaiting dispatch.' }, createdAt: invoice.createdAt }],
+                vehicle: null,
+                claimedByWorker: null
+            }
+            return <TrackingClient initialDelivery={JSON.parse(JSON.stringify(mockDelivery))} />
+        }
+    }
+
     if (!delivery) {
         notFound()
     }

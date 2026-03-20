@@ -217,9 +217,9 @@ export default function CheckoutPage() {
             toast.success(`✅ Order placed! Invoice ${invoiceNumber} — transfer payment then WhatsApp us your proof.`)
             clearCart()
 
-            // Redirect to public tracking page pre-filled with invoice number
+            // Redirect to public invoice page pre-filled with invoice number
             setTimeout(() => {
-                router.push(`/tracking/${invoiceNumber}`)
+                router.push(`/invoice/${invoiceId}`)
             }, 2000)
 
         } catch (error: any) {
