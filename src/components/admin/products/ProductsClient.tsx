@@ -402,7 +402,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                         <div className="space-y-4 border-t pt-4">
                             <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Variants & Stock (By Color)</Label>
 
-                            <div className="grid grid-cols-3 gap-2 items-end">
+                            <div className="grid grid-cols-4 gap-2 items-end">
                                 <div className="space-y-1">
                                     <Label htmlFor="color" className="text-[10px]">Color</Label>
                                     <Input
@@ -421,28 +421,50 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                                         onChange={e => setVariantForm({ ...variantForm, stockQuantity: e.target.value })}
                                     />
                                 </div>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    className="font-bold border-primary/20 hover:bg-primary/5 h-10"
-                                    onClick={() => {
-                                        if (!variantForm.color) return;
-                                        const newVariant = {
-                                            color: variantForm.color,
-                                            stockQuantity: parseInt(variantForm.stockQuantity) || 0,
-                                            reservedQuantity: 0,
-                                            sku: `${formData.name.substring(0, 3).toUpperCase()}-${variantForm.color.substring(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`
-                                        };
-                                        setFormData({
-                                            ...formData,
-                                            variants: [...formData.variants, newVariant]
-                                        });
-                                        setVariantForm({ color: "", stockQuantity: "0" });
-                                    }}
-                                >
-                                    Add Color
-                                </Button>
+                                <div className="space-y-1">
+                                    <Label htmlFor="vprice" className="text-[10px]">Purchase Price</Label>
+                                    <Input
+                                        id="vprice"
+                                        type="number"
+                                        placeholder="1.000.000"
+                                        value={(variantForm as any).purchasePrice || ""}
+                                        onChange={e => setVariantForm({ ...variantForm, [ 'purchasePrice' as any]: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="vinst" className="text-[10px]">Installment (Mo)</Label>
+                                    <Input
+                                        id="vinst"
+                                        type="number"
+                                        placeholder="0"
+                                        value={(variantForm as any).installmentMonths || ""}
+                                        onChange={e => setVariantForm({ ...variantForm, [ 'installmentMonths' as any]: e.target.value })}
+                                    />
+                                </div>
                             </div>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                className="w-full font-bold border-primary/20 hover:bg-primary/5 h-10"
+                                onClick={() => {
+                                    if (!variantForm.color) return;
+                                    const newVariant = {
+                                        color: variantForm.color,
+                                        stockQuantity: parseInt(variantForm.stockQuantity) || 0,
+                                        purchasePrice: parseFloat((variantForm as any).purchasePrice) || 0,
+                                        installmentMonths: parseInt((variantForm as any).installmentMonths) || 0,
+                                        reservedQuantity: 0,
+                                        sku: `${formData.name.substring(0, 3).toUpperCase()}-${variantForm.color.substring(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`
+                                    };
+                                    setFormData({
+                                        ...formData,
+                                        variants: [...formData.variants, newVariant]
+                                    });
+                                    setVariantForm({ color: "", stockQuantity: "0", purchasePrice: "" as any, installmentMonths: "" as any } as any);
+                                }}
+                            >
+                                Add Color Variant With ROI Data
+                            </Button>
 
                             <div className="space-y-2">
                                 {formData.variants.map((v, i) => (

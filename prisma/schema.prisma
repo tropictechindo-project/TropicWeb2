@@ -202,10 +202,17 @@ model ProductUnit {
   id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   variantId       String         @map("variant_id") @db.Uuid
   serialNumber    String         @unique @map("serial_number")
+  assetTag        String?        @unique @map("asset_tag")
   status          UnitStatus     @default(AVAILABLE)
   condition       UnitCondition  @default(GOOD)
   assignedOrderId String?        @map("assigned_order_id") @db.Uuid
+  purchasePrice   Decimal?       @map("purchase_price") @db.Decimal(10, 2)
   purchaseDate    DateTime?      @map("purchase_date") @db.Timestamptz(6)
+  installmentMonthly    Decimal?   @map("installment_monthly") @db.Decimal(10, 2)
+  installmentDuration   Int?       @map("installment_duration")
+  installmentPaidAmount Decimal?   @default(0) @map("installment_paid_amount") @db.Decimal(10, 2)
+  installmentRemaining  Decimal?   @map("installment_remaining") @db.Decimal(10, 2)
+  revenue         Decimal?       @default(0) @db.Decimal(10, 2)
   lastServiceDate DateTime?      @map("last_service_date") @db.Timestamptz(6)
   createdAt       DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)

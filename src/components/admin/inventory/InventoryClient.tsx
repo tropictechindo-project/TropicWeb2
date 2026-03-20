@@ -208,44 +208,67 @@ export function InventoryClient({ productAssets, products, inventoryUnits = [] }
                         <Table>
                             <TableHeader className="bg-muted/30">
                                 <TableRow>
-                                    <TableHead className="text-[10px] uppercase font-black">Serial Code</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black">Serial / Asset Tag</TableHead>
                                     <TableHead className="text-[10px] uppercase font-black">Product</TableHead>
-                                    <TableHead className="text-[10px] uppercase font-black">Purchase Price</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black">Acquisition Cost</TableHead>
                                     <TableHead className="text-[10px] uppercase font-black text-center">Status</TableHead>
-                                    <TableHead className="text-[10px] uppercase font-black text-center">Installments</TableHead>
-                                    <TableHead className="text-[10px] uppercase font-black text-center">Revenue</TableHead>
-                                    <TableHead className="text-[10px] uppercase font-black text-right">Insights</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-center text-blue-600">ROI (%)</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-center text-green-600">Revenue</TableHead>
+                                    <TableHead className="text-[10px] uppercase font-black text-right">Health</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {inventoryUnits.map((u: any) => (
-                                    <TableRow key={u.id} className="hover:bg-muted/20 transition-colors">
-                                        <TableCell className="font-mono text-xs font-bold">{u.serialCode}</TableCell>
-                                        <TableCell className="font-medium text-xs">{u.product?.name || 'Generic / Unlinked'}</TableCell>
-                                        <TableCell className="text-xs font-bold">Rp {(u.purchasePrice || 0).toLocaleString('id-ID')}</TableCell>
-                                        <TableCell className="text-center">
-                                            <Badge 
-                                                variant={u.status === 'available' ? 'default' : u.status === 'rented' ? 'destructive' : 'secondary'}
-                                                className="text-[9px] font-black px-2 uppercase h-5"
-                                            >
-                                                {u.status}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="text-center text-xs">
-                                            {u.installmentDuration ? `${u.installmentDuration} mo` : '-'}
-                                        </TableCell>
-                                        <TableCell className="text-center text-xs font-black text-green-600">
-                                            Rp {(u.revenue || 0).toLocaleString('id-ID')}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            {u.insightLabel && (
-                                                <Badge variant="outline" className="text-[9px] bg-red-50 text-red-600 border-red-200 font-bold px-1.5 h-5">
-                                                    {u.insightLabel}
+                                {inventoryUnits.map((u: any) => {
+                                    const revenue = Number(u.revenue || 0)
+                                    const cost = Number(u.purchasePrice || 0)
+                                    const roiPercent = cost > 0 ? (revenue / cost) * 100 : 0
+                                    
+                                    return (
+                                        <TableRow key={u.id} className="hover:bg-muted/20 transition-colors">
+                                            <TableCell className="font-mono text-xs font-bold text-primary">
+                                                {u.assetTag || u.serialNumber || 'NO_ID'}
+                                            </TableCell>
+                                            <TableCell className="font-medium text-xs">
+                                                {u.variant?.product?.name || 'Generic / Unlinked'}
+                                                {u.variant?.color !== 'STANDARD' && (
+                                                    <span className="ml-1 text-[9px] text-muted-foreground">({u.variant?.color})</span>
+                                                )}
+                                            </TableCell>
+                                            <TableCell className="text-xs font-bold">
+                                                Rp {(cost).toLocaleString('id-ID')}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                <Badge 
+                                                    variant={u.status === 'AVAILABLE' ? 'default' : u.status === 'RENTED' ? 'destructive' : 'secondary'}
+                                                    className="text-[9px] font-black px-2 uppercase h-5"
+                                                >
+                                                    {u.status}
                                                 </Badge>
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                            </TableCell>
+                                            <TableCell className="text-center text-xs font-black text-blue-600">
+                                                {roiPercent.toFixed(1)}%
+                                            </TableCell>
+                                            <TableCell className="text-center text-xs font-black text-green-600">
+                                                Rp {(revenue).toLocaleString('id-ID')}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                {roiPercent >= 100 ? (
+                                                    <Badge variant="outline" className="text-[9px] bg-green-50 text-green-600 border-green-200 font-bold px-1.5 h-5">
+                                                        PAID OFF
+                                                    </Badge>
+                                                ) : roiPercent > 0 ? (
+                                                    <Badge variant="outline" className="text-[9px] bg-blue-50 text-blue-600 border-blue-200 font-bold px-1.5 h-5">
+                                                        RECOUPING
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="outline" className="text-[9px] bg-zinc-50 text-zinc-400 border-zinc-200 font-bold px-1.5 h-5">
+                                                        NEW
+                                                    </Badge>
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })}
                             </TableBody>
                         </Table>
                     </div>

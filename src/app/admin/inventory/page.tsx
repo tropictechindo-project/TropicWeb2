@@ -33,21 +33,27 @@ export default async function AdminInventoryPage() {
         }
     })
 
-    const inventoryUnits = await (db as any).inventoryUnit.findMany({
-        orderBy: { serialCode: 'asc' },
-        include: { product: { select: { name: true } } }
+    const productUnits = await db.productUnit.findMany({
+        orderBy: { assetTag: 'asc' },
+        include: { 
+            variant: { 
+                include: { 
+                    product: { select: { name: true } } 
+                } 
+            } 
+        }
     })
 
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-2">
                 <h2 className="text-3xl font-black tracking-tight uppercase">Inventory & Assets</h2>
-                <p className="text-muted-foreground italic font-medium">Real-time tracking of product variant stock</p>
+                <p className="text-muted-foreground italic font-medium">Real-time tracking of product asset units & ROI</p>
             </div>
             <InventoryClient
                 productAssets={productAssets}
                 products={products.map(p => ({ id: p.id, name: p.name }))}
-                inventoryUnits={inventoryUnits || []}
+                inventoryUnits={productUnits || []}
             />
         </div>
     )

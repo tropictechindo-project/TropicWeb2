@@ -15890,18 +15890,45 @@ export namespace Prisma {
 
   export type AggregateProductUnit = {
     _count: ProductUnitCountAggregateOutputType | null
+    _avg: ProductUnitAvgAggregateOutputType | null
+    _sum: ProductUnitSumAggregateOutputType | null
     _min: ProductUnitMinAggregateOutputType | null
     _max: ProductUnitMaxAggregateOutputType | null
+  }
+
+  export type ProductUnitAvgAggregateOutputType = {
+    purchasePrice: Decimal | null
+    installmentMonthly: Decimal | null
+    installmentDuration: number | null
+    installmentPaidAmount: Decimal | null
+    installmentRemaining: Decimal | null
+    revenue: Decimal | null
+  }
+
+  export type ProductUnitSumAggregateOutputType = {
+    purchasePrice: Decimal | null
+    installmentMonthly: Decimal | null
+    installmentDuration: number | null
+    installmentPaidAmount: Decimal | null
+    installmentRemaining: Decimal | null
+    revenue: Decimal | null
   }
 
   export type ProductUnitMinAggregateOutputType = {
     id: string | null
     variantId: string | null
     serialNumber: string | null
+    assetTag: string | null
     status: $Enums.UnitStatus | null
     condition: $Enums.UnitCondition | null
     assignedOrderId: string | null
+    purchasePrice: Decimal | null
     purchaseDate: Date | null
+    installmentMonthly: Decimal | null
+    installmentDuration: number | null
+    installmentPaidAmount: Decimal | null
+    installmentRemaining: Decimal | null
+    revenue: Decimal | null
     lastServiceDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15911,10 +15938,17 @@ export namespace Prisma {
     id: string | null
     variantId: string | null
     serialNumber: string | null
+    assetTag: string | null
     status: $Enums.UnitStatus | null
     condition: $Enums.UnitCondition | null
     assignedOrderId: string | null
+    purchasePrice: Decimal | null
     purchaseDate: Date | null
+    installmentMonthly: Decimal | null
+    installmentDuration: number | null
+    installmentPaidAmount: Decimal | null
+    installmentRemaining: Decimal | null
+    revenue: Decimal | null
     lastServiceDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -15924,10 +15958,17 @@ export namespace Prisma {
     id: number
     variantId: number
     serialNumber: number
+    assetTag: number
     status: number
     condition: number
     assignedOrderId: number
+    purchasePrice: number
     purchaseDate: number
+    installmentMonthly: number
+    installmentDuration: number
+    installmentPaidAmount: number
+    installmentRemaining: number
+    revenue: number
     lastServiceDate: number
     createdAt: number
     updatedAt: number
@@ -15935,14 +15976,39 @@ export namespace Prisma {
   }
 
 
+  export type ProductUnitAvgAggregateInputType = {
+    purchasePrice?: true
+    installmentMonthly?: true
+    installmentDuration?: true
+    installmentPaidAmount?: true
+    installmentRemaining?: true
+    revenue?: true
+  }
+
+  export type ProductUnitSumAggregateInputType = {
+    purchasePrice?: true
+    installmentMonthly?: true
+    installmentDuration?: true
+    installmentPaidAmount?: true
+    installmentRemaining?: true
+    revenue?: true
+  }
+
   export type ProductUnitMinAggregateInputType = {
     id?: true
     variantId?: true
     serialNumber?: true
+    assetTag?: true
     status?: true
     condition?: true
     assignedOrderId?: true
+    purchasePrice?: true
     purchaseDate?: true
+    installmentMonthly?: true
+    installmentDuration?: true
+    installmentPaidAmount?: true
+    installmentRemaining?: true
+    revenue?: true
     lastServiceDate?: true
     createdAt?: true
     updatedAt?: true
@@ -15952,10 +16018,17 @@ export namespace Prisma {
     id?: true
     variantId?: true
     serialNumber?: true
+    assetTag?: true
     status?: true
     condition?: true
     assignedOrderId?: true
+    purchasePrice?: true
     purchaseDate?: true
+    installmentMonthly?: true
+    installmentDuration?: true
+    installmentPaidAmount?: true
+    installmentRemaining?: true
+    revenue?: true
     lastServiceDate?: true
     createdAt?: true
     updatedAt?: true
@@ -15965,10 +16038,17 @@ export namespace Prisma {
     id?: true
     variantId?: true
     serialNumber?: true
+    assetTag?: true
     status?: true
     condition?: true
     assignedOrderId?: true
+    purchasePrice?: true
     purchaseDate?: true
+    installmentMonthly?: true
+    installmentDuration?: true
+    installmentPaidAmount?: true
+    installmentRemaining?: true
+    revenue?: true
     lastServiceDate?: true
     createdAt?: true
     updatedAt?: true
@@ -16013,6 +16093,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ProductUnitAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductUnitSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ProductUnitMinAggregateInputType
@@ -16043,6 +16135,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ProductUnitCountAggregateInputType | true
+    _avg?: ProductUnitAvgAggregateInputType
+    _sum?: ProductUnitSumAggregateInputType
     _min?: ProductUnitMinAggregateInputType
     _max?: ProductUnitMaxAggregateInputType
   }
@@ -16051,14 +16145,23 @@ export namespace Prisma {
     id: string
     variantId: string
     serialNumber: string
+    assetTag: string | null
     status: $Enums.UnitStatus
     condition: $Enums.UnitCondition
     assignedOrderId: string | null
+    purchasePrice: Decimal | null
     purchaseDate: Date | null
+    installmentMonthly: Decimal | null
+    installmentDuration: number | null
+    installmentPaidAmount: Decimal | null
+    installmentRemaining: Decimal | null
+    revenue: Decimal | null
     lastServiceDate: Date | null
     createdAt: Date
     updatedAt: Date
     _count: ProductUnitCountAggregateOutputType | null
+    _avg: ProductUnitAvgAggregateOutputType | null
+    _sum: ProductUnitSumAggregateOutputType | null
     _min: ProductUnitMinAggregateOutputType | null
     _max: ProductUnitMaxAggregateOutputType | null
   }
@@ -16081,10 +16184,17 @@ export namespace Prisma {
     id?: boolean
     variantId?: boolean
     serialNumber?: boolean
+    assetTag?: boolean
     status?: boolean
     condition?: boolean
     assignedOrderId?: boolean
+    purchasePrice?: boolean
     purchaseDate?: boolean
+    installmentMonthly?: boolean
+    installmentDuration?: boolean
+    installmentPaidAmount?: boolean
+    installmentRemaining?: boolean
+    revenue?: boolean
     lastServiceDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16099,10 +16209,17 @@ export namespace Prisma {
     id?: boolean
     variantId?: boolean
     serialNumber?: boolean
+    assetTag?: boolean
     status?: boolean
     condition?: boolean
     assignedOrderId?: boolean
+    purchasePrice?: boolean
     purchaseDate?: boolean
+    installmentMonthly?: boolean
+    installmentDuration?: boolean
+    installmentPaidAmount?: boolean
+    installmentRemaining?: boolean
+    revenue?: boolean
     lastServiceDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16114,10 +16231,17 @@ export namespace Prisma {
     id?: boolean
     variantId?: boolean
     serialNumber?: boolean
+    assetTag?: boolean
     status?: boolean
     condition?: boolean
     assignedOrderId?: boolean
+    purchasePrice?: boolean
     purchaseDate?: boolean
+    installmentMonthly?: boolean
+    installmentDuration?: boolean
+    installmentPaidAmount?: boolean
+    installmentRemaining?: boolean
+    revenue?: boolean
     lastServiceDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -16129,16 +16253,23 @@ export namespace Prisma {
     id?: boolean
     variantId?: boolean
     serialNumber?: boolean
+    assetTag?: boolean
     status?: boolean
     condition?: boolean
     assignedOrderId?: boolean
+    purchasePrice?: boolean
     purchaseDate?: boolean
+    installmentMonthly?: boolean
+    installmentDuration?: boolean
+    installmentPaidAmount?: boolean
+    installmentRemaining?: boolean
+    revenue?: boolean
     lastServiceDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "variantId" | "serialNumber" | "status" | "condition" | "assignedOrderId" | "purchaseDate" | "lastServiceDate" | "createdAt" | "updatedAt", ExtArgs["result"]["productUnit"]>
+  export type ProductUnitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "variantId" | "serialNumber" | "assetTag" | "status" | "condition" | "assignedOrderId" | "purchasePrice" | "purchaseDate" | "installmentMonthly" | "installmentDuration" | "installmentPaidAmount" | "installmentRemaining" | "revenue" | "lastServiceDate" | "createdAt" | "updatedAt", ExtArgs["result"]["productUnit"]>
   export type ProductUnitInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignedOrder?: boolean | ProductUnit$assignedOrderArgs<ExtArgs>
     variant?: boolean | ProductVariantDefaultArgs<ExtArgs>
@@ -16167,10 +16298,17 @@ export namespace Prisma {
       id: string
       variantId: string
       serialNumber: string
+      assetTag: string | null
       status: $Enums.UnitStatus
       condition: $Enums.UnitCondition
       assignedOrderId: string | null
+      purchasePrice: Prisma.Decimal | null
       purchaseDate: Date | null
+      installmentMonthly: Prisma.Decimal | null
+      installmentDuration: number | null
+      installmentPaidAmount: Prisma.Decimal | null
+      installmentRemaining: Prisma.Decimal | null
+      revenue: Prisma.Decimal | null
       lastServiceDate: Date | null
       createdAt: Date
       updatedAt: Date
@@ -16604,10 +16742,17 @@ export namespace Prisma {
     readonly id: FieldRef<"ProductUnit", 'String'>
     readonly variantId: FieldRef<"ProductUnit", 'String'>
     readonly serialNumber: FieldRef<"ProductUnit", 'String'>
+    readonly assetTag: FieldRef<"ProductUnit", 'String'>
     readonly status: FieldRef<"ProductUnit", 'UnitStatus'>
     readonly condition: FieldRef<"ProductUnit", 'UnitCondition'>
     readonly assignedOrderId: FieldRef<"ProductUnit", 'String'>
+    readonly purchasePrice: FieldRef<"ProductUnit", 'Decimal'>
     readonly purchaseDate: FieldRef<"ProductUnit", 'DateTime'>
+    readonly installmentMonthly: FieldRef<"ProductUnit", 'Decimal'>
+    readonly installmentDuration: FieldRef<"ProductUnit", 'Int'>
+    readonly installmentPaidAmount: FieldRef<"ProductUnit", 'Decimal'>
+    readonly installmentRemaining: FieldRef<"ProductUnit", 'Decimal'>
+    readonly revenue: FieldRef<"ProductUnit", 'Decimal'>
     readonly lastServiceDate: FieldRef<"ProductUnit", 'DateTime'>
     readonly createdAt: FieldRef<"ProductUnit", 'DateTime'>
     readonly updatedAt: FieldRef<"ProductUnit", 'DateTime'>
@@ -55704,10 +55849,17 @@ export namespace Prisma {
     id: 'id',
     variantId: 'variantId',
     serialNumber: 'serialNumber',
+    assetTag: 'assetTag',
     status: 'status',
     condition: 'condition',
     assignedOrderId: 'assignedOrderId',
+    purchasePrice: 'purchasePrice',
     purchaseDate: 'purchaseDate',
+    installmentMonthly: 'installmentMonthly',
+    installmentDuration: 'installmentDuration',
+    installmentPaidAmount: 'installmentPaidAmount',
+    installmentRemaining: 'installmentRemaining',
+    revenue: 'revenue',
     lastServiceDate: 'lastServiceDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -57399,10 +57551,17 @@ export namespace Prisma {
     id?: UuidFilter<"ProductUnit"> | string
     variantId?: UuidFilter<"ProductUnit"> | string
     serialNumber?: StringFilter<"ProductUnit"> | string
+    assetTag?: StringNullableFilter<"ProductUnit"> | string | null
     status?: EnumUnitStatusFilter<"ProductUnit"> | $Enums.UnitStatus
     condition?: EnumUnitConditionFilter<"ProductUnit"> | $Enums.UnitCondition
     assignedOrderId?: UuidNullableFilter<"ProductUnit"> | string | null
+    purchasePrice?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
+    installmentMonthly?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: IntNullableFilter<"ProductUnit"> | number | null
+    installmentPaidAmount?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    revenue?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
     createdAt?: DateTimeFilter<"ProductUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ProductUnit"> | Date | string
@@ -57416,10 +57575,17 @@ export namespace Prisma {
     id?: SortOrder
     variantId?: SortOrder
     serialNumber?: SortOrder
+    assetTag?: SortOrderInput | SortOrder
     status?: SortOrder
     condition?: SortOrder
     assignedOrderId?: SortOrderInput | SortOrder
+    purchasePrice?: SortOrderInput | SortOrder
     purchaseDate?: SortOrderInput | SortOrder
+    installmentMonthly?: SortOrderInput | SortOrder
+    installmentDuration?: SortOrderInput | SortOrder
+    installmentPaidAmount?: SortOrderInput | SortOrder
+    installmentRemaining?: SortOrderInput | SortOrder
+    revenue?: SortOrderInput | SortOrder
     lastServiceDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -57432,6 +57598,7 @@ export namespace Prisma {
   export type ProductUnitWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     serialNumber?: string
+    assetTag?: string
     AND?: ProductUnitWhereInput | ProductUnitWhereInput[]
     OR?: ProductUnitWhereInput[]
     NOT?: ProductUnitWhereInput | ProductUnitWhereInput[]
@@ -57439,7 +57606,13 @@ export namespace Prisma {
     status?: EnumUnitStatusFilter<"ProductUnit"> | $Enums.UnitStatus
     condition?: EnumUnitConditionFilter<"ProductUnit"> | $Enums.UnitCondition
     assignedOrderId?: UuidNullableFilter<"ProductUnit"> | string | null
+    purchasePrice?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
+    installmentMonthly?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: IntNullableFilter<"ProductUnit"> | number | null
+    installmentPaidAmount?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    revenue?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
     createdAt?: DateTimeFilter<"ProductUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ProductUnit"> | Date | string
@@ -57447,22 +57620,31 @@ export namespace Prisma {
     variant?: XOR<ProductVariantScalarRelationFilter, ProductVariantWhereInput>
     rentalItems?: RentalItemListRelationFilter
     history?: UnitHistoryListRelationFilter
-  }, "id" | "serialNumber">
+  }, "id" | "serialNumber" | "assetTag">
 
   export type ProductUnitOrderByWithAggregationInput = {
     id?: SortOrder
     variantId?: SortOrder
     serialNumber?: SortOrder
+    assetTag?: SortOrderInput | SortOrder
     status?: SortOrder
     condition?: SortOrder
     assignedOrderId?: SortOrderInput | SortOrder
+    purchasePrice?: SortOrderInput | SortOrder
     purchaseDate?: SortOrderInput | SortOrder
+    installmentMonthly?: SortOrderInput | SortOrder
+    installmentDuration?: SortOrderInput | SortOrder
+    installmentPaidAmount?: SortOrderInput | SortOrder
+    installmentRemaining?: SortOrderInput | SortOrder
+    revenue?: SortOrderInput | SortOrder
     lastServiceDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProductUnitCountOrderByAggregateInput
+    _avg?: ProductUnitAvgOrderByAggregateInput
     _max?: ProductUnitMaxOrderByAggregateInput
     _min?: ProductUnitMinOrderByAggregateInput
+    _sum?: ProductUnitSumOrderByAggregateInput
   }
 
   export type ProductUnitScalarWhereWithAggregatesInput = {
@@ -57472,10 +57654,17 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"ProductUnit"> | string
     variantId?: UuidWithAggregatesFilter<"ProductUnit"> | string
     serialNumber?: StringWithAggregatesFilter<"ProductUnit"> | string
+    assetTag?: StringNullableWithAggregatesFilter<"ProductUnit"> | string | null
     status?: EnumUnitStatusWithAggregatesFilter<"ProductUnit"> | $Enums.UnitStatus
     condition?: EnumUnitConditionWithAggregatesFilter<"ProductUnit"> | $Enums.UnitCondition
     assignedOrderId?: UuidNullableWithAggregatesFilter<"ProductUnit"> | string | null
+    purchasePrice?: DecimalNullableWithAggregatesFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: DateTimeNullableWithAggregatesFilter<"ProductUnit"> | Date | string | null
+    installmentMonthly?: DecimalNullableWithAggregatesFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: IntNullableWithAggregatesFilter<"ProductUnit"> | number | null
+    installmentPaidAmount?: DecimalNullableWithAggregatesFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: DecimalNullableWithAggregatesFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    revenue?: DecimalNullableWithAggregatesFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: DateTimeNullableWithAggregatesFilter<"ProductUnit"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProductUnit"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductUnit"> | Date | string
@@ -60971,9 +61160,16 @@ export namespace Prisma {
   export type ProductUnitCreateInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -60987,10 +61183,17 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61001,9 +61204,16 @@ export namespace Prisma {
   export type ProductUnitUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61017,10 +61227,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61032,10 +61249,17 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -61044,9 +61268,16 @@ export namespace Prisma {
   export type ProductUnitUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -61056,10 +61287,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64873,23 +65111,46 @@ export namespace Prisma {
     id?: SortOrder
     variantId?: SortOrder
     serialNumber?: SortOrder
+    assetTag?: SortOrder
     status?: SortOrder
     condition?: SortOrder
     assignedOrderId?: SortOrder
+    purchasePrice?: SortOrder
     purchaseDate?: SortOrder
+    installmentMonthly?: SortOrder
+    installmentDuration?: SortOrder
+    installmentPaidAmount?: SortOrder
+    installmentRemaining?: SortOrder
+    revenue?: SortOrder
     lastServiceDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProductUnitAvgOrderByAggregateInput = {
+    purchasePrice?: SortOrder
+    installmentMonthly?: SortOrder
+    installmentDuration?: SortOrder
+    installmentPaidAmount?: SortOrder
+    installmentRemaining?: SortOrder
+    revenue?: SortOrder
   }
 
   export type ProductUnitMaxOrderByAggregateInput = {
     id?: SortOrder
     variantId?: SortOrder
     serialNumber?: SortOrder
+    assetTag?: SortOrder
     status?: SortOrder
     condition?: SortOrder
     assignedOrderId?: SortOrder
+    purchasePrice?: SortOrder
     purchaseDate?: SortOrder
+    installmentMonthly?: SortOrder
+    installmentDuration?: SortOrder
+    installmentPaidAmount?: SortOrder
+    installmentRemaining?: SortOrder
+    revenue?: SortOrder
     lastServiceDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -64899,13 +65160,29 @@ export namespace Prisma {
     id?: SortOrder
     variantId?: SortOrder
     serialNumber?: SortOrder
+    assetTag?: SortOrder
     status?: SortOrder
     condition?: SortOrder
     assignedOrderId?: SortOrder
+    purchasePrice?: SortOrder
     purchaseDate?: SortOrder
+    installmentMonthly?: SortOrder
+    installmentDuration?: SortOrder
+    installmentPaidAmount?: SortOrder
+    installmentRemaining?: SortOrder
+    revenue?: SortOrder
     lastServiceDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ProductUnitSumOrderByAggregateInput = {
+    purchasePrice?: SortOrder
+    installmentMonthly?: SortOrder
+    installmentDuration?: SortOrder
+    installmentPaidAmount?: SortOrder
+    installmentRemaining?: SortOrder
+    revenue?: SortOrder
   }
 
   export type EnumUnitStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -71125,9 +71402,16 @@ export namespace Prisma {
   export type ProductUnitCreateWithoutAssignedOrderInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -71140,9 +71424,16 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -71528,10 +71819,17 @@ export namespace Prisma {
     id?: UuidFilter<"ProductUnit"> | string
     variantId?: UuidFilter<"ProductUnit"> | string
     serialNumber?: StringFilter<"ProductUnit"> | string
+    assetTag?: StringNullableFilter<"ProductUnit"> | string | null
     status?: EnumUnitStatusFilter<"ProductUnit"> | $Enums.UnitStatus
     condition?: EnumUnitConditionFilter<"ProductUnit"> | $Enums.UnitCondition
     assignedOrderId?: UuidNullableFilter<"ProductUnit"> | string | null
+    purchasePrice?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
+    installmentMonthly?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: IntNullableFilter<"ProductUnit"> | number | null
+    installmentPaidAmount?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
+    revenue?: DecimalNullableFilter<"ProductUnit"> | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: DateTimeNullableFilter<"ProductUnit"> | Date | string | null
     createdAt?: DateTimeFilter<"ProductUnit"> | Date | string
     updatedAt?: DateTimeFilter<"ProductUnit"> | Date | string
@@ -72781,9 +73079,16 @@ export namespace Prisma {
   export type ProductUnitCreateWithoutVariantInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -72795,10 +73100,17 @@ export namespace Prisma {
   export type ProductUnitUncheckedCreateWithoutVariantInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73290,9 +73602,16 @@ export namespace Prisma {
   export type ProductUnitCreateWithoutHistoryInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73305,10 +73624,17 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73425,9 +73751,16 @@ export namespace Prisma {
   export type ProductUnitUpdateWithoutHistoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73440,10 +73773,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73890,9 +74230,16 @@ export namespace Prisma {
   export type ProductUnitCreateWithoutRentalItemsInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73905,10 +74252,17 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74129,9 +74483,16 @@ export namespace Prisma {
   export type ProductUnitUpdateWithoutRentalItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74144,10 +74505,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80797,9 +81165,16 @@ export namespace Prisma {
     id?: string
     variantId: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -80966,9 +81341,16 @@ export namespace Prisma {
   export type ProductUnitUpdateWithoutAssignedOrderInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80981,9 +81363,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80995,9 +81384,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     variantId?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81437,10 +81833,17 @@ export namespace Prisma {
   export type ProductUnitCreateManyVariantInput = {
     id?: string
     serialNumber: string
+    assetTag?: string | null
     status?: $Enums.UnitStatus
     condition?: $Enums.UnitCondition
     assignedOrderId?: string | null
+    purchasePrice?: Decimal | DecimalJsLike | number | string | null
     purchaseDate?: Date | string | null
+    installmentMonthly?: Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: number | null
+    installmentPaidAmount?: Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: Decimal | DecimalJsLike | number | string | null
+    revenue?: Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -81458,9 +81861,16 @@ export namespace Prisma {
   export type ProductUnitUpdateWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81472,10 +81882,17 @@ export namespace Prisma {
   export type ProductUnitUncheckedUpdateWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -81486,10 +81903,17 @@ export namespace Prisma {
   export type ProductUnitUncheckedUpdateManyWithoutVariantInput = {
     id?: StringFieldUpdateOperationsInput | string
     serialNumber?: StringFieldUpdateOperationsInput | string
+    assetTag?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumUnitStatusFieldUpdateOperationsInput | $Enums.UnitStatus
     condition?: EnumUnitConditionFieldUpdateOperationsInput | $Enums.UnitCondition
     assignedOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    purchasePrice?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    installmentMonthly?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentDuration?: NullableIntFieldUpdateOperationsInput | number | null
+    installmentPaidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    installmentRemaining?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    revenue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     lastServiceDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

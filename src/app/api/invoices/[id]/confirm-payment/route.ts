@@ -72,64 +72,137 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
             // C. PRE-VALIDATE STOCK — Hard block overselling
             // Check ALL items have available units BEFORE reserving any
-            const stockCheck: { item: any; variant: any; units: any[] }[] = []
+            const stockCheck: { item: any; variant: any; units: any[]; isPackage: boolean; packageItems?: any[] }[] = []
+            
             for (const item of cartItems) {
-                const qty = item.quantity || 1
-                const variant = await tx.productVariant.findFirst({
-                    where: { productId: item.id },
-                    include: {
-                        units: { where: { status: 'AVAILABLE' }, take: qty, orderBy: { createdAt: 'asc' } }
-                    }
+                // Determine if it's a package or product
+                const rentalPackage = await tx.rentalPackage.findUnique({
+                    where: { id: item.id },
+                    include: { rentalPackageItems: { include: { product: { include: { variants: { take: 1 } } } } } }
                 })
 
-                if (!variant) {
-                    throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" (${item.id}) has no variant configured. Cannot fulfill order.`)
-                }
+                if (rentalPackage) {
+                    // It's a package! Validate stock for EACH item in the package
+                    const pkgItemsValidation: { variant: any; units: any[]; product: any }[] = []
+                    for (const pkgItem of rentalPackage.rentalPackageItems) {
+                        const product = pkgItem.product
+                        const variant = product.variants[0]
+                        const requiredQty = (pkgItem.quantity || 1) * (item.quantity || 1)
 
-                if (variant.units.length < qty) {
-                    throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" requires ${qty} unit(s) but only ${variant.units.length} available. Cannot fulfill order.`)
-                }
+                        if (!variant) {
+                            throw new Error(`OVERSALE_BLOCKED: Package "${rentalPackage.name}" contains product "${product.name}" with no variant configured.`)
+                        }
 
-                stockCheck.push({ item, variant, units: variant.units })
+                        const availableUnits = await tx.productUnit.findMany({
+                            where: { variantId: variant.id, status: 'AVAILABLE' },
+                            take: requiredQty,
+                            orderBy: { createdAt: 'asc' }
+                        })
+
+                        if (availableUnits.length < requiredQty) {
+                            throw new Error(`OVERSALE_BLOCKED: Package "${rentalPackage.name}" requires ${requiredQty}x "${product.name}" but only ${availableUnits.length} available.`)
+                        }
+                        pkgItemsValidation.push({ variant, units: availableUnits, product })
+                    }
+                    stockCheck.push({ item, variant: null, units: [], isPackage: true, packageItems: pkgItemsValidation })
+                } else {
+                    // It's a single product
+                    const qty = item.quantity || 1
+                    const variant = await tx.productVariant.findFirst({
+                        where: { productId: item.id },
+                        include: {
+                            units: { where: { status: 'AVAILABLE' }, take: qty, orderBy: { createdAt: 'asc' } }
+                        }
+                    })
+
+                    if (!variant) {
+                        throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" (${item.id}) has no variant configured.`)
+                    }
+
+                    if (variant.units.length < qty) {
+                        throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" requires ${qty} unit(s) but only ${variant.units.length} available.`)
+                    }
+
+                    stockCheck.push({ item, variant, units: variant.units, isPackage: false })
+                }
             }
 
             // D. RESERVE UNITS — All items validated, now lock them
             const rentalItems: any[] = []
-            for (const { item, variant, units } of stockCheck) {
-                for (const unit of units) {
-                    await tx.productUnit.update({
-                        where: { id: unit.id },
-                        data: { status: 'RESERVED', assignedOrderId: order.id }
-                    })
-                    await tx.unitHistory.create({
+            for (const check of stockCheck) {
+                if (check.isPackage && check.packageItems) {
+                    for (const pkgEntry of check.packageItems) {
+                        for (const unit of pkgEntry.units) {
+                            await tx.productUnit.update({
+                                where: { id: unit.id },
+                                data: { 
+                                    status: 'RESERVED', 
+                                    assignedOrderId: order.id,
+                                    revenue: { increment: (check.item.price || 0) / check.packageItems.length } // Simple split for ROI
+                                }
+                            })
+                            await tx.unitHistory.create({
+                                data: {
+                                    unitId: unit.id,
+                                    oldStatus: 'AVAILABLE',
+                                    newStatus: 'RESERVED',
+                                    details: `Auto-reserved for order ${orderNumber} via package "${check.item.name}"`,
+                                    userId: auth.userId
+                                }
+                            })
+
+                            const ri = await tx.rentalItem.create({
+                                data: {
+                                    orderId: order.id,
+                                    packageId: check.item.id,
+                                    variantId: pkgEntry.variant.id,
+                                    unitId: unit.id,
+                                    quantity: 1,
+                                }
+                            })
+                            rentalItems.push(ri)
+                        }
+                    }
+                } else if (check.variant && check.units) {
+                    for (const unit of check.units) {
+                        await tx.productUnit.update({
+                            where: { id: unit.id },
+                            data: { 
+                                status: 'RESERVED', 
+                                assignedOrderId: order.id,
+                                revenue: { increment: check.item.price || 0 }
+                            }
+                        })
+                        await tx.unitHistory.create({
+                            data: {
+                                unitId: unit.id,
+                                oldStatus: 'AVAILABLE',
+                                newStatus: 'RESERVED',
+                                details: `Auto-reserved for order ${orderNumber} (invoice ${invoice.invoiceNumber})`,
+                                userId: auth.userId
+                            }
+                        })
+                    }
+
+                    const rentalItem = await tx.rentalItem.create({
                         data: {
-                            unitId: unit.id,
-                            oldStatus: 'AVAILABLE',
-                            newStatus: 'RESERVED',
-                            details: `Auto-reserved for order ${orderNumber} (invoice ${invoice.invoiceNumber})`,
-                            userId: auth.userId
+                            orderId: order.id,
+                            variantId: check.variant.id,
+                            unitId: check.units[0]?.id,
+                            quantity: check.item.quantity || 1,
                         }
                     })
+                    rentalItems.push(rentalItem)
                 }
-
-                const rentalItem = await tx.rentalItem.create({
-                    data: {
-                        orderId: order.id,
-                        variantId: variant.id,
-                        unitId: units[0]?.id,
-                        quantity: item.quantity || 1,
-                    }
-                })
-                rentalItems.push(rentalItem)
 
                 const anyTx = tx as any
                 await anyTx.orderItem.create({
                     data: {
                         orderId: order.id,
-                        productId: item.id,
-                        nameSnapshot: item.name || 'Unknown Item',
-                        price: item.price || 0,
-                        quantity: item.quantity || 1,
+                        productId: check.isPackage ? null : check.item.id,
+                        nameSnapshot: check.item.name || 'Unknown Item',
+                        price: check.item.price || 0,
+                        quantity: check.item.quantity || 1,
                         rentalStart: startDate,
                         rentalEnd: endDate,
                     }
@@ -188,23 +261,25 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
             return { order, delivery, rentalItemsCount: rentalItems.length }
         })
 
-        // H. Send confirmation email (non-blocking)
-        setTimeout(async () => {
-            try {
-                const recipients = await getInvoiceRecipients(invoice)
-
-                const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-                await sendInvoiceEmail({
-                    to: recipients,
-                    invoiceNumber: invoice.invoiceNumber,
-                    customerName: invoice.guestName || 'Valued Customer',
-                    amount: Number(invoice.total),
-                    invoiceLink: `${baseUrl}/invoice/${invoice.id}`
-                })
-            } catch (e) {
-                console.error('[CONFIRM_PAYMENT] Email error:', e)
-            }
-        }, 0)
+        // H. Send confirmation email (Reliable/Blocking for serverless)
+        try {
+            const recipients = await getInvoiceRecipients(invoice)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+            
+            await sendInvoiceEmail({
+                to: recipients,
+                invoiceNumber: invoice.invoiceNumber,
+                customerName: invoice.guestName || 'Valued Customer',
+                amount: Number(invoice.total),
+                invoiceLink: `${baseUrl}/invoice/${invoice.id}`,
+                trackingLink: `${baseUrl}/tracking/${invoice.invoiceNumber}`,
+                isPaid: true,
+                invoiceId: invoice.id
+            })
+        } catch (e) {
+            console.error('[CONFIRM_PAYMENT] Email error:', e)
+        }
+    
 
         // I. Send Google Report (non-blocking)
         sendGoogleReport('ORDER', {

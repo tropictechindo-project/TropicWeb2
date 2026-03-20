@@ -194,34 +194,34 @@ export async function POST(request: Request) {
             return newInvoice
         })
 
-        // 5. Send confirmation email (non-blocking)
-        setTimeout(async () => {
-            try {
-                const recipients = await getInvoiceRecipients(invoice)
+        // 5. Send confirmation email (Reliable/Blocking for serverless)
+        try {
+            const recipients = await getInvoiceRecipients(invoice)
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+            
+            // Send Google Report (non-blocking is fine here as it's separate)
+            sendGoogleReport('ORDER', {
+                invoiceNumber: invoice.invoiceNumber,
+                customerName: guestInfo?.fullName || 'Customer',
+                amount: Number(invoice.total),
+                paymentMethod: invoice.paymentMethod,
+                status: 'PENDING',
+                timestamp: new Date().toISOString()
+            }).catch(err => console.error('[REPORTING_ERROR] Google Sheet Error:', err))
 
-                // Send Google Report (non-blocking)
-                sendGoogleReport('ORDER', {
-                    invoiceNumber: invoice.invoiceNumber,
-                    customerName: guestInfo?.fullName || 'Customer',
-                    amount: Number(invoice.total),
-                    paymentMethod: invoice.paymentMethod,
-                    status: 'PENDING',
-                    timestamp: new Date().toISOString()
-                }).catch(err => console.error('[REPORTING_ERROR] Google Sheet Error:', err))
-
-                const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-                await sendInvoiceEmail({
-                    to: recipients,
-                    invoiceNumber: invoice.invoiceNumber,
-                    customerName: guestInfo?.fullName || 'Valued Customer',
-                    amount: Number(invoice.total),
-                    invoiceLink: `${baseUrl}/invoice/${invoice.id}`,
-                    invoiceId: invoice.id
-                })
-            } catch (emailError) {
-                console.error('[ORDERS] Failed to send invoice email:', emailError)
-            }
-        }, 0)
+            await sendInvoiceEmail({
+                to: recipients,
+                invoiceNumber: invoice.invoiceNumber,
+                customerName: guestInfo?.fullName || 'Valued Customer',
+                amount: Number(invoice.total),
+                invoiceLink: `${baseUrl}/invoice/${invoice.id}`,
+                trackingLink: `${baseUrl}/tracking/${invoice.invoiceNumber}`,
+                invoiceId: invoice.id,
+                isPaid: false
+            })
+        } catch (emailError) {
+            console.error('[ORDERS] Failed to send invoice email:', emailError)
+        }
 
         return NextResponse.json({
             invoiceId: invoice.id,

@@ -219,7 +219,7 @@ export default function CheckoutPage() {
 
             // Redirect to public tracking page pre-filled with invoice number
             setTimeout(() => {
-                router.push(`/tracking?invoice=${invoiceNumber}&email=${encodeURIComponent(formData.email)}`)
+                router.push(`/tracking/${invoiceNumber}`)
             }, 2000)
 
         } catch (error: any) {
@@ -381,9 +381,8 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
 
-                            {/* Product Suggestions Node flawless safely downwards */}
                             <div className="mt-4 border-t pt-4">
-                                <ProductSuggestions />
+                                <ProductSuggestions productIds={items.map(i => i.id)} />
                             </div>
                             
                             <Separator className="my-6" />
