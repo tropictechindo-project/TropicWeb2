@@ -91,9 +91,15 @@
 - ✅ **Local Auth Flow**: Implemented custom local "Forgot Password" logic with database tokens, replacing failing Supabase emails.
 - ✅ **Credential Sync**: Automated sync between local Prisma and Supabase Auth for seamless SSO/Manual transitions.
 
-**Last Updated**: 2026-03-07 12:45:00 (WITA/GMT+8)
-**System Version**: 2.5.0-hardened
-**Environment**: Global Production Stable (AI Intelligence + Auth Hardening)
+**Last Updated**: 2026-03-21 05:24:00 (WITA/GMT+8)
+**System Version**: 2.7.0-hardened
+**Environment**: Global Production Stable (PageSpeed Optimized + Smart QR)
+
+- ✅ **PageSpeed Optimizations & Smart QR (v2.7.0)**:
+    - ✅ **Smart QR Subtotals**: Injected dynamic client state hooks building tracking links on public invoice states flawlessly.
+    - ✅ **Stale Preconnects**: Cleared layout warming hooks reducing initial budgets overheads.
+    - ✅ **Lazy Spitting Contexts**: Set `ssr: false` on below-fold interactive templates reducing server hydration payloads.
+    - ✅ **Responsive Image Capping**: Capped `<Image>` targets inside grid item wrappers preventing bloated scale sizes leaks.
 
 - ✅ **AI Intelligence & Auth Hardening (v2.5.0)**:
     - ✅ **Role-Specific AI**: Tailored AI context for Workers (deliveries), Users (rentals), and Operators (management).

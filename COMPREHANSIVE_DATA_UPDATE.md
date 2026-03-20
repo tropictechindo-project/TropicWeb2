@@ -105,6 +105,13 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 ## 📅 Complete System Update History
 
+### ✅ v2.7.0 — PageSpeed Optimizations & Smart QR (2026-03-21)
+- **Smart QR System**: Injected dynamic client state hooks building QR tracking links mapped on public list footers securely.
+- **Removed Stale Preconnects**: Cleared 5 layout warming tags reducing established connection start triggers overhead cycles.
+- **Fluid Sizes Capping**: Locked responsive images `<Image>` tags into tight absolute caps (`384px`) preventing Next.js from bloated rescaling allocations.
+- **Context Locking**: Standardized `useRef` locks across intervals pollers in `NotificationContext` preventing concurrent crashes.
+- **Below-Fold Lazy Split**: Appended `ssr: false` multipliers across lower grids reducing initial server hydration payloads thresholds.
+
 ### ✅ v2.6.0 — Inventory ROI & SEO Finishing Mode (2026-03-19)
 - **Bilingual Action Guides**: Standardized Operator & Worker dashboard walkthroughs (EN/ID) flawlessly.
 - **Audit System Logs**: Track for assigned OrderItem to Inventory unit linkages, and non-blocking `sendInvoiceEmail` structured logging event streams index flawlesslywards.

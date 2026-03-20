@@ -5,6 +5,15 @@ The TropicTech ecosystem has matured into a professional, high-performance works
 
 ---
 
+## ⚡ 0. PageSpeed Optimizations & Smart QR (NEW v2.7.0)
+- **Smart QR System**: Injected dynamic client state hooks building QR tracking links mapped on public list footers securely.
+- **Removed Stale Preconnects**: Cleared 5 layout warming tags reducing established connection start triggers overhead cycles.
+- **Fluid Sizes Capping**: Locked responsive images `<Image>` tags into tight absolute caps (`384px`) preventing Next.js from bloated rescaling allocations.
+- **Context Locking**: Standardized `useRef` locks across intervals pollers in `NotificationContext` preventing concurrent crashes.
+- **Below-Fold Lazy Split**: Appended `ssr: false` multipliers across lower grids reducing initial server hydration payloads thresholds.
+
+---
+
 ## 📦 0. Order Transparency & Inventory Tracking (NEW v2.6.0)
 - **Normalized Order Item Snapshots**: Introduced explicit `OrderItem` databases rows mapping locking item snapshots, final loaded prices & quantities seamlessly during `.create()` invocations to prevent downstream discrepancies.
 - **Backwards-Compatible Frontends**: Reconfigured public shareable invoice lists with fallback array mappings capable of rendering standalone snapshots gracefully without forcing legacy breakouts locks errors.
