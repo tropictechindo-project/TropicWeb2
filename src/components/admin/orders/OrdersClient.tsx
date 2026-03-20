@@ -12,7 +12,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Eye, CheckCircle2, CreditCard, Filter, Package, FileText } from "lucide-react"
+import { Eye, CheckCircle2, CreditCard, Filter, Package, FileText, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -444,7 +444,14 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
                             disabled={isSubmitting}
                             className="rounded-xl font-bold px-8 shadow-2xl bg-primary text-white"
                         >
-                            {isSubmitting ? "Processing..." : "CONFIRM & SEND INVOICE"}
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Processing...
+                                </>
+                            ) : (
+                                "CONFIRM & SEND INVOICE"
+                            )}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

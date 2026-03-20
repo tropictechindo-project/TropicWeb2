@@ -382,7 +382,12 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                                             onClick={() => handleSetDelivery(inv.id)}
                                             disabled={isLoading}
                                         >
-                                            <Truck className="h-3 w-3" /> SET DELIVERY
+                                            {isLoading ? (
+                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                            ) : (
+                                                <Truck className="h-3 w-3" />
+                                            )}
+                                            {isLoading ? "Wait..." : "SET DELIVERY"}
                                         </Button>
                                          <Button 
                                              variant="ghost" 

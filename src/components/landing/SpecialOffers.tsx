@@ -153,11 +153,11 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                                 <>
                                                                     <li className="flex items-center gap-2">
                                                                         <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-                                                                        <span className="line-clamp-1">Herman Miller Aeron Chair x1</span>
+                                                                        <span className="line-clamp-1">Ergonimic Chair</span>
                                                                     </li>
                                                                     <li className="flex items-center gap-2">
                                                                         <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
-                                                                        <span className="line-clamp-1">32-inch 4K Dell UltraSharp x1</span>
+                                                                        <span className="line-clamp-1">27" HD Monitor</span>
                                                                     </li>
                                                                     <li className="flex items-center gap-2">
                                                                         <span className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />

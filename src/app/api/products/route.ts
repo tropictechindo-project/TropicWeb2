@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
+import { generateAssetTag } from '@/lib/inventory-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -60,9 +61,6 @@ export async function POST(request: Request) {
         }
       })
 
-      const categoryCode = (json.category || 'GEN').substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X')
-      const yearSuffix = new Date().getFullYear().toString().slice(-2)
-
       if (json.variants && Array.isArray(json.variants)) {
         for (const v of json.variants) {
           const variant = await tx.productVariant.create({
@@ -78,9 +76,14 @@ export async function POST(request: Request) {
           const stockQty = parseInt(v.stockQuantity) || 0
           if (stockQty > 0) {
             for (let i = 0; i < stockQty; i++) {
-              const sequence = (i + 1).toString().padStart(3, '0')
-              const assetTag = `TT-${categoryCode}-${yearSuffix}-${Date.now().toString().slice(-4)}-${sequence}`
-              const serialNumber = `SN-${v.sku}-${Date.now().toString().slice(-4)}-${sequence}`
+              const sequence = i + 1
+              const assetTag = generateAssetTag({
+                category: json.category,
+                modelName: json.name,
+                sequence,
+                purchaseDate: new Date()
+              })
+              const serialNumber = `SN-${v.sku}-${Date.now().toString().slice(-4)}-${sequence.toString().padStart(3, '0')}`
 
               await tx.productUnit.create({
                 data: {

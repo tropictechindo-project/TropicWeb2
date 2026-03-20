@@ -152,6 +152,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://ivszititvwyxeglntscj.supabase.co" />
+        <link rel="preconnect" href="https://i.ibb.co" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script

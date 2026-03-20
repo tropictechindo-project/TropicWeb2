@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { formatSpecsToString, parseSpecsFromString } from "@/lib/product-utils"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -110,7 +111,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
             imageUrl: pkg.imageUrl || "",
             images: pkg.images || (pkg.imageUrl ? [pkg.imageUrl] : []),
             discountPercentage: pkg.discountPercentage?.toString() || "0",
-            specs: JSON.stringify(pkg.specs || {}, null, 2)
+            specs: formatSpecsToString(pkg.specs)
         })
         setSelectedItems([...pkg.items])
         setIsOpen(true)
@@ -182,7 +183,7 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                 imageUrl: finalImages[0],
                 images: finalImages,
                 items: packageItems,
-                specs: JSON.parse(formData.specs || "{}")
+                specs: parseSpecsFromString(formData.specs)
             }
 
             const res = await fetch(url, {
@@ -276,14 +277,14 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
                             <Textarea id="description" value={formData.description} rows={3} onChange={e => setFormData({ ...formData, description: e.target.value })} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="specs">Detailed Specifications (JSON Format)</Label>
-                            <p className="text-[10px] text-muted-foreground mb-1">Enter key-value pairs like: {"{\"Key\": \"Value\"}"}</p>
+                            <Label htmlFor="specs">Package Specifications (Normal Text)</Label>
+                            <p className="text-[10px] text-muted-foreground mb-1">Enter specifications as simple text or list (e.g., "Includes: Desk & Chair").</p>
                             <Textarea
                                 id="specs"
                                 value={formData.specs}
                                 rows={6}
-                                className="font-mono text-xs"
-                                placeholder='{ "Includes": "Full setup", "Monitors": "Dual 24inch" }'
+                                className="text-sm"
+                                placeholder={`Includes: Workstation Solo\nMonitor: 27" 4K\nAccessories: Keyboard & Mouse`}
                                 onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
                             />
                         </div>

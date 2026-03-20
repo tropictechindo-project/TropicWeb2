@@ -91,9 +91,7 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
             price: price,
             type: product.category ? 'PRODUCT' : 'PACKAGE',
             image: displayImages[0],
-            duration: 30,
-            stock: currentStock,
-            quantity: 1
+            duration: 30
         })
         setIsAdded(true)
         setTimeout(() => setIsAdded(false), 2000)
@@ -113,9 +111,7 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
             price: price,
             type: product.category ? 'PRODUCT' : 'PACKAGE',
             image: displayImages[0],
-            duration: 30,
-            stock: currentStock,
-            quantity: 1
+            duration: 30
         })
         router.push('/checkout')
     }
@@ -243,70 +239,60 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
                             {specs && (
                                 <div className="space-y-4 border-t pt-4">
-                                    <h4 className="font-semibold flex items-center gap-2">
+                                    <h4 className="font-semibold flex items-center gap-2 text-sm uppercase tracking-wider text-muted-foreground">
                                         Specifications
                                     </h4>
 
-                                    {/* Features Display */}
-                                    {specs.features && Array.isArray(specs.features) && (
-                                        <div className="space-y-1 text-sm">
-                                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                                                <Star className="h-4 w-4" /> <span>Features</span>
-                                            </div>
-                                            <ul className="list-disc pl-5">
-                                                {specs.features.map((f: string, i: number) => (
-                                                    <li key={i}>{f}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-
-                                    {/* Dimensions Display */}
-                                    {(specs.length || specs.width || specs.height || specs.dimensions) && (
-                                        <div className="space-y-1 text-sm">
-                                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                                                <Ruler className="h-4 w-4" /> <span>Dimensions</span>
-                                            </div>
-                                            {specs.length && <p>Length: {specs.length}</p>}
-                                            {specs.width && <p>Width: {specs.width}</p>}
-                                            {specs.height && <p>Height: {specs.height}</p>}
-                                            {specs.dimensions && <p>{specs.dimensions}</p>}
-                                        </div>
-                                    )}
-
-                                    {(specs.seatedHeight || specs.standingHeight) && (
-                                        <div className="text-sm space-y-1">
-                                            {specs.seatedHeight && <p>Seated Position: {specs.seatedHeight}</p>}
-                                            {specs.standingHeight && <p>Standing Position: {specs.standingHeight}</p>}
-                                            {specs.maxLoad && <p>Maximum Load: {specs.maxLoad}</p>}
-                                        </div>
-                                    )}
-
-                                    {/* Fallback for other specs */}
-                                    <div className="space-y-1 text-sm">
-                                        {Object.entries(specs).map(([key, value]) => {
-                                            const handledKeys = ['features', 'length', 'width', 'height', 'dimensions', 'seatedHeight', 'standingHeight', 'maxLoad', 'colours'];
-                                            if (handledKeys.includes(key) || typeof value === 'object') return null;
-                                            return (
-                                                <div key={key} className="flex justify-between border-b border-dashed pb-1">
-                                                    <span className="text-muted-foreground">{key}</span>
-                                                    <span className="font-medium">{String(value)}</span>
+                                    {typeof specs === 'string' ? (
+                                        <div className="space-y-2 text-sm bg-muted/30 p-4 rounded-xl border border-dashed">
+                                            {specs.split('\n').filter(line => line.trim()).map((line, i) => (
+                                                <div key={i} className="flex gap-2 items-start">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                                                    <span className="font-medium text-xs leading-relaxed">{line}</span>
                                                 </div>
-                                            );
-                                        })}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {/* Legacy Features Display */}
+                                            {specs.features && Array.isArray(specs.features) && (
+                                                <div className="space-y-1 text-sm">
+                                                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                                                        <Star className="h-4 w-4" /> <span>Features</span>
+                                                    </div>
+                                                    <ul className="list-disc pl-5">
+                                                        {specs.features.map((f: string, i: number) => (
+                                                            <li key={i}>{f}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
 
-                                    {specs.colours && Array.isArray(specs.colours) && (
-                                        <div className="space-y-1 text-sm">
-                                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                                                <Palette className="h-4 w-4" /> <span>Colours</span>
-                                            </div>
-                                            <div className="flex gap-2">
-                                                {specs.colours.map((c: string) => (
-                                                    <span key={c} className="px-2 py-1 bg-secondary rounded-md text-xs font-medium">
-                                                        {c}
-                                                    </span>
-                                                ))}
+                                            {/* Legacy Dimensions Display */}
+                                            {(specs.length || specs.width || specs.height || specs.dimensions) && (
+                                                <div className="space-y-1 text-sm">
+                                                    <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                                                        <Ruler className="h-4 w-4" /> <span>Dimensions</span>
+                                                    </div>
+                                                    {specs.length && <p>Length: {specs.length}</p>}
+                                                    {specs.width && <p>Width: {specs.width}</p>}
+                                                    {specs.height && <p>Height: {specs.height}</p>}
+                                                    {specs.dimensions && <p>{specs.dimensions}</p>}
+                                                </div>
+                                            )}
+
+                                            {/* Legacy Fallback for other specs */}
+                                            <div className="space-y-1 text-sm">
+                                                {Object.entries(specs).map(([key, value]) => {
+                                                    const handledKeys = ['features', 'length', 'width', 'height', 'dimensions', 'seatedHeight', 'standingHeight', 'maxLoad', 'colours'];
+                                                    if (handledKeys.includes(key) || typeof value === 'object') return null;
+                                                    return (
+                                                        <div key={key} className="flex justify-between border-b border-dashed pb-1">
+                                                            <span className="text-muted-foreground text-xs uppercase font-black">{key}</span>
+                                                            <span className="font-medium text-xs">{String(value)}</span>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     )}

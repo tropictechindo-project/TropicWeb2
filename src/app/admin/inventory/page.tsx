@@ -17,12 +17,14 @@ export default async function AdminInventoryPage() {
 
     const productAssets = products.map(p => {
         const allUnits = p.variants.flatMap(v => v.units)
+        const defaultVariant = p.variants[0]
         
         return {
             id: p.id,
             productId: p.id,
             name: p.name,
             category: p.category,
+            defaultVariantId: defaultVariant?.id,
             total: allUnits.length,
             available: allUnits.filter(u => u.status === 'AVAILABLE').length,
             reserved: allUnits.filter(u => u.status === 'RESERVED').length,
@@ -44,6 +46,28 @@ export default async function AdminInventoryPage() {
         }
     })
 
+    const formattedUnits = productUnits.map(u => ({
+        ...u,
+        purchasePrice: u.purchasePrice ? Number(u.purchasePrice) : 0,
+        installmentMonthly: u.installmentMonthly ? Number(u.installmentMonthly) : 0,
+        installmentPaidAmount: u.installmentPaidAmount ? Number(u.installmentPaidAmount) : 0,
+        installmentRemaining: u.installmentRemaining ? Number(u.installmentRemaining) : 0,
+        revenue: u.revenue ? Number(u.revenue) : 0,
+        createdAt: u.createdAt.toISOString(),
+        updatedAt: u.updatedAt.toISOString(),
+        purchaseDate: u.purchaseDate?.toISOString() || null,
+        lastServiceDate: u.lastServiceDate?.toISOString() || null,
+        variant: {
+            ...u.variant,
+            monthlyPrice: u.variant.monthlyPrice ? Number(u.variant.monthlyPrice) : 0,
+            createdAt: u.variant.createdAt.toISOString(),
+            updatedAt: u.variant.updatedAt.toISOString(),
+            product: {
+                ...u.variant.product
+            }
+        }
+    }))
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-2">
@@ -53,7 +77,7 @@ export default async function AdminInventoryPage() {
             <InventoryClient
                 productAssets={productAssets}
                 products={products.map(p => ({ id: p.id, name: p.name }))}
-                inventoryUnits={productUnits || []}
+                inventoryUnits={formattedUnits || []}
             />
         </div>
     )

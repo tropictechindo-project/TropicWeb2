@@ -29,9 +29,9 @@ const SYSTEM_TRUTH_CONTENT = (
         <ul className="list-disc pl-4 space-y-1">
             <li><strong>Invoice-First:</strong> Invoices are the absolute financial source of truth.</li>
             <li><strong>Order Lifecycle:</strong> Orders are created ONLY AFTER payment verification.</li>
-            <li><strong>Optional Tracking:</strong> Inventory tracking is OPTIONAL and depends on manual assignment.</li>
-            <li><strong>Partial ROI:</strong> ROI calculations are based ONLY on linked inventory units.</li>
-            <li><strong>Custom Orders:</strong> Not all business actions (manual invoices) appear in ROI.</li>
+            <li><strong>Asset Tracking:</strong> Every product is now tracked as a discrete, physical unit with its own ID (e.g., TTDS-CHAIR-01).</li>
+            <li><strong>Real-time ROI:</strong> The system automatically calculates profitability based on Buy Price vs. Rental Revenue.</li>
+            <li><strong>lifecycle Management:</strong> Admin can mark units as LOST or MAINTENANCE to update stock instantly.</li>
         </ul>
     </div>
 )
@@ -98,11 +98,17 @@ const GUIDES: Record<Role, GuideSection[]> = {
             )
         },
         {
-            title: "6. Inventory & ROI (Tracked vs Untracked)",
+            title: "6. Inventory & Lifecycle Management",
             content: (
-                <div className="space-y-1 text-xs">
-                    <p>Standard Inventory relies on core `ProductUnits` allocation locks inside deliveries loops to prevent oversells automatically.</p>
-                    <p><strong>Discrete Tracking:</strong> `InventoryUnits` are individual passive identifiers assigned *after* layout execution builds. "Tracked" means linking an order item row triggers incremental ROIs summing over aggregates effortlessly. "Untracked" keeps item balances neutral offsets offsets.</p>
+                <div className="space-y-2 text-xs">
+                    <p>Every physical asset in your warehouse is tracked individually for maximum financial accuracy.</p>
+                    <ul className="list-disc pl-4 space-y-1">
+                        <li><strong>HEALTHY:</strong> Product has available units for rent.</li>
+                        <li><strong>OUT_OF_STOCK:</strong> No available units found.</li>
+                        <li><strong>MAINTENANCE:</strong> Unit is being repaired (removes from stock).</li>
+                        <li><strong>LOST:</strong> Unit is gone (removes from stock permanently).</li>
+                    </ul>
+                    <p className="font-bold text-blue-600 mt-2">The ROI percentage is calculated per-unit based on its acquisition cost.</p>
                 </div>
             )
         },

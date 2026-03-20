@@ -55,44 +55,95 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
                 data: { status: 'PAID' }
             })
 
-            // C. Stock Validation & Reservation — Loop items flawlessly Node flawless safely
-            const stockCheck: { item: any; variant: any; units: any[] }[] = []
+            // C. Stock Validation & Reservation — Hard block overselling
+            const stockCheck: { item: any; variant: any; units: any[]; isPackage: boolean; packageItems?: any[] }[] = []
+            
             for (const item of cartItems) {
-                const qty = item.quantity || 1
-                const variant = await tx.productVariant.findFirst({
-                    where: { productId: item.id },
-                    include: {
-                        units: { where: { status: 'AVAILABLE' }, take: qty, orderBy: { createdAt: 'asc' } }
-                    }
+                // Determine if it's a package or product
+                const rentalPackage = await tx.rentalPackage.findUnique({
+                    where: { id: item.id },
+                    include: { rentalPackageItems: { include: { product: { include: { variants: { take: 1 } } } } } }
                 })
 
-                if (variant && variant.units.length >= qty) {
-                    stockCheck.push({ item, variant, units: variant.units })
+                if (rentalPackage) {
+                    const pkgItemsValidation: { variant: any; units: any[]; product: any }[] = []
+                    for (const pkgItem of rentalPackage.rentalPackageItems) {
+                        const product = pkgItem.product
+                        const variant = product.variants[0]
+                        const requiredQty = (pkgItem.quantity || 1) * (item.quantity || 1)
+
+                        if (!variant) throw new Error(`OVERSALE_BLOCKED: Package "${rentalPackage.name}" contains product "${product.name}" with no variant.`)
+
+                        const availableUnits = await tx.productUnit.findMany({
+                            where: { variantId: variant.id, status: 'AVAILABLE' },
+                            take: requiredQty,
+                            orderBy: { createdAt: 'asc' }
+                        })
+
+                        if (availableUnits.length < requiredQty) {
+                            throw new Error(`OVERSALE_BLOCKED: Package "${rentalPackage.name}" requires ${requiredQty}x "${product.name}" but only ${availableUnits.length} available.`)
+                        }
+                        pkgItemsValidation.push({ variant, units: availableUnits, product })
+                    }
+                    stockCheck.push({ item, variant: null, units: [], isPackage: true, packageItems: pkgItemsValidation })
+                } else {
+                    const qty = item.quantity || 1
+                    const variant = await tx.productVariant.findFirst({
+                        where: { productId: item.id },
+                        include: {
+                            units: { where: { status: 'AVAILABLE' }, take: qty, orderBy: { createdAt: 'asc' } }
+                        }
+                    })
+
+                    if (!variant) throw new Error(`OVERSALE_BLOCKED: Product "${item.name}" has no variant.`)
+                    if (variant.units.length < qty) throw new Error(`OVERSALE_BLOCKED: "${item.name}" requires ${qty} unit(s) but only ${variant.units.length} available.`)
+
+                    stockCheck.push({ item, variant, units: variant.units, isPackage: false })
                 }
-                // Skip crash to allow flexible processing node flawless safely
             }
 
-            // D. Reserve Units flawlessly
-            for (const { item, variant, units } of stockCheck) {
-                for (const unit of units) {
-                    await tx.productUnit.update({
-                        where: { id: unit.id },
-                        data: { status: 'RESERVED', assignedOrderId: updatedOrder.id }
-                    })
-                }
-                
-                // Ensure RentalItems don't duplicate Node flawless safely
-                const existingRental = await tx.rentalItem.findFirst({
-                    where: { orderId: updatedOrder.id, variantId: variant.id }
-                })
-                
-                if (!existingRental) {
+            // D. RESERVE UNITS
+            for (const check of stockCheck) {
+                if (check.isPackage && check.packageItems) {
+                    for (const pkgEntry of check.packageItems) {
+                        for (const unit of pkgEntry.units) {
+                            await tx.productUnit.update({
+                                where: { id: unit.id },
+                                data: { 
+                                    status: 'RESERVED', 
+                                    assignedOrderId: updatedOrder.id,
+                                    revenue: { increment: (check.item.price || 0) / check.packageItems.length }
+                                }
+                            })
+                            await tx.rentalItem.create({
+                                data: {
+                                    orderId: updatedOrder.id,
+                                    packageId: check.item.id,
+                                    variantId: pkgEntry.variant.id,
+                                    unitId: unit.id,
+                                    quantity: 1,
+                                }
+                            })
+                        }
+                    }
+                } else if (check.variant && check.units) {
+                    for (const unit of check.units) {
+                        await tx.productUnit.update({
+                            where: { id: unit.id },
+                            data: { 
+                                status: 'RESERVED', 
+                                assignedOrderId: updatedOrder.id,
+                                revenue: { increment: check.item.price || 0 }
+                            }
+                        })
+                    }
+
                     await tx.rentalItem.create({
                         data: {
                             orderId: updatedOrder.id,
-                            variantId: variant.id,
-                            unitId: units[0]?.id || null,
-                            quantity: item.quantity || 1,
+                            variantId: check.variant.id,
+                            unitId: check.units[0]?.id,
+                            quantity: check.item.quantity || 1,
                         }
                     })
                 }

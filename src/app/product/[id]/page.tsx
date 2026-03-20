@@ -258,56 +258,69 @@ export default function ProductDetailPage() {
                         )}
 
                         {/* Specs Section */}
-                        {(specs.features || specs.dimensions || specs.colours) && (
+                        {specs && (Object.keys(specs).length > 0 || typeof specs === 'string') && (
                             <div className="bg-white/40 dark:bg-zinc-900/40 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/20 shadow-xl space-y-8">
                                 <h3 className="font-black text-sm uppercase tracking-[0.2em] italic">Technical Profile</h3>
 
-                                {specs.features && Array.isArray(specs.features) && (
-                                    <div className="space-y-4">
-                                        <div className="flex items-center gap-2 text-primary">
-                                            <Star className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Core Features</span>
+                                {typeof specs === 'string' ? (
+                                    <div className="space-y-3">
+                                        {specs.split('\n').filter(line => line.trim()).map((line, i) => (
+                                            <div key={i} className="flex gap-3 items-start">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1 shrink-0" />
+                                                <span className="font-bold text-xs uppercase italic opacity-80 leading-relaxed">{line}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="space-y-8">
+                                        {specs.features && Array.isArray(specs.features) && (
+                                            <div className="space-y-4">
+                                                <div className="flex items-center gap-2 text-primary">
+                                                    <Star className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Core Features</span>
+                                                </div>
+                                                <ul className="grid grid-cols-1 gap-3">
+                                                    {specs.features.map((f: string, i: number) => (
+                                                        <li key={i} className="flex items-center gap-3 text-xs font-bold leading-tight uppercase italic opacity-80">
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                                                            {f}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        <div className="grid grid-cols-2 gap-8 pt-4 border-t border-black/5 dark:border-white/5">
+                                            {(specs.length || specs.width || specs.height || specs.dimensions) && (
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center gap-2 text-primary">
+                                                        <Ruler className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Dimensions</span>
+                                                    </div>
+                                                    <div className="text-[10px] font-black space-y-1.5 text-muted-foreground uppercase italic">
+                                                        {specs.length && <p>Length: {specs.length}</p>}
+                                                        {specs.width && <p>Width: {specs.width}</p>}
+                                                        {specs.height && <p>Height: {specs.height}</p>}
+                                                        {specs.dimensions && <p className="normal-case font-medium">{specs.dimensions}</p>}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {specs.colours && (
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center gap-2 text-primary">
+                                                        <Palette className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Optics</span>
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {specs.colours.map((c: string) => (
+                                                            <span key={c} className="px-3 py-1.5 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest border border-white/20 shadow-sm transition-all hover:scale-110">
+                                                                {c}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
-                                        <ul className="grid grid-cols-1 gap-3">
-                                            {specs.features.map((f: string, i: number) => (
-                                                <li key={i} className="flex items-center gap-3 text-xs font-bold leading-tight uppercase italic opacity-80">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                                                    {f}
-                                                </li>
-                                            ))}
-                                        </ul>
                                     </div>
                                 )}
-
-                                <div className="grid grid-cols-2 gap-8 pt-4 border-t border-black/5 dark:border-white/5">
-                                    {(specs.length || specs.width || specs.height || specs.dimensions) && (
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2 text-primary">
-                                                <Ruler className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Dimensions</span>
-                                            </div>
-                                            <div className="text-[10px] font-black space-y-1.5 text-muted-foreground uppercase italic">
-                                                {specs.length && <p>Length: {specs.length}</p>}
-                                                {specs.width && <p>Width: {specs.width}</p>}
-                                                {specs.height && <p>Height: {specs.height}</p>}
-                                                {specs.dimensions && <p className="normal-case font-medium">{specs.dimensions}</p>}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {specs.colours && (
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2 text-primary">
-                                                <Palette className="h-4 w-4" /> <span className="font-black text-[10px] uppercase tracking-widest">Optics</span>
-                                            </div>
-                                            <div className="flex flex-wrap gap-2">
-                                                {specs.colours.map((c: string) => (
-                                                    <span key={c} className="px-3 py-1.5 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest border border-white/20 shadow-sm transition-all hover:scale-110">
-                                                        {c}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
                             </div>
                         )}
 

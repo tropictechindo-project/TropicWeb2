@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ShoppingCart, User, Globe, Menu, X, FileText, Trash2, LayoutDashboard, LogOut, Home } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { LoginModal } from '@/components/auth/LoginModal'
@@ -139,8 +140,18 @@ export default function Header() {
               "flex items-center space-x-2 transition-all duration-500",
               mounted && showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
             )}>
-              <Link href="/" id="main-header-logo" className="text-2xl font-bold text-primary" prefetch={true}>
-                Tropic Tech
+              <Link href="/" id="main-header-logo" className="flex items-center gap-2 group" prefetch={true}>
+                <Image
+                  src="/images/Logo.webp"
+                  alt="Tropic Tech"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                  priority
+                />
+                <span className="text-2xl font-black tracking-tighter text-primary uppercase italic">
+                  Tropic <span className="text-foreground/80">Tech</span>
+                </span>
               </Link>
             </div>
 

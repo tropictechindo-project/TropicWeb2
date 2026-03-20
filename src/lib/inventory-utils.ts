@@ -1,88 +1,56 @@
-import { db } from './db'
+import { format } from 'date-fns'
 
-/**
- * Safe Revenue Hook (Read-Only)
- * Sums the price of all order items assigned to a specific inventory unit
- */
-export async function getUnitRevenue(unitId: string): Promise<number> {
-    try {
-        const aggregate = await (db as any).orderItem.aggregate({
-            where: { inventoryUnitId: unitId },
-            _sum: { price: true }
-        })
-        return Number(aggregate._sum.price || 0)
-    } catch (error) {
-        console.error('[getUnitRevenue] Error:', error)
-        return 0
-    }
+export const CATEGORY_INITIALS: Record<string, string> = {
+    'Desk': 'DS',
+    'Monitor': 'MN',
+    'Chair': 'CH',
+    'Treadmill': 'TRM',
+    'Mouse and Keyboard': 'MK',
+    'Accessories': 'AC',
+    'Other': 'OT',
+    // Indonesian translations if used in DB
+    'Meja': 'DS',
+    'Kursi': 'CH',
+    'Lainnya': 'OT'
 }
 
-/**
- * Product-Level ROI Aggregation (Step 8)
- * Groups linked inventory units by product_id and returns aggregated financial yields.
- */
-export async function getProductRoiStats() {
-    try {
-        const anyDb = db as any;
+export function getCategoryInitial(category: string): string {
+    return CATEGORY_INITIALS[category] || category.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X')
+}
 
-        // 1. Get all linked order items to extract revenues per unitId
-        const linkedItems = await anyDb.orderItem.findMany({
-            where: { inventoryUnitId: { not: null } },
-            select: { inventoryUnitId: true, price: true }
-        })
+export function generateAssetTag(data: {
+    category: string,
+    modelName: string,
+    sequence: number,
+    purchaseDate?: Date | null
+}) {
+    const prefix = 'TT'
+    const cat = getCategoryInitial(data.category)
+    
+    // Clean model name (e.g. "Workstation Solo" -> "SOLO", "27\" 4K Monitor" -> "27")
+    let model = data.modelName
+        .toUpperCase()
+        .replace(/Workstation/gi, '')
+        .replace(/Monitor/gi, '')
+        .trim()
+        .split(' ')[0]
+        .replace(/[^A-Z0-9]/g, '')
+    
+    if (!model) model = 'UNIT'
 
-        const unitRevenues: Record<string, number> = {}
-        linkedItems.forEach((item: any) => {
-            const id = item.inventoryUnitId
-            unitRevenues[id] = (unitRevenues[id] || 0) + Number(item.price || 0)
-        })
-
-        const unitIds = Object.keys(unitRevenues)
-        if (unitIds.length === 0) return []
-
-        // 2. Fetch inventory items matching those linked IDs
-        const units = await anyDb.inventoryUnit.findMany({
-            where: { id: { in: unitIds } },
-            include: { product: { select: { name: true } } }
-        })
-
-        // 3. Aggregate In Memory by ProductId
-        const productStats: Record<string, {
-            productId: string,
-            name: string,
-            total_revenue: number,
-            total_units: number,
-            total_installment: number,
-            total_profit: number
-        }> = {}
-
-        units.forEach((unit: any) => {
-            const pId = unit.productId
-            const name = unit.product?.name || "Unknown Product"
-            const revenue = unitRevenues[unit.id] || 0
-            const installment = Number(unit.installmentMonthly || 0)
-
-            if (!productStats[pId]) {
-                productStats[pId] = {
-                    productId: pId,
-                    name,
-                    total_revenue: 0,
-                    total_units: 0,
-                    total_installment: 0,
-                    total_profit: 0
-                }
-            }
-
-            productStats[pId].total_revenue += revenue
-            productStats[pId].total_units += 1
-            productStats[pId].total_installment += installment
-            productStats[pId].total_profit += (revenue - installment)
-        })
-
-        return Object.values(productStats)
-        
-    } catch (error) {
-        console.error('[getProductRoiStats] Error aggregates failing non-blocking:', error)
-        return []
+    // Format sequence: if > 50, use . separator (e.g. 51 -> 50.1)
+    let seqStr = ''
+    if (data.sequence <= 50) {
+        seqStr = data.sequence.toString().padStart(2, '0')
+    } else {
+        const base = Math.floor((data.sequence - 1) / 50) * 50
+        const rem = (data.sequence - 1) % 50 + 1
+        seqStr = `50.${data.sequence - 50}` // Simplification based on user example 50.1
+        // Actually user said: if Morethan 50 use "." as a boundry or gap
+        // Example: 50.1, 50.2... 
     }
+
+    const dateStr = format(data.purchaseDate || new Date(), 'dd.MM.yyyy')
+    
+    return `${prefix}${cat}-${model}-${seqStr}-${dateStr}`
 }

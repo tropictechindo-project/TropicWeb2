@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
 import { verifyAuth } from '@/lib/auth/auth-helper'
+import { generateAssetTag } from '@/lib/inventory-utils'
 
 export async function POST(request: NextRequest) {
     try {
@@ -24,20 +25,11 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Variant not found' }, { status: 404 })
         }
 
-        // Determine how many units to add
-        let unitsToAdd = 0
-        if (numUnitsToAdd) {
-            unitsToAdd = numUnitsToAdd
-        } else if (total !== undefined) {
-            const currentTotal = variant._count.units
-            unitsToAdd = Math.max(0, total - currentTotal)
-        }
-
         const newUnits = await db.$transaction(async (tx) => {
-            // 1. Lock the variant row for update to prevent concurrent conflicts
+            // 1. Lock the variant row for update
             await tx.$executeRaw`SELECT * FROM product_variants WHERE id = ${variantId}::uuid FOR UPDATE`
 
-            // 2. Determine how many units to add (must recalculate inside tx for accuracy)
+            // 2. Determine how many units to add
             const currentVariant = await tx.productVariant.findUnique({
                 where: { id: variantId },
                 include: { _count: { select: { units: true } } }
@@ -53,16 +45,27 @@ export async function POST(request: NextRequest) {
                 unitsToAdd = Math.max(0, total - currentTotal)
             }
 
+            const currentCount = currentVariant._count.units
             const units: any[] = []
             for (let i = 0; i < unitsToAdd; i++) {
-                const serialNumber = `SN-${variant.sku}-${Date.now().toString().slice(-4)}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
+                const sequence = currentCount + i + 1
+                const assetTag = generateAssetTag({
+                    category: variant.product.category,
+                    modelName: variant.product.name,
+                    sequence,
+                    purchaseDate: new Date()
+                })
+                const serialNumber = `SN-${variant.sku}-${Date.now().toString().slice(-4)}-${sequence.toString().padStart(3, '0')}`
 
                 const unit = await tx.productUnit.create({
                     data: {
                         variantId: variant.id,
                         serialNumber,
+                        assetTag,
                         status: 'AVAILABLE',
-                        condition: condition || 'GOOD'
+                        condition: condition || 'GOOD',
+                        purchasePrice: 0,
+                        purchaseDate: new Date()
                     }
                 })
 
@@ -76,12 +79,11 @@ export async function POST(request: NextRequest) {
                     }
                 })
 
-                // Add inventory sync log for accountability
                 await tx.inventorySyncLog.create({
                     data: {
                         productId: variant.productId,
-                        oldQuantity: variant._count.units + i,
-                        newQuantity: variant._count.units + i + 1,
+                        oldQuantity: currentCount + i,
+                        newQuantity: currentCount + i + 1,
                         updatedBy: adminId || '00000000-0000-0000-0000-000000000000',
                         source: 'ADMIN',
                         conflict: false,
@@ -98,10 +100,10 @@ export async function POST(request: NextRequest) {
             userId: adminId,
             action: 'INVENTORY_RECONCILE',
             entity: 'PRODUCT',
-            details: `Reconciled ${variant.product.name} (${variant.color}). Added ${unitsToAdd} units. Target Total: ${total || 'N/A'}`
+            details: `Reconciled ${variant.product.name} (${variant.color}). Added ${newUnits.length} units.`
         })
 
-        return NextResponse.json({ success: true })
+        return NextResponse.json({ success: true, unitsAdded: newUnits.length })
     } catch (error) {
         console.error('Inventory Adjustment Error:', error)
         return NextResponse.json({ error: 'Failed' }, { status: 500 })

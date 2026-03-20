@@ -62,6 +62,14 @@ const nextConfig: NextConfig = {
     ],
   },
   compress: true,
+  async rewrites() {
+    return [
+      {
+        source: "/sitemap",
+        destination: "/website-sitemap",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

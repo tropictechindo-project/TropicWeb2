@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { formatSpecsToString, parseSpecsFromString } from "@/lib/product-utils"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -137,7 +138,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
             images: product.images || (product.imageUrl ? [product.imageUrl] : []),
             discountPercentage: product.discountPercentage?.toString() || "0",
             variants: product.variants || [],
-            specs: JSON.stringify(product.specs || {}, null, 2)
+            specs: formatSpecsToString(product.specs)
         })
 
         // If the product belongs to a category not in the standard list, open custom mode immediately
@@ -190,7 +191,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                     images: finalImages,
                     discountPercentage: parseInt(formData.discountPercentage),
                     variants: formData.variants,
-                    specs: JSON.parse(formData.specs || "{}")
+                    specs: parseSpecsFromString(formData.specs)
                 })
             })
 
@@ -236,7 +237,7 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                             <TableHead>Name</TableHead>
                             <TableHead>Category</TableHead>
                             <TableHead>Price (Monthly)</TableHead>
-                            <TableHead>Stock (Cached)</TableHead>
+                            <TableHead>Available Stock</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -387,14 +388,14 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="specs">Detailed Specifications (JSON Format)</Label>
-                            <p className="text-[10px] text-muted-foreground mb-1">Enter key-value pairs like: {"{\"Key\": \"Value\"}"}</p>
+                            <Label htmlFor="specs">Product Specifications (Normal Text)</Label>
+                            <p className="text-[10px] text-muted-foreground mb-1">Enter specifications as simple text or list (e.g., "Feature: Quality").</p>
                             <Textarea
                                 id="specs"
                                 value={formData.specs}
                                 rows={6}
-                                className="font-mono text-xs"
-                                placeholder='{ "Processor": "i7", "RAM": "16GB" }'
+                                className="text-sm"
+                                placeholder={`Feature: High quality\nDimensions: 100x200cm\nMaterial: Premium Wood`}
                                 onChange={(e) => setFormData({ ...formData, specs: e.target.value })}
                             />
                         </div>
