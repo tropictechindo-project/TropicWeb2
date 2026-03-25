@@ -65,7 +65,7 @@ export default function Hero({ initialSettings }: HeroProps) {
             fetchPriority="high"
             loading="eager"
             sizes="100vw"
-            quality={75}
+            quality={60}
           />
         </div>
 

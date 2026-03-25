@@ -49,50 +49,74 @@ export async function POST(
                 throw new Error('Delivery is no longer available in the queue')
             }
 
+            // --- Multi-Worker Claim Logic (Max 3) ---
+            const existingClaims = await tx.delivery.findMany({
+                where: {
+                    invoiceId: delivery.invoiceId,
+                    deliveryType: delivery.deliveryType,
+                    status: { not: 'QUEUED' }
+                }
+            })
+
+            if (existingClaims.length >= 3) {
+                // Failsafe: if max is hit, destroy the Pool Master so it disappears from queue
+                await tx.delivery.delete({ where: { id } })
+                throw new Error('Maximum of 3 workers have already claimed this order')
+            }
+
+            const alreadyClaimed = existingClaims.some(d => d.claimedByWorkerId === workerId)
+            if (alreadyClaimed) {
+                throw new Error('You have already claimed this delivery')
+            }
+
             // 2. Lock the vehicle
             const vehicle = await tx.vehicle.findUnique({
                 where: { id: vehicleId }
             })
 
-            if (!vehicle) {
-                throw new Error('Vehicle not found')
-            }
+            if (!vehicle) throw new Error('Vehicle not found')
+            if (vehicle.status !== 'AVAILABLE') throw new Error('Vehicle is currently in use')
 
-            if (vehicle.status !== 'AVAILABLE') {
-                throw new Error('Vehicle is currently in use')
-            }
-
-            // 3. Update Delivery
-            const updatedDelivery = await tx.delivery.update({
-                where: { id },
+            // 3. Create a Clone of the Delivery for this Worker (Leave the master QUEUED)
+            const clonedDelivery = await tx.delivery.create({
                 data: {
+                    invoiceId: delivery.invoiceId,
+                    deliveryMethod: delivery.deliveryMethod,
+                    deliveryType: delivery.deliveryType,
+                    latitude: delivery.latitude,
+                    longitude: delivery.longitude,
                     status: 'CLAIMED',
                     claimedByWorkerId: workerId,
                     vehicleId: vehicleId
                 }
             })
 
+            // If this was the 3rd worker (so now there are 3 claims), destroy the Pool Master
+            if (existingClaims.length + 1 >= 3) {
+                await tx.delivery.delete({ where: { id } })
+            }
+
             // 4. Update Vehicle
             await tx.vehicle.update({
                 where: { id: vehicleId },
                 data: {
                     status: 'IN_USE',
-                    currentDeliveryId: id
+                    currentDeliveryId: clonedDelivery.id
                 }
             })
 
             // 5. Add Log
             await tx.deliveryLog.create({
                 data: {
-                    deliveryId: id,
+                    deliveryId: clonedDelivery.id,
                     createdByUserId: workerId,
                     role: 'WORKER',
                     eventType: 'CLAIMED',
-                    newValue: JSON.parse(JSON.stringify({ notes: `Claimed with vehicle: ${vehicle.name}` }))
+                    newValue: JSON.parse(JSON.stringify({ notes: `Claimed with vehicle: ${vehicle.name} (Worker ${existingClaims.length + 1} of 3)` }))
                 }
             })
 
-            return updatedDelivery
+            return clonedDelivery
         })
 
         await logActivity({

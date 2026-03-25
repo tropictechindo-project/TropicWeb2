@@ -247,7 +247,7 @@ export default function CheckoutPage() {
     const priorityFee = isPriority ? 100000 : 0
     const taxRate = 0.02
     const taxValue = Math.round((subtotal + priorityFee) * taxRate)
-    const deliveryFee = breakdown ? Number(breakdown.deliveryFee) : 0
+    const deliveryFee = breakdown ? Number(breakdown.deliveryFee) : 100000
     const edcSurchargeValue = paymentMethod === 'EDC' ? Math.round((subtotal + priorityFee) * 0.02) : 0
     
     const finalTotalValue = subtotal + priorityFee + taxValue + deliveryFee + edcSurchargeValue
@@ -384,10 +384,6 @@ export default function CheckoutPage() {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
-
-                            <div className="mt-4 border-t pt-4">
-                                <ProductSuggestions productIds={items.map(i => i.id)} />
                             </div>
                             
                             <Separator className="my-6" />

@@ -301,7 +301,7 @@ export default function Header() {
                             </DropdownMenu>
                           </div>
                           <TooltipContent side="bottom" className="animate-in fade-in slide-in-from-top-2 duration-2000 bg-transparent backdrop-blur-md border-none shadow-none text-foreground">
-                            <p className="font-semibold">Click on Change to Dark/White Mode</p>
+                            <p className="font-semibold">Click Globe for Change to Dark/White Mode</p>
                             <p className="text-xs">Hover or Hold 2s for Language Options</p>
                           </TooltipContent>
                         </Tooltip>
@@ -402,7 +402,7 @@ export default function Header() {
                             </DropdownMenu>
                           </div>
                           <TooltipContent side="bottom" className="animate-in fade-in slide-in-from-top-2 duration-1000 bg-transparent backdrop-blur-md border-none shadow-none text-foreground">
-                            <p className="font-semibold">Click on Change to Dark/White Mode</p>
+                            <p className="font-semibold">Click Globe for Change to Dark/White Mode</p>
                             <p className="text-xs">Hover or Hold 3s for Language Options</p>
                           </TooltipContent>
                         </Tooltip>

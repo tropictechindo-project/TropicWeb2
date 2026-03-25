@@ -95,11 +95,18 @@
 **System Version**: 3.0.0-hardened
 **Environment**: Global Production Stable (Bali Dominance v3.0 & Phase 6 Hardening)
 
-- ✅ **v3.0 - Bali Dominance & Phase 6 Hardening (2026-03-26)**:
+- ✅ **v3.1 - Phase 7: Web Vitals & Mobile PageSpeed Maximization (2026-03-26)**:
+    - ✅ **Network Bottleneck Elimination**: Cleared unused `preconnect` and `dns-prefetch` attributes from `RootLayout` resolving early connection limits.
+    - ✅ **JavaScript Payload Reduction**: Reconfigured `browserslist` forcing modern ES runtimes (Safari 15.4+, Chrome 95+) to structurally drop 15+ KiB of legacy polyfills (e.g., `Array.prototype.at`).
+    - ✅ **Mobile Image Shading**: Clamped Next.js dynamic `<Image>` `sizes` mapping down to `50vw` from `100vw` on mobile breakpoints, completely skipping the heavy 750px DPR=2 image variants on mobile endpoints.
+    - ✅ **Quality Decoupling**: Hardcapped compression quality ratios to `60` specifically for grid galleries and heroes pulling directly out of the LCP budget.
+
+- ✅ **v3.0 - Bali Dominance & Phase 6.2 Hardening (2026-03-26)**:
     - ✅ **Sitemap & SEO**: Unified `/sitemap` rewrite and 25+ Bali SEO clusters in `sitemap.xml`.
-    - ✅ **Checkout PRECISION**: 2% Tax (Items + Priority) and Delivery Fee synchronization.
-    - ✅ **Catalog REBORN**: Updated `/products` to high-fidelity "Hardware Catalog" grid.
-    - ✅ **Real Data Only**: Removed hardcoded suggestions; 100% DB-driven cross-selling.
+    - ✅ **Checkout PRECISION**: 2% Tax (Items + Priority) and Delivery Fee synchronization (100k IDR fallback).
+    - ✅ **Catalog REBORN**: Updated `/products` to high-fidelity "Hardware Catalog" grid (4-Column Magazine Print Layout).
+    - ✅ **Real Data Only**: Removed hardcoded suggestions; 100% DB-driven cross-selling with prioritized array sorting.
+    - ✅ **Worker Dispatch Scaling**: Implemented Pool-Master Cloning to safely support maximum 3 workers per single order/invoice.
     - ✅ **Build Success**: Compilation and Page Generation verified (Next.js v16.1.6).
 
 - ✅ **SEO Strategy v3.0 (Bali Dominance) (v2.9.0 - Phase 3/4)**:

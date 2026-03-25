@@ -9,10 +9,11 @@
 ## 🏗️ Phase 6: Production Hardening
 As of v3.0.0, the system has undergone a final "Hardening" phase for commercial stability:
 - **Tax Intelligence**: Strict 2% Tax applied to Items + Priority fees, synchronized between Checkout UI and Backend Invoicing.
-- **Sitemap v4.0**: Autonomous XML generator at `sitemap.xml` and premium user-facing sitemap at `/sitemap` (via internal rewrite).
-- **Catalog Strategy**: Reverted to a high-fidelity Hardware Catalog layout with Hardware, Bundles, and Special Offers sections.
+- **Delivery Intelligence**: Geographic 100k IDR fallback delivery fee enforcement and dynamic live coordinate trackers.
+- **Catalog Strategy**: Reverted to a high-fidelity 4-Column Print Layout Hardware Catalog layout prioritizing structural hardware over accessories.
+- **Sitemap v4.0**: Autonomous XML generator at `sitemap.xml` and premium unified SEO cluster map at `/sitemap`.
 - **Data Integrity**: Removed hardcoded product suggestions; 100% database-driven cross-selling in the checkout flow.
-- **SEO Clusters**: Organized mapping for 25+ high-intent Bali landing pages (Regional Hubs & Masterclass).
+- **Dispatch Scaling**: Patched the worker `QUEUED` delivery pool to safely clone requests, supporting up to 3 individual workers claiming the same physical order/invoice simultaneously based on truck capacity.
 
 ---
 

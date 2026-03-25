@@ -43,14 +43,13 @@ export function ProductsClientView({ products, packages, offers, categories, cat
 
     // Categorization for Print
     const printCategories = [
-        { id: 'offers', title: 'Special Offers', items: offers },
-        { id: 'packages', title: 'Packages', items: packages },
         { id: 'desk', title: 'Desk', items: products.filter(p => p.category === 'Desk') },
         { id: 'chair', title: 'Chair', items: products.filter(p => p.category === 'Chair') },
         { id: 'monitor', title: 'Monitor', items: products.filter(p => p.category === 'Monitor') },
-        { id: 'keyboard-mouse', title: 'Mouse And Keyboard', items: products.filter(p => ['Mouse And Keyboard', 'Keyboard', 'Mouse'].includes(p.category)) },
-        { id: 'accessories', title: 'Accessories', items: products.filter(p => p.category === 'Accessories') },
-        { id: 'other', title: 'Other', items: products.filter(p => !['Desk', 'Chair', 'Monitor', 'Mouse And Keyboard', 'Keyboard', 'Mouse', 'Accessories'].includes(p.category)) },
+        { id: 'keyboard-mouse', title: 'Mouse and Keyboard', items: products.filter(p => ['Mouse And Keyboard', 'Keyboard', 'Mouse'].includes(p.category)) },
+        { id: 'other', title: 'Other', items: products.filter(p => !['Desk', 'Chair', 'Monitor', 'Mouse And Keyboard', 'Keyboard', 'Mouse', 'Accessories'].includes(p.category) || p.category === 'Accessories') },
+        { id: 'packages', title: 'Packages', items: packages },
+        { id: 'offers', title: 'Special Offers', items: offers },
     ].filter(cat => cat.items.length > 0)
 
     const filteredItems = allItems.filter(item => {
@@ -60,10 +59,12 @@ export function ProductsClientView({ products, packages, offers, categories, cat
         if (activeTab === 'All') return matchesSearch
         if (activeTab === 'Special Offers') return matchesSearch && item.type === 'OFFER'
         if (activeTab === 'Packages') return matchesSearch && item.type === 'PACKAGE'
+        if (activeTab === 'Mouse and Keyboard') return matchesSearch && ['Mouse And Keyboard', 'Keyboard', 'Mouse'].includes(item.category)
+        if (activeTab === 'Other') return matchesSearch && !['Desk', 'Chair', 'Monitor', 'Mouse And Keyboard', 'Keyboard', 'Mouse', 'Packages', 'Special Offers'].includes(item.category)
         return matchesSearch && item.category === activeTab
     })
 
-    const tabs = ['All', 'Special Offers', 'Packages', ...categories]
+    const tabs = ['All', 'Desk', 'Chair', 'Monitor', 'Mouse and Keyboard', 'Other', 'Packages', 'Special Offers']
 
     const handleShare = async (item: CatalogItem) => {
         const url = `${window.location.origin}/${item.type === 'PRODUCT' ? 'product' : item.type === 'PACKAGE' ? 'package' : 'offer'}/${item.id}`
@@ -154,15 +155,15 @@ export function ProductsClientView({ products, packages, offers, categories, cat
 
         if (isPrint) {
             return (
-                <Card key={item.id} className="p-0 border-none flex flex-col">
-                    <div className="relative aspect-square overflow-hidden bg-muted p-0 mb-0.5">
+                <Card key={item.id} className="p-0 border-none flex flex-col print-card items-start bg-transparent">
+                    <div className="relative aspect-video w-full overflow-hidden bg-slate-50 rounded-xl mb-3 flex items-center justify-center p-2 card-image-container">
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain" />
                     </div>
-                    <div className="flex-1 flex flex-col p-1 space-y-0.5">
-                        <h3 className="font-bold leading-tight mb-0.5">{item.name}</h3>
-                        <p className="text-[5.5pt] text-slate-500 line-clamp-2 leading-tight">{item.description}</p>
-                        <div className="pt-1.5 border-t border-slate-100 mt-auto">
-                            <span className="text-[8.5pt] font-black text-blue-800">Rp {discountedPrice.toLocaleString('id-ID')}</span>
+                    <div className="flex-1 flex flex-col space-y-1.5 w-full">
+                        <h3 className="font-bold leading-tight uppercase tracking-tight text-slate-900">{item.name}</h3>
+                        <p className="text-[6.5pt] text-slate-500 line-clamp-3 leading-relaxed w-11/12">{item.description}</p>
+                        <div className="pt-2 mt-auto">
+                            <span className="text-[10pt] font-black tracking-tight text-blue-800">Rp {(discountedPrice / 1000).toLocaleString('id-ID')}k<span className="text-[6.5pt] text-slate-400 font-bold tracking-widest uppercase ml-1">/mo</span></span>
                         </div>
                     </div>
                 </Card>
@@ -378,9 +379,9 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         }
                         .grid {
                             display: grid !important;
-                            grid-template-columns: repeat(6, 1fr) !important;
-                            gap: 3mm !important; 
-                            row-gap: 5mm !important; 
+                            grid-template-columns: repeat(4, 1fr) !important;
+                            gap: 5mm !important; 
+                            row-gap: 8mm !important; 
                             width: 100% !important;
                             padding: 0 !important;
                             margin: 0 !important;
@@ -389,70 +390,82 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         .print-category-group {
                             break-inside: avoid-page !important;
                             page-break-inside: avoid !important;
-                            margin-bottom: 8mm !important;
+                            margin-bottom: 12mm !important;
                             display: block !important;
                             width: 100% !important;
                         }
                         .category-header {
                             break-after: avoid !important;
                             page-break-after: avoid !important;
+                            font-size: 16pt !important;
+                            font-weight: 900 !important;
+                            border-bottom: 2px solid #e2e8f0 !important;
+                            padding-bottom: 2mm !important;
+                            margin-bottom: 4mm !important;
+                            color: #0f172a !important;
+                            text-transform: uppercase !important;
+                            letter-spacing: 0.05em !important;
                         }
                         .card {
                             break-inside: avoid !important;
                             page-break-inside: avoid !important;
-                            border: 0.5px solid #e2e8f0 !important;
+                            border: none !important;
                             box-shadow: none !important;
-                            padding: 3px !important; /* Ultra-compact padding */
-                            border-radius: 4px !important;
+                            padding: 0 !important;
+                            background: transparent !important;
                             height: auto !important;
-                            min-height: 100px !important; /* Even lower */
+                            min-height: 180px !important; 
                             display: flex !important;
                             flex-direction: column !important;
                             position: relative !important;
-                            margin-bottom: 0 !important; /* Let grid gap handle it */
+                            margin-bottom: 0 !important; 
                         }
                         .card-image-container {
-                            height: 65px !important; /* Slightly taller for zoom effect */
-                            min-height: 65px !important;
-                            padding: 0 !important;
-                            margin-bottom: 2px !important;
-                            background: white !important;
-                            overflow: hidden !important;
+                            height: 110px !important; 
+                            min-height: 110px !important;
+                            padding: 2mm !important;
+                            margin-bottom: 3mm !important;
+                            background: #f8fafc !important;
+                            border-radius: 6px !important;
+                            display: flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
                         }
                         .card img {
-                            height: 115% !important; /* Zoom in effect */
-                            width: 115% !important;
+                            height: 100% !important; 
+                            width: 100% !important;
                             object-fit: contain !important;
                             position: relative !important;
-                            left: -7.5% !important; /* Center the zoom */
-                            top: -7.5% !important;
+                            left: 0 !important; 
+                            top: 0 !important;
                         }
                         h3 {
-                            font-size: 7.2pt !important; /* Planned 7.2pt */
-                            font-weight: 800 !important;
-                            margin-bottom: 1px !important;
+                            font-size: 9pt !important; 
+                            font-weight: 900 !important;
+                            margin-bottom: 1.5mm !important;
                             color: #0f172a !important;
-                            line-height: 1.05 !important;
+                            line-height: 1.1 !important;
+                            text-transform: uppercase !important;
+                            letter-spacing: -0.02em !important;
                         }
                         p.description {
-                            font-size: 5.5pt !important; /* Planned 5.5pt micro-text */
-                            color: #475569 !important;
-                            line-height: 1 !important;
-                            margin-bottom: 3px !important;
+                            font-size: 6.5pt !important; 
+                            color: #64748b !important;
+                            line-height: 1.4 !important;
+                            margin-bottom: 3mm !important;
                             display: -webkit-box !important;
-                            -webkit-line-clamp: 2 !important;
+                            -webkit-line-clamp: 3 !important;
                             -webkit-box-orient: vertical !important;
                             overflow: hidden !important;
                         }
                         .price-block {
                             padding-top: 3px !important;
                             margin-top: auto !important;
-                            border-top: 0.5px solid #f1f5f9 !important;
                         }
                         .price-total {
-                            font-size: 8.5pt !important; /* Planned 8.5pt */
+                            font-size: 10.5pt !important; 
                             font-weight: 900 !important;
-                            color: #1e40af !important;
+                            color: #1e3a8a !important;
                         }
                         .print-header {
                             margin: 0 !important;
@@ -538,10 +551,10 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                     <div className="hidden print-only space-y-8">
                         {printCategories.map(category => (
                             <div key={category.id} className="print-category-group">
-                                <h2 className="text-lg font-black text-slate-900 border-b-2 border-slate-200 pb-1 uppercase tracking-wider category-header mb-4">
+                                <h2 className="text-[16pt] font-black text-slate-900 border-b-2 border-slate-200 pb-2 uppercase tracking-wider category-header mb-6">
                                     {category.title}
                                 </h2>
-                                <div className="grid grid-cols-6 gap-3 catalog-grid">
+                                <div className="grid grid-cols-4 gap-4 catalog-grid">
                                     {category.items.map((item, idx) => renderProductCard(item, idx, true))}
                                 </div>
                             </div>

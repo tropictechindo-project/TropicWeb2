@@ -112,8 +112,10 @@
     "seed": "tsx prisma/seed.mts"
   },
   "browserslist": [
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
+    "Chrome >= 95",
+    "Safari >= 15.4",
+    "Edge >= 95",
+    "Firefox >= 91",
+    "not dead"
   ]
 }

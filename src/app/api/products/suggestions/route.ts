@@ -16,7 +16,26 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ suggestions: [] })
         }
 
-        const productIds = productIdsStr.split(',').filter(id => id.length > 0)
+        const rawIds = productIdsStr.split(',').filter(id => id.length > 0)
+        // Ensure only valid UUIDs are passed to Prisma to prevent crash (e.g., 'ups-universal' or composite IDs)
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+        const productIds = rawIds.filter(id => uuidRegex.test(id))
+
+        if (productIds.length === 0) {
+            // If no valid UUIDs in cart, trigger fallback directly
+            const fallbackRelations = await db.productRelation.findMany({
+                include: { relatedProduct: true },
+                orderBy: { priority: 'desc' },
+                take: 4
+            })
+            // If relations are empty, just get 4 random products
+            if (fallbackRelations.length === 0) {
+                const randomProducts = await db.product.findMany({ take: 4 })
+                return NextResponse.json({ suggestions: randomProducts, count: randomProducts.length })
+            }
+            const suggestions = fallbackRelations.map(rel => rel.relatedProduct)
+            return NextResponse.json({ suggestions, count: suggestions.length })
+        }
 
         // Query productRelation for the given productIds
         const relations = await db.productRelation.findMany({
@@ -78,7 +97,7 @@ export async function GET(request: NextRequest) {
         uniqueSuggestions = uniqueSuggestions.slice(0, 6)
 
         if (uniqueSuggestions.length === 0) {
-            const fallbackRelations = await (db as any).productRelation.findMany({
+            const fallbackRelations = await db.productRelation.findMany({
                 include: { relatedProduct: true },
                 orderBy: { priority: 'desc' },
                 take: 4
@@ -104,9 +123,14 @@ export async function GET(request: NextRequest) {
 
 
 
+        const mappedSuggestions = uniqueSuggestions.map((p: any) => ({
+            ...p,
+            price: Number(p.monthlyPrice || p.price || 0)
+        }))
+
         return NextResponse.json({
-            suggestions: uniqueSuggestions,
-            count: uniqueSuggestions.length
+            suggestions: mappedSuggestions,
+            count: mappedSuggestions.length
         })
     } catch (error) {
         console.error('Product suggestions error:', error)

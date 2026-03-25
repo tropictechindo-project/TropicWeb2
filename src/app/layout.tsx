@@ -149,9 +149,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://uxukdfbqynnlkcykqozu.supabase.co" />
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

@@ -11,6 +11,7 @@ interface ProductSuggestion {
     name: string
     price: number
     imageUrl?: string
+    images?: string[]
 }
 
 export default function ProductSuggestions({ productIds }: { productIds: string[] }) {
@@ -46,14 +47,16 @@ export default function ProductSuggestions({ productIds }: { productIds: string[
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {suggestions.map(product => (
+                {suggestions.map(product => {
+                    const displayImage = product.imageUrl || (product.images && product.images.length > 0 ? product.images[0] : null)
+                    return (
                     <div key={product.id} className="group relative flex items-center gap-4 p-4 border rounded-2xl bg-card hover:border-primary/50 hover:shadow-lg transition-all duration-300 overflow-hidden">
                         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Badge variant="secondary" className="bg-primary/5 text-primary text-[8px] font-black uppercase tracking-wide px-2 py-0.5 border-transparent">BEST PAIR</Badge>
                         </div>
                         
                         <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-muted flex-shrink-0 border border-black/5">
-                            {product.imageUrl && <Image src={product.imageUrl} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />}
+                            {displayImage && <Image src={displayImage} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />}
                         </div>
                         
                         <div className="flex-1 min-w-0">
@@ -81,7 +84,8 @@ export default function ProductSuggestions({ productIds }: { productIds: string[
                             <Plus className="h-4 w-4 mr-1" /> Add
                         </Button>
                     </div>
-                ))}
+                    )
+                })}
             </div>
         </div>
     )

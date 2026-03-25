@@ -185,6 +185,17 @@ export async function POST(
                 }
             }
 
+            // F. Cleanup Master Queue Form - If a worker completes it, no new workers can claim it
+            if (delivery.invoiceId) {
+                await tx.delivery.deleteMany({
+                    where: { 
+                        invoiceId: delivery.invoiceId, 
+                        status: 'QUEUED',
+                        deliveryType: delivery.deliveryType 
+                    }
+                })
+            }
+
             return updated
         })
 
