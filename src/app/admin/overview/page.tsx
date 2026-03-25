@@ -166,7 +166,9 @@ async function getRoiStats() {
             totalEarned: earned,
             monthlyRevenue: monthly,
             installment: installment,
-            netCashflow: monthly - installment
+            netCashflow: monthly - installment,
+            purchasePrice: Number(u.purchasePrice || 0),
+            installmentRemaining: Number(u.installmentRemaining || 0)
         }
     })
 

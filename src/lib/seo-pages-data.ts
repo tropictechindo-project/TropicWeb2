@@ -174,5 +174,221 @@ export const SEO_PAGES: Record<string, SEOPagesConfig> = {
         features: [{ title: 'Asset Liquidity', desc: 'Preserve cashflow aggregates forwards index flawlessly.' }],
         faqs: [{ q: 'Which is better for short stay?', a: 'Renting yields 100% better liquidity flawlessly.' }],
         comparison: { headers: ['Scenario', 'Buy', 'Rent'], rows: [['Initial cost', 'High (Full)', 'Low (Monthly)']] }
+    },
+
+    // 🏝️ 4. Regional Bali Hubs (8 Pages)
+    'rent-workstation-ubud': {
+        title: 'Workstation Rental Ubud | Creative Remote Work Setup | Tropic Tech',
+        h1: 'Professional Workstations in Ubud',
+        description: 'Rent premium monitor and chair setups in Ubud. Fast 24-hour delivery to Penestanan, Nyuh Kuning, and Sayan. Perfect for creative nomads.',
+        heroSub: 'Elevate your creative workflow in the heart of Bali. We deliver professional desktop infrastructure to your Ubud villa, ensuring zero downtime for your projects.',
+        features: [
+            { title: 'Silent Ergonomics', desc: 'Premium chairs designed for long creative sessions flawlessly.' },
+            { title: '4K Color Accuracy', desc: 'Ideal for designers and editors working in Ubud nodes.' }
+        ],
+        faqs: [
+            { q: 'Do you deliver to Tegalalang?', a: 'Yes, we cover the greater Ubud area within 24 hours accurately.' }
+        ],
+        comparison: { headers: ['Feature', 'Local Cafe', 'Tropic Ubud Setup'], rows: [['Reliability', 'Variable', 'Guaranteed 99%']] }
+    },
+    'rent-monitor-canggu': {
+        title: 'Monitor Rental Canggu | Dual-Screen & Ultrawide | Tropic Tech',
+        h1: 'High-Performance Monitors in Canggu',
+        description: 'Upgrade your Canggu workspace with 27-34 inch 4K monitors. Same-day delivery available in Berawa, Batu Bolong, and Pererenan.',
+        heroSub: 'The ultimate setup for Canggu\'s high-paced digital nomad community. Pro-grade monitors delivered and installed in your Berawa or Batu Bolong villa.',
+        features: [
+            { title: 'Dual-Head Setup', desc: 'Increase productivity with expanded screen real-estate.' },
+            { title: 'USB-C Connectivity', desc: 'Single cable charging and display for MacBooks.' }
+        ],
+        faqs: [
+            { q: 'Can I rent just for one week?', a: 'Yes, we support weekly nomad sprints in Canggu flawlessly.' }
+        ],
+        comparison: { headers: ['Setup', 'Portable', 'Canggu Desktop'], rows: [['Screen Size', '13-16"', '27-34"']] }
+    },
+    'office-setup-seminyak': {
+        title: 'Luxury Villa Office Setup Seminyak | Tropic Tech',
+        h1: 'Premium Office Setups in Seminyak',
+        description: 'Bespoke remote work infrastructure for Seminyak luxury villas. Ergonomic chairs, standing desks, and high-speed tech rentals.',
+        heroSub: 'Match your Seminyak villa aesthetic with premium, sleek workstation hardware. Professional setup and white-glove delivery included.',
+        features: [
+            { title: 'Aesthetic Integration', desc: 'Sleek hardware that complements luxury villa interiors.' },
+            { title: 'Premium Comfort', desc: 'High-end ergonomic seating for executive workflows.' }
+        ],
+        faqs: [
+            { q: 'Is technical support on-site?', a: 'Yes, our Seminyak rapid response team handles all nodes.' }
+        ],
+        comparison: { headers: ['Service', 'Standard', 'Seminyak Premium'], rows: [['Support', '24h', '1-hour Response']] }
+    },
+    'startup-rental-uluwatu': {
+        title: 'Startup Office Equipment Rental Uluwatu | Tropic Tech',
+        h1: 'Startup Infrastructure in Uluwatu',
+        description: 'Equip your Uluwatu startup hub with professional workstations. High-performance PCs and ergonomic gear for high-growth teams.',
+        heroSub: 'Scale your team in Uluwatu without the overhead. We provide the hardware backbone for the island\'s most ambitious startup retreats.',
+        features: [
+            { title: 'Team Scalability', desc: 'Add or remove workstations as your team grows.' },
+            { title: 'Surf-Proof Tech', desc: 'Ruggedized hardware suitable for coastal Bukit environments.' }
+        ],
+        faqs: [
+            { q: 'Do you offer monthly billing?', a: 'Yes, specialized startup billing cycles are supported.' }
+        ],
+        comparison: { headers: ['Metric', 'Ownership', 'Uluwatu Rental'], rows: [['Asset Risk', 'High', 'Zero (Covered)']] }
+    },
+    'digital-nomad-sanur-workspace': {
+        title: 'Digital Nomad Workspace Rental Sanur | Tropic Tech',
+        h1: 'Professional Workspaces in Sanur',
+        description: 'Quiet, reliable remote work setups in Sanur. Rent monitors and ergonomic chairs for long-term stays. Fast 24-hour delivery.',
+        heroSub: 'Sanur\'s calm environment meets professional-grade productivity. We bring the corporate office experience to your seaside residence.',
+        features: [
+            { title: 'Long-term Lease', desc: 'Discounted rates for 3+ month stays in Sanur.' },
+            { title: 'Reliable Power', desc: 'UPS backups included for critical Sanur workflows.' }
+        ],
+        faqs: [
+            { q: 'Is delivery free to Sanur?', a: 'Yes, all Sanur deployments include free installation.' }
+        ],
+        comparison: { headers: ['Feature', 'Hotel Desk', 'Sanur Pro Setup'], rows: [['Ergonomics', 'Basic', 'Medical-Grade']] }
+    },
+    'it-hardware-denpasar': {
+        title: 'IT Hardware Rental Denpasar | Corporate Solutions | Tropic Tech',
+        h1: 'Corporate IT Hardware in Denpasar',
+        description: 'Enterprise-grade IT equipment for Denpasar businesses. Laptops, desktops, and networking hardware for rent. Professional local delivery.',
+        heroSub: 'Supporting Denpasar\'s growing corporate sector with reliable IT infrastructure. Fast deployment for offices and remote teams.',
+        features: [
+            { title: 'Bulk Inventory', desc: 'Ready to equip entire departments in Denpasar.' },
+            { title: 'IT Maintenance', desc: 'Full lifecycle support for all rented Denpasar units.' }
+        ],
+        faqs: [
+            { q: 'Can we rent for 1 year?', a: 'Yes, corporate annual contracts are available in Denpasar.' }
+        ],
+        comparison: { headers: ['Solution', 'Individual', 'Denpasar Corporate'], rows: [['SLA', 'Standard', 'Enterprise Support']] }
+    },
+    'workspace-rental-kuta': {
+        title: 'Workstation & Office Rental Kuta | Tropic Tech',
+        h1: 'Fast Workstation Rentals in Kuta',
+        description: 'Immediate office equipment delivery in Kuta. Rent monitors, chairs, and laptops with 2-hour rapid dispatch available.',
+        heroSub: 'Maximum convenience in the heart of the action. Kuta\'s fastest remote work equipment deployment for travelers and teams.',
+        features: [
+            { title: 'Rapid Dispatch', desc: '2-hour emergency equipment delivery in Kuta central.' },
+            { title: 'Flexible Returns', desc: 'Daily rental options for short-stay travelers.' }
+        ],
+        faqs: [
+            { q: 'Can I pick up from the office?', a: 'Yes, Kuta central pickup is available on request.' }
+        ],
+        comparison: { headers: ['Latency', 'Shipping', 'Kuta Express'], rows: [['Time', '24h', '< 4 Hours']] }
+    },
+    'remote-work-infrastructure-jimbaran': {
+        title: 'Remote Work Infrastructure Jimbaran | Tropic Tech',
+        h1: 'Pro-Grade Setups in Jimbaran & Bukit',
+        description: 'Full remote work solutions for Jimbaran and Bukit area villas. High-performance workstation rentals with professional setup.',
+        heroSub: 'Conquer the Bukit with professional tech. We deliver high-end monitors and ergonomic chairs to Jimbaran and beyond.',
+        features: [
+            { title: 'Heat-Resistant Gear', desc: 'Equipment tested for Jimbaran villa environments.' },
+            { title: 'High-Speed Networking', desc: 'Optional 5G backup routers for Jimbaran connectivity.' }
+        ],
+        faqs: [
+            { q: 'Do you deliver to Bingin?', a: 'Yes, we cover all Bukit cliffs including Bingin and Padang Padang.' }
+        ],
+        comparison: { headers: ['Setup', 'Laptop Only', 'Jimbaran Ultra'], rows: [['Focus', 'Low', 'Immersive']] }
+    },
+
+    // 🎓 5. Masterclass / Educational (2 New Pages)
+    'ultimate-guide-bali-internet-vpn-2026': {
+        title: 'Bali Internet & VPN Guide 2026 | Remote Work Mastery | Tropic Tech',
+        h1: 'The Ultimate Bali Internet Guide 2026',
+        description: 'Comprehensive analysis of fiber routes, 5G backups, and VPN protocols in Bali. Everything for a stable remote workflow.',
+        heroSub: 'Never drop a call again. We break down the technical infrastructure of Bali and how to secure your workflow like a pro.',
+        features: [
+            { title: 'ISP Comparison', desc: 'Indihome vs Biznet vs GlobalXtreme benchmarks.' },
+            { title: 'VPN Optimization', desc: 'Best protocols for low-latency video calls in Indonesia.' }
+        ],
+        faqs: [
+            { q: 'Is Starlink available?', a: 'Yes, we integrate Starlink nodes for rural Bali deployments.' }
+        ],
+        comparison: { headers: ['Type', 'Mobile Data', 'Dedicated Fiber', 'Starlink'], rows: [['Consistency', 'Low', 'High', 'Highest']] }
+    },
+    'science-of-tropical-ergonomics-bali': {
+        title: 'Science of Tropical Ergonomics | Back Health in Bali | Tropic Tech',
+        h1: 'The Science of Tropical Ergonomics',
+        description: 'Learn how humidity and heat affect posture and hardware longevity. The definitive guide to healthy remote work in Bali.',
+        heroSub: 'Work healthy, stay productive. Our medical-grade analysis of how to setup your home office in high-humidity environments.',
+        features: [
+            { title: 'Breathable Mesh', desc: 'Why mesh outperforms leather in the tropics.' },
+            { title: 'Monitor Height', desc: 'Reducing neck strain from villa desk layouts.' }
+        ],
+        faqs: [
+            { q: 'Does AC affect the gear?', a: 'Optimal temp ranges for hardware longevity are 22-24°C.' }
+        ],
+        comparison: { headers: ['Chair Type', 'Leather', 'High-Tension Mesh'], rows: [['Heat Dissipation', 'Low', 'Maximum']] }
+    },
+
+    // 🏆 6. Core Product SEO clusters (5 New Comprehensive Pages)
+    'rent-desk-bali': {
+        title: 'Office Desk Rental Bali | Ergonomic & Standing Desks | Tropic Tech',
+        h1: 'Premium Office Desk Rentals in Bali',
+        description: 'Rent professional ergonomic and standing desks in Bali. Fast delivery to Canggu, Ubud, and Seminyak. Improve your productivity today.',
+        heroSub: 'The foundation of any professional workspace. Transform your villa area into a high-performance office with our curated selection of premium desks.',
+        features: [
+            { title: 'Electric Standing Opts', desc: 'Seamless transition between sitting and standing.' },
+            { title: 'Sustainable Teak', desc: 'Local premium materials built for tropical stability.' }
+        ],
+        faqs: [
+            { q: 'Is assembly included?', a: 'Yes, we handle full setup and leveling in your villa.' }
+        ],
+        comparison: { headers: ['Feature', 'Dining Table', 'Tropic Office Desk'], rows: [['Work Height', 'Fixed/Low', 'Ergonomic/Adjustable']] }
+    },
+    'rent-chair-bali': {
+        title: 'Ergonomic Chair Rental Bali | Premium Office Seating | Tropic Tech',
+        h1: 'Medical-Grade Ergonomic Chairs in Bali',
+        description: 'Rent premium ergonomic chairs in Bali. Reduce back pain and increase focus with Herman Miller style seating delivered island-wide.',
+        heroSub: 'Stop the posture strain. We provide high-tension mesh chairs designed for 8+ hour sessions in Bali\'s tropical climate.',
+        features: [
+            { title: 'Lumbar Support', desc: 'Active spine alignment for long-duration workflows.' },
+            { title: 'Cooling Mesh', desc: 'Proprietary mesh tech to prevent heat buildup.' }
+        ],
+        faqs: [
+            { q: 'Are these safe for 100kg+?', a: 'Yes, our pro-grade chairs are rated for 150kg+ capacity.' }
+        ],
+        comparison: { headers: ['Type', 'Standard Villa', 'Tropic Pro Mesh'], rows: [['Sweat Factor', 'High', 'Zero (Breathable)']] }
+    },
+    'rent-monitor-bali': {
+        title: '4K Monitor Rental Bali | Ultrawide & Dual Displays | Tropic Tech',
+        h1: 'Professional 4K & Ultrawide Monitors Bali',
+        description: 'Rent high-performance monitors in Bali. 27-34 inch displays with USB-C charging. Fast 24-hour delivery for digital nomads.',
+        heroSub: 'Boost your digital real estate. High-resolution desktop displays delivered directly to your villa in Canggu, Ubud, or Seminyak.',
+        features: [
+            { title: 'True Color 4K', desc: 'Ideal for designers, developers, and data pros.' },
+            { title: 'Quick-Connect USB-C', desc: 'Single cable for data and 65W laptop charging.' }
+        ],
+        faqs: [
+            { q: 'Do cables come included?', a: 'Yes, HDMI, DisplayPort, and USB-C cables are provided.' }
+        ],
+        comparison: { headers: ['Spec', 'Laptop Screen', 'Tropic 4K Display'], rows: [['Pixels', '2M', '8M+']] }
+    },
+    'rent-workstation-bali': {
+        title: 'Complete Workstation Rental Bali | Remote Office Setup | Tropic Tech',
+        h1: 'All-in-One Professional Workstations Bali',
+        description: 'Rent complete workstation bundles in Bali. Monitor, desk, and chair packages with integrated tech support and fast delivery.',
+        heroSub: 'The total solution for serious professionals. We equip you with everything needed for a corporate-grade office in your tropical home.',
+        features: [
+            { title: 'Integrated Tech', desc: 'Bundled hardware pre-configured for instant workflows.' },
+            { title: 'UPS Protected', desc: 'Surge protection and battery backup included.' }
+        ],
+        faqs: [
+            { q: 'Can I swap items later?', a: 'Yes, flexible bundle swaps are supported as your needs grow.' }
+        ],
+        comparison: { headers: ['Factor', 'Stitched Gear', 'Tropic Pro Bundle'], rows: [['Sync', 'Low', 'High-Performance']] }
+    },
+    'rent-setup-workstation-in-bali': {
+        title: 'Office Setup Services Bali | Professional Workstation Install | Tropic Tech',
+        h1: 'Expert Office Setup Services in Bali',
+        description: 'Professional workstation installation and setup in Bali. Let our experts optimize your remote office for ergonomics and performance.',
+        heroSub: 'We don\'t just deliver; we optimize. Professional layout and installation services for villas, co-living, and coworking spaces.',
+        features: [
+            { title: 'Ergo-Optimization', desc: 'We calibrate desk and chair height to your body metrics.' },
+            { title: 'Clean Cabling', desc: 'Full cable management for a distraction-free environment.' }
+        ],
+        faqs: [
+            { q: 'Do you offer layout advice?', a: 'Yes, our technicians are trained in ergonomic workspace design.' }
+        ],
+        comparison: { headers: ['Service', 'Delivery Only', 'Tropic White-Glove'], rows: [['Setup Time', '1 Hour (Yours)', '15 Mins (Ours)']] }
     }
 }

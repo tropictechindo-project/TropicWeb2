@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { verifyToken } from '@/lib/auth/utils'
 import { logActivity } from '@/lib/logger'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 export const dynamic = 'force-dynamic'
 
@@ -100,6 +101,20 @@ export async function POST(
             entity: 'DELIVERY',
             details: `Worker claimed delivery ${id}`
         })
+
+        // 6. Send to Google Sheets (non-blocking)
+        setTimeout(async () => {
+            try {
+                await sendGoogleReport('DELIVERY', {
+                    deliveryId: id,
+                    workerId: workerId,
+                    workerName: payload.fullName || 'Worker',
+                    status: 'CLAIMED',
+                    vehicleId: vehicleId,
+                    timestamp: new Date().toISOString()
+                })
+            } catch (e) { console.error('[CLAIM_DELIVERY] Google Report error:', e) }
+        }, 0)
 
         return NextResponse.json({ success: true, delivery: result })
 

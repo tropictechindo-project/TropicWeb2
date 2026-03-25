@@ -183,6 +183,29 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             } catch (e) { console.error('[CONFIRM_PAYMENT] Email error:', e) }
         }, 0)
 
+        // G. Send to Google Sheets (non-blocking) node flawless safely
+        setTimeout(async () => {
+            try {
+                await sendGoogleReport('ORDER', {
+                    orderId: result.order.id,
+                    orderNumber: result.order.orderNumber,
+                    amount: Number(result.order.totalAmount || 0),
+                    status: 'CONFIRMED',
+                    customer: invoice.guestName || order.user?.fullName || 'Customer',
+                    paymentMethod: result.order.paymentMethod,
+                    timestamp: new Date().toISOString()
+                })
+                
+                await sendGoogleReport('REVENUE', {
+                    orderId: result.order.id,
+                    amount: Number(result.order.totalAmount || 0),
+                    tax: Number(result.order.tax || 0),
+                    deliveryFee: Number(result.order.deliveryFee || 0),
+                    timestamp: new Date().toISOString()
+                })
+            } catch (e) { console.error('[CONFIRM_PAYMENT] Google Report error:', e) }
+        }, 0)
+
         await logActivity({ userId: auth.userId, action: 'CONFIRM_PAYMENT', entity: 'ORDER', details: `Order ${order.orderNumber} marked PAID by ${auth.role}` })
         
         return NextResponse.json({

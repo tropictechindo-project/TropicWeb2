@@ -13,7 +13,16 @@ export default async function AdminOrdersPage() {
                 select: { fullName: true, email: true, whatsapp: true }
             },
             invoices: {
-                select: { id: true, lineItems: true, guestName: true, guestEmail: true, guestWhatsapp: true }
+                select: { 
+                    id: true, 
+                    lineItems: true, 
+                    guestName: true, 
+                    guestEmail: true, 
+                    guestWhatsapp: true,
+                    deliveries: {
+                        select: { claimedByWorkerId: true, status: true }
+                    }
+                }
             },
             rentalItems: {
 
@@ -88,7 +97,10 @@ export default async function AdminOrdersPage() {
                         price: Number(item.price || 0),
                         serialNumber: 'N/A'
                     }))
-                    : []
+                    : [],
+        isClaimed: order.invoices?.some((inv: any) => 
+            inv.deliveries?.some((del: any) => del.claimedByWorkerId !== null)
+        ) || false,
 
     }))
 

@@ -265,7 +265,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         transition={{ duration: 0.6, delay: 0.1 }}
                         className="text-4xl md:text-6xl font-black tracking-tighter text-foreground uppercase italic leading-none"
                     >
-                        Real <span className="text-primary">Set-Up</span> Experience
+                        Official <span className="text-primary">Hardware</span> Catalog
                     </motion.h1>
 
                     <motion.p
@@ -274,7 +274,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto font-medium"
                     >
-                        Hardware tailored for the digital nomad. Rent high-end workstations with same-day Bali dispatch.
+                        Explore our complete range of premium workstations, monitors, and ergonomic solutions. Available for individual rental or as curated bundles.
                     </motion.p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 no-print">

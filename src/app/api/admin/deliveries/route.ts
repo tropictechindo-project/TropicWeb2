@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/logger'
 import { verifyToken } from '@/lib/auth/utils'
+import { sendGoogleReport } from '@/lib/reporting/googleReporter'
 
 export const dynamic = 'force-dynamic'
 
@@ -135,6 +136,18 @@ export async function POST(request: NextRequest) {
             return newDelivery
         })
 
+        // 3. Send to Google Sheets (non-blocking)
+        setTimeout(async () => {
+            try {
+                await sendGoogleReport('DELIVERY', {
+                    deliveryId: delivery.id,
+                    invoiceId: invoiceId,
+                    status: 'QUEUED',
+                    timestamp: new Date().toISOString()
+                })
+            } catch (e) { console.error('[CREATE_DELIVERY] Google Report error:', e) }
+        }, 0)
+
         await logActivity({
             userId: actorId,
             action: 'CREATE_DELIVERY',
@@ -148,3 +161,4 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: error.message || 'Failed to create delivery' }, { status: 500 })
     }
 }
+

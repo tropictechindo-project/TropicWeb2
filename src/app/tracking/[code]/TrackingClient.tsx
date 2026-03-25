@@ -336,7 +336,16 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                         </Link>
                     </Button>
                     <Button className="flex-1 rounded-2xl h-14 font-black uppercase tracking-widest gap-2 shadow-xl shadow-primary/20 order-1 sm:order-2" asChild>
-                        <Link href={user ? (delivery.claimedByWorker?.whatsapp ? `https://wa.me/${delivery.claimedByWorker.whatsapp.replace(/[^0-9]/g, '')}` : "/dashboard/user") : "/auth/login"} target={user && delivery.claimedByWorker?.whatsapp ? "_blank" : undefined}>
+                        <Link 
+                            href={user ? (
+                                delivery.claimedByWorker?.whatsapp 
+                                    ? `https://wa.me/${delivery.claimedByWorker.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                                        `Hello, I am ${delivery.invoice?.user?.fullName || delivery.invoice?.guestName || 'a customer'}. I am tracking my order ${delivery.invoice?.invoiceNumber || delivery.trackingCode || ''}.`
+                                      )}` 
+                                    : "/dashboard/user"
+                            ) : "/auth/login"} 
+                            target={user && delivery.claimedByWorker?.whatsapp ? "_blank" : undefined}
+                        >
                             {user ? (
                                 <><MessageCircle className="w-4 h-4" /> Contact {delivery.claimedByWorker?.fullName?.split(' ')[0] || "Delivery"}</>
                             ) : (

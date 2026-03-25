@@ -9,6 +9,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const staticPages: MetadataRoute.Sitemap = [
         { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
         { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${baseUrl}/help`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
+        { url: `${baseUrl}/company-profile`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
         { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
         { url: `${baseUrl}/affiliate`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
         { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.8 },
@@ -18,15 +20,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${baseUrl}/sitemap`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 }
     ]
 
-    const oldSeoSlugs = [
-        'rent-monitor-bali', 'rent-desk-bali', 'rent-workstation-bali', 'rent-office-bali',
-        'rent-chair-bali', 'remote-work-setup-bali', 'digital-nomad-workspace-bali',
-        'startup-office-setup-bali', 'event-workstation-rental-bali', 'temporary-office-bali'
+    // SEO Page Clusters
+    const regionalHubs = [
+        'rent-workstation-ubud', 'rent-monitor-canggu', 'office-setup-seminyak',
+        'startup-rental-uluwatu', 'digital-nomad-sanur-workspace', 'it-hardware-denpasar',
+        'workspace-rental-kuta', 'remote-work-infrastructure-jimbaran'
     ]
 
+    const baliMasterclass = [
+        'ultimate-guide-bali-internet-vpn-2026', 'science-of-tropical-ergonomics-bali',
+        'complete-guide-remote-work-bali-2026', 'setting-up-productive-home-office-tropics',
+        'hardware-requirements-software-developers-bali', 'understanding-it-infrastructure-indonesia',
+        'cyber-security-tips-traveling-professionals'
+    ]
+
+    const productClusters = [
+        'rent-desk-bali', 'rent-chair-bali', 'rent-monitor-bali', 'rent-workstation-bali',
+        'rent-setup-workstation-in-bali', 'rent-high-performance-laptop-bali',
+        'corporate-it-equipment-rental-indonesia', 'remote-work-equipment-solutions-expats',
+        'gaming-pc-rentals-streamers-bali', 'startup-incubation-office-equipment-packages',
+        'event-conference-tech-rentals-indonesia', 'student-laptop-rental-discounts-plans',
+        'renting-it-equipment-vs-buying-2026'
+    ]
+
+    // Fallback for any newly added keys in SEO_PAGES not explicitly clustered
+    const allExpectedSlugs = [...regionalHubs, ...baliMasterclass, ...productClusters]
+    const otherSeoSlugs = Object.keys(SEO_PAGES).filter(s => !allExpectedSlugs.includes(s))
+
     const seoPages: MetadataRoute.Sitemap = [
-        ...oldSeoSlugs,
-        ...Object.keys(SEO_PAGES)
+        ...allExpectedSlugs,
+        ...otherSeoSlugs
     ].map(slug => ({
         url: `${baseUrl}/${slug}`,
         lastModified: new Date(),

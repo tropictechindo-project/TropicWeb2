@@ -12,7 +12,9 @@ export async function GET(request: NextRequest) {
         }
 
         const workers = await db.user.findMany({
-            where: { role: 'WORKER' },
+            where: {
+                role: { in: ['WORKER', 'OPERATOR'] }
+            },
             select: {
                 id: true,
                 username: true,
@@ -109,13 +111,13 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const { fullName, email, whatsapp, password } = await request.json()
+        const { fullName, email, whatsapp, password, role = 'WORKER' } = await request.json()
 
         // 1. Sync to Supabase Auth first
         const { syncUserToSupabase } = await import('@/lib/auth/supabase-admin')
         const supabaseId = await syncUserToSupabase(email, password, {
             full_name: fullName,
-            role: 'WORKER'
+            role: role
         })
 
         if (!supabaseId) {
@@ -132,10 +134,10 @@ export async function POST(request: NextRequest) {
         let worker;
         
         if (existing) {
-            if (existing.role === 'WORKER') {
-                return NextResponse.json({ error: 'A Worker with this email already exists!' }, { status: 400 })
+            if (existing.role === 'WORKER' || existing.role === 'OPERATOR') {
+                return NextResponse.json({ error: `A ${existing.role} with this email already exists!` }, { status: 400 })
             }
-            // Upgrade existing user to WORKER
+            // Upgrade existing user
             worker = await db.user.update({
                 where: { email },
                 data: {
@@ -143,7 +145,7 @@ export async function POST(request: NextRequest) {
                     whatsapp,
                     password: hashedPassword,
                     plainPassword: password, // Store for admin view
-                    role: 'WORKER',
+                    role: role as any,
                     isActive: true,
                     isVerified: true
                 }
@@ -158,7 +160,7 @@ export async function POST(request: NextRequest) {
                     plainPassword: password, // Store for admin view
                     fullName,
                     whatsapp,
-                    role: 'WORKER',
+                    role: role as any,
                     isActive: true,
                     isVerified: true
                 }

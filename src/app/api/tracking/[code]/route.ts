@@ -25,6 +25,14 @@ export async function GET(
                 },
                 claimedByWorker: {
                     select: { fullName: true, whatsapp: true }
+                },
+                invoice: {
+                    select: {
+                        invoiceNumber: true,
+                        guestName: true,
+                        guestEmail: true,
+                        user: { select: { fullName: true } }
+                    }
                 }
             }
         })
@@ -52,6 +60,14 @@ export async function GET(
                     },
                     claimedByWorker: {
                         select: { fullName: true, whatsapp: true }
+                    },
+                    invoice: {
+                        select: {
+                            invoiceNumber: true,
+                            guestName: true,
+                            guestEmail: true,
+                            user: { select: { fullName: true } }
+                        }
                     }
                 },
                 orderBy: { createdAt: 'desc' }

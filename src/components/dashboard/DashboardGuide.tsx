@@ -273,69 +273,77 @@ const GUIDES: Record<Role, GuideSection[]> = {
     ],
     WORKER: [
         {
-            title: "🔴 1. System Truth (How it Works / Cara Kerja)",
-            content: SYSTEM_TRUTH_CONTENT
-        },
-        {
-            title: "🟡 2. Data Limitations (Batasan Data)",
-            content: DATA_LIMITATIONS_CONTENT
-        },
-        {
-            title: "3. Action Consequences (Konsekuensi Tindakan)",
+            title: "🔵 1. Sistem Utama (System Truth)",
             content: (
-                <div className="space-y-4 text-xs">
-                    <div>
-                        <p className="font-bold text-primary">A. Accepting a Job (Menerima Pekerjaan):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> You are responsible for completion. GPS updates power live tracking.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Anda bertanggung jawab atas penyelesaian. GPS menyalakan peta live pelanggan.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Missing updates breaks tracking visibility.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Hilang pembaruan menghentikan peta pelanggan.</p>
+                <div className="space-y-2 text-xs">
+                    {SYSTEM_TRUTH_CONTENT}
+                    <div className="mt-2 p-2 bg-emerald-500/5 border-l-4 border-emerald-500 rounded">
+                        <p className="font-bold text-emerald-600">PENTING: Alat Pelacakan / Tracking Device</p>
+                        <p className="text-muted-foreground italic">Pastikan 'Sambungkan Perangkat' di header berwarna hijau. Ini mengaktifkan GPS dan notifikasi live agar pelanggan bisa melihat posisi Anda secara akurat di Global Tracker.</p>
                     </div>
                 </div>
             )
         },
         {
-            title: "4. Role Definition (Tupoksi Kurir)",
+            title: "🟡 2. Batasan Data (Data Limitations)",
+            content: DATA_LIMITATIONS_CONTENT
+        },
+        {
+            title: "3. Konsekuensi Tindakan (Action Consequences)",
             content: (
-                <div className="space-y-2 text-xs">
-                    <p><strong>EN:</strong> Responsible for visual physical execution of delivery drops. GPS directly affects customer tracking.</p>
-                    <p><strong>ID:</strong> Bertanggung jawab atas eksekusi fisik penyerahan barang. GPS langsung mempengaruhi pelacakan pelanggan.</p>
+                <div className="space-y-4 text-xs">
+                    <div>
+                        <p className="font-bold text-primary">A. Menerima Pekerjaan (Accepting a Job):</p>
+                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> You are responsible for completion. GPS updates power live tracking.</p>
+                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Anda bertanggung jawab penuh atas penyelesaian tugas. Pembaruan GPS Anda adalah nyawa dari fitur pelacakan live pelanggan.</p>
+                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Missing updates breaks tracking visibility.</p>
+                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Jika GPS mati atau browser ditutup, pelanggan tidak bisa melihat posisi Anda dan akan menganggap pengiriman bermasalah.</p>
+                    </div>
                 </div>
             )
         },
         {
-            title: "5. Responsibilities (Tanggung Jawab)",
+            title: "4. Definisi Peran (Role Definition - Tupoksi Kurir)",
+            content: (
+                <div className="space-y-2 text-xs">
+                    <p><strong>EN:</strong> Responsible for visual physical execution of delivery drops. GPS directly affects customer tracking.</p>
+                    <p><strong>ID:</strong> Bertanggung jawab atas eksekusi fisik penyerahan barang di lapangan. Koordinasi GPS Anda sangat krusial bagi kepuasan pelanggan.</p>
+                </div>
+            )
+        },
+        {
+            title: "5. Tanggung Jawab Utama (Responsibilities)",
             content: (
                 <ul className="list-disc pl-4 space-y-2 text-xs">
                     <li>
                         <p><strong>EN:</strong> Accept delivery jobs from the pool.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Terima tugas dari daftar pengiriman.</p>
+                        <p className="text-muted-foreground"><strong>ID:</strong> Klaim tugas pengiriman dari 'Available Pool' segera setelah tersedia.</p>
                     </li>
                     <li>
                         <p><strong>EN:</strong> Update GPS location consistently.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Perbarui lokasi GPS secara konsisten.</p>
+                        <p className="text-muted-foreground"><strong>ID:</strong> Jaga status 'Sambungkan Perangkat' tetap AKTIF (Hijau) selama perjalanan.</p>
                     </li>
                     <li>
                         <p><strong>EN:</strong> Upload proof (photo) on arrival.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Unggah foto bukti saat tiba.</p>
+                        <p className="text-muted-foreground"><strong>ID:</strong> Ambil foto bukti penyerahan barang yang jelas saat tiba di lokasi pelanggan.</p>
                     </li>
                 </ul>
             )
         },
         {
-            title: "6. Warnings & Critical Mistakes (Peringatan)",
+            title: "6. Peringatan Kritis (Warnings & Critical Mistakes)",
             content: (
                 <div className="space-y-2 text-xs border-l-4 border-red-500 bg-red-500/5 p-2 rounded">
-                    <p className="font-bold text-red-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> CRITICAL WARNING / PERINGATAN KRITIS:</p>
+                    <p className="font-bold text-red-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> PERINGATAN KRITIS:</p>
                     <div>
                         <p><strong>EN:</strong> Not uploading proof leaves job incomplete indefinitely.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Tidak unggah foto membuat tugas gantung selamanya.</p>
+                        <p className="text-muted-foreground"><strong>ID:</strong> Lupa mengunggah bukti foto akan membuat tugas dianggap 'Gantung' dan pembayaran Anda mungkin terhambat.</p>
                     </div>
                 </div>
             )
         },
         {
-            title: "7. Terminology (Istilah)",
+            title: "7. Istilah Sistem (Terminology)",
             content: COMMON_TERMINOLOGY
         }
     ],

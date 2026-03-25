@@ -242,9 +242,15 @@ export default function CheckoutPage() {
         )
     }
 
-    const finalTotalValue = (breakdown ? Number(breakdown.total) : totalPrice) 
-        + (isPriority ? 100000 : 0)
-        + (paymentMethod === 'EDC' ? (breakdown ? Number(breakdown.subtotal) : totalPrice) * 0.02 : 0)
+    // Precise Calculation for Production (Must sync with Invoice logic)
+    const subtotal = breakdown ? Number(breakdown.subtotal) : totalPrice
+    const priorityFee = isPriority ? 100000 : 0
+    const taxRate = 0.02
+    const taxValue = Math.round((subtotal + priorityFee) * taxRate)
+    const deliveryFee = breakdown ? Number(breakdown.deliveryFee) : 0
+    const edcSurchargeValue = paymentMethod === 'EDC' ? Math.round((subtotal + priorityFee) * 0.02) : 0
+    
+    const finalTotalValue = subtotal + priorityFee + taxValue + deliveryFee + edcSurchargeValue
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -308,6 +314,11 @@ export default function CheckoutPage() {
                             </div>
                         </div>
 
+                        {/* Product Suggestions Restoration - High Visibility */}
+                        <div className="pt-2">
+                            <ProductSuggestions productIds={items.map(i => i.id)} />
+                        </div>
+
                         {/* Payment Options */}
                         <div className="bg-card border rounded-xl p-6 shadow-sm">
                             <h2 className="text-xl font-semibold mb-6">Payment Method</h2>
@@ -340,12 +351,6 @@ export default function CheckoutPage() {
                                 ))}
                             </RadioGroup>
                         </div>
-
-                        {/* Product Suggestions Restoration */}
-                        <div className="pt-4">
-                            <ProductSuggestions productIds={items.map(i => i.id)} />
-                        </div>
-
                     </div>
 
                     {/* Right Column: Order Summary */}
@@ -456,47 +461,40 @@ export default function CheckoutPage() {
                                 {isPriority && (
                                     <div className="flex justify-between text-muted-foreground text-sm font-semibold text-primary">
                                         <span>Quick Delivery / Priority</span>
-                                        <span>Rp 100,000</span>
+                                        <span>Rp {priorityFee.toLocaleString('id-ID')}</span>
                                     </div>
                                 )}
+                                <div className="flex justify-between text-muted-foreground text-sm">
+                                    <div className="flex items-center gap-1.5">
+                                        <span>Tax</span>
+                                        <Badge variant="outline" className="text-[8px] h-3.5 px-1 font-black leading-none bg-emerald-50 border-emerald-200 text-emerald-700">2% AUTO</Badge>
+                                    </div>
+                                    <span>Rp {taxValue.toLocaleString('id-ID')}</span>
+                                </div>
                                 {paymentMethod === 'EDC' && (
                                     <div className="flex justify-between text-muted-foreground text-sm font-semibold text-emerald-600">
                                         <span>EDC Machine Surcharge (2%)</span>
-                                        <span>Rp {((breakdown ? Number(breakdown.subtotal) : totalPrice) * 0.02).toLocaleString('id-ID')}</span>
+                                        <span>Rp {edcSurchargeValue.toLocaleString('id-ID')}</span>
                                     </div>
                                 )}
-                                {breakdown ? (
-                                    <>
-                                        <div className="flex justify-between text-muted-foreground text-sm">
-                                            <div className="flex items-center gap-1.5">
-                                                <span>Tax</span>
-                                                <Badge variant="outline" className="text-[8px] h-3.5 px-1 font-black leading-none bg-emerald-50 border-emerald-200 text-emerald-700">2% AUTO</Badge>
-                                            </div>
-                                            <span>Rp {breakdown.formattedTax}</span>
-                                        </div>
-                                        <div className="flex justify-between text-muted-foreground text-sm">
-                                            <span>Delivery Fee ({Math.round(breakdown.distanceKm || 0)}km)</span>
-                                            <span>Rp {breakdown.formattedDeliveryFee}</span>
-                                        </div>
-                                        <div className="flex justify-between font-bold text-lg pt-4 mt-2 border-t border-dashed">
-                                            <div className="flex flex-col">
-                                                <span>Total Payment</span>
-                                                <span className="text-[10px] text-muted-foreground font-normal italic">*Based on IDR</span>
-                                            </div>
-                                            <div className="text-right">
-                                                <span className="text-primary font-black text-2xl">Rp {finalTotalValue.toLocaleString('id-ID')}</span>
-                                                {convertedTotal && (
-                                                    <p className="text-xs text-emerald-600 font-bold">≈ {selectedCurrency} {convertedTotal}</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="flex justify-between font-bold text-lg pt-2 mt-2 border-t">
-                                        <span>Total</span>
-                                        <span className="text-primary font-black">Rp {finalTotalValue.toLocaleString('id-ID')}</span>
+                                {deliveryFee > 0 && (
+                                    <div className="flex justify-between text-muted-foreground text-sm">
+                                        <span>Delivery Fee ({Math.round((breakdown?.distanceKm || 0))}km)</span>
+                                        <span>Rp {deliveryFee.toLocaleString('id-ID')}</span>
                                     </div>
                                 )}
+                                <div className="flex justify-between font-bold text-lg pt-4 mt-2 border-t border-dashed">
+                                    <div className="flex flex-col">
+                                        <span>Total Payment</span>
+                                        <span className="text-[10px] text-muted-foreground font-normal italic">*Based on IDR</span>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className="text-primary font-black text-2xl">Rp {finalTotalValue.toLocaleString('id-ID')}</span>
+                                        {convertedTotal && (
+                                            <p className="text-xs text-emerald-600 font-bold">≈ {selectedCurrency} {convertedTotal}</p>
+                                        )}
+                                    </div>
+                                </div>
                                 {!breakdown && (
                                     <p className="text-[10px] text-muted-foreground text-center mt-2 italic">
                                         * Tax and Delivery fee will be calculated once location is detected.

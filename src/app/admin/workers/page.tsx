@@ -13,6 +13,8 @@ import { Users, UserPlus, MessageSquare, Calendar, CheckCircle2, Clock, Trending
 import { ChatDialog } from '@/components/chat/ChatDialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Network, ChevronRight, UserCircle, Briefcase, ShieldCheck } from 'lucide-react'
 
 interface Worker {
     id: string
@@ -20,6 +22,7 @@ interface Worker {
     email: string
     whatsapp: string
     isActive: boolean
+    role: 'WORKER' | 'OPERATOR' | 'ADMIN'
     stats: {
         totalJobs: number
         completedJobs: number
@@ -29,6 +32,108 @@ interface Worker {
     }
     workerSchedules: any[]
     workerAttendance: any[]
+}
+
+function CompanyHierarchy({ workers }: { workers: Worker[] }) {
+    const operators = workers.filter(w => w.role === 'OPERATOR')
+    const fleet = workers.filter(w => w.role === 'WORKER')
+
+    return (
+        <div className="py-16 px-6 bg-muted/20 rounded-[40px] border-2 border-dashed border-primary/20 relative overflow-hidden">
+            {/* Background Decoration */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute -top-12 -left-12 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl animate-pulse" />
+            
+            <div className="flex flex-col items-center relative z-10 max-w-5xl mx-auto">
+                <div className="text-[10px] font-black uppercase text-primary tracking-[0.4em] mb-12 bg-primary/5 px-6 py-1.5 rounded-full border border-primary/10 shadow-sm">
+                    Tropic Tech Personnel Infrastructure
+                </div>
+                
+                {/* 1. ADMIN - ROOT */}
+                <div className="flex flex-col items-center">
+                    <div className="bg-card border-2 border-primary p-5 rounded-[24px] shadow-[0_10px_40px_-10px_rgba(var(--primary),0.2)] flex items-center gap-5 w-80 relative z-30 hover:scale-[1.02] transition-all cursor-default">
+                        <div className="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3">
+                            <ShieldCheck className="w-8 h-8 -rotate-12" />
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase text-primary tracking-widest leading-none mb-1">Founders & Direction</p>
+                            <p className="font-bold text-2xl tracking-tighter text-foreground">Jasper & Bayu</p>
+                        </div>
+                    </div>
+                    
+                    {/* Vertical Connector to Operators */}
+                    <div className="h-16 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-orange-500" />
+                </div>
+
+                {/* 2. OPERATIONAL OVERSIGHT (OPERATORS) */}
+                <div className="flex flex-col items-center w-full relative">
+                    {/* Horizontal Connector Line for multiple operators */}
+                    {operators.length > 1 && (
+                        <div className="absolute top-0 h-0.5 bg-orange-500/20 w-1/2 left-1/4 z-0" />
+                    )}
+                    
+                    <div className="flex flex-wrap justify-center gap-8 relative z-20">
+                        {operators.length > 0 ? (
+                            operators.map(op => (
+                                <div key={op.id} className="flex flex-col items-center group">
+                                    {operators.length > 1 && <div className="h-6 w-0.5 bg-orange-500/20" />}
+                                    <div className="bg-card border-2 border-orange-500/30 p-4 rounded-2xl shadow-sm flex items-center gap-4 w-72 hover:border-orange-500/60 hover:shadow-lg hover:shadow-orange-500/5 transition-all">
+                                        <div className="h-12 w-12 bg-orange-500/10 text-orange-600 rounded-xl flex items-center justify-center border border-orange-500/20 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                            <Briefcase className="w-6 h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase text-orange-600/70 tracking-widest mb-0.5">Admin Operator</p>
+                                            <p className="font-bold text-base truncate max-w-[160px] text-foreground">{op.fullName}</p>
+                                        </div>
+                                    </div>
+                                    <div className="h-12 w-0.5 bg-gradient-to-b from-orange-500/30 to-zinc-400/50" />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="flex flex-col items-center">
+                                <div className="bg-muted/50 border-2 border-dashed border-zinc-300 p-4 rounded-[20px] shadow-inner flex items-center gap-3 w-72 grayscale opacity-60">
+                                    <div className="h-10 w-10 bg-zinc-200 text-zinc-400 rounded-xl flex items-center justify-center border border-zinc-300">
+                                        <Briefcase className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black uppercase text-zinc-400 tracking-widest">No Active Staff</p>
+                                        <p className="font-bold text-sm italic text-zinc-400">Position Unfilled</p>
+                                    </div>
+                                </div>
+                                <div className="h-12 w-0.5 bg-zinc-200" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* 3. LOGISTICS FLEET (WORKERS) */}
+                <div className="w-full mt-4">
+                    <div className="flex flex-col items-center mb-6">
+                        <div className="px-4 py-1 bg-zinc-100 border border-zinc-200 rounded-full text-[9px] font-black uppercase text-zinc-500 tracking-[0.2em]">Logistics Ground Fleet</div>
+                    </div>
+                    
+                    <div className="flex flex-wrap justify-center gap-4 max-w-5xl">
+                        {fleet.length > 0 ? (
+                            fleet.map(w => (
+                                <div key={w.id} className="bg-card/80 backdrop-blur-sm p-4 rounded-2xl border border-zinc-200/60 flex items-center gap-4 w-60 hover:bg-white hover:border-blue-500/30 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                                    <div className="h-10 w-10 bg-zinc-50 text-zinc-400 rounded-xl flex items-center justify-center border border-zinc-100 group-hover:bg-blue-500/10 group-hover:text-blue-600 transition-colors">
+                                        <UserCircle className="w-5 h-5" />
+                                    </div>
+                                    <div className="overflow-hidden">
+                                        <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest group-hover:text-blue-600/60 transition-colors">Logistics Worker</p>
+                                        <p className="font-bold text-sm truncate text-foreground">{w.fullName}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="p-8 text-center text-zinc-400 italic text-sm">No Ground Fleet members found</div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default function WorkersPage() {
@@ -41,6 +146,7 @@ export default function WorkersPage() {
     const [showDetailDialog, setShowDetailDialog] = useState(false)
     const [showEditDialog, setShowEditDialog] = useState(false)
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+    const [newWorkerRole, setNewWorkerRole] = useState<'WORKER' | 'OPERATOR'>('WORKER')
 
     useEffect(() => {
         fetchWorkers()
@@ -69,7 +175,8 @@ export default function WorkersPage() {
             fullName: formData.get('fullName'),
             email: formData.get('email'),
             whatsapp: formData.get('whatsapp'),
-            password: formData.get('password')
+            password: formData.get('password'),
+            role: newWorkerRole
         }
 
         try {
@@ -106,7 +213,8 @@ export default function WorkersPage() {
             email: formData.get('email'),
             whatsapp: formData.get('whatsapp'),
             password: formData.get('password') || undefined,
-            isActive: formData.get('isActive') === 'on'
+            isActive: formData.get('isActive') === 'on',
+            role: formData.get('role') as string
         }
 
         try {
@@ -208,14 +316,32 @@ export default function WorkersPage() {
                     <DialogTrigger asChild>
                         <Button className="gap-2">
                             <UserPlus className="w-4 h-4" />
-                            Add New Worker
+                            Add New Personnel
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Create New Worker</DialogTitle>
+                            <DialogTitle>Create New Personnel</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={createWorker} className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4 bg-muted/30 p-4 rounded-xl mb-2">
+                                <Button 
+                                    type="button" 
+                                    variant={newWorkerRole === 'WORKER' ? 'default' : 'outline'} 
+                                    className="h-10 text-[10px] font-black uppercase tracking-widest"
+                                    onClick={() => setNewWorkerRole('WORKER')}
+                                >
+                                    Logistics Worker
+                                </Button>
+                                <Button 
+                                    type="button" 
+                                    variant={newWorkerRole === 'OPERATOR' ? 'default' : 'outline'}
+                                    className="h-10 text-[10px] font-black uppercase tracking-widest"
+                                    onClick={() => setNewWorkerRole('OPERATOR')}
+                                >
+                                    Admin Operator
+                                </Button>
+                            </div>
                             <div>
                                 <Label htmlFor="fullName">Full Name</Label>
                                 <Input id="fullName" name="fullName" required />
@@ -232,10 +358,12 @@ export default function WorkersPage() {
                                 <Label htmlFor="password">Initial Password</Label>
                                 <Input id="password" name="password" type="password" required />
                             </div>
-                            <Button type="submit" className="w-full">Create Worker</Button>
+                            <Button type="submit" className="w-full">Create Personnel</Button>
                         </form>
                     </DialogContent>
                 </Dialog>
+
+
             </div>
 
             {/* Stats Overview */}
@@ -292,6 +420,9 @@ export default function WorkersPage() {
                                     <h3 className="text-xl font-bold">{worker.fullName}</h3>
                                     <Badge variant={worker.isActive ? "default" : "secondary"}>
                                         {worker.isActive ? 'Active' : 'Inactive'}
+                                    </Badge>
+                                    <Badge variant="outline" className={worker.role === 'OPERATOR' ? "bg-orange-50 text-orange-600 border-orange-200" : "bg-blue-50 text-blue-600 border-blue-200"}>
+                                        {worker.role}
                                     </Badge>
                                     {worker.stats.unreadNotifications > 0 && (
                                         <Badge variant="destructive">{worker.stats.unreadNotifications} unread</Badge>
@@ -406,6 +537,11 @@ export default function WorkersPage() {
                         </div>
                     </Card>
                 ))}
+            </div>
+
+            {/* Company Hierarchy Visualization */}
+            <div className="pt-8">
+                <CompanyHierarchy workers={workers} />
             </div>
 
             {/* Chat Dialog */}
@@ -537,7 +673,19 @@ export default function WorkersPage() {
                                 <Label htmlFor="edit-password">New Password (leave blank to keep current)</Label>
                                 <Input id="edit-password" name="password" type="password" placeholder="••••••••" />
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div>
+                                <Label htmlFor="role">Personnel Role</Label>
+                                <Select name="role" defaultValue={selectedWorker.role}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select Role" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="WORKER">Logistics Worker</SelectItem>
+                                        <SelectItem value="OPERATOR">Admin Operator</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex items-center gap-2 pt-2">
                                 <input
                                     type="checkbox"
                                     id="edit-isActive"

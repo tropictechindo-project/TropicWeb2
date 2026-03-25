@@ -141,7 +141,7 @@ const items = [
 ]
 
 export function AdminSidebar() {
-    const { logout } = useAuth()
+    const { user, logout } = useAuth()
     const pathname = usePathname()
     const { unreadMessagesCount, unreadOrdersCount, unreadDeliveriesCount } = useNotification()
     const { theme, setTheme } = useTheme()
@@ -162,37 +162,45 @@ export function AdminSidebar() {
                     <SidebarGroupLabel>Menu</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton
-                                        asChild
-                                        isActive={pathname.startsWith(item.url)}
-                                        tooltip={item.title}
-                                    >
-                                        <Link href={item.url} className="flex items-center justify-between w-full">
-                                            <div className="flex items-center gap-2">
-                                                <item.icon />
-                                                <span>{item.title}</span>
-                                            </div>
-                                            {item.title === "Messages" && unreadMessagesCount > 0 && (
-                                                <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
-                                                    {unreadMessagesCount}
-                                                </Badge>
-                                            )}
-                                            {item.title === "Orders / Rentals" && unreadOrdersCount > 0 && (
-                                                <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
-                                                    {unreadOrdersCount}
-                                                </Badge>
-                                            )}
-                                            {item.title === "Deliveries Queue" && unreadDeliveriesCount > 0 && (
-                                                <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
-                                                    {unreadDeliveriesCount}
-                                                </Badge>
-                                            )}
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {items
+                                .filter(item => {
+                                    if (user?.role === 'OPERATOR') {
+                                        const blocked = ["User Management", "System Control"]
+                                        return !blocked.includes(item.title)
+                                    }
+                                    return true
+                                })
+                                .map((item) => (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={pathname.startsWith(item.url)}
+                                            tooltip={item.title}
+                                        >
+                                            <Link href={item.url} className="flex items-center justify-between w-full">
+                                                <div className="flex items-center gap-2">
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </div>
+                                                {item.title === "Messages" && unreadMessagesCount > 0 && (
+                                                    <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
+                                                        {unreadMessagesCount}
+                                                    </Badge>
+                                                )}
+                                                {item.title === "Orders / Rentals" && unreadOrdersCount > 0 && (
+                                                    <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
+                                                        {unreadOrdersCount}
+                                                    </Badge>
+                                                )}
+                                                {item.title === "Deliveries Queue" && unreadDeliveriesCount > 0 && (
+                                                    <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
+                                                        {unreadDeliveriesCount}
+                                                    </Badge>
+                                                )}
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>

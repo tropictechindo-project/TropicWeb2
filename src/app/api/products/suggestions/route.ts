@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
 
         const productIds = productIdsStr.split(',').filter(id => id.length > 0)
 
-        // Query product_relations for the given productIds
-        const relations = await (db as any).productRelation.findMany({
+        // Query productRelation for the given productIds
+        const relations = await db.productRelation.findMany({
             where: {
                 productId: { in: productIds }
             },
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
                 relatedProduct: true
             },
             orderBy: [
-                { relationType: 'asc' }, // CROSS_SELL < UPSELL < ACCESSORY if mapped carefully
+                { relationType: 'asc' }, // CROSS_SELL < UPSELL < ACCESSORY
                 { priority: 'desc' }
             ]
         })

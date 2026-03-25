@@ -42,6 +42,7 @@ interface Order {
     createdAt: string
     whatsapp: string
     invoiceId?: string
+    isClaimed?: boolean
 
     items: {
         id: string
@@ -205,7 +206,7 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
     const filteredOrders = orders.filter(order => {
         if (filterStatus === "ALL") return true
         if (filterStatus === "NEW") {
-            return order.status === 'AWAITING_PAYMENT' || order.status === 'PENDING'
+            return (order.status === 'AWAITING_PAYMENT' || order.status === 'PENDING') && !order.isClaimed
         }
         if (filterStatus === "ACTIVE") {
             return order.status === 'ACTIVE' || order.status === 'DELIVERED' || order.status === 'CONFIRMED'
@@ -228,7 +229,7 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
             <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
                 <TabsList className="bg-muted/50 p-1 mb-2 flex flex-wrap h-auto gap-1">
                     <TabsTrigger value="ALL" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">All Orders</TabsTrigger>
-                    <TabsTrigger value="NEW" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background flex items-center gap-1">New Orders {orders.filter(o => o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING').length > 0 && <Badge variant="destructive" className="h-4 w-4 p-0 flex items-center justify-center text-[8px]">{orders.filter(o => o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING').length}</Badge>}</TabsTrigger>
+                    <TabsTrigger value="NEW" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background flex items-center gap-1">New Orders {orders.filter(o => (o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING') && !o.isClaimed).length > 0 && <Badge variant="destructive" className="h-4 w-4 p-0 flex items-center justify-center text-[8px]">{orders.filter(o => (o.status === 'AWAITING_PAYMENT' || o.status === 'PENDING') && !o.isClaimed).length}</Badge>}</TabsTrigger>
                     <TabsTrigger value="ACTIVE" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">Active Rentals</TabsTrigger>
                     <TabsTrigger value="PICKUP" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background flex items-center gap-1">Pick Up <Badge variant="outline" className="text-[8px] h-3.5 px-1 bg-amber-500/10 text-amber-600 border-amber-500/20">Soon</Badge></TabsTrigger>
                     <TabsTrigger value="NON_ACTIVE" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">Non-Active</TabsTrigger>
