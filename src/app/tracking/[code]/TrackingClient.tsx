@@ -20,14 +20,20 @@ import {
     ChevronLeft,
     Home,
     Map as MapIcon,
-    LayoutDashboard
+    LayoutDashboard,
+    MessageCircle,
+    LogIn,
+    Loader2
 } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from '@/contexts/AuthContext'
+
 
 export default function TrackingClient({ initialDelivery }: { initialDelivery: any }) {
     const [delivery, setDelivery] = useState(initialDelivery)
     const [showMap, setShowMap] = useState(false)
     const [viewMode, setViewMode] = useState<'status' | 'map'>('status')
+    const { user } = useAuth()
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -171,7 +177,7 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                                     <Clock className="w-3 h-3" /> System Heartbeat
                                 </p>
                                 <p className="font-bold text-sm tracking-tight bg-muted/50 px-3 py-1.5 rounded-lg inline-block">
-                                    {new Date(delivery.lastLocationUpdate || delivery.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                    {new Date(delivery.lastLocationUpdate || delivery.updatedAt).toLocaleTimeString([], { timeZone: 'Asia/Makassar', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                                 </p>
                             </div>
                         </div>
@@ -235,7 +241,7 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer" />
                                         <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-3">Target Arrival Time</p>
                                         <h2 className="text-5xl font-black text-foreground tracking-tighter shadow-sm">
-                                            {new Date(delivery.eta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            {new Date(delivery.eta).toLocaleTimeString([], { timeZone: 'Asia/Makassar', hour: '2-digit', minute: '2-digit' })}
                                         </h2>
                                         {delivery.delayMinutes > 0 && (
                                             <div className="mt-4 inline-flex items-center gap-2 bg-red-500/10 text-red-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-500/20">
@@ -306,7 +312,7 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                                                     <div className={`absolute w-1.5 h-1.5 ${idx === 0 ? 'bg-primary ring-4 ring-primary/20 scale-125' : 'bg-muted-foreground/30'} rounded-full left-0 top-1 transition-all duration-500`} />
                                                     <p className={`text-[11px] font-black leading-none uppercase tracking-tight ${idx === 0 ? 'text-foreground' : 'text-muted-foreground'}`}>{log.eventType}</p>
                                                     <p className="text-[10px] text-muted-foreground mt-1 line-clamp-1">{log.newValue?.notes || "Status confirmed."}</p>
-                                                    <p className="text-[9px] font-bold opacity-40 mt-1 uppercase">{new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                                    <p className="text-[9px] font-bold opacity-40 mt-1 uppercase">{new Date(log.createdAt).toLocaleTimeString([], { timeZone: 'Asia/Makassar', hour: '2-digit', minute: '2-digit' })}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -330,8 +336,12 @@ export default function TrackingClient({ initialDelivery }: { initialDelivery: a
                         </Link>
                     </Button>
                     <Button className="flex-1 rounded-2xl h-14 font-black uppercase tracking-widest gap-2 shadow-xl shadow-primary/20 order-1 sm:order-2" asChild>
-                        <Link href="/dashboard/user">
-                            <LayoutDashboard className="w-4 h-4" /> Client Dashboard
+                        <Link href={user ? (delivery.claimedByWorker?.whatsapp ? `https://wa.me/${delivery.claimedByWorker.whatsapp.replace(/[^0-9]/g, '')}` : "/dashboard/user") : "/auth/login"} target={user && delivery.claimedByWorker?.whatsapp ? "_blank" : undefined}>
+                            {user ? (
+                                <><MessageCircle className="w-4 h-4" /> Contact {delivery.claimedByWorker?.fullName?.split(' ')[0] || "Delivery"}</>
+                            ) : (
+                                <><LogIn className="w-4 h-4" /> Sign In</>
+                            )}
                         </Link>
                     </Button>
                 </div>

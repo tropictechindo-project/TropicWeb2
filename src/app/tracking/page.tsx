@@ -13,16 +13,13 @@ function TrackingSearchPageInner() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [invoiceNumber, setInvoiceNumber] = useState('')
-    const [email, setEmail] = useState('')
     const [isSearching, setIsSearching] = useState(false)
     const [orderPlaced, setOrderPlaced] = useState(false)
 
     // Pre-fill from checkout redirect (?invoice=INV-xxx&email=...)
     useEffect(() => {
         const inv = searchParams.get('invoice')
-        const em = searchParams.get('email')
         if (inv) { setInvoiceNumber(inv.toUpperCase()); setOrderPlaced(true) }
-        if (em) setEmail(em)
     }, [searchParams])
 
     const handleSearch = async (e: React.FormEvent) => {
@@ -33,15 +30,15 @@ function TrackingSearchPageInner() {
         }
         setIsSearching(true)
         try {
-            const res = await fetch(`/api/tracking/lookup?invoiceNumber=${encodeURIComponent(invoiceNumber.trim())}&email=${encodeURIComponent(email.trim())}`)
+            const res = await fetch(`/api/tracking/lookup?invoiceNumber=${encodeURIComponent(invoiceNumber.trim())}`)
             if (!res.ok) {
                 const data = await res.json()
                 toast.error(data.error || 'Invoice not found. Please check your details.')
                 return
             }
             const data = await res.json()
-            if (data.trackingCode) {
-                router.push(`/tracking/${data.trackingCode}`)
+            if (data.hasDelivery) {
+                router.push(`/tracking/${data.trackingCode || data.invoiceNumber}`)
             } else {
                 toast.info('Your order is confirmed but delivery has not started yet. Check back soon!')
             }
@@ -91,23 +88,7 @@ function TrackingSearchPageInner() {
                                 />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-                                Email Address <span className="text-muted-foreground/50 font-normal normal-case tracking-normal">(for verification)</span>
-                            </Label>
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    className="pl-10"
-                                    placeholder="your@email.com"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        <Button type="submit" className="w-full font-bold py-6" disabled={isSearching}>
+                        <Button type="submit" className="w-full font-bold py-6 cursor-pointer" disabled={isSearching}>
                             {isSearching ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Searching...</>
                             ) : (

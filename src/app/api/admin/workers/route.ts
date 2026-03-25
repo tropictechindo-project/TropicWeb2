@@ -111,12 +111,6 @@ export async function POST(request: NextRequest) {
 
         const { fullName, email, whatsapp, password } = await request.json()
 
-        // Check if email already exists
-        const existing = await db.user.findUnique({ where: { email } })
-        if (existing) {
-            return NextResponse.json({ error: 'Email already exists' }, { status: 400 })
-        }
-
         // 1. Sync to Supabase Auth first
         const { syncUserToSupabase } = await import('@/lib/auth/supabase-admin')
         const supabaseId = await syncUserToSupabase(email, password, {
@@ -133,20 +127,43 @@ export async function POST(request: NextRequest) {
         const bcrypt = await import('bcryptjs')
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const worker = await db.user.create({
-            data: {
-                id: supabaseId, // Keep IDs in sync
-                username: email.split('@')[0] + Math.floor(Math.random() * 1000),
-                email,
-                password: hashedPassword,
-                plainPassword: password, // Store for admin view
-                fullName,
-                whatsapp,
-                role: 'WORKER',
-                isActive: true,
-                isVerified: true
+        // Check if email already exists in Prisma
+        const existing = await db.user.findUnique({ where: { email } })
+        let worker;
+        
+        if (existing) {
+            if (existing.role === 'WORKER') {
+                return NextResponse.json({ error: 'A Worker with this email already exists!' }, { status: 400 })
             }
-        })
+            // Upgrade existing user to WORKER
+            worker = await db.user.update({
+                where: { email },
+                data: {
+                    fullName,
+                    whatsapp,
+                    password: hashedPassword,
+                    plainPassword: password, // Store for admin view
+                    role: 'WORKER',
+                    isActive: true,
+                    isVerified: true
+                }
+            })
+        } else {
+            worker = await db.user.create({
+                data: {
+                    id: supabaseId, // Keep IDs in sync
+                    username: email.split('@')[0] + Math.floor(Math.random() * 1000),
+                    email,
+                    password: hashedPassword,
+                    plainPassword: password, // Store for admin view
+                    fullName,
+                    whatsapp,
+                    role: 'WORKER',
+                    isActive: true,
+                    isVerified: true
+                }
+            })
+        }
 
         return NextResponse.json({
             success: true, worker: {

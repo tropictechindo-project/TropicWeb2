@@ -16,7 +16,16 @@ export async function GET(
                 latitude: true,
                 longitude: true,
                 lastLocationUpdate: true,
-                trackingCode: true
+                trackingCode: true,
+                eta: true,
+                delayMinutes: true,
+                logs: {
+                    select: { eventType: true, newValue: true, createdAt: true },
+                    orderBy: { createdAt: 'desc' },
+                },
+                claimedByWorker: {
+                    select: { fullName: true, whatsapp: true }
+                }
             }
         })
 
@@ -34,7 +43,16 @@ export async function GET(
                     latitude: true,
                     longitude: true,
                     lastLocationUpdate: true,
-                    trackingCode: true
+                    trackingCode: true,
+                    eta: true,
+                    delayMinutes: true,
+                    logs: {
+                        select: { eventType: true, newValue: true, createdAt: true },
+                        orderBy: { createdAt: 'desc' },
+                    },
+                    claimedByWorker: {
+                        select: { fullName: true, whatsapp: true }
+                    }
                 },
                 orderBy: { createdAt: 'desc' }
             })

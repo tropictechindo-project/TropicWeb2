@@ -8,7 +8,6 @@ export const dynamic = 'force-dynamic'
 export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl
     const invoiceNumber = searchParams.get('invoiceNumber')
-    const email = searchParams.get('email') || ''
 
     if (!invoiceNumber) {
         return NextResponse.json({ error: 'Invoice number is required' }, { status: 400 })
@@ -26,11 +25,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invoice not found. Please check the invoice number.' }, { status: 404 })
     }
 
-    // Verify the requester matches the invoice (loose check — email OR no email provided)
-    const customerEmail = invoice.user?.email || invoice.guestEmail || ''
-    if (email && customerEmail && email.toLowerCase() !== customerEmail.toLowerCase()) {
-        return NextResponse.json({ error: 'Email does not match our records for this invoice.' }, { status: 403 })
-    }
 
     const delivery = invoice.deliveries[0]
 

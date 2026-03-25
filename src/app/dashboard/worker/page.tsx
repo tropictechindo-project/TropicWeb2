@@ -133,6 +133,47 @@ export default function WorkerDashboard() {
     }
   }, [isLoading, isAuthenticated, router])
 
+  // Geolocation Background Tracker & Alert
+  useEffect(() => {
+    const activeDeliveries = myDeliveries.filter((d: any) => d.status === 'OUT_FOR_DELIVERY')
+    
+    // 1. Alert if active delivery but device not connected
+    if (activeDeliveries.length > 0 && !isConnected) {
+       toast.error("Tracking Offline! Harap klik 'Sabungkan Perangkat' agar pelacakan pengiriman aktif.")
+       return
+    }
+
+    // 2. Track location if connected and has active delivery
+    if (activeDeliveries.length > 0 && isConnected) {
+      const interval = setInterval(() => {
+         navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude, longitude } = pos.coords
+            const token = localStorage.getItem('token')
+            
+            for (const delivery of activeDeliveries) {
+               try {
+                  await fetch(`/api/worker/deliveries/${delivery.id}/location`, {
+                     method: 'PATCH',
+                     headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                     },
+                     body: JSON.stringify({ latitude, longitude })
+                  })
+               } catch (e) {
+                  console.error('Failed to update location for delivery', delivery.id)
+               }
+            }
+         }, 
+         (err) => console.error("Location error", err),
+         { enableHighAccuracy: true }
+         )
+      }, 15000) // Update every 15 seconds
+
+      return () => clearInterval(interval)
+    }
+  }, [myDeliveries, isConnected])
+
   useEffect(() => {
     if (user) {
       fetchData()
@@ -579,7 +620,7 @@ export default function WorkerDashboard() {
                               {todayAttendance.status}
                             </Badge>
                             <span className="text-sm">
-                              {new Date(todayAttendance.checkInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              {new Date(todayAttendance.checkInTime).toLocaleTimeString([], { timeZone: 'Asia/Makassar', hour: '2-digit', minute: '2-digit' })}
                             </span>
                           </div>
                         </div>
@@ -788,7 +829,7 @@ export default function WorkerDashboard() {
                                   </div>
                                   <p className="text-sm text-muted-foreground">
                                     <Clock className="w-3 h-3 inline mr-1" />
-                                    Claimed: {new Date(delivery.updatedAt).toLocaleTimeString()}
+                                    Claimed: {new Date(delivery.updatedAt).toLocaleTimeString([], { timeZone: 'Asia/Makassar' })}
                                   </p>
                                 </div>
                                 <Badge variant={
