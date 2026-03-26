@@ -28,7 +28,7 @@ export interface InvoiceData {
 
 export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
     const QRCode = await import('qrcode')
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.rent'
     const qrCodeUrl = `${baseUrl}/invoice/${data.invoiceId}`
     const qrCodeDataUrl = await QRCode.toDataURL(qrCodeUrl)
   const doc = new jsPDF()

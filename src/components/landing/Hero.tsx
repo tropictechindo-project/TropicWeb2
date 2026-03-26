@@ -64,8 +64,8 @@ export default function Hero({ initialSettings }: HeroProps) {
             priority
             fetchPriority="high"
             loading="eager"
-            sizes="100vw"
-            quality={60}
+            sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            quality={50}
           />
         </div>
 

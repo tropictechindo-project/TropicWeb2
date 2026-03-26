@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/admin/', '/dashboard/', '/api/'],
         },
-        sitemap: 'https://tropictech.online/sitemap.xml',
+        sitemap: 'https://tropictech.rent/sitemap.xml',
     }
 }

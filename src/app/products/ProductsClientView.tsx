@@ -515,7 +515,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                             </div>
                             <div className="inline-flex items-center" style={{ marginRight: '15pt' }}>
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Web :</span>
-                                <span className="font-black text-slate-950 contact-item ml-1">www.tropictech.online</span>
+                                <span className="font-black text-slate-950 contact-item ml-1">www.tropictech.rent</span>
                             </div>
                             <div className="inline-flex items-center">
                                 <span className="text-[6.5pt] text-slate-400 font-black tracking-wider">Catalog :</span>
@@ -578,7 +578,7 @@ export function ProductsClientView({ products, packages, offers, categories, cat
                                 <p>Prices are subject to rental duration and availability.</p>
                             </div>
                             <p className="mt-2 font-black text-blue-700 text-[8.5pt] tracking-tight">
-                                Access full digital catalog: www.tropictech.online/products
+                                Access full digital catalog: www.tropictech.rent/products
                             </p>
                         </div>
                     </div>

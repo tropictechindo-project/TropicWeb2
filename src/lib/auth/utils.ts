@@ -11,6 +11,7 @@ console.log('utils: JWT_SECRET loaded, length:', JWT_SECRET.length)
 export interface JWTPayload {
   userId: string
   username: string
+  fullName: string
   email: string
   role: string
 }

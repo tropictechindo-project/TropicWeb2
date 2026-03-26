@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Frequently Asked Questions | Rental Equipment Bali | Tropic Tech',
     description: 'Got questions about renting laptops, monitors, or event equipment in Bali? Read our comprehensive FAQ covering pricing, delivery, liability, and long-term tech rentals.',
     alternates: {
-        canonical: 'https://tropictech.online/faq'
+        canonical: 'https://tropictech.rent/faq'
     }
 };
 

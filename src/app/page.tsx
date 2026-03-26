@@ -136,7 +136,7 @@ export default async function Home() {
   const serializedProducts = JSON.parse(JSON.stringify(products))
   const serializedPackages = JSON.parse(JSON.stringify(packages))
 
-  const SITE_URL = 'https://tropictech.online'
+  const SITE_URL = 'https://tropictech.rent'
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -305,7 +305,7 @@ export default async function Home() {
                 "name": "How do I rent workstation equipment in Bali?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Browse our products on tropictech.online, select your rental duration (daily, weekly, or monthly), and place an order. We offer fast delivery across Bali including Canggu, Ubud, Seminyak, and Denpasar."
+                  "text": "Browse our products on tropictech.rent, select your rental duration (daily, weekly, or monthly), and place an order. We offer fast delivery across Bali including Canggu, Ubud, Seminyak, and Denpasar."
                 }
               },
               {

@@ -124,7 +124,7 @@ export async function GET(req: Request) {
                         type: 'VISA_UPSELL',
                         title: 'Extend Your Bali Stay!',
                         message: 'Loving the island life? We offer fast & reliable Indonesian Visa extensions. Tap to learn more.',
-                        link: 'https://tropictech.online/services'
+                        link: 'https://tropictech.rent/services'
                     }
                 })
                 notificationsCreated.push({ type: 'VISA_UPSELL', userId: order.userId })

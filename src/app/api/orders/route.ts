@@ -196,7 +196,7 @@ export async function POST(request: Request) {
         // 5. Send confirmation email (Reliable/Blocking for serverless)
         try {
             const recipients = await getInvoiceRecipients(invoice)
-            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.rent'
             
             // Send Google Report (non-blocking is fine here as it's separate)
             sendGoogleReport('ORDER', {

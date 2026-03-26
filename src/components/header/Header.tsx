@@ -137,8 +137,8 @@ export default function Header() {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <div className={cn(
-              "flex items-center space-x-2 transition-all duration-500",
-              mounted && showLogo ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
+            "flex items-center space-x-2 transition-all duration-500 will-change-transform",
+              mounted && showLogo ? "opacity-100 translate-x-0 translate-z-0" : "opacity-0 -translate-x-10 translate-z-0 pointer-events-none"
             )}>
               <Link href="/" id="main-header-logo" className="flex items-center gap-2 group" prefetch={true}>
                 <Image

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Terms & Conditions | PT Tropic Tech International',
     description: 'Terms and Conditions for renting enterprise IT and office equipment from PT Tropic Tech International in Bali.',
     alternates: {
-        canonical: 'https://tropictech.online/terms-conditions'
+        canonical: 'https://tropictech.rent/terms-conditions'
     }
 };
 
@@ -48,7 +48,7 @@ export default async function TermsConditionsPage() {
                             <h2>1. General Provisions</h2>
                             <p>
                                 Welcome to Tropic Tech Bali, operated by PT Tropic Tech International. These Terms and Conditions (&quot;Terms&quot;)
-                                govern your access to and use of our website (tropictech.online) and our IT equipment rental services in Bali, Indonesia.
+                                govern your access to and use of our website (tropictech.rent) and our IT equipment rental services in Bali, Indonesia.
                                 By creating an order, registering an account, or interacting with our platform, you agree to be bound by these Terms.
                             </p>
 

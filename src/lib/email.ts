@@ -38,7 +38,7 @@ export async function sendInvoiceEmail(data: {
   invoiceId?: string,
   isPaid?: boolean
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.rent'
   const trackingUrl = data.trackingLink || `${baseUrl}/tracking/${data.invoiceNumber}`
   
   let customerEmail = ''

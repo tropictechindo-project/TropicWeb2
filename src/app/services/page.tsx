@@ -13,12 +13,12 @@ export const metadata: Metadata = {
     title: 'Equipment Rental Services in Bali | Tropic Tech Bali',
     description: 'Discover premium office, event, and operational equipment rental services in Bali. We offer flexible packages, reliable delivery, and full technical support.',
     alternates: {
-        canonical: 'https://tropictech.online/services'
+        canonical: 'https://tropictech.rent/services'
     },
     openGraph: {
         title: 'Equipment Rental Services in Bali | Tropic Tech Bali',
         description: 'Discover premium office, event, and operational equipment rental services in Bali.',
-        url: 'https://tropictech.online/services',
+        url: 'https://tropictech.rent/services',
         type: 'website',
     },
     twitter: {

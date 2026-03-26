@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 import { SEO_PAGES } from '@/lib/seo-pages-data'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://tropictech.online'
+    const baseUrl = 'https://tropictech.rent'
 
     // Static pages
     const staticPages: MetadataRoute.Sitemap = [

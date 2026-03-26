@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | PT Tropic Tech International',
     description: 'Get in touch with Tropic Tech Bali. Our support team is active everyday from 08:00 to 24:00 WITA for equipment rentals and technical support.',
     alternates: {
-        canonical: 'https://tropictech.online/contact'
+        canonical: 'https://tropictech.rent/contact'
     }
 };
 

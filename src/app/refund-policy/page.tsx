@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Refund Policy | PT Tropic Tech International',
     description: 'Read the comprehensive Refund and Cancellation Policy for PT Tropic Tech International IT and office equipment rentals in Bali.',
     alternates: {
-        canonical: 'https://tropictech.online/refund-policy'
+        canonical: 'https://tropictech.rent/refund-policy'
     }
 };
 

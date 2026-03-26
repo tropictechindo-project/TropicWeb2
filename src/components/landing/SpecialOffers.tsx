@@ -57,11 +57,15 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
     useEffect(() => {
         if (!api) return
 
-        setCount(api.scrollSnapList().length)
-        setCurrent(api.selectedScrollSnap())
+        requestAnimationFrame(() => {
+            setCount(api.scrollSnapList().length)
+            setCurrent(api.selectedScrollSnap())
+        })
 
         api.on("select", () => {
-            setCurrent(api.selectedScrollSnap())
+            requestAnimationFrame(() => {
+                setCurrent(api.selectedScrollSnap())
+            })
         })
     }, [api, offers])
 
@@ -122,8 +126,8 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                         loading="lazy"
                                                         decoding="async"
                                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 33vw, 25vw"
-                                                        quality={60}
+                                                        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 20vw"
+                                                        quality={50}
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground bg-primary/5">

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Privacy Policy | PT Tropic Tech International',
     description: 'Privacy Policy for PT Tropic Tech International, governing data collection, usage, and protection for our enterprise IT and office equipment rental services.',
     alternates: {
-        canonical: 'https://tropictech.online/privacy-policy'
+        canonical: 'https://tropictech.rent/privacy-policy'
     }
 };
 
@@ -47,7 +47,7 @@ export default async function PrivacyPolicyPage() {
                         <>
                             <h2>1. Introduction</h2>
                             <p>
-                                PT Tropic Tech International (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates <strong>Tropic Tech Bali</strong> (tropictech.online).
+                                PT Tropic Tech International (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates <strong>Tropic Tech Bali</strong> (tropictech.rent).
                                 We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard
                                 your information when you visit our website, use our rental management services, or interact with our operations.
                             </p>

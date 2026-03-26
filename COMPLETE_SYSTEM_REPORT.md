@@ -2,6 +2,9 @@
 
 ## 📌 Executive Summary
 The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Bali Dominance v3.0 & Production Hardening (v3.0.0)** milestone. The system is now significantly more refined for SEO, financially precise in checkout, and operationally robust with a professional hardware catalog.
+- **Phase 8 (2026-03-26)**: Hybrid Domain Migration. Website and SEO transitioned to `tropictech.rent`. Emails and official contact channels preserved on `tropictech.online` for service continuity.
+- **Phase 7**: Performance Hardening (PageSpeed Mobile LCP/TBT optimization).
+- **Phase 6.2**: Financial Hardening & Multi-Worker Scaling.
 
 ## 🏗️ 0. Production Hardening: Phase 6 (NEW v3.0.0)
 - **Financial Precision**: Implemented automated 2% Tax (Items + Priority) and Geographic 100k IDR fallback Delivery Fee synchronization, matching industrial invoice standards.

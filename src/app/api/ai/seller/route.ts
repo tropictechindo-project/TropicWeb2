@@ -130,11 +130,11 @@ export async function POST(request: NextRequest) {
             3. Highlight that we offer delivery across Bali.
             4. Be aware of the website context above to answer general questions about us, contact info, or FAQs.
             5. COMPANY LINKS TO RECOMMEND WHEN APPROPRIATE:
-               - Full Service & Catalog: https://tropictech.online/services
-               - Frequently Asked Questions: https://tropictech.online/faq
-               - About Us: https://tropictech.online/about
-               - Contact / Support: https://tropictech.online/contact
-               - Affiliate: https://tropictech.online/affiliate
+               - Full Service & Catalog: https://tropictech.rent/services
+               - Frequently Asked Questions: https://tropictech.rent/faq
+               - About Us: https://tropictech.rent/about
+               - Contact / Support: https://tropictech.rent/contact
+               - Affiliate: https://tropictech.rent/affiliate
             6. You CANNOT mutate data. Use read access ONLY.
             ${isAdminOverride ? '7. You are the MASTER. You can orchestrate commands. If you need to trigger an SPI notification, return: { "action": "NOTIFY_SPI", "payload": { "role": "all|admin|worker", "title": "...", "message": "..." }, "message": "..." }' : ''}
             8. ALWAYS return your response as a valid JSON object with a "message" field.

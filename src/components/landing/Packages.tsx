@@ -36,11 +36,15 @@ export default function Packages({ initialPackages = [] }: PackagesProps) {
   useEffect(() => {
     if (!api) return
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap())
+    requestAnimationFrame(() => {
+      setCount(api.scrollSnapList().length)
+      setCurrent(api.selectedScrollSnap())
+    })
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
+      requestAnimationFrame(() => {
+        setCurrent(api.selectedScrollSnap())
+      })
     })
   }, [api])
 

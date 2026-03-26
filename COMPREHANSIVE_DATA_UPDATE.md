@@ -124,6 +124,9 @@ To ensure 100% data safety, the AI system follows a strict **Proposal → Signat
 
 ### ✅ v2.8.0 — Dashboard Hardening & Guides Translation (2026-03-24)
 
+### ✅ Phase 8 (2026-03-26): Global TLD Migration to `tropictech.rent`. JWT Payload hardening with `fullName` for worker claim precision. Final verification of 301-redirect readiness.
+### ✅ Phase 7 (2026-03-26): PageSpeed & Web Vitals optimization. Image rescaling and Browserslist modern targeting.
+### ✅ Phase 6.2 (2026-03-26): Production Hardening, Delivery Multi-Worker Logic, Checkout Financial Alignment.
 ### ✅ v2.7.0 — PageSpeed Optimizations & Smart QR (2026-03-21)
 - **Smart QR System**: Injected dynamic client state hooks building QR tracking links mapped on public list footers securely.
 - **Removed Stale Preconnects**: Cleared 5 layout warming tags reducing established connection start triggers overhead cycles.

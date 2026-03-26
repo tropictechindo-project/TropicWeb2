@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
           const token = await generateToken({
             userId: prismaUser.id,
             username: prismaUser.username,
+            fullName: prismaUser.fullName,
             email: prismaUser.email,
             role: userRole,
           })
@@ -123,10 +124,14 @@ export async function POST(request: NextRequest) {
 
       const newRes = NextResponse.json({
         token: await (await import('@/lib/auth/utils')).generateToken({
-          userId: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role,
+          userId: newUser.id,
+          username: newUser.username,
+          fullName: newUser.fullName,
+          email: newUser.email,
+          role: newUser.role,
         }), user: newUser
       })
-      const newToken = await (await import('@/lib/auth/utils')).generateToken({ userId: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role })
+      const newToken = await (await import('@/lib/auth/utils')).generateToken({ userId: newUser.id, username: newUser.username, fullName: newUser.fullName, email: newUser.email, role: newUser.role })
       newRes.cookies.set('token', newToken, { path: '/', httpOnly: false, maxAge: 60 * 60 * 24 * 7 })
       return newRes
     }
@@ -149,6 +154,7 @@ export async function POST(request: NextRequest) {
     const token = await generateToken({
       userId: user.id,
       username: user.username,
+      fullName: user.fullName,
       email: user.email,
       role: userRole,
     })

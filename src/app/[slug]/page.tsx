@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: SEOPageProps): Promise<Metada
                 title: config.title,
                 description: config.description,
                 type: 'article',
-                url: `https://tropictech.online/${slug}`,
+                url: `https://tropictech.rent/${slug}`,
                 images: [{ url: '/images/og-image.webp', width: 1200, height: 630, alt: config.title }]
             },
             twitter: {
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: SEOPageProps): Promise<Metada
             title,
             description: desc,
             type: 'article',
-            url: `https://tropictech.online/${slug}`,
+            url: `https://tropictech.rent/${slug}`,
             images: [{ url: '/images/og-image.webp', width: 1200, height: 630, alt: title }]
         },
         twitter: {

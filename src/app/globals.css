@@ -124,6 +124,11 @@
     @apply bg-background text-foreground;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
+    text-rendering: optimizeLegibility;
+  }
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
   }
 }
 

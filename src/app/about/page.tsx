@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'About PT Tropic Tech International | Equipment Rentals Bali',
     description: 'Learn about PT Tropic Tech International, Bali\'s premier enterprise IT and office equipment rental service serving remote workers, digital nomads, and corporate events.',
     alternates: {
-        canonical: 'https://tropictech.online/about'
+        canonical: 'https://tropictech.rent/about'
     }
 };
 
@@ -54,8 +54,8 @@ export default async function AboutPage() {
         '@type': 'Organization',
         'name': 'PT Tropic Tech International',
         'alternateName': 'Tropic Tech Bali',
-        'url': 'https://tropictech.online',
-        'logo': 'https://tropictech.online/logo.png', // Fallback URL, assuming typical structure
+        'url': 'https://tropictech.rent',
+        'logo': 'https://tropictech.rent/logo.png', // Fallback URL, assuming typical structure
         'contactPoint': {
             '@type': 'ContactPoint',
             'telephone': '+62-800-000-0000', // Placeholder as exact wasn't in COMPREHANSIVE_DATA

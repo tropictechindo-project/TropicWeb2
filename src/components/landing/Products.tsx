@@ -49,11 +49,15 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
   useEffect(() => {
     if (!api) return
 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap())
+    requestAnimationFrame(() => {
+      setCount(api.scrollSnapList().length)
+      setCurrent(api.selectedScrollSnap())
+    })
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
+      requestAnimationFrame(() => {
+        setCurrent(api.selectedScrollSnap())
+      })
     })
 
     api.scrollTo(0)
@@ -173,8 +177,8 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                         "image": (product.imageUrl || product.image_url || (product.images && product.images[0]))
                           ? ((product.imageUrl || product.image_url || (product.images && product.images[0])).startsWith('http')
                             ? (product.imageUrl || product.image_url || (product.images && product.images[0]))
-                            : `https://tropictech.online${product.imageUrl || product.image_url || (product.images && product.images[0])}`)
-                          : "https://tropictech.online/images/og-image.webp",
+                            : `https://tropictech.rent${product.imageUrl || product.image_url || (product.images && product.images[0])}`)
+                          : "https://tropictech.rent/images/og-image.webp",
                         "category": product.category,
                         "brand": {
                           "@type": "Brand",
@@ -191,7 +195,7 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                           "priceCurrency": "IDR",
                           "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
                           "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                          "url": `https://tropictech.online/product/${product.id}`,
+                          "url": `https://tropictech.rent/product/${product.id}`,
                           "seller": {
                             "@type": "Organization",
                             "name": "Tropic Tech Bali"

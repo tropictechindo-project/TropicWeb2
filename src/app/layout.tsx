@@ -38,7 +38,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tropictech.online'),
+  metadataBase: new URL('https://tropictech.rent'),
 
   // ── Primary ──────────────────────────────────────────────────────────────
   title: {
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   ],
   applicationName: 'Tropic Tech',
   category: 'Business Equipment Rental',
-  authors: [{ name: 'PT Tropic Tech International', url: 'https://tropictech.online' }],
+  authors: [{ name: 'PT Tropic Tech International', url: 'https://tropictech.rent' }],
   creator: 'Tropic Tech Bali',
   publisher: 'PT Tropic Tech International',
 
@@ -91,7 +91,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Tropic Tech - Remote Work Infrastructure Service',
     description: 'Premium remote work infrastructure rentals in Bali. Serving digital nomads & remote workers since 2019. Delivery to Canggu, Seminyak, Ubud & beyond.',
-    url: 'https://tropictech.online',
+    url: 'https://tropictech.rent',
     siteName: 'Tropic Tech Bali',
     type: 'website',
     locale: 'en_US',
@@ -128,10 +128,10 @@ export const metadata: Metadata = {
   // ── Manifest & Alternates ─────────────────────────────────────────────────
   manifest: '/site.webmanifest',
   alternates: {
-    canonical: 'https://tropictech.online',
+    canonical: 'https://tropictech.rent',
     languages: {
-      'en-US': 'https://tropictech.online/en',
-      'id-ID': 'https://tropictech.online/id',
+      'en-US': 'https://tropictech.rent/en',
+      'id-ID': 'https://tropictech.rent/id',
     },
   },
 
@@ -149,6 +149,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
+        <link rel="preconnect" href="https://uxukdfbqynnlkcykqozu.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://uxukdfbqynnlkcykqozu.supabase.co" />
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

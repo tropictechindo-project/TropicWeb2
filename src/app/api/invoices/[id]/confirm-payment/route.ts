@@ -264,7 +264,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         // H. Send confirmation email (Reliable/Blocking for serverless)
         try {
             const recipients = await getInvoiceRecipients(invoice)
-            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.online'
+            const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tropictech.rent'
             
             await sendInvoiceEmail({
                 to: recipients,

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: 'Affiliate Program | PT Tropic Tech International',
     description: 'Join the Tropic Tech Affiliate Program and earn high commissions by referring our premium equipment rental services in Bali.',
     alternates: {
-        canonical: 'https://tropictech.online/affiliate'
+        canonical: 'https://tropictech.rent/affiliate'
     }
 };
 

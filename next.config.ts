@@ -22,14 +22,27 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 
   experimental: {
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons", "date-fns", "recharts", "react-day-picker", "@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities"],
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-icons",
+      "date-fns",
+      "recharts",
+      "react-day-picker",
+      "@dnd-kit/core",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities",
+      "framer-motion",
+      "clsx",
+      "tailwind-merge"
+    ],
+    optimizeCss: true,
   },
 
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [75, 80],
+    qualities: [50, 60, 75],
     remotePatterns: [
       {
         protocol: "https",
