@@ -540,6 +540,7 @@ model AiAgent {
   actions       AiAction[]
   permissions   AiPermission?
   trainingData  AiTrainingData[]
+  insights      AiInsight[]
 
   @@map("ai_agents")
 }
@@ -796,6 +797,8 @@ enum AiAgentSystemName {
   SELLER
   MASTER
   OPERATOR
+  ORACLE
+  AUDITOR
 }
 
 enum AiActionStatus {
@@ -855,6 +858,57 @@ model EmailAudit {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@map("email_audits")
+}
+
+model SeoPage {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String   @unique
+  title       String
+  description String?
+  h1          String?
+  heroSub     String?
+  content     Json     @default("{}") // Stores features, faqs, sections, comparison
+  status      String   @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+  priority    Float    @default(0.8)
+  category    String? // e.g., "Rental", "Guide", "Regional"
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  analytics SeoAnalytics[]
+
+  @@index([slug])
+  @@map("seo_pages")
+}
+
+model SeoAnalytics {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String
+  pageId      String?  @map("seo_page_id") @db.Uuid
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  views       Int      @default(0)
+  date        DateTime @default(now()) @db.Date
+
+  seoPage SeoPage? @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([slug, date])
+  @@index([slug])
+  @@map("seo_analytics")
+}
+
+model AiInsight {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  agentId    String   @map("agent_id") @db.Uuid
+  topic      String // e.g., "Keyword Strategy", "User Behavior"
+  insight    String
+  confidence Float    @default(0.5)
+  isPublic   Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  agent AiAgent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([topic])
+  @@map("ai_insights")
 }
 
 model OrderItem {

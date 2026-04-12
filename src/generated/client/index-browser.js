@@ -617,6 +617,41 @@ exports.Prisma.EmailAuditScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SeoPageScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  title: 'title',
+  description: 'description',
+  h1: 'h1',
+  heroSub: 'heroSub',
+  content: 'content',
+  status: 'status',
+  priority: 'priority',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SeoAnalyticsScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  pageId: 'pageId',
+  impressions: 'impressions',
+  clicks: 'clicks',
+  views: 'views',
+  date: 'date'
+};
+
+exports.Prisma.AiInsightScalarFieldEnum = {
+  id: 'id',
+  agentId: 'agentId',
+  topic: 'topic',
+  insight: 'insight',
+  confidence: 'confidence',
+  isPublic: 'isPublic',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.OrderItemScalarFieldEnum = {
   id: 'id',
   orderId: 'orderId',
@@ -734,7 +769,9 @@ exports.AiAgentSystemName = exports.$Enums.AiAgentSystemName = {
   RISK: 'RISK',
   SELLER: 'SELLER',
   MASTER: 'MASTER',
-  OPERATOR: 'OPERATOR'
+  OPERATOR: 'OPERATOR',
+  ORACLE: 'ORACLE',
+  AUDITOR: 'AUDITOR'
 };
 
 exports.AiActionStatus = exports.$Enums.AiActionStatus = {
@@ -826,6 +863,9 @@ exports.Prisma.ModelName = {
   ContactMessage: 'ContactMessage',
   ItemRequest: 'ItemRequest',
   EmailAudit: 'EmailAudit',
+  SeoPage: 'SeoPage',
+  SeoAnalytics: 'SeoAnalytics',
+  AiInsight: 'AiInsight',
   OrderItem: 'OrderItem',
   InventoryUnit: 'InventoryUnit'
 };

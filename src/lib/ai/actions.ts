@@ -100,6 +100,28 @@ export async function executeAiAction(actionId: string, adminId: string) {
                 })
                 break
 
+            case 'CREATE_SEO_PAGE':
+                await tx.seoPage.create({
+                    data: {
+                        slug: payload.slug,
+                        title: payload.title,
+                        description: payload.description,
+                        h1: payload.h1,
+                        heroSub: payload.heroSub,
+                        content: payload.content || {},
+                        category: payload.category || 'MARKETING',
+                        status: 'PUBLISHED'
+                    }
+                })
+                break
+
+            case 'UPDATE_SEO_PAGE':
+                await tx.seoPage.update({
+                    where: { slug: payload.slug },
+                    data: payload.data
+                })
+                break
+
             default:
                 throw new Error(`Unsupported AI action type: ${action.actionType}`)
         }

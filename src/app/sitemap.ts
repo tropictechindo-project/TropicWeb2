@@ -69,6 +69,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: baliRentCluster.includes(slug) ? 0.9 : 0.85
     }))
 
+    // 🆕 Database-driven SEO pages (Auto SEO Engine)
+    let dbSeoPages: MetadataRoute.Sitemap = []
+    try {
+        const pages = await db.seoPage.findMany({
+            where: { status: 'PUBLISHED' },
+            select: { slug: true, updatedAt: true, priority: true }
+        })
+        dbSeoPages = pages
+            .filter(p => !allExpectedSlugs.includes(p.slug)) // Don't duplicate if already in static list
+            .map(p => ({
+                url: `${baseUrl}/${p.slug}`,
+                lastModified: p.updatedAt || new Date(),
+                changeFrequency: 'weekly' as const,
+                priority: p.priority ? Number(p.priority) : 0.85
+            }))
+    } catch (err) {
+        console.error('Error fetching dynamic SEO pages:', err)
+    }
+
     try {
         const products = await db.product.findMany({ select: { id: true, createdAt: true } })
         const productPages: MetadataRoute.Sitemap = products.map((p: any) => ({
@@ -78,9 +97,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.7,
         }))
 
-        return [...staticPages, ...seoPages, ...productPages]
+        return [...staticPages, ...seoPages, ...dbSeoPages, ...productPages]
     } catch (err) {
         console.error('Sitemap error:', err)
-        return [...staticPages, ...seoPages]
+        return [...staticPages, ...seoPages, ...dbSeoPages]
     }
 }

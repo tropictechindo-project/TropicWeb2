@@ -134,6 +134,11 @@ const items = [
         icon: Bot,
     },
     {
+        title: "SEO Intelligence",
+        url: "/admin/seo",
+        icon: BarChart3,
+    },
+    {
         title: "System Control",
         url: "/admin/system",
         icon: Settings,

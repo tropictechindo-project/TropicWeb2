@@ -10,7 +10,7 @@
 | tropictechbali | tropictechbali@gmail.com | tropictechbali | ADMIN | `*HASHED_ONLY*` |
 | Bayu Damn | damnbayu@gmail.com | bayudamn483 | ADMIN | `*HASHED_ONLY*` |
 | Administrator | admin@tropictech.com | admin | ADMIN | `*HASHED_ONLY*` |
-| Tropic Tech Worker | worker@tropictechbali.com | worker_tropictech | WORKER | `*HASHED_ONLY*` |
+| Tropic Tech Worker | worker1@tropictech.online | worker_tropictech | WORKER | `*HASHED_ONLY*` |
 | User Example | user@tropictechbali.com | user_tropictech | USER | `*HASHED_ONLY*` |
 | Jasper P Parson | tropictechindo@gmail.com | jasperadmin | ADMIN | `*HASHED_ONLY*` |
 

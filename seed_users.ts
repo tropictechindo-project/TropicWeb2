@@ -62,7 +62,7 @@ export const USERS_DATA = [
   },
   {
     fullName: "Tropic Tech Worker",
-    email: "worker@tropictechbali.com",
+    email: "worker1@tropictech.online",
     username: "worker_tropictech",
     role: "WORKER",
     password: "*HASHED_ONLY*"

@@ -102,7 +102,6 @@ export async function sendInvoiceEmail(data: {
             <p style="margin-bottom: 10px;"><strong>Tropic Tech International Network</strong></p>
             <div style="display: grid; grid-template-cols: 1fr; gap: 8px;">
               <a href="https://tropic-tech.odoo.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• tropic-tech.odoo.com</a>
-              <a href="https://tropictechbali.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• tropictechbali.com</a>
               <a href="https://indonesianvisas.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• indonesianvisas.com</a>
             </div>
           </div>

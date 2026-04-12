@@ -1,0 +1,205 @@
+
+> nextjs_tailwind_shadcn_ts@0.1.0 build
+> next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+- Experiments (use with caution):
+  ✓ optimizeCss
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 63s
+  Skipping validation of types
+  Collecting page data using 3 workers ...
+utils: JWT_SECRET loaded, length: 36
+utils: JWT_SECRET loaded, length: 36
+utils: JWT_SECRET loaded, length: 36
+utils: JWT_SECRET loaded, length: 36
+  Generating static pages using 3 workers (0/103) ...
+ContactForm initialized with Button: true
+  Generating static pages using 3 workers (25/103) 
+  Generating static pages using 3 workers (51/103) 
+  Generating static pages using 3 workers (77/103) 
+✓ Generating static pages using 3 workers (103/103) in 9.6s
+  Finalizing page optimization ...
+
+Route (app)                                 Revalidate  Expire
+┌ ○ /                                               1m      1y
+├ ○ /_not-found
+├ ● /[slug]
+│ ├ /rent-monitor-bali
+│ ├ /rent-desk-bali
+│ ├ /rent-workstation-bali
+│ └ [+39 more paths]
+├ ƒ /about
+├ ○ /admin
+├ ƒ /admin/ai
+├ ƒ /admin/deliveries
+├ ○ /admin/emails
+├ ƒ /admin/inventory
+├ ƒ /admin/invoices
+├ ○ /admin/messages
+├ ƒ /admin/orders
+├ ƒ /admin/overview
+├ ƒ /admin/packages
+├ ƒ /admin/products
+├ ƒ /admin/reports
+├ ƒ /admin/requests
+├ ƒ /admin/special-offers
+├ ƒ /admin/system
+├ ƒ /admin/users
+├ ƒ /admin/vehicles
+├ ○ /admin/website
+├ ○ /admin/workers
+├ ƒ /affiliate
+├ ƒ /api
+├ ƒ /api/admin/ai/actions
+├ ƒ /api/admin/ai/actions/[id]
+├ ƒ /api/admin/ai/chat
+├ ƒ /api/admin/deliveries
+├ ƒ /api/admin/deliveries/[id]
+├ ƒ /api/admin/emails
+├ ƒ /api/admin/groups/init
+├ ƒ /api/admin/inventory-units
+├ ƒ /api/admin/inventory/adjust
+├ ƒ /api/admin/inventory/units/[id]
+├ ƒ /api/admin/invoices
+├ ƒ /api/admin/invoices/[id]
+├ ƒ /api/admin/logs
+├ ƒ /api/admin/notifications/dismiss
+├ ƒ /api/admin/notifications/dismiss-all
+├ ƒ /api/admin/notifications/unread-counts
+├ ƒ /api/admin/order-items/[id]/assign
+├ ƒ /api/admin/orders
+├ ƒ /api/admin/orders/[id]/cancel
+├ ƒ /api/admin/orders/[id]/confirm-payment
+├ ƒ /api/admin/orders/[id]/status
+├ ƒ /api/admin/payments/[id]/confirm
+├ ƒ /api/admin/products
+├ ƒ /api/admin/settings/email-forward
+├ ƒ /api/admin/site-settings
+├ ƒ /api/admin/stats
+├ ƒ /api/admin/stats/orders
+├ ƒ /api/admin/stats/products
+├ ƒ /api/admin/stats/users
+├ ƒ /api/admin/test/maps
+├ ƒ /api/admin/upload
+├ ƒ /api/admin/upload-file
+├ ƒ /api/admin/upload-webp
+├ ƒ /api/admin/users
+├ ƒ /api/admin/users/[id]
+├ ƒ /api/admin/vehicles
+├ ƒ /api/admin/vehicles/[id]
+├ ƒ /api/admin/workers
+├ ƒ /api/admin/workers/[id]
+├ ƒ /api/admin/workers/[id]/message
+├ ƒ /api/ai/master
+├ ƒ /api/ai/operator-chat
+├ ƒ /api/ai/seller
+├ ƒ /api/ai/user-chat
+├ ƒ /api/ai/worker-chat
+├ ƒ /api/auth/callback
+├ ƒ /api/auth/change-password
+├ ƒ /api/auth/complete-profile
+├ ƒ /api/auth/forgot-password
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/me
+├ ƒ /api/auth/reset-password
+├ ƒ /api/auth/signup
+├ ƒ /api/auth/verify-email
+├ ƒ /api/checkout/calculate
+├ ƒ /api/cron/auto-confirm
+├ ƒ /api/cron/auto-return
+├ ƒ /api/cron/currency
+├ ƒ /api/cron/daily-revenue
+├ ƒ /api/cron/image-audit
+├ ƒ /api/cron/process-queue
+├ ƒ /api/cron/smart-check
+├ ƒ /api/cron/user-reminders
+├ ƒ /api/groups
+├ ƒ /api/groups/[groupId]
+├ ƒ /api/groups/[groupId]/messages
+├ ƒ /api/groups/support
+├ ƒ /api/invoices/[id]/confirm-payment
+├ ƒ /api/invoices/[id]/download
+├ ƒ /api/invoices/my-invoices
+├ ƒ /api/invoices/public/[token]
+├ ƒ /api/messages
+├ ƒ /api/messages/conversations
+├ ƒ /api/messages/unread-count
+├ ƒ /api/operator/item-requests
+├ ƒ /api/operator/item-requests/[id]
+├ ƒ /api/operator/logs
+├ ƒ /api/operator/overview
+├ ƒ /api/operator/report
+├ ƒ /api/orders
+├ ƒ /api/orders/[id]/complete
+├ ƒ /api/orders/my-orders
+├ ƒ /api/packages
+├ ƒ /api/packages/[id]
+├ ƒ /api/payments/initiate
+├ ƒ /api/payments/upload-proof
+├ ƒ /api/products
+├ ƒ /api/products/[id]
+├ ƒ /api/products/suggestions
+├ ƒ /api/rental-items/[id]/request
+├ ƒ /api/reviews
+├ ƒ /api/special-offers
+├ ƒ /api/special-offers/[id]
+├ ƒ /api/spi/notifications
+├ ƒ /api/tracking/[code]
+├ ƒ /api/tracking/lookup
+├ ƒ /api/user/deliveries/[id]/confirm
+├ ƒ /api/users
+├ ƒ /api/users/admins
+├ ƒ /api/users/workers
+├ ƒ /api/worker/attendance
+├ ƒ /api/worker/deliveries
+├ ƒ /api/worker/deliveries/[id]
+├ ƒ /api/worker/deliveries/[id]/claim
+├ ƒ /api/worker/deliveries/[id]/complete
+├ ƒ /api/worker/deliveries/[id]/location
+├ ƒ /api/worker/notifications
+├ ƒ /api/worker/upload-proof
+├ ƒ /api/worker/vehicles
+├ ○ /auth/complete-profile
+├ ○ /auth/forgot-password
+├ ○ /auth/login
+├ ○ /auth/reset-password
+├ ○ /auth/signup
+├ ○ /auth/verify-email
+├ ○ /checkout
+├ ○ /company-profile
+├ ○ /contact
+├ ƒ /dashboard/operator
+├ ○ /dashboard/user
+├ ○ /dashboard/worker
+├ ƒ /faq
+├ ○ /help
+├ ƒ /invoice/[id]
+├ ƒ /invoice/public/[token]
+├ ƒ /privacy-policy
+├ ƒ /product/[id]
+├ ○ /products                                       1m      1y
+├ ƒ /refund-policy
+├ ○ /reports/revenue
+├ ○ /reports/work-flow
+├ ○ /robots.txt
+├ ○ /services                                       1h      1y
+├ ○ /sitemap.xml
+├ ƒ /terms-conditions
+├ ƒ /track/[trackingCode]
+├ ○ /tracking
+├ ƒ /tracking/[code]
+└ ○ /website-sitemap                                1h      1y
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

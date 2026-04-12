@@ -220,6 +220,21 @@ export type ItemRequest = $Result.DefaultSelection<Prisma.$ItemRequestPayload>
  */
 export type EmailAudit = $Result.DefaultSelection<Prisma.$EmailAuditPayload>
 /**
+ * Model SeoPage
+ * 
+ */
+export type SeoPage = $Result.DefaultSelection<Prisma.$SeoPagePayload>
+/**
+ * Model SeoAnalytics
+ * 
+ */
+export type SeoAnalytics = $Result.DefaultSelection<Prisma.$SeoAnalyticsPayload>
+/**
+ * Model AiInsight
+ * 
+ */
+export type AiInsight = $Result.DefaultSelection<Prisma.$AiInsightPayload>
+/**
  * Model OrderItem
  * 
  */
@@ -330,7 +345,9 @@ export const AiAgentSystemName: {
   RISK: 'RISK',
   SELLER: 'SELLER',
   MASTER: 'MASTER',
-  OPERATOR: 'OPERATOR'
+  OPERATOR: 'OPERATOR',
+  ORACLE: 'ORACLE',
+  AUDITOR: 'AUDITOR'
 };
 
 export type AiAgentSystemName = (typeof AiAgentSystemName)[keyof typeof AiAgentSystemName]
@@ -998,6 +1015,36 @@ export class PrismaClient<
   get emailAudit(): Prisma.EmailAuditDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.seoPage`: Exposes CRUD operations for the **SeoPage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SeoPages
+    * const seoPages = await prisma.seoPage.findMany()
+    * ```
+    */
+  get seoPage(): Prisma.SeoPageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.seoAnalytics`: Exposes CRUD operations for the **SeoAnalytics** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SeoAnalytics
+    * const seoAnalytics = await prisma.seoAnalytics.findMany()
+    * ```
+    */
+  get seoAnalytics(): Prisma.SeoAnalyticsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiInsight`: Exposes CRUD operations for the **AiInsight** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiInsights
+    * const aiInsights = await prisma.aiInsight.findMany()
+    * ```
+    */
+  get aiInsight(): Prisma.AiInsightDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.orderItem`: Exposes CRUD operations for the **OrderItem** model.
     * Example usage:
     * ```ts
@@ -1498,6 +1545,9 @@ export namespace Prisma {
     ContactMessage: 'ContactMessage',
     ItemRequest: 'ItemRequest',
     EmailAudit: 'EmailAudit',
+    SeoPage: 'SeoPage',
+    SeoAnalytics: 'SeoAnalytics',
+    AiInsight: 'AiInsight',
     OrderItem: 'OrderItem',
     InventoryUnit: 'InventoryUnit'
   };
@@ -1518,7 +1568,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage" | "itemRequest" | "emailAudit" | "orderItem" | "inventoryUnit"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage" | "itemRequest" | "emailAudit" | "seoPage" | "seoAnalytics" | "aiInsight" | "orderItem" | "inventoryUnit"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4556,6 +4606,228 @@ export namespace Prisma {
           }
         }
       }
+      SeoPage: {
+        payload: Prisma.$SeoPagePayload<ExtArgs>
+        fields: Prisma.SeoPageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SeoPageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SeoPageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          findFirst: {
+            args: Prisma.SeoPageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SeoPageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          findMany: {
+            args: Prisma.SeoPageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>[]
+          }
+          create: {
+            args: Prisma.SeoPageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          createMany: {
+            args: Prisma.SeoPageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SeoPageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>[]
+          }
+          delete: {
+            args: Prisma.SeoPageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          update: {
+            args: Prisma.SeoPageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          deleteMany: {
+            args: Prisma.SeoPageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SeoPageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SeoPageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>[]
+          }
+          upsert: {
+            args: Prisma.SeoPageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoPagePayload>
+          }
+          aggregate: {
+            args: Prisma.SeoPageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSeoPage>
+          }
+          groupBy: {
+            args: Prisma.SeoPageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SeoPageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SeoPageCountArgs<ExtArgs>
+            result: $Utils.Optional<SeoPageCountAggregateOutputType> | number
+          }
+        }
+      }
+      SeoAnalytics: {
+        payload: Prisma.$SeoAnalyticsPayload<ExtArgs>
+        fields: Prisma.SeoAnalyticsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SeoAnalyticsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SeoAnalyticsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          findFirst: {
+            args: Prisma.SeoAnalyticsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SeoAnalyticsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          findMany: {
+            args: Prisma.SeoAnalyticsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>[]
+          }
+          create: {
+            args: Prisma.SeoAnalyticsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          createMany: {
+            args: Prisma.SeoAnalyticsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SeoAnalyticsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>[]
+          }
+          delete: {
+            args: Prisma.SeoAnalyticsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          update: {
+            args: Prisma.SeoAnalyticsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          deleteMany: {
+            args: Prisma.SeoAnalyticsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SeoAnalyticsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SeoAnalyticsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>[]
+          }
+          upsert: {
+            args: Prisma.SeoAnalyticsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SeoAnalyticsPayload>
+          }
+          aggregate: {
+            args: Prisma.SeoAnalyticsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSeoAnalytics>
+          }
+          groupBy: {
+            args: Prisma.SeoAnalyticsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SeoAnalyticsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SeoAnalyticsCountArgs<ExtArgs>
+            result: $Utils.Optional<SeoAnalyticsCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiInsight: {
+        payload: Prisma.$AiInsightPayload<ExtArgs>
+        fields: Prisma.AiInsightFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiInsightFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiInsightFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          findFirst: {
+            args: Prisma.AiInsightFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiInsightFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          findMany: {
+            args: Prisma.AiInsightFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>[]
+          }
+          create: {
+            args: Prisma.AiInsightCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          createMany: {
+            args: Prisma.AiInsightCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiInsightCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>[]
+          }
+          delete: {
+            args: Prisma.AiInsightDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          update: {
+            args: Prisma.AiInsightUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiInsightDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiInsightUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiInsightUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiInsightUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiInsightPayload>
+          }
+          aggregate: {
+            args: Prisma.AiInsightAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiInsight>
+          }
+          groupBy: {
+            args: Prisma.AiInsightGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiInsightGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiInsightCountArgs<ExtArgs>
+            result: $Utils.Optional<AiInsightCountAggregateOutputType> | number
+          }
+        }
+      }
       OrderItem: {
         payload: Prisma.$OrderItemPayload<ExtArgs>
         fields: Prisma.OrderItemFieldRefs
@@ -4841,6 +5113,9 @@ export namespace Prisma {
     contactMessage?: ContactMessageOmit
     itemRequest?: ItemRequestOmit
     emailAudit?: EmailAuditOmit
+    seoPage?: SeoPageOmit
+    seoAnalytics?: SeoAnalyticsOmit
+    aiInsight?: AiInsightOmit
     orderItem?: OrderItemOmit
     inventoryUnit?: InventoryUnitOmit
   }
@@ -5537,11 +5812,13 @@ export namespace Prisma {
   export type AiAgentCountOutputType = {
     actions: number
     trainingData: number
+    insights: number
   }
 
   export type AiAgentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     actions?: boolean | AiAgentCountOutputTypeCountActionsArgs
     trainingData?: boolean | AiAgentCountOutputTypeCountTrainingDataArgs
+    insights?: boolean | AiAgentCountOutputTypeCountInsightsArgs
   }
 
   // Custom InputTypes
@@ -5567,6 +5844,13 @@ export namespace Prisma {
    */
   export type AiAgentCountOutputTypeCountTrainingDataArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AiTrainingDataWhereInput
+  }
+
+  /**
+   * AiAgentCountOutputType without action
+   */
+  export type AiAgentCountOutputTypeCountInsightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiInsightWhereInput
   }
 
 
@@ -5647,6 +5931,37 @@ export namespace Prisma {
    */
   export type DeliveryCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DeliveryLogWhereInput
+  }
+
+
+  /**
+   * Count Type SeoPageCountOutputType
+   */
+
+  export type SeoPageCountOutputType = {
+    analytics: number
+  }
+
+  export type SeoPageCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analytics?: boolean | SeoPageCountOutputTypeCountAnalyticsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SeoPageCountOutputType without action
+   */
+  export type SeoPageCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPageCountOutputType
+     */
+    select?: SeoPageCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SeoPageCountOutputType without action
+   */
+  export type SeoPageCountOutputTypeCountAnalyticsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SeoAnalyticsWhereInput
   }
 
 
@@ -38863,6 +39178,7 @@ export namespace Prisma {
     actions?: boolean | AiAgent$actionsArgs<ExtArgs>
     permissions?: boolean | AiAgent$permissionsArgs<ExtArgs>
     trainingData?: boolean | AiAgent$trainingDataArgs<ExtArgs>
+    insights?: boolean | AiAgent$insightsArgs<ExtArgs>
     _count?: boolean | AiAgentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["aiAgent"]>
 
@@ -38901,6 +39217,7 @@ export namespace Prisma {
     actions?: boolean | AiAgent$actionsArgs<ExtArgs>
     permissions?: boolean | AiAgent$permissionsArgs<ExtArgs>
     trainingData?: boolean | AiAgent$trainingDataArgs<ExtArgs>
+    insights?: boolean | AiAgent$insightsArgs<ExtArgs>
     _count?: boolean | AiAgentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AiAgentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -38912,6 +39229,7 @@ export namespace Prisma {
       actions: Prisma.$AiActionPayload<ExtArgs>[]
       permissions: Prisma.$AiPermissionPayload<ExtArgs> | null
       trainingData: Prisma.$AiTrainingDataPayload<ExtArgs>[]
+      insights: Prisma.$AiInsightPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -39318,6 +39636,7 @@ export namespace Prisma {
     actions<T extends AiAgent$actionsArgs<ExtArgs> = {}>(args?: Subset<T, AiAgent$actionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     permissions<T extends AiAgent$permissionsArgs<ExtArgs> = {}>(args?: Subset<T, AiAgent$permissionsArgs<ExtArgs>>): Prisma__AiPermissionClient<$Result.GetResult<Prisma.$AiPermissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     trainingData<T extends AiAgent$trainingDataArgs<ExtArgs> = {}>(args?: Subset<T, AiAgent$trainingDataArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiTrainingDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    insights<T extends AiAgent$insightsArgs<ExtArgs> = {}>(args?: Subset<T, AiAgent$insightsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -39806,6 +40125,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AiTrainingDataScalarFieldEnum | AiTrainingDataScalarFieldEnum[]
+  }
+
+  /**
+   * AiAgent.insights
+   */
+  export type AiAgent$insightsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    where?: AiInsightWhereInput
+    orderBy?: AiInsightOrderByWithRelationInput | AiInsightOrderByWithRelationInput[]
+    cursor?: AiInsightWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiInsightScalarFieldEnum | AiInsightScalarFieldEnum[]
   }
 
   /**
@@ -53292,6 +53635,3460 @@ export namespace Prisma {
 
 
   /**
+   * Model SeoPage
+   */
+
+  export type AggregateSeoPage = {
+    _count: SeoPageCountAggregateOutputType | null
+    _avg: SeoPageAvgAggregateOutputType | null
+    _sum: SeoPageSumAggregateOutputType | null
+    _min: SeoPageMinAggregateOutputType | null
+    _max: SeoPageMaxAggregateOutputType | null
+  }
+
+  export type SeoPageAvgAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type SeoPageSumAggregateOutputType = {
+    priority: number | null
+  }
+
+  export type SeoPageMinAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    title: string | null
+    description: string | null
+    h1: string | null
+    heroSub: string | null
+    status: string | null
+    priority: number | null
+    category: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SeoPageMaxAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    title: string | null
+    description: string | null
+    h1: string | null
+    heroSub: string | null
+    status: string | null
+    priority: number | null
+    category: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SeoPageCountAggregateOutputType = {
+    id: number
+    slug: number
+    title: number
+    description: number
+    h1: number
+    heroSub: number
+    content: number
+    status: number
+    priority: number
+    category: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SeoPageAvgAggregateInputType = {
+    priority?: true
+  }
+
+  export type SeoPageSumAggregateInputType = {
+    priority?: true
+  }
+
+  export type SeoPageMinAggregateInputType = {
+    id?: true
+    slug?: true
+    title?: true
+    description?: true
+    h1?: true
+    heroSub?: true
+    status?: true
+    priority?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SeoPageMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    title?: true
+    description?: true
+    h1?: true
+    heroSub?: true
+    status?: true
+    priority?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SeoPageCountAggregateInputType = {
+    id?: true
+    slug?: true
+    title?: true
+    description?: true
+    h1?: true
+    heroSub?: true
+    content?: true
+    status?: true
+    priority?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SeoPageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SeoPage to aggregate.
+     */
+    where?: SeoPageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoPages to fetch.
+     */
+    orderBy?: SeoPageOrderByWithRelationInput | SeoPageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SeoPageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoPages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoPages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SeoPages
+    **/
+    _count?: true | SeoPageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SeoPageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SeoPageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SeoPageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SeoPageMaxAggregateInputType
+  }
+
+  export type GetSeoPageAggregateType<T extends SeoPageAggregateArgs> = {
+        [P in keyof T & keyof AggregateSeoPage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSeoPage[P]>
+      : GetScalarType<T[P], AggregateSeoPage[P]>
+  }
+
+
+
+
+  export type SeoPageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SeoPageWhereInput
+    orderBy?: SeoPageOrderByWithAggregationInput | SeoPageOrderByWithAggregationInput[]
+    by: SeoPageScalarFieldEnum[] | SeoPageScalarFieldEnum
+    having?: SeoPageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SeoPageCountAggregateInputType | true
+    _avg?: SeoPageAvgAggregateInputType
+    _sum?: SeoPageSumAggregateInputType
+    _min?: SeoPageMinAggregateInputType
+    _max?: SeoPageMaxAggregateInputType
+  }
+
+  export type SeoPageGroupByOutputType = {
+    id: string
+    slug: string
+    title: string
+    description: string | null
+    h1: string | null
+    heroSub: string | null
+    content: JsonValue
+    status: string
+    priority: number
+    category: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SeoPageCountAggregateOutputType | null
+    _avg: SeoPageAvgAggregateOutputType | null
+    _sum: SeoPageSumAggregateOutputType | null
+    _min: SeoPageMinAggregateOutputType | null
+    _max: SeoPageMaxAggregateOutputType | null
+  }
+
+  type GetSeoPageGroupByPayload<T extends SeoPageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SeoPageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SeoPageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SeoPageGroupByOutputType[P]>
+            : GetScalarType<T[P], SeoPageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SeoPageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    title?: boolean
+    description?: boolean
+    h1?: boolean
+    heroSub?: boolean
+    content?: boolean
+    status?: boolean
+    priority?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    analytics?: boolean | SeoPage$analyticsArgs<ExtArgs>
+    _count?: boolean | SeoPageCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["seoPage"]>
+
+  export type SeoPageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    title?: boolean
+    description?: boolean
+    h1?: boolean
+    heroSub?: boolean
+    content?: boolean
+    status?: boolean
+    priority?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["seoPage"]>
+
+  export type SeoPageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    title?: boolean
+    description?: boolean
+    h1?: boolean
+    heroSub?: boolean
+    content?: boolean
+    status?: boolean
+    priority?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["seoPage"]>
+
+  export type SeoPageSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    title?: boolean
+    description?: boolean
+    h1?: boolean
+    heroSub?: boolean
+    content?: boolean
+    status?: boolean
+    priority?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SeoPageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "description" | "h1" | "heroSub" | "content" | "status" | "priority" | "category" | "createdAt" | "updatedAt", ExtArgs["result"]["seoPage"]>
+  export type SeoPageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    analytics?: boolean | SeoPage$analyticsArgs<ExtArgs>
+    _count?: boolean | SeoPageCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SeoPageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SeoPageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SeoPagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SeoPage"
+    objects: {
+      analytics: Prisma.$SeoAnalyticsPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      slug: string
+      title: string
+      description: string | null
+      h1: string | null
+      heroSub: string | null
+      content: Prisma.JsonValue
+      status: string
+      priority: number
+      category: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["seoPage"]>
+    composites: {}
+  }
+
+  type SeoPageGetPayload<S extends boolean | null | undefined | SeoPageDefaultArgs> = $Result.GetResult<Prisma.$SeoPagePayload, S>
+
+  type SeoPageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SeoPageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SeoPageCountAggregateInputType | true
+    }
+
+  export interface SeoPageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SeoPage'], meta: { name: 'SeoPage' } }
+    /**
+     * Find zero or one SeoPage that matches the filter.
+     * @param {SeoPageFindUniqueArgs} args - Arguments to find a SeoPage
+     * @example
+     * // Get one SeoPage
+     * const seoPage = await prisma.seoPage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SeoPageFindUniqueArgs>(args: SelectSubset<T, SeoPageFindUniqueArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SeoPage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SeoPageFindUniqueOrThrowArgs} args - Arguments to find a SeoPage
+     * @example
+     * // Get one SeoPage
+     * const seoPage = await prisma.seoPage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SeoPageFindUniqueOrThrowArgs>(args: SelectSubset<T, SeoPageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SeoPage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageFindFirstArgs} args - Arguments to find a SeoPage
+     * @example
+     * // Get one SeoPage
+     * const seoPage = await prisma.seoPage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SeoPageFindFirstArgs>(args?: SelectSubset<T, SeoPageFindFirstArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SeoPage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageFindFirstOrThrowArgs} args - Arguments to find a SeoPage
+     * @example
+     * // Get one SeoPage
+     * const seoPage = await prisma.seoPage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SeoPageFindFirstOrThrowArgs>(args?: SelectSubset<T, SeoPageFindFirstOrThrowArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SeoPages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SeoPages
+     * const seoPages = await prisma.seoPage.findMany()
+     * 
+     * // Get first 10 SeoPages
+     * const seoPages = await prisma.seoPage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const seoPageWithIdOnly = await prisma.seoPage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SeoPageFindManyArgs>(args?: SelectSubset<T, SeoPageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SeoPage.
+     * @param {SeoPageCreateArgs} args - Arguments to create a SeoPage.
+     * @example
+     * // Create one SeoPage
+     * const SeoPage = await prisma.seoPage.create({
+     *   data: {
+     *     // ... data to create a SeoPage
+     *   }
+     * })
+     * 
+     */
+    create<T extends SeoPageCreateArgs>(args: SelectSubset<T, SeoPageCreateArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SeoPages.
+     * @param {SeoPageCreateManyArgs} args - Arguments to create many SeoPages.
+     * @example
+     * // Create many SeoPages
+     * const seoPage = await prisma.seoPage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SeoPageCreateManyArgs>(args?: SelectSubset<T, SeoPageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SeoPages and returns the data saved in the database.
+     * @param {SeoPageCreateManyAndReturnArgs} args - Arguments to create many SeoPages.
+     * @example
+     * // Create many SeoPages
+     * const seoPage = await prisma.seoPage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SeoPages and only return the `id`
+     * const seoPageWithIdOnly = await prisma.seoPage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SeoPageCreateManyAndReturnArgs>(args?: SelectSubset<T, SeoPageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SeoPage.
+     * @param {SeoPageDeleteArgs} args - Arguments to delete one SeoPage.
+     * @example
+     * // Delete one SeoPage
+     * const SeoPage = await prisma.seoPage.delete({
+     *   where: {
+     *     // ... filter to delete one SeoPage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SeoPageDeleteArgs>(args: SelectSubset<T, SeoPageDeleteArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SeoPage.
+     * @param {SeoPageUpdateArgs} args - Arguments to update one SeoPage.
+     * @example
+     * // Update one SeoPage
+     * const seoPage = await prisma.seoPage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SeoPageUpdateArgs>(args: SelectSubset<T, SeoPageUpdateArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SeoPages.
+     * @param {SeoPageDeleteManyArgs} args - Arguments to filter SeoPages to delete.
+     * @example
+     * // Delete a few SeoPages
+     * const { count } = await prisma.seoPage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SeoPageDeleteManyArgs>(args?: SelectSubset<T, SeoPageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SeoPages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SeoPages
+     * const seoPage = await prisma.seoPage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SeoPageUpdateManyArgs>(args: SelectSubset<T, SeoPageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SeoPages and returns the data updated in the database.
+     * @param {SeoPageUpdateManyAndReturnArgs} args - Arguments to update many SeoPages.
+     * @example
+     * // Update many SeoPages
+     * const seoPage = await prisma.seoPage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SeoPages and only return the `id`
+     * const seoPageWithIdOnly = await prisma.seoPage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SeoPageUpdateManyAndReturnArgs>(args: SelectSubset<T, SeoPageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SeoPage.
+     * @param {SeoPageUpsertArgs} args - Arguments to update or create a SeoPage.
+     * @example
+     * // Update or create a SeoPage
+     * const seoPage = await prisma.seoPage.upsert({
+     *   create: {
+     *     // ... data to create a SeoPage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SeoPage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SeoPageUpsertArgs>(args: SelectSubset<T, SeoPageUpsertArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SeoPages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageCountArgs} args - Arguments to filter SeoPages to count.
+     * @example
+     * // Count the number of SeoPages
+     * const count = await prisma.seoPage.count({
+     *   where: {
+     *     // ... the filter for the SeoPages we want to count
+     *   }
+     * })
+    **/
+    count<T extends SeoPageCountArgs>(
+      args?: Subset<T, SeoPageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SeoPageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SeoPage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SeoPageAggregateArgs>(args: Subset<T, SeoPageAggregateArgs>): Prisma.PrismaPromise<GetSeoPageAggregateType<T>>
+
+    /**
+     * Group by SeoPage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoPageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SeoPageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SeoPageGroupByArgs['orderBy'] }
+        : { orderBy?: SeoPageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SeoPageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSeoPageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SeoPage model
+   */
+  readonly fields: SeoPageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SeoPage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SeoPageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    analytics<T extends SeoPage$analyticsArgs<ExtArgs> = {}>(args?: Subset<T, SeoPage$analyticsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SeoPage model
+   */
+  interface SeoPageFieldRefs {
+    readonly id: FieldRef<"SeoPage", 'String'>
+    readonly slug: FieldRef<"SeoPage", 'String'>
+    readonly title: FieldRef<"SeoPage", 'String'>
+    readonly description: FieldRef<"SeoPage", 'String'>
+    readonly h1: FieldRef<"SeoPage", 'String'>
+    readonly heroSub: FieldRef<"SeoPage", 'String'>
+    readonly content: FieldRef<"SeoPage", 'Json'>
+    readonly status: FieldRef<"SeoPage", 'String'>
+    readonly priority: FieldRef<"SeoPage", 'Float'>
+    readonly category: FieldRef<"SeoPage", 'String'>
+    readonly createdAt: FieldRef<"SeoPage", 'DateTime'>
+    readonly updatedAt: FieldRef<"SeoPage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SeoPage findUnique
+   */
+  export type SeoPageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoPage to fetch.
+     */
+    where: SeoPageWhereUniqueInput
+  }
+
+  /**
+   * SeoPage findUniqueOrThrow
+   */
+  export type SeoPageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoPage to fetch.
+     */
+    where: SeoPageWhereUniqueInput
+  }
+
+  /**
+   * SeoPage findFirst
+   */
+  export type SeoPageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoPage to fetch.
+     */
+    where?: SeoPageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoPages to fetch.
+     */
+    orderBy?: SeoPageOrderByWithRelationInput | SeoPageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SeoPages.
+     */
+    cursor?: SeoPageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoPages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoPages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SeoPages.
+     */
+    distinct?: SeoPageScalarFieldEnum | SeoPageScalarFieldEnum[]
+  }
+
+  /**
+   * SeoPage findFirstOrThrow
+   */
+  export type SeoPageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoPage to fetch.
+     */
+    where?: SeoPageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoPages to fetch.
+     */
+    orderBy?: SeoPageOrderByWithRelationInput | SeoPageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SeoPages.
+     */
+    cursor?: SeoPageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoPages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoPages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SeoPages.
+     */
+    distinct?: SeoPageScalarFieldEnum | SeoPageScalarFieldEnum[]
+  }
+
+  /**
+   * SeoPage findMany
+   */
+  export type SeoPageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoPages to fetch.
+     */
+    where?: SeoPageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoPages to fetch.
+     */
+    orderBy?: SeoPageOrderByWithRelationInput | SeoPageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SeoPages.
+     */
+    cursor?: SeoPageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoPages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoPages.
+     */
+    skip?: number
+    distinct?: SeoPageScalarFieldEnum | SeoPageScalarFieldEnum[]
+  }
+
+  /**
+   * SeoPage create
+   */
+  export type SeoPageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SeoPage.
+     */
+    data: XOR<SeoPageCreateInput, SeoPageUncheckedCreateInput>
+  }
+
+  /**
+   * SeoPage createMany
+   */
+  export type SeoPageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SeoPages.
+     */
+    data: SeoPageCreateManyInput | SeoPageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SeoPage createManyAndReturn
+   */
+  export type SeoPageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * The data used to create many SeoPages.
+     */
+    data: SeoPageCreateManyInput | SeoPageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SeoPage update
+   */
+  export type SeoPageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SeoPage.
+     */
+    data: XOR<SeoPageUpdateInput, SeoPageUncheckedUpdateInput>
+    /**
+     * Choose, which SeoPage to update.
+     */
+    where: SeoPageWhereUniqueInput
+  }
+
+  /**
+   * SeoPage updateMany
+   */
+  export type SeoPageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SeoPages.
+     */
+    data: XOR<SeoPageUpdateManyMutationInput, SeoPageUncheckedUpdateManyInput>
+    /**
+     * Filter which SeoPages to update
+     */
+    where?: SeoPageWhereInput
+    /**
+     * Limit how many SeoPages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoPage updateManyAndReturn
+   */
+  export type SeoPageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * The data used to update SeoPages.
+     */
+    data: XOR<SeoPageUpdateManyMutationInput, SeoPageUncheckedUpdateManyInput>
+    /**
+     * Filter which SeoPages to update
+     */
+    where?: SeoPageWhereInput
+    /**
+     * Limit how many SeoPages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoPage upsert
+   */
+  export type SeoPageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SeoPage to update in case it exists.
+     */
+    where: SeoPageWhereUniqueInput
+    /**
+     * In case the SeoPage found by the `where` argument doesn't exist, create a new SeoPage with this data.
+     */
+    create: XOR<SeoPageCreateInput, SeoPageUncheckedCreateInput>
+    /**
+     * In case the SeoPage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SeoPageUpdateInput, SeoPageUncheckedUpdateInput>
+  }
+
+  /**
+   * SeoPage delete
+   */
+  export type SeoPageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    /**
+     * Filter which SeoPage to delete.
+     */
+    where: SeoPageWhereUniqueInput
+  }
+
+  /**
+   * SeoPage deleteMany
+   */
+  export type SeoPageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SeoPages to delete
+     */
+    where?: SeoPageWhereInput
+    /**
+     * Limit how many SeoPages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoPage.analytics
+   */
+  export type SeoPage$analyticsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    where?: SeoAnalyticsWhereInput
+    orderBy?: SeoAnalyticsOrderByWithRelationInput | SeoAnalyticsOrderByWithRelationInput[]
+    cursor?: SeoAnalyticsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SeoAnalyticsScalarFieldEnum | SeoAnalyticsScalarFieldEnum[]
+  }
+
+  /**
+   * SeoPage without action
+   */
+  export type SeoPageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SeoAnalytics
+   */
+
+  export type AggregateSeoAnalytics = {
+    _count: SeoAnalyticsCountAggregateOutputType | null
+    _avg: SeoAnalyticsAvgAggregateOutputType | null
+    _sum: SeoAnalyticsSumAggregateOutputType | null
+    _min: SeoAnalyticsMinAggregateOutputType | null
+    _max: SeoAnalyticsMaxAggregateOutputType | null
+  }
+
+  export type SeoAnalyticsAvgAggregateOutputType = {
+    impressions: number | null
+    clicks: number | null
+    views: number | null
+  }
+
+  export type SeoAnalyticsSumAggregateOutputType = {
+    impressions: number | null
+    clicks: number | null
+    views: number | null
+  }
+
+  export type SeoAnalyticsMinAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    pageId: string | null
+    impressions: number | null
+    clicks: number | null
+    views: number | null
+    date: Date | null
+  }
+
+  export type SeoAnalyticsMaxAggregateOutputType = {
+    id: string | null
+    slug: string | null
+    pageId: string | null
+    impressions: number | null
+    clicks: number | null
+    views: number | null
+    date: Date | null
+  }
+
+  export type SeoAnalyticsCountAggregateOutputType = {
+    id: number
+    slug: number
+    pageId: number
+    impressions: number
+    clicks: number
+    views: number
+    date: number
+    _all: number
+  }
+
+
+  export type SeoAnalyticsAvgAggregateInputType = {
+    impressions?: true
+    clicks?: true
+    views?: true
+  }
+
+  export type SeoAnalyticsSumAggregateInputType = {
+    impressions?: true
+    clicks?: true
+    views?: true
+  }
+
+  export type SeoAnalyticsMinAggregateInputType = {
+    id?: true
+    slug?: true
+    pageId?: true
+    impressions?: true
+    clicks?: true
+    views?: true
+    date?: true
+  }
+
+  export type SeoAnalyticsMaxAggregateInputType = {
+    id?: true
+    slug?: true
+    pageId?: true
+    impressions?: true
+    clicks?: true
+    views?: true
+    date?: true
+  }
+
+  export type SeoAnalyticsCountAggregateInputType = {
+    id?: true
+    slug?: true
+    pageId?: true
+    impressions?: true
+    clicks?: true
+    views?: true
+    date?: true
+    _all?: true
+  }
+
+  export type SeoAnalyticsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SeoAnalytics to aggregate.
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoAnalytics to fetch.
+     */
+    orderBy?: SeoAnalyticsOrderByWithRelationInput | SeoAnalyticsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SeoAnalyticsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoAnalytics from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoAnalytics.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SeoAnalytics
+    **/
+    _count?: true | SeoAnalyticsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SeoAnalyticsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SeoAnalyticsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SeoAnalyticsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SeoAnalyticsMaxAggregateInputType
+  }
+
+  export type GetSeoAnalyticsAggregateType<T extends SeoAnalyticsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSeoAnalytics]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSeoAnalytics[P]>
+      : GetScalarType<T[P], AggregateSeoAnalytics[P]>
+  }
+
+
+
+
+  export type SeoAnalyticsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SeoAnalyticsWhereInput
+    orderBy?: SeoAnalyticsOrderByWithAggregationInput | SeoAnalyticsOrderByWithAggregationInput[]
+    by: SeoAnalyticsScalarFieldEnum[] | SeoAnalyticsScalarFieldEnum
+    having?: SeoAnalyticsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SeoAnalyticsCountAggregateInputType | true
+    _avg?: SeoAnalyticsAvgAggregateInputType
+    _sum?: SeoAnalyticsSumAggregateInputType
+    _min?: SeoAnalyticsMinAggregateInputType
+    _max?: SeoAnalyticsMaxAggregateInputType
+  }
+
+  export type SeoAnalyticsGroupByOutputType = {
+    id: string
+    slug: string
+    pageId: string | null
+    impressions: number
+    clicks: number
+    views: number
+    date: Date
+    _count: SeoAnalyticsCountAggregateOutputType | null
+    _avg: SeoAnalyticsAvgAggregateOutputType | null
+    _sum: SeoAnalyticsSumAggregateOutputType | null
+    _min: SeoAnalyticsMinAggregateOutputType | null
+    _max: SeoAnalyticsMaxAggregateOutputType | null
+  }
+
+  type GetSeoAnalyticsGroupByPayload<T extends SeoAnalyticsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SeoAnalyticsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SeoAnalyticsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SeoAnalyticsGroupByOutputType[P]>
+            : GetScalarType<T[P], SeoAnalyticsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SeoAnalyticsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    pageId?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    views?: boolean
+    date?: boolean
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }, ExtArgs["result"]["seoAnalytics"]>
+
+  export type SeoAnalyticsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    pageId?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    views?: boolean
+    date?: boolean
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }, ExtArgs["result"]["seoAnalytics"]>
+
+  export type SeoAnalyticsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    slug?: boolean
+    pageId?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    views?: boolean
+    date?: boolean
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }, ExtArgs["result"]["seoAnalytics"]>
+
+  export type SeoAnalyticsSelectScalar = {
+    id?: boolean
+    slug?: boolean
+    pageId?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    views?: boolean
+    date?: boolean
+  }
+
+  export type SeoAnalyticsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "pageId" | "impressions" | "clicks" | "views" | "date", ExtArgs["result"]["seoAnalytics"]>
+  export type SeoAnalyticsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }
+  export type SeoAnalyticsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }
+  export type SeoAnalyticsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    seoPage?: boolean | SeoAnalytics$seoPageArgs<ExtArgs>
+  }
+
+  export type $SeoAnalyticsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SeoAnalytics"
+    objects: {
+      seoPage: Prisma.$SeoPagePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      slug: string
+      pageId: string | null
+      impressions: number
+      clicks: number
+      views: number
+      date: Date
+    }, ExtArgs["result"]["seoAnalytics"]>
+    composites: {}
+  }
+
+  type SeoAnalyticsGetPayload<S extends boolean | null | undefined | SeoAnalyticsDefaultArgs> = $Result.GetResult<Prisma.$SeoAnalyticsPayload, S>
+
+  type SeoAnalyticsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SeoAnalyticsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SeoAnalyticsCountAggregateInputType | true
+    }
+
+  export interface SeoAnalyticsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SeoAnalytics'], meta: { name: 'SeoAnalytics' } }
+    /**
+     * Find zero or one SeoAnalytics that matches the filter.
+     * @param {SeoAnalyticsFindUniqueArgs} args - Arguments to find a SeoAnalytics
+     * @example
+     * // Get one SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SeoAnalyticsFindUniqueArgs>(args: SelectSubset<T, SeoAnalyticsFindUniqueArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SeoAnalytics that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SeoAnalyticsFindUniqueOrThrowArgs} args - Arguments to find a SeoAnalytics
+     * @example
+     * // Get one SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SeoAnalyticsFindUniqueOrThrowArgs>(args: SelectSubset<T, SeoAnalyticsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SeoAnalytics that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsFindFirstArgs} args - Arguments to find a SeoAnalytics
+     * @example
+     * // Get one SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SeoAnalyticsFindFirstArgs>(args?: SelectSubset<T, SeoAnalyticsFindFirstArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SeoAnalytics that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsFindFirstOrThrowArgs} args - Arguments to find a SeoAnalytics
+     * @example
+     * // Get one SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SeoAnalyticsFindFirstOrThrowArgs>(args?: SelectSubset<T, SeoAnalyticsFindFirstOrThrowArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SeoAnalytics that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findMany()
+     * 
+     * // Get first 10 SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const seoAnalyticsWithIdOnly = await prisma.seoAnalytics.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SeoAnalyticsFindManyArgs>(args?: SelectSubset<T, SeoAnalyticsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SeoAnalytics.
+     * @param {SeoAnalyticsCreateArgs} args - Arguments to create a SeoAnalytics.
+     * @example
+     * // Create one SeoAnalytics
+     * const SeoAnalytics = await prisma.seoAnalytics.create({
+     *   data: {
+     *     // ... data to create a SeoAnalytics
+     *   }
+     * })
+     * 
+     */
+    create<T extends SeoAnalyticsCreateArgs>(args: SelectSubset<T, SeoAnalyticsCreateArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SeoAnalytics.
+     * @param {SeoAnalyticsCreateManyArgs} args - Arguments to create many SeoAnalytics.
+     * @example
+     * // Create many SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SeoAnalyticsCreateManyArgs>(args?: SelectSubset<T, SeoAnalyticsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SeoAnalytics and returns the data saved in the database.
+     * @param {SeoAnalyticsCreateManyAndReturnArgs} args - Arguments to create many SeoAnalytics.
+     * @example
+     * // Create many SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SeoAnalytics and only return the `id`
+     * const seoAnalyticsWithIdOnly = await prisma.seoAnalytics.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SeoAnalyticsCreateManyAndReturnArgs>(args?: SelectSubset<T, SeoAnalyticsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SeoAnalytics.
+     * @param {SeoAnalyticsDeleteArgs} args - Arguments to delete one SeoAnalytics.
+     * @example
+     * // Delete one SeoAnalytics
+     * const SeoAnalytics = await prisma.seoAnalytics.delete({
+     *   where: {
+     *     // ... filter to delete one SeoAnalytics
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SeoAnalyticsDeleteArgs>(args: SelectSubset<T, SeoAnalyticsDeleteArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SeoAnalytics.
+     * @param {SeoAnalyticsUpdateArgs} args - Arguments to update one SeoAnalytics.
+     * @example
+     * // Update one SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SeoAnalyticsUpdateArgs>(args: SelectSubset<T, SeoAnalyticsUpdateArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SeoAnalytics.
+     * @param {SeoAnalyticsDeleteManyArgs} args - Arguments to filter SeoAnalytics to delete.
+     * @example
+     * // Delete a few SeoAnalytics
+     * const { count } = await prisma.seoAnalytics.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SeoAnalyticsDeleteManyArgs>(args?: SelectSubset<T, SeoAnalyticsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SeoAnalytics.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SeoAnalyticsUpdateManyArgs>(args: SelectSubset<T, SeoAnalyticsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SeoAnalytics and returns the data updated in the database.
+     * @param {SeoAnalyticsUpdateManyAndReturnArgs} args - Arguments to update many SeoAnalytics.
+     * @example
+     * // Update many SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SeoAnalytics and only return the `id`
+     * const seoAnalyticsWithIdOnly = await prisma.seoAnalytics.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SeoAnalyticsUpdateManyAndReturnArgs>(args: SelectSubset<T, SeoAnalyticsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SeoAnalytics.
+     * @param {SeoAnalyticsUpsertArgs} args - Arguments to update or create a SeoAnalytics.
+     * @example
+     * // Update or create a SeoAnalytics
+     * const seoAnalytics = await prisma.seoAnalytics.upsert({
+     *   create: {
+     *     // ... data to create a SeoAnalytics
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SeoAnalytics we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SeoAnalyticsUpsertArgs>(args: SelectSubset<T, SeoAnalyticsUpsertArgs<ExtArgs>>): Prisma__SeoAnalyticsClient<$Result.GetResult<Prisma.$SeoAnalyticsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SeoAnalytics.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsCountArgs} args - Arguments to filter SeoAnalytics to count.
+     * @example
+     * // Count the number of SeoAnalytics
+     * const count = await prisma.seoAnalytics.count({
+     *   where: {
+     *     // ... the filter for the SeoAnalytics we want to count
+     *   }
+     * })
+    **/
+    count<T extends SeoAnalyticsCountArgs>(
+      args?: Subset<T, SeoAnalyticsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SeoAnalyticsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SeoAnalytics.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SeoAnalyticsAggregateArgs>(args: Subset<T, SeoAnalyticsAggregateArgs>): Prisma.PrismaPromise<GetSeoAnalyticsAggregateType<T>>
+
+    /**
+     * Group by SeoAnalytics.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SeoAnalyticsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SeoAnalyticsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SeoAnalyticsGroupByArgs['orderBy'] }
+        : { orderBy?: SeoAnalyticsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SeoAnalyticsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSeoAnalyticsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SeoAnalytics model
+   */
+  readonly fields: SeoAnalyticsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SeoAnalytics.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SeoAnalyticsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    seoPage<T extends SeoAnalytics$seoPageArgs<ExtArgs> = {}>(args?: Subset<T, SeoAnalytics$seoPageArgs<ExtArgs>>): Prisma__SeoPageClient<$Result.GetResult<Prisma.$SeoPagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SeoAnalytics model
+   */
+  interface SeoAnalyticsFieldRefs {
+    readonly id: FieldRef<"SeoAnalytics", 'String'>
+    readonly slug: FieldRef<"SeoAnalytics", 'String'>
+    readonly pageId: FieldRef<"SeoAnalytics", 'String'>
+    readonly impressions: FieldRef<"SeoAnalytics", 'Int'>
+    readonly clicks: FieldRef<"SeoAnalytics", 'Int'>
+    readonly views: FieldRef<"SeoAnalytics", 'Int'>
+    readonly date: FieldRef<"SeoAnalytics", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SeoAnalytics findUnique
+   */
+  export type SeoAnalyticsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoAnalytics to fetch.
+     */
+    where: SeoAnalyticsWhereUniqueInput
+  }
+
+  /**
+   * SeoAnalytics findUniqueOrThrow
+   */
+  export type SeoAnalyticsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoAnalytics to fetch.
+     */
+    where: SeoAnalyticsWhereUniqueInput
+  }
+
+  /**
+   * SeoAnalytics findFirst
+   */
+  export type SeoAnalyticsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoAnalytics to fetch.
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoAnalytics to fetch.
+     */
+    orderBy?: SeoAnalyticsOrderByWithRelationInput | SeoAnalyticsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SeoAnalytics.
+     */
+    cursor?: SeoAnalyticsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoAnalytics from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoAnalytics.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SeoAnalytics.
+     */
+    distinct?: SeoAnalyticsScalarFieldEnum | SeoAnalyticsScalarFieldEnum[]
+  }
+
+  /**
+   * SeoAnalytics findFirstOrThrow
+   */
+  export type SeoAnalyticsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoAnalytics to fetch.
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoAnalytics to fetch.
+     */
+    orderBy?: SeoAnalyticsOrderByWithRelationInput | SeoAnalyticsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SeoAnalytics.
+     */
+    cursor?: SeoAnalyticsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoAnalytics from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoAnalytics.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SeoAnalytics.
+     */
+    distinct?: SeoAnalyticsScalarFieldEnum | SeoAnalyticsScalarFieldEnum[]
+  }
+
+  /**
+   * SeoAnalytics findMany
+   */
+  export type SeoAnalyticsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter, which SeoAnalytics to fetch.
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SeoAnalytics to fetch.
+     */
+    orderBy?: SeoAnalyticsOrderByWithRelationInput | SeoAnalyticsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SeoAnalytics.
+     */
+    cursor?: SeoAnalyticsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SeoAnalytics from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SeoAnalytics.
+     */
+    skip?: number
+    distinct?: SeoAnalyticsScalarFieldEnum | SeoAnalyticsScalarFieldEnum[]
+  }
+
+  /**
+   * SeoAnalytics create
+   */
+  export type SeoAnalyticsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SeoAnalytics.
+     */
+    data: XOR<SeoAnalyticsCreateInput, SeoAnalyticsUncheckedCreateInput>
+  }
+
+  /**
+   * SeoAnalytics createMany
+   */
+  export type SeoAnalyticsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SeoAnalytics.
+     */
+    data: SeoAnalyticsCreateManyInput | SeoAnalyticsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SeoAnalytics createManyAndReturn
+   */
+  export type SeoAnalyticsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * The data used to create many SeoAnalytics.
+     */
+    data: SeoAnalyticsCreateManyInput | SeoAnalyticsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SeoAnalytics update
+   */
+  export type SeoAnalyticsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SeoAnalytics.
+     */
+    data: XOR<SeoAnalyticsUpdateInput, SeoAnalyticsUncheckedUpdateInput>
+    /**
+     * Choose, which SeoAnalytics to update.
+     */
+    where: SeoAnalyticsWhereUniqueInput
+  }
+
+  /**
+   * SeoAnalytics updateMany
+   */
+  export type SeoAnalyticsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SeoAnalytics.
+     */
+    data: XOR<SeoAnalyticsUpdateManyMutationInput, SeoAnalyticsUncheckedUpdateManyInput>
+    /**
+     * Filter which SeoAnalytics to update
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * Limit how many SeoAnalytics to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoAnalytics updateManyAndReturn
+   */
+  export type SeoAnalyticsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * The data used to update SeoAnalytics.
+     */
+    data: XOR<SeoAnalyticsUpdateManyMutationInput, SeoAnalyticsUncheckedUpdateManyInput>
+    /**
+     * Filter which SeoAnalytics to update
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * Limit how many SeoAnalytics to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SeoAnalytics upsert
+   */
+  export type SeoAnalyticsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SeoAnalytics to update in case it exists.
+     */
+    where: SeoAnalyticsWhereUniqueInput
+    /**
+     * In case the SeoAnalytics found by the `where` argument doesn't exist, create a new SeoAnalytics with this data.
+     */
+    create: XOR<SeoAnalyticsCreateInput, SeoAnalyticsUncheckedCreateInput>
+    /**
+     * In case the SeoAnalytics was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SeoAnalyticsUpdateInput, SeoAnalyticsUncheckedUpdateInput>
+  }
+
+  /**
+   * SeoAnalytics delete
+   */
+  export type SeoAnalyticsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+    /**
+     * Filter which SeoAnalytics to delete.
+     */
+    where: SeoAnalyticsWhereUniqueInput
+  }
+
+  /**
+   * SeoAnalytics deleteMany
+   */
+  export type SeoAnalyticsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SeoAnalytics to delete
+     */
+    where?: SeoAnalyticsWhereInput
+    /**
+     * Limit how many SeoAnalytics to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SeoAnalytics.seoPage
+   */
+  export type SeoAnalytics$seoPageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoPage
+     */
+    select?: SeoPageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoPage
+     */
+    omit?: SeoPageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoPageInclude<ExtArgs> | null
+    where?: SeoPageWhereInput
+  }
+
+  /**
+   * SeoAnalytics without action
+   */
+  export type SeoAnalyticsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SeoAnalytics
+     */
+    select?: SeoAnalyticsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SeoAnalytics
+     */
+    omit?: SeoAnalyticsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SeoAnalyticsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiInsight
+   */
+
+  export type AggregateAiInsight = {
+    _count: AiInsightCountAggregateOutputType | null
+    _avg: AiInsightAvgAggregateOutputType | null
+    _sum: AiInsightSumAggregateOutputType | null
+    _min: AiInsightMinAggregateOutputType | null
+    _max: AiInsightMaxAggregateOutputType | null
+  }
+
+  export type AiInsightAvgAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiInsightSumAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiInsightMinAggregateOutputType = {
+    id: string | null
+    agentId: string | null
+    topic: string | null
+    insight: string | null
+    confidence: number | null
+    isPublic: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiInsightMaxAggregateOutputType = {
+    id: string | null
+    agentId: string | null
+    topic: string | null
+    insight: string | null
+    confidence: number | null
+    isPublic: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiInsightCountAggregateOutputType = {
+    id: number
+    agentId: number
+    topic: number
+    insight: number
+    confidence: number
+    isPublic: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AiInsightAvgAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiInsightSumAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiInsightMinAggregateInputType = {
+    id?: true
+    agentId?: true
+    topic?: true
+    insight?: true
+    confidence?: true
+    isPublic?: true
+    createdAt?: true
+  }
+
+  export type AiInsightMaxAggregateInputType = {
+    id?: true
+    agentId?: true
+    topic?: true
+    insight?: true
+    confidence?: true
+    isPublic?: true
+    createdAt?: true
+  }
+
+  export type AiInsightCountAggregateInputType = {
+    id?: true
+    agentId?: true
+    topic?: true
+    insight?: true
+    confidence?: true
+    isPublic?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AiInsightAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiInsight to aggregate.
+     */
+    where?: AiInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiInsights to fetch.
+     */
+    orderBy?: AiInsightOrderByWithRelationInput | AiInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiInsights
+    **/
+    _count?: true | AiInsightCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiInsightAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiInsightSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiInsightMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiInsightMaxAggregateInputType
+  }
+
+  export type GetAiInsightAggregateType<T extends AiInsightAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiInsight]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiInsight[P]>
+      : GetScalarType<T[P], AggregateAiInsight[P]>
+  }
+
+
+
+
+  export type AiInsightGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiInsightWhereInput
+    orderBy?: AiInsightOrderByWithAggregationInput | AiInsightOrderByWithAggregationInput[]
+    by: AiInsightScalarFieldEnum[] | AiInsightScalarFieldEnum
+    having?: AiInsightScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiInsightCountAggregateInputType | true
+    _avg?: AiInsightAvgAggregateInputType
+    _sum?: AiInsightSumAggregateInputType
+    _min?: AiInsightMinAggregateInputType
+    _max?: AiInsightMaxAggregateInputType
+  }
+
+  export type AiInsightGroupByOutputType = {
+    id: string
+    agentId: string
+    topic: string
+    insight: string
+    confidence: number
+    isPublic: boolean
+    createdAt: Date
+    _count: AiInsightCountAggregateOutputType | null
+    _avg: AiInsightAvgAggregateOutputType | null
+    _sum: AiInsightSumAggregateOutputType | null
+    _min: AiInsightMinAggregateOutputType | null
+    _max: AiInsightMaxAggregateOutputType | null
+  }
+
+  type GetAiInsightGroupByPayload<T extends AiInsightGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiInsightGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiInsightGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiInsightGroupByOutputType[P]>
+            : GetScalarType<T[P], AiInsightGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiInsightSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    topic?: boolean
+    insight?: boolean
+    confidence?: boolean
+    isPublic?: boolean
+    createdAt?: boolean
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiInsight"]>
+
+  export type AiInsightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    topic?: boolean
+    insight?: boolean
+    confidence?: boolean
+    isPublic?: boolean
+    createdAt?: boolean
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiInsight"]>
+
+  export type AiInsightSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    agentId?: boolean
+    topic?: boolean
+    insight?: boolean
+    confidence?: boolean
+    isPublic?: boolean
+    createdAt?: boolean
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiInsight"]>
+
+  export type AiInsightSelectScalar = {
+    id?: boolean
+    agentId?: boolean
+    topic?: boolean
+    insight?: boolean
+    confidence?: boolean
+    isPublic?: boolean
+    createdAt?: boolean
+  }
+
+  export type AiInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "agentId" | "topic" | "insight" | "confidence" | "isPublic" | "createdAt", ExtArgs["result"]["aiInsight"]>
+  export type AiInsightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }
+  export type AiInsightIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }
+  export type AiInsightIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    agent?: boolean | AiAgentDefaultArgs<ExtArgs>
+  }
+
+  export type $AiInsightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiInsight"
+    objects: {
+      agent: Prisma.$AiAgentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      agentId: string
+      topic: string
+      insight: string
+      confidence: number
+      isPublic: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["aiInsight"]>
+    composites: {}
+  }
+
+  type AiInsightGetPayload<S extends boolean | null | undefined | AiInsightDefaultArgs> = $Result.GetResult<Prisma.$AiInsightPayload, S>
+
+  type AiInsightCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiInsightFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiInsightCountAggregateInputType | true
+    }
+
+  export interface AiInsightDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiInsight'], meta: { name: 'AiInsight' } }
+    /**
+     * Find zero or one AiInsight that matches the filter.
+     * @param {AiInsightFindUniqueArgs} args - Arguments to find a AiInsight
+     * @example
+     * // Get one AiInsight
+     * const aiInsight = await prisma.aiInsight.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiInsightFindUniqueArgs>(args: SelectSubset<T, AiInsightFindUniqueArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiInsight that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiInsightFindUniqueOrThrowArgs} args - Arguments to find a AiInsight
+     * @example
+     * // Get one AiInsight
+     * const aiInsight = await prisma.aiInsight.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiInsightFindUniqueOrThrowArgs>(args: SelectSubset<T, AiInsightFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiInsight that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightFindFirstArgs} args - Arguments to find a AiInsight
+     * @example
+     * // Get one AiInsight
+     * const aiInsight = await prisma.aiInsight.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiInsightFindFirstArgs>(args?: SelectSubset<T, AiInsightFindFirstArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiInsight that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightFindFirstOrThrowArgs} args - Arguments to find a AiInsight
+     * @example
+     * // Get one AiInsight
+     * const aiInsight = await prisma.aiInsight.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiInsightFindFirstOrThrowArgs>(args?: SelectSubset<T, AiInsightFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiInsights that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiInsights
+     * const aiInsights = await prisma.aiInsight.findMany()
+     * 
+     * // Get first 10 AiInsights
+     * const aiInsights = await prisma.aiInsight.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiInsightWithIdOnly = await prisma.aiInsight.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiInsightFindManyArgs>(args?: SelectSubset<T, AiInsightFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiInsight.
+     * @param {AiInsightCreateArgs} args - Arguments to create a AiInsight.
+     * @example
+     * // Create one AiInsight
+     * const AiInsight = await prisma.aiInsight.create({
+     *   data: {
+     *     // ... data to create a AiInsight
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiInsightCreateArgs>(args: SelectSubset<T, AiInsightCreateArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiInsights.
+     * @param {AiInsightCreateManyArgs} args - Arguments to create many AiInsights.
+     * @example
+     * // Create many AiInsights
+     * const aiInsight = await prisma.aiInsight.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiInsightCreateManyArgs>(args?: SelectSubset<T, AiInsightCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiInsights and returns the data saved in the database.
+     * @param {AiInsightCreateManyAndReturnArgs} args - Arguments to create many AiInsights.
+     * @example
+     * // Create many AiInsights
+     * const aiInsight = await prisma.aiInsight.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiInsights and only return the `id`
+     * const aiInsightWithIdOnly = await prisma.aiInsight.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiInsightCreateManyAndReturnArgs>(args?: SelectSubset<T, AiInsightCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiInsight.
+     * @param {AiInsightDeleteArgs} args - Arguments to delete one AiInsight.
+     * @example
+     * // Delete one AiInsight
+     * const AiInsight = await prisma.aiInsight.delete({
+     *   where: {
+     *     // ... filter to delete one AiInsight
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiInsightDeleteArgs>(args: SelectSubset<T, AiInsightDeleteArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiInsight.
+     * @param {AiInsightUpdateArgs} args - Arguments to update one AiInsight.
+     * @example
+     * // Update one AiInsight
+     * const aiInsight = await prisma.aiInsight.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiInsightUpdateArgs>(args: SelectSubset<T, AiInsightUpdateArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiInsights.
+     * @param {AiInsightDeleteManyArgs} args - Arguments to filter AiInsights to delete.
+     * @example
+     * // Delete a few AiInsights
+     * const { count } = await prisma.aiInsight.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiInsightDeleteManyArgs>(args?: SelectSubset<T, AiInsightDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiInsights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiInsights
+     * const aiInsight = await prisma.aiInsight.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiInsightUpdateManyArgs>(args: SelectSubset<T, AiInsightUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiInsights and returns the data updated in the database.
+     * @param {AiInsightUpdateManyAndReturnArgs} args - Arguments to update many AiInsights.
+     * @example
+     * // Update many AiInsights
+     * const aiInsight = await prisma.aiInsight.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiInsights and only return the `id`
+     * const aiInsightWithIdOnly = await prisma.aiInsight.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiInsightUpdateManyAndReturnArgs>(args: SelectSubset<T, AiInsightUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiInsight.
+     * @param {AiInsightUpsertArgs} args - Arguments to update or create a AiInsight.
+     * @example
+     * // Update or create a AiInsight
+     * const aiInsight = await prisma.aiInsight.upsert({
+     *   create: {
+     *     // ... data to create a AiInsight
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiInsight we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiInsightUpsertArgs>(args: SelectSubset<T, AiInsightUpsertArgs<ExtArgs>>): Prisma__AiInsightClient<$Result.GetResult<Prisma.$AiInsightPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiInsights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightCountArgs} args - Arguments to filter AiInsights to count.
+     * @example
+     * // Count the number of AiInsights
+     * const count = await prisma.aiInsight.count({
+     *   where: {
+     *     // ... the filter for the AiInsights we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiInsightCountArgs>(
+      args?: Subset<T, AiInsightCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiInsightCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiInsight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiInsightAggregateArgs>(args: Subset<T, AiInsightAggregateArgs>): Prisma.PrismaPromise<GetAiInsightAggregateType<T>>
+
+    /**
+     * Group by AiInsight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiInsightGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiInsightGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiInsightGroupByArgs['orderBy'] }
+        : { orderBy?: AiInsightGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiInsightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiInsightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiInsight model
+   */
+  readonly fields: AiInsightFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiInsight.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiInsightClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    agent<T extends AiAgentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AiAgentDefaultArgs<ExtArgs>>): Prisma__AiAgentClient<$Result.GetResult<Prisma.$AiAgentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiInsight model
+   */
+  interface AiInsightFieldRefs {
+    readonly id: FieldRef<"AiInsight", 'String'>
+    readonly agentId: FieldRef<"AiInsight", 'String'>
+    readonly topic: FieldRef<"AiInsight", 'String'>
+    readonly insight: FieldRef<"AiInsight", 'String'>
+    readonly confidence: FieldRef<"AiInsight", 'Float'>
+    readonly isPublic: FieldRef<"AiInsight", 'Boolean'>
+    readonly createdAt: FieldRef<"AiInsight", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiInsight findUnique
+   */
+  export type AiInsightFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AiInsight to fetch.
+     */
+    where: AiInsightWhereUniqueInput
+  }
+
+  /**
+   * AiInsight findUniqueOrThrow
+   */
+  export type AiInsightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AiInsight to fetch.
+     */
+    where: AiInsightWhereUniqueInput
+  }
+
+  /**
+   * AiInsight findFirst
+   */
+  export type AiInsightFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AiInsight to fetch.
+     */
+    where?: AiInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiInsights to fetch.
+     */
+    orderBy?: AiInsightOrderByWithRelationInput | AiInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiInsights.
+     */
+    cursor?: AiInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiInsights.
+     */
+    distinct?: AiInsightScalarFieldEnum | AiInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AiInsight findFirstOrThrow
+   */
+  export type AiInsightFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AiInsight to fetch.
+     */
+    where?: AiInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiInsights to fetch.
+     */
+    orderBy?: AiInsightOrderByWithRelationInput | AiInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiInsights.
+     */
+    cursor?: AiInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiInsights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiInsights.
+     */
+    distinct?: AiInsightScalarFieldEnum | AiInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AiInsight findMany
+   */
+  export type AiInsightFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter, which AiInsights to fetch.
+     */
+    where?: AiInsightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiInsights to fetch.
+     */
+    orderBy?: AiInsightOrderByWithRelationInput | AiInsightOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiInsights.
+     */
+    cursor?: AiInsightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiInsights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiInsights.
+     */
+    skip?: number
+    distinct?: AiInsightScalarFieldEnum | AiInsightScalarFieldEnum[]
+  }
+
+  /**
+   * AiInsight create
+   */
+  export type AiInsightCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiInsight.
+     */
+    data: XOR<AiInsightCreateInput, AiInsightUncheckedCreateInput>
+  }
+
+  /**
+   * AiInsight createMany
+   */
+  export type AiInsightCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiInsights.
+     */
+    data: AiInsightCreateManyInput | AiInsightCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiInsight createManyAndReturn
+   */
+  export type AiInsightCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiInsights.
+     */
+    data: AiInsightCreateManyInput | AiInsightCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiInsight update
+   */
+  export type AiInsightUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiInsight.
+     */
+    data: XOR<AiInsightUpdateInput, AiInsightUncheckedUpdateInput>
+    /**
+     * Choose, which AiInsight to update.
+     */
+    where: AiInsightWhereUniqueInput
+  }
+
+  /**
+   * AiInsight updateMany
+   */
+  export type AiInsightUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiInsights.
+     */
+    data: XOR<AiInsightUpdateManyMutationInput, AiInsightUncheckedUpdateManyInput>
+    /**
+     * Filter which AiInsights to update
+     */
+    where?: AiInsightWhereInput
+    /**
+     * Limit how many AiInsights to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiInsight updateManyAndReturn
+   */
+  export type AiInsightUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * The data used to update AiInsights.
+     */
+    data: XOR<AiInsightUpdateManyMutationInput, AiInsightUncheckedUpdateManyInput>
+    /**
+     * Filter which AiInsights to update
+     */
+    where?: AiInsightWhereInput
+    /**
+     * Limit how many AiInsights to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiInsight upsert
+   */
+  export type AiInsightUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiInsight to update in case it exists.
+     */
+    where: AiInsightWhereUniqueInput
+    /**
+     * In case the AiInsight found by the `where` argument doesn't exist, create a new AiInsight with this data.
+     */
+    create: XOR<AiInsightCreateInput, AiInsightUncheckedCreateInput>
+    /**
+     * In case the AiInsight was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiInsightUpdateInput, AiInsightUncheckedUpdateInput>
+  }
+
+  /**
+   * AiInsight delete
+   */
+  export type AiInsightDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+    /**
+     * Filter which AiInsight to delete.
+     */
+    where: AiInsightWhereUniqueInput
+  }
+
+  /**
+   * AiInsight deleteMany
+   */
+  export type AiInsightDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiInsights to delete
+     */
+    where?: AiInsightWhereInput
+    /**
+     * Limit how many AiInsights to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiInsight without action
+   */
+  export type AiInsightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiInsight
+     */
+    select?: AiInsightSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiInsight
+     */
+    omit?: AiInsightOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiInsightInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model OrderItem
    */
 
@@ -56311,6 +60108,50 @@ export namespace Prisma {
   export type EmailAuditScalarFieldEnum = (typeof EmailAuditScalarFieldEnum)[keyof typeof EmailAuditScalarFieldEnum]
 
 
+  export const SeoPageScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    title: 'title',
+    description: 'description',
+    h1: 'h1',
+    heroSub: 'heroSub',
+    content: 'content',
+    status: 'status',
+    priority: 'priority',
+    category: 'category',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SeoPageScalarFieldEnum = (typeof SeoPageScalarFieldEnum)[keyof typeof SeoPageScalarFieldEnum]
+
+
+  export const SeoAnalyticsScalarFieldEnum: {
+    id: 'id',
+    slug: 'slug',
+    pageId: 'pageId',
+    impressions: 'impressions',
+    clicks: 'clicks',
+    views: 'views',
+    date: 'date'
+  };
+
+  export type SeoAnalyticsScalarFieldEnum = (typeof SeoAnalyticsScalarFieldEnum)[keyof typeof SeoAnalyticsScalarFieldEnum]
+
+
+  export const AiInsightScalarFieldEnum: {
+    id: 'id',
+    agentId: 'agentId',
+    topic: 'topic',
+    insight: 'insight',
+    confidence: 'confidence',
+    isPublic: 'isPublic',
+    createdAt: 'createdAt'
+  };
+
+  export type AiInsightScalarFieldEnum = (typeof AiInsightScalarFieldEnum)[keyof typeof AiInsightScalarFieldEnum]
+
+
   export const OrderItemScalarFieldEnum: {
     id: 'id',
     orderId: 'orderId',
@@ -59054,6 +62895,7 @@ export namespace Prisma {
     actions?: AiActionListRelationFilter
     permissions?: XOR<AiPermissionNullableScalarRelationFilter, AiPermissionWhereInput> | null
     trainingData?: AiTrainingDataListRelationFilter
+    insights?: AiInsightListRelationFilter
   }
 
   export type AiAgentOrderByWithRelationInput = {
@@ -59067,6 +62909,7 @@ export namespace Prisma {
     actions?: AiActionOrderByRelationAggregateInput
     permissions?: AiPermissionOrderByWithRelationInput
     trainingData?: AiTrainingDataOrderByRelationAggregateInput
+    insights?: AiInsightOrderByRelationAggregateInput
   }
 
   export type AiAgentWhereUniqueInput = Prisma.AtLeast<{
@@ -59083,6 +62926,7 @@ export namespace Prisma {
     actions?: AiActionListRelationFilter
     permissions?: XOR<AiPermissionNullableScalarRelationFilter, AiPermissionWhereInput> | null
     trainingData?: AiTrainingDataListRelationFilter
+    insights?: AiInsightListRelationFilter
   }, "id" | "systemName">
 
   export type AiAgentOrderByWithAggregationInput = {
@@ -60018,6 +63862,233 @@ export namespace Prisma {
     invoiceId?: UuidNullableWithAggregatesFilter<"EmailAudit"> | string | null
     status?: StringNullableWithAggregatesFilter<"EmailAudit"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"EmailAudit"> | Date | string
+  }
+
+  export type SeoPageWhereInput = {
+    AND?: SeoPageWhereInput | SeoPageWhereInput[]
+    OR?: SeoPageWhereInput[]
+    NOT?: SeoPageWhereInput | SeoPageWhereInput[]
+    id?: UuidFilter<"SeoPage"> | string
+    slug?: StringFilter<"SeoPage"> | string
+    title?: StringFilter<"SeoPage"> | string
+    description?: StringNullableFilter<"SeoPage"> | string | null
+    h1?: StringNullableFilter<"SeoPage"> | string | null
+    heroSub?: StringNullableFilter<"SeoPage"> | string | null
+    content?: JsonFilter<"SeoPage">
+    status?: StringFilter<"SeoPage"> | string
+    priority?: FloatFilter<"SeoPage"> | number
+    category?: StringNullableFilter<"SeoPage"> | string | null
+    createdAt?: DateTimeFilter<"SeoPage"> | Date | string
+    updatedAt?: DateTimeFilter<"SeoPage"> | Date | string
+    analytics?: SeoAnalyticsListRelationFilter
+  }
+
+  export type SeoPageOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    h1?: SortOrderInput | SortOrder
+    heroSub?: SortOrderInput | SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    category?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    analytics?: SeoAnalyticsOrderByRelationAggregateInput
+  }
+
+  export type SeoPageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: SeoPageWhereInput | SeoPageWhereInput[]
+    OR?: SeoPageWhereInput[]
+    NOT?: SeoPageWhereInput | SeoPageWhereInput[]
+    title?: StringFilter<"SeoPage"> | string
+    description?: StringNullableFilter<"SeoPage"> | string | null
+    h1?: StringNullableFilter<"SeoPage"> | string | null
+    heroSub?: StringNullableFilter<"SeoPage"> | string | null
+    content?: JsonFilter<"SeoPage">
+    status?: StringFilter<"SeoPage"> | string
+    priority?: FloatFilter<"SeoPage"> | number
+    category?: StringNullableFilter<"SeoPage"> | string | null
+    createdAt?: DateTimeFilter<"SeoPage"> | Date | string
+    updatedAt?: DateTimeFilter<"SeoPage"> | Date | string
+    analytics?: SeoAnalyticsListRelationFilter
+  }, "id" | "slug">
+
+  export type SeoPageOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    h1?: SortOrderInput | SortOrder
+    heroSub?: SortOrderInput | SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    category?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SeoPageCountOrderByAggregateInput
+    _avg?: SeoPageAvgOrderByAggregateInput
+    _max?: SeoPageMaxOrderByAggregateInput
+    _min?: SeoPageMinOrderByAggregateInput
+    _sum?: SeoPageSumOrderByAggregateInput
+  }
+
+  export type SeoPageScalarWhereWithAggregatesInput = {
+    AND?: SeoPageScalarWhereWithAggregatesInput | SeoPageScalarWhereWithAggregatesInput[]
+    OR?: SeoPageScalarWhereWithAggregatesInput[]
+    NOT?: SeoPageScalarWhereWithAggregatesInput | SeoPageScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"SeoPage"> | string
+    slug?: StringWithAggregatesFilter<"SeoPage"> | string
+    title?: StringWithAggregatesFilter<"SeoPage"> | string
+    description?: StringNullableWithAggregatesFilter<"SeoPage"> | string | null
+    h1?: StringNullableWithAggregatesFilter<"SeoPage"> | string | null
+    heroSub?: StringNullableWithAggregatesFilter<"SeoPage"> | string | null
+    content?: JsonWithAggregatesFilter<"SeoPage">
+    status?: StringWithAggregatesFilter<"SeoPage"> | string
+    priority?: FloatWithAggregatesFilter<"SeoPage"> | number
+    category?: StringNullableWithAggregatesFilter<"SeoPage"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SeoPage"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SeoPage"> | Date | string
+  }
+
+  export type SeoAnalyticsWhereInput = {
+    AND?: SeoAnalyticsWhereInput | SeoAnalyticsWhereInput[]
+    OR?: SeoAnalyticsWhereInput[]
+    NOT?: SeoAnalyticsWhereInput | SeoAnalyticsWhereInput[]
+    id?: UuidFilter<"SeoAnalytics"> | string
+    slug?: StringFilter<"SeoAnalytics"> | string
+    pageId?: UuidNullableFilter<"SeoAnalytics"> | string | null
+    impressions?: IntFilter<"SeoAnalytics"> | number
+    clicks?: IntFilter<"SeoAnalytics"> | number
+    views?: IntFilter<"SeoAnalytics"> | number
+    date?: DateTimeFilter<"SeoAnalytics"> | Date | string
+    seoPage?: XOR<SeoPageNullableScalarRelationFilter, SeoPageWhereInput> | null
+  }
+
+  export type SeoAnalyticsOrderByWithRelationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    pageId?: SortOrderInput | SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+    date?: SortOrder
+    seoPage?: SeoPageOrderByWithRelationInput
+  }
+
+  export type SeoAnalyticsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug_date?: SeoAnalyticsSlugDateCompoundUniqueInput
+    AND?: SeoAnalyticsWhereInput | SeoAnalyticsWhereInput[]
+    OR?: SeoAnalyticsWhereInput[]
+    NOT?: SeoAnalyticsWhereInput | SeoAnalyticsWhereInput[]
+    slug?: StringFilter<"SeoAnalytics"> | string
+    pageId?: UuidNullableFilter<"SeoAnalytics"> | string | null
+    impressions?: IntFilter<"SeoAnalytics"> | number
+    clicks?: IntFilter<"SeoAnalytics"> | number
+    views?: IntFilter<"SeoAnalytics"> | number
+    date?: DateTimeFilter<"SeoAnalytics"> | Date | string
+    seoPage?: XOR<SeoPageNullableScalarRelationFilter, SeoPageWhereInput> | null
+  }, "id" | "slug_date">
+
+  export type SeoAnalyticsOrderByWithAggregationInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    pageId?: SortOrderInput | SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+    date?: SortOrder
+    _count?: SeoAnalyticsCountOrderByAggregateInput
+    _avg?: SeoAnalyticsAvgOrderByAggregateInput
+    _max?: SeoAnalyticsMaxOrderByAggregateInput
+    _min?: SeoAnalyticsMinOrderByAggregateInput
+    _sum?: SeoAnalyticsSumOrderByAggregateInput
+  }
+
+  export type SeoAnalyticsScalarWhereWithAggregatesInput = {
+    AND?: SeoAnalyticsScalarWhereWithAggregatesInput | SeoAnalyticsScalarWhereWithAggregatesInput[]
+    OR?: SeoAnalyticsScalarWhereWithAggregatesInput[]
+    NOT?: SeoAnalyticsScalarWhereWithAggregatesInput | SeoAnalyticsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"SeoAnalytics"> | string
+    slug?: StringWithAggregatesFilter<"SeoAnalytics"> | string
+    pageId?: UuidNullableWithAggregatesFilter<"SeoAnalytics"> | string | null
+    impressions?: IntWithAggregatesFilter<"SeoAnalytics"> | number
+    clicks?: IntWithAggregatesFilter<"SeoAnalytics"> | number
+    views?: IntWithAggregatesFilter<"SeoAnalytics"> | number
+    date?: DateTimeWithAggregatesFilter<"SeoAnalytics"> | Date | string
+  }
+
+  export type AiInsightWhereInput = {
+    AND?: AiInsightWhereInput | AiInsightWhereInput[]
+    OR?: AiInsightWhereInput[]
+    NOT?: AiInsightWhereInput | AiInsightWhereInput[]
+    id?: UuidFilter<"AiInsight"> | string
+    agentId?: UuidFilter<"AiInsight"> | string
+    topic?: StringFilter<"AiInsight"> | string
+    insight?: StringFilter<"AiInsight"> | string
+    confidence?: FloatFilter<"AiInsight"> | number
+    isPublic?: BoolFilter<"AiInsight"> | boolean
+    createdAt?: DateTimeFilter<"AiInsight"> | Date | string
+    agent?: XOR<AiAgentScalarRelationFilter, AiAgentWhereInput>
+  }
+
+  export type AiInsightOrderByWithRelationInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    topic?: SortOrder
+    insight?: SortOrder
+    confidence?: SortOrder
+    isPublic?: SortOrder
+    createdAt?: SortOrder
+    agent?: AiAgentOrderByWithRelationInput
+  }
+
+  export type AiInsightWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiInsightWhereInput | AiInsightWhereInput[]
+    OR?: AiInsightWhereInput[]
+    NOT?: AiInsightWhereInput | AiInsightWhereInput[]
+    agentId?: UuidFilter<"AiInsight"> | string
+    topic?: StringFilter<"AiInsight"> | string
+    insight?: StringFilter<"AiInsight"> | string
+    confidence?: FloatFilter<"AiInsight"> | number
+    isPublic?: BoolFilter<"AiInsight"> | boolean
+    createdAt?: DateTimeFilter<"AiInsight"> | Date | string
+    agent?: XOR<AiAgentScalarRelationFilter, AiAgentWhereInput>
+  }, "id">
+
+  export type AiInsightOrderByWithAggregationInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    topic?: SortOrder
+    insight?: SortOrder
+    confidence?: SortOrder
+    isPublic?: SortOrder
+    createdAt?: SortOrder
+    _count?: AiInsightCountOrderByAggregateInput
+    _avg?: AiInsightAvgOrderByAggregateInput
+    _max?: AiInsightMaxOrderByAggregateInput
+    _min?: AiInsightMinOrderByAggregateInput
+    _sum?: AiInsightSumOrderByAggregateInput
+  }
+
+  export type AiInsightScalarWhereWithAggregatesInput = {
+    AND?: AiInsightScalarWhereWithAggregatesInput | AiInsightScalarWhereWithAggregatesInput[]
+    OR?: AiInsightScalarWhereWithAggregatesInput[]
+    NOT?: AiInsightScalarWhereWithAggregatesInput | AiInsightScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"AiInsight"> | string
+    agentId?: UuidWithAggregatesFilter<"AiInsight"> | string
+    topic?: StringWithAggregatesFilter<"AiInsight"> | string
+    insight?: StringWithAggregatesFilter<"AiInsight"> | string
+    confidence?: FloatWithAggregatesFilter<"AiInsight"> | number
+    isPublic?: BoolWithAggregatesFilter<"AiInsight"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiInsight"> | Date | string
   }
 
   export type OrderItemWhereInput = {
@@ -62779,6 +66850,7 @@ export namespace Prisma {
     actions?: AiActionCreateNestedManyWithoutAgentInput
     permissions?: AiPermissionCreateNestedOneWithoutAgentInput
     trainingData?: AiTrainingDataCreateNestedManyWithoutAgentInput
+    insights?: AiInsightCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentUncheckedCreateInput = {
@@ -62792,6 +66864,7 @@ export namespace Prisma {
     actions?: AiActionUncheckedCreateNestedManyWithoutAgentInput
     permissions?: AiPermissionUncheckedCreateNestedOneWithoutAgentInput
     trainingData?: AiTrainingDataUncheckedCreateNestedManyWithoutAgentInput
+    insights?: AiInsightUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentUpdateInput = {
@@ -62805,6 +66878,7 @@ export namespace Prisma {
     actions?: AiActionUpdateManyWithoutAgentNestedInput
     permissions?: AiPermissionUpdateOneWithoutAgentNestedInput
     trainingData?: AiTrainingDataUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentUncheckedUpdateInput = {
@@ -62818,6 +66892,7 @@ export namespace Prisma {
     actions?: AiActionUncheckedUpdateManyWithoutAgentNestedInput
     permissions?: AiPermissionUncheckedUpdateOneWithoutAgentNestedInput
     trainingData?: AiTrainingDataUncheckedUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentCreateManyInput = {
@@ -63828,6 +67903,253 @@ export namespace Prisma {
     body?: NullableStringFieldUpdateOperationsInput | string | null
     invoiceId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoPageCreateInput = {
+    id?: string
+    slug: string
+    title: string
+    description?: string | null
+    h1?: string | null
+    heroSub?: string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: string
+    priority?: number
+    category?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    analytics?: SeoAnalyticsCreateNestedManyWithoutSeoPageInput
+  }
+
+  export type SeoPageUncheckedCreateInput = {
+    id?: string
+    slug: string
+    title: string
+    description?: string | null
+    h1?: string | null
+    heroSub?: string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: string
+    priority?: number
+    category?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    analytics?: SeoAnalyticsUncheckedCreateNestedManyWithoutSeoPageInput
+  }
+
+  export type SeoPageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    analytics?: SeoAnalyticsUpdateManyWithoutSeoPageNestedInput
+  }
+
+  export type SeoPageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    analytics?: SeoAnalyticsUncheckedUpdateManyWithoutSeoPageNestedInput
+  }
+
+  export type SeoPageCreateManyInput = {
+    id?: string
+    slug: string
+    title: string
+    description?: string | null
+    h1?: string | null
+    heroSub?: string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: string
+    priority?: number
+    category?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SeoPageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoPageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsCreateInput = {
+    id?: string
+    slug: string
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+    seoPage?: SeoPageCreateNestedOneWithoutAnalyticsInput
+  }
+
+  export type SeoAnalyticsUncheckedCreateInput = {
+    id?: string
+    slug: string
+    pageId?: string | null
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+  }
+
+  export type SeoAnalyticsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    seoPage?: SeoPageUpdateOneWithoutAnalyticsNestedInput
+  }
+
+  export type SeoAnalyticsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    pageId?: NullableStringFieldUpdateOperationsInput | string | null
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsCreateManyInput = {
+    id?: string
+    slug: string
+    pageId?: string | null
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+  }
+
+  export type SeoAnalyticsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    pageId?: NullableStringFieldUpdateOperationsInput | string | null
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightCreateInput = {
+    id?: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+    agent: AiAgentCreateNestedOneWithoutInsightsInput
+  }
+
+  export type AiInsightUncheckedCreateInput = {
+    id?: string
+    agentId: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiInsightUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    agent?: AiAgentUpdateOneRequiredWithoutInsightsNestedInput
+  }
+
+  export type AiInsightUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightCreateManyInput = {
+    id?: string
+    agentId: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiInsightUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agentId?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -66131,7 +70453,17 @@ export namespace Prisma {
     none?: AiTrainingDataWhereInput
   }
 
+  export type AiInsightListRelationFilter = {
+    every?: AiInsightWhereInput
+    some?: AiInsightWhereInput
+    none?: AiInsightWhereInput
+  }
+
   export type AiTrainingDataOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiInsightOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -66769,6 +71101,184 @@ export namespace Prisma {
     invoiceId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type SeoAnalyticsListRelationFilter = {
+    every?: SeoAnalyticsWhereInput
+    some?: SeoAnalyticsWhereInput
+    none?: SeoAnalyticsWhereInput
+  }
+
+  export type SeoAnalyticsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SeoPageCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    h1?: SortOrder
+    heroSub?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SeoPageAvgOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type SeoPageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    h1?: SortOrder
+    heroSub?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SeoPageMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    h1?: SortOrder
+    heroSub?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SeoPageSumOrderByAggregateInput = {
+    priority?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type SeoPageNullableScalarRelationFilter = {
+    is?: SeoPageWhereInput | null
+    isNot?: SeoPageWhereInput | null
+  }
+
+  export type SeoAnalyticsSlugDateCompoundUniqueInput = {
+    slug: string
+    date: Date | string
+  }
+
+  export type SeoAnalyticsCountOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    pageId?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+    date?: SortOrder
+  }
+
+  export type SeoAnalyticsAvgOrderByAggregateInput = {
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+  }
+
+  export type SeoAnalyticsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    pageId?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+    date?: SortOrder
+  }
+
+  export type SeoAnalyticsMinOrderByAggregateInput = {
+    id?: SortOrder
+    slug?: SortOrder
+    pageId?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+    date?: SortOrder
+  }
+
+  export type SeoAnalyticsSumOrderByAggregateInput = {
+    impressions?: SortOrder
+    clicks?: SortOrder
+    views?: SortOrder
+  }
+
+  export type AiInsightCountOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    topic?: SortOrder
+    insight?: SortOrder
+    confidence?: SortOrder
+    isPublic?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiInsightAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type AiInsightMaxOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    topic?: SortOrder
+    insight?: SortOrder
+    confidence?: SortOrder
+    isPublic?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiInsightMinOrderByAggregateInput = {
+    id?: SortOrder
+    agentId?: SortOrder
+    topic?: SortOrder
+    insight?: SortOrder
+    confidence?: SortOrder
+    isPublic?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiInsightSumOrderByAggregateInput = {
+    confidence?: SortOrder
   }
 
   export type ProductNullableScalarRelationFilter = {
@@ -69468,6 +73978,13 @@ export namespace Prisma {
     connect?: AiTrainingDataWhereUniqueInput | AiTrainingDataWhereUniqueInput[]
   }
 
+  export type AiInsightCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput> | AiInsightCreateWithoutAgentInput[] | AiInsightUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AiInsightCreateOrConnectWithoutAgentInput | AiInsightCreateOrConnectWithoutAgentInput[]
+    createMany?: AiInsightCreateManyAgentInputEnvelope
+    connect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+  }
+
   export type AiActionUncheckedCreateNestedManyWithoutAgentInput = {
     create?: XOR<AiActionCreateWithoutAgentInput, AiActionUncheckedCreateWithoutAgentInput> | AiActionCreateWithoutAgentInput[] | AiActionUncheckedCreateWithoutAgentInput[]
     connectOrCreate?: AiActionCreateOrConnectWithoutAgentInput | AiActionCreateOrConnectWithoutAgentInput[]
@@ -69486,6 +74003,13 @@ export namespace Prisma {
     connectOrCreate?: AiTrainingDataCreateOrConnectWithoutAgentInput | AiTrainingDataCreateOrConnectWithoutAgentInput[]
     createMany?: AiTrainingDataCreateManyAgentInputEnvelope
     connect?: AiTrainingDataWhereUniqueInput | AiTrainingDataWhereUniqueInput[]
+  }
+
+  export type AiInsightUncheckedCreateNestedManyWithoutAgentInput = {
+    create?: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput> | AiInsightCreateWithoutAgentInput[] | AiInsightUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AiInsightCreateOrConnectWithoutAgentInput | AiInsightCreateOrConnectWithoutAgentInput[]
+    createMany?: AiInsightCreateManyAgentInputEnvelope
+    connect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
   }
 
   export type EnumAiAgentSystemNameFieldUpdateOperationsInput = {
@@ -69530,6 +74054,20 @@ export namespace Prisma {
     deleteMany?: AiTrainingDataScalarWhereInput | AiTrainingDataScalarWhereInput[]
   }
 
+  export type AiInsightUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput> | AiInsightCreateWithoutAgentInput[] | AiInsightUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AiInsightCreateOrConnectWithoutAgentInput | AiInsightCreateOrConnectWithoutAgentInput[]
+    upsert?: AiInsightUpsertWithWhereUniqueWithoutAgentInput | AiInsightUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AiInsightCreateManyAgentInputEnvelope
+    set?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    disconnect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    delete?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    connect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    update?: AiInsightUpdateWithWhereUniqueWithoutAgentInput | AiInsightUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AiInsightUpdateManyWithWhereWithoutAgentInput | AiInsightUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AiInsightScalarWhereInput | AiInsightScalarWhereInput[]
+  }
+
   export type AiActionUncheckedUpdateManyWithoutAgentNestedInput = {
     create?: XOR<AiActionCreateWithoutAgentInput, AiActionUncheckedCreateWithoutAgentInput> | AiActionCreateWithoutAgentInput[] | AiActionUncheckedCreateWithoutAgentInput[]
     connectOrCreate?: AiActionCreateOrConnectWithoutAgentInput | AiActionCreateOrConnectWithoutAgentInput[]
@@ -69566,6 +74104,20 @@ export namespace Prisma {
     update?: AiTrainingDataUpdateWithWhereUniqueWithoutAgentInput | AiTrainingDataUpdateWithWhereUniqueWithoutAgentInput[]
     updateMany?: AiTrainingDataUpdateManyWithWhereWithoutAgentInput | AiTrainingDataUpdateManyWithWhereWithoutAgentInput[]
     deleteMany?: AiTrainingDataScalarWhereInput | AiTrainingDataScalarWhereInput[]
+  }
+
+  export type AiInsightUncheckedUpdateManyWithoutAgentNestedInput = {
+    create?: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput> | AiInsightCreateWithoutAgentInput[] | AiInsightUncheckedCreateWithoutAgentInput[]
+    connectOrCreate?: AiInsightCreateOrConnectWithoutAgentInput | AiInsightCreateOrConnectWithoutAgentInput[]
+    upsert?: AiInsightUpsertWithWhereUniqueWithoutAgentInput | AiInsightUpsertWithWhereUniqueWithoutAgentInput[]
+    createMany?: AiInsightCreateManyAgentInputEnvelope
+    set?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    disconnect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    delete?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    connect?: AiInsightWhereUniqueInput | AiInsightWhereUniqueInput[]
+    update?: AiInsightUpdateWithWhereUniqueWithoutAgentInput | AiInsightUpdateWithWhereUniqueWithoutAgentInput[]
+    updateMany?: AiInsightUpdateManyWithWhereWithoutAgentInput | AiInsightUpdateManyWithWhereWithoutAgentInput[]
+    deleteMany?: AiInsightScalarWhereInput | AiInsightScalarWhereInput[]
   }
 
   export type AiAgentCreateNestedOneWithoutPermissionsInput = {
@@ -69991,6 +74543,86 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutItemRequestsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemRequestsInput, UserUpdateWithoutItemRequestsInput>, UserUncheckedUpdateWithoutItemRequestsInput>
+  }
+
+  export type SeoAnalyticsCreateNestedManyWithoutSeoPageInput = {
+    create?: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput> | SeoAnalyticsCreateWithoutSeoPageInput[] | SeoAnalyticsUncheckedCreateWithoutSeoPageInput[]
+    connectOrCreate?: SeoAnalyticsCreateOrConnectWithoutSeoPageInput | SeoAnalyticsCreateOrConnectWithoutSeoPageInput[]
+    createMany?: SeoAnalyticsCreateManySeoPageInputEnvelope
+    connect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+  }
+
+  export type SeoAnalyticsUncheckedCreateNestedManyWithoutSeoPageInput = {
+    create?: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput> | SeoAnalyticsCreateWithoutSeoPageInput[] | SeoAnalyticsUncheckedCreateWithoutSeoPageInput[]
+    connectOrCreate?: SeoAnalyticsCreateOrConnectWithoutSeoPageInput | SeoAnalyticsCreateOrConnectWithoutSeoPageInput[]
+    createMany?: SeoAnalyticsCreateManySeoPageInputEnvelope
+    connect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type SeoAnalyticsUpdateManyWithoutSeoPageNestedInput = {
+    create?: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput> | SeoAnalyticsCreateWithoutSeoPageInput[] | SeoAnalyticsUncheckedCreateWithoutSeoPageInput[]
+    connectOrCreate?: SeoAnalyticsCreateOrConnectWithoutSeoPageInput | SeoAnalyticsCreateOrConnectWithoutSeoPageInput[]
+    upsert?: SeoAnalyticsUpsertWithWhereUniqueWithoutSeoPageInput | SeoAnalyticsUpsertWithWhereUniqueWithoutSeoPageInput[]
+    createMany?: SeoAnalyticsCreateManySeoPageInputEnvelope
+    set?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    disconnect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    delete?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    connect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    update?: SeoAnalyticsUpdateWithWhereUniqueWithoutSeoPageInput | SeoAnalyticsUpdateWithWhereUniqueWithoutSeoPageInput[]
+    updateMany?: SeoAnalyticsUpdateManyWithWhereWithoutSeoPageInput | SeoAnalyticsUpdateManyWithWhereWithoutSeoPageInput[]
+    deleteMany?: SeoAnalyticsScalarWhereInput | SeoAnalyticsScalarWhereInput[]
+  }
+
+  export type SeoAnalyticsUncheckedUpdateManyWithoutSeoPageNestedInput = {
+    create?: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput> | SeoAnalyticsCreateWithoutSeoPageInput[] | SeoAnalyticsUncheckedCreateWithoutSeoPageInput[]
+    connectOrCreate?: SeoAnalyticsCreateOrConnectWithoutSeoPageInput | SeoAnalyticsCreateOrConnectWithoutSeoPageInput[]
+    upsert?: SeoAnalyticsUpsertWithWhereUniqueWithoutSeoPageInput | SeoAnalyticsUpsertWithWhereUniqueWithoutSeoPageInput[]
+    createMany?: SeoAnalyticsCreateManySeoPageInputEnvelope
+    set?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    disconnect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    delete?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    connect?: SeoAnalyticsWhereUniqueInput | SeoAnalyticsWhereUniqueInput[]
+    update?: SeoAnalyticsUpdateWithWhereUniqueWithoutSeoPageInput | SeoAnalyticsUpdateWithWhereUniqueWithoutSeoPageInput[]
+    updateMany?: SeoAnalyticsUpdateManyWithWhereWithoutSeoPageInput | SeoAnalyticsUpdateManyWithWhereWithoutSeoPageInput[]
+    deleteMany?: SeoAnalyticsScalarWhereInput | SeoAnalyticsScalarWhereInput[]
+  }
+
+  export type SeoPageCreateNestedOneWithoutAnalyticsInput = {
+    create?: XOR<SeoPageCreateWithoutAnalyticsInput, SeoPageUncheckedCreateWithoutAnalyticsInput>
+    connectOrCreate?: SeoPageCreateOrConnectWithoutAnalyticsInput
+    connect?: SeoPageWhereUniqueInput
+  }
+
+  export type SeoPageUpdateOneWithoutAnalyticsNestedInput = {
+    create?: XOR<SeoPageCreateWithoutAnalyticsInput, SeoPageUncheckedCreateWithoutAnalyticsInput>
+    connectOrCreate?: SeoPageCreateOrConnectWithoutAnalyticsInput
+    upsert?: SeoPageUpsertWithoutAnalyticsInput
+    disconnect?: SeoPageWhereInput | boolean
+    delete?: SeoPageWhereInput | boolean
+    connect?: SeoPageWhereUniqueInput
+    update?: XOR<XOR<SeoPageUpdateToOneWithWhereWithoutAnalyticsInput, SeoPageUpdateWithoutAnalyticsInput>, SeoPageUncheckedUpdateWithoutAnalyticsInput>
+  }
+
+  export type AiAgentCreateNestedOneWithoutInsightsInput = {
+    create?: XOR<AiAgentCreateWithoutInsightsInput, AiAgentUncheckedCreateWithoutInsightsInput>
+    connectOrCreate?: AiAgentCreateOrConnectWithoutInsightsInput
+    connect?: AiAgentWhereUniqueInput
+  }
+
+  export type AiAgentUpdateOneRequiredWithoutInsightsNestedInput = {
+    create?: XOR<AiAgentCreateWithoutInsightsInput, AiAgentUncheckedCreateWithoutInsightsInput>
+    connectOrCreate?: AiAgentCreateOrConnectWithoutInsightsInput
+    upsert?: AiAgentUpsertWithoutInsightsInput
+    connect?: AiAgentWhereUniqueInput
+    update?: XOR<XOR<AiAgentUpdateToOneWithWhereWithoutInsightsInput, AiAgentUpdateWithoutInsightsInput>, AiAgentUncheckedUpdateWithoutInsightsInput>
   }
 
   export type OrderCreateNestedOneWithoutOrderItemsInput = {
@@ -70670,6 +75302,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDeliveryRoleFilter<$PrismaModel>
     _max?: NestedEnumDeliveryRoleFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type DeliveryCreateWithoutInvoiceInput = {
@@ -78593,6 +83241,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AiInsightCreateWithoutAgentInput = {
+    id?: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiInsightUncheckedCreateWithoutAgentInput = {
+    id?: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiInsightCreateOrConnectWithoutAgentInput = {
+    where: AiInsightWhereUniqueInput
+    create: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput>
+  }
+
+  export type AiInsightCreateManyAgentInputEnvelope = {
+    data: AiInsightCreateManyAgentInput | AiInsightCreateManyAgentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AiActionUpsertWithWhereUniqueWithoutAgentInput = {
     where: AiActionWhereUniqueInput
     update: XOR<AiActionUpdateWithoutAgentInput, AiActionUncheckedUpdateWithoutAgentInput>
@@ -78664,6 +83340,35 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AiTrainingData"> | Date | string
   }
 
+  export type AiInsightUpsertWithWhereUniqueWithoutAgentInput = {
+    where: AiInsightWhereUniqueInput
+    update: XOR<AiInsightUpdateWithoutAgentInput, AiInsightUncheckedUpdateWithoutAgentInput>
+    create: XOR<AiInsightCreateWithoutAgentInput, AiInsightUncheckedCreateWithoutAgentInput>
+  }
+
+  export type AiInsightUpdateWithWhereUniqueWithoutAgentInput = {
+    where: AiInsightWhereUniqueInput
+    data: XOR<AiInsightUpdateWithoutAgentInput, AiInsightUncheckedUpdateWithoutAgentInput>
+  }
+
+  export type AiInsightUpdateManyWithWhereWithoutAgentInput = {
+    where: AiInsightScalarWhereInput
+    data: XOR<AiInsightUpdateManyMutationInput, AiInsightUncheckedUpdateManyWithoutAgentInput>
+  }
+
+  export type AiInsightScalarWhereInput = {
+    AND?: AiInsightScalarWhereInput | AiInsightScalarWhereInput[]
+    OR?: AiInsightScalarWhereInput[]
+    NOT?: AiInsightScalarWhereInput | AiInsightScalarWhereInput[]
+    id?: UuidFilter<"AiInsight"> | string
+    agentId?: UuidFilter<"AiInsight"> | string
+    topic?: StringFilter<"AiInsight"> | string
+    insight?: StringFilter<"AiInsight"> | string
+    confidence?: FloatFilter<"AiInsight"> | number
+    isPublic?: BoolFilter<"AiInsight"> | boolean
+    createdAt?: DateTimeFilter<"AiInsight"> | Date | string
+  }
+
   export type AiAgentCreateWithoutPermissionsInput = {
     id?: string
     systemName: $Enums.AiAgentSystemName
@@ -78674,6 +83379,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     actions?: AiActionCreateNestedManyWithoutAgentInput
     trainingData?: AiTrainingDataCreateNestedManyWithoutAgentInput
+    insights?: AiInsightCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentUncheckedCreateWithoutPermissionsInput = {
@@ -78686,6 +83392,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     actions?: AiActionUncheckedCreateNestedManyWithoutAgentInput
     trainingData?: AiTrainingDataUncheckedCreateNestedManyWithoutAgentInput
+    insights?: AiInsightUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentCreateOrConnectWithoutPermissionsInput = {
@@ -78714,6 +83421,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     actions?: AiActionUpdateManyWithoutAgentNestedInput
     trainingData?: AiTrainingDataUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentUncheckedUpdateWithoutPermissionsInput = {
@@ -78726,6 +83434,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     actions?: AiActionUncheckedUpdateManyWithoutAgentNestedInput
     trainingData?: AiTrainingDataUncheckedUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentCreateWithoutActionsInput = {
@@ -78738,6 +83447,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     permissions?: AiPermissionCreateNestedOneWithoutAgentInput
     trainingData?: AiTrainingDataCreateNestedManyWithoutAgentInput
+    insights?: AiInsightCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentUncheckedCreateWithoutActionsInput = {
@@ -78750,6 +83460,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     permissions?: AiPermissionUncheckedCreateNestedOneWithoutAgentInput
     trainingData?: AiTrainingDataUncheckedCreateNestedManyWithoutAgentInput
+    insights?: AiInsightUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentCreateOrConnectWithoutActionsInput = {
@@ -78869,6 +83580,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: AiPermissionUpdateOneWithoutAgentNestedInput
     trainingData?: AiTrainingDataUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentUncheckedUpdateWithoutActionsInput = {
@@ -78881,6 +83593,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permissions?: AiPermissionUncheckedUpdateOneWithoutAgentNestedInput
     trainingData?: AiTrainingDataUncheckedUpdateManyWithoutAgentNestedInput
+    insights?: AiInsightUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type UserUpsertWithoutAiActionApprovalsInput = {
@@ -78990,6 +83703,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     actions?: AiActionCreateNestedManyWithoutAgentInput
     permissions?: AiPermissionCreateNestedOneWithoutAgentInput
+    insights?: AiInsightCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentUncheckedCreateWithoutTrainingDataInput = {
@@ -79002,6 +83716,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     actions?: AiActionUncheckedCreateNestedManyWithoutAgentInput
     permissions?: AiPermissionUncheckedCreateNestedOneWithoutAgentInput
+    insights?: AiInsightUncheckedCreateNestedManyWithoutAgentInput
   }
 
   export type AiAgentCreateOrConnectWithoutTrainingDataInput = {
@@ -79030,6 +83745,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     actions?: AiActionUpdateManyWithoutAgentNestedInput
     permissions?: AiPermissionUpdateOneWithoutAgentNestedInput
+    insights?: AiInsightUpdateManyWithoutAgentNestedInput
   }
 
   export type AiAgentUncheckedUpdateWithoutTrainingDataInput = {
@@ -79042,6 +83758,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     actions?: AiActionUncheckedUpdateManyWithoutAgentNestedInput
     permissions?: AiPermissionUncheckedUpdateOneWithoutAgentNestedInput
+    insights?: AiInsightUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type DeliveryCreateWithoutVehicleInput = {
@@ -80684,6 +85401,207 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+  }
+
+  export type SeoAnalyticsCreateWithoutSeoPageInput = {
+    id?: string
+    slug: string
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+  }
+
+  export type SeoAnalyticsUncheckedCreateWithoutSeoPageInput = {
+    id?: string
+    slug: string
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+  }
+
+  export type SeoAnalyticsCreateOrConnectWithoutSeoPageInput = {
+    where: SeoAnalyticsWhereUniqueInput
+    create: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput>
+  }
+
+  export type SeoAnalyticsCreateManySeoPageInputEnvelope = {
+    data: SeoAnalyticsCreateManySeoPageInput | SeoAnalyticsCreateManySeoPageInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SeoAnalyticsUpsertWithWhereUniqueWithoutSeoPageInput = {
+    where: SeoAnalyticsWhereUniqueInput
+    update: XOR<SeoAnalyticsUpdateWithoutSeoPageInput, SeoAnalyticsUncheckedUpdateWithoutSeoPageInput>
+    create: XOR<SeoAnalyticsCreateWithoutSeoPageInput, SeoAnalyticsUncheckedCreateWithoutSeoPageInput>
+  }
+
+  export type SeoAnalyticsUpdateWithWhereUniqueWithoutSeoPageInput = {
+    where: SeoAnalyticsWhereUniqueInput
+    data: XOR<SeoAnalyticsUpdateWithoutSeoPageInput, SeoAnalyticsUncheckedUpdateWithoutSeoPageInput>
+  }
+
+  export type SeoAnalyticsUpdateManyWithWhereWithoutSeoPageInput = {
+    where: SeoAnalyticsScalarWhereInput
+    data: XOR<SeoAnalyticsUpdateManyMutationInput, SeoAnalyticsUncheckedUpdateManyWithoutSeoPageInput>
+  }
+
+  export type SeoAnalyticsScalarWhereInput = {
+    AND?: SeoAnalyticsScalarWhereInput | SeoAnalyticsScalarWhereInput[]
+    OR?: SeoAnalyticsScalarWhereInput[]
+    NOT?: SeoAnalyticsScalarWhereInput | SeoAnalyticsScalarWhereInput[]
+    id?: UuidFilter<"SeoAnalytics"> | string
+    slug?: StringFilter<"SeoAnalytics"> | string
+    pageId?: UuidNullableFilter<"SeoAnalytics"> | string | null
+    impressions?: IntFilter<"SeoAnalytics"> | number
+    clicks?: IntFilter<"SeoAnalytics"> | number
+    views?: IntFilter<"SeoAnalytics"> | number
+    date?: DateTimeFilter<"SeoAnalytics"> | Date | string
+  }
+
+  export type SeoPageCreateWithoutAnalyticsInput = {
+    id?: string
+    slug: string
+    title: string
+    description?: string | null
+    h1?: string | null
+    heroSub?: string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: string
+    priority?: number
+    category?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SeoPageUncheckedCreateWithoutAnalyticsInput = {
+    id?: string
+    slug: string
+    title: string
+    description?: string | null
+    h1?: string | null
+    heroSub?: string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: string
+    priority?: number
+    category?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SeoPageCreateOrConnectWithoutAnalyticsInput = {
+    where: SeoPageWhereUniqueInput
+    create: XOR<SeoPageCreateWithoutAnalyticsInput, SeoPageUncheckedCreateWithoutAnalyticsInput>
+  }
+
+  export type SeoPageUpsertWithoutAnalyticsInput = {
+    update: XOR<SeoPageUpdateWithoutAnalyticsInput, SeoPageUncheckedUpdateWithoutAnalyticsInput>
+    create: XOR<SeoPageCreateWithoutAnalyticsInput, SeoPageUncheckedCreateWithoutAnalyticsInput>
+    where?: SeoPageWhereInput
+  }
+
+  export type SeoPageUpdateToOneWithWhereWithoutAnalyticsInput = {
+    where?: SeoPageWhereInput
+    data: XOR<SeoPageUpdateWithoutAnalyticsInput, SeoPageUncheckedUpdateWithoutAnalyticsInput>
+  }
+
+  export type SeoPageUpdateWithoutAnalyticsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoPageUncheckedUpdateWithoutAnalyticsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    h1?: NullableStringFieldUpdateOperationsInput | string | null
+    heroSub?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: FloatFieldUpdateOperationsInput | number
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiAgentCreateWithoutInsightsInput = {
+    id?: string
+    systemName: $Enums.AiAgentSystemName
+    displayName: string
+    isActive?: boolean
+    canMutateData?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    actions?: AiActionCreateNestedManyWithoutAgentInput
+    permissions?: AiPermissionCreateNestedOneWithoutAgentInput
+    trainingData?: AiTrainingDataCreateNestedManyWithoutAgentInput
+  }
+
+  export type AiAgentUncheckedCreateWithoutInsightsInput = {
+    id?: string
+    systemName: $Enums.AiAgentSystemName
+    displayName: string
+    isActive?: boolean
+    canMutateData?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    actions?: AiActionUncheckedCreateNestedManyWithoutAgentInput
+    permissions?: AiPermissionUncheckedCreateNestedOneWithoutAgentInput
+    trainingData?: AiTrainingDataUncheckedCreateNestedManyWithoutAgentInput
+  }
+
+  export type AiAgentCreateOrConnectWithoutInsightsInput = {
+    where: AiAgentWhereUniqueInput
+    create: XOR<AiAgentCreateWithoutInsightsInput, AiAgentUncheckedCreateWithoutInsightsInput>
+  }
+
+  export type AiAgentUpsertWithoutInsightsInput = {
+    update: XOR<AiAgentUpdateWithoutInsightsInput, AiAgentUncheckedUpdateWithoutInsightsInput>
+    create: XOR<AiAgentCreateWithoutInsightsInput, AiAgentUncheckedCreateWithoutInsightsInput>
+    where?: AiAgentWhereInput
+  }
+
+  export type AiAgentUpdateToOneWithWhereWithoutInsightsInput = {
+    where?: AiAgentWhereInput
+    data: XOR<AiAgentUpdateWithoutInsightsInput, AiAgentUncheckedUpdateWithoutInsightsInput>
+  }
+
+  export type AiAgentUpdateWithoutInsightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    systemName?: EnumAiAgentSystemNameFieldUpdateOperationsInput | $Enums.AiAgentSystemName
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canMutateData?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actions?: AiActionUpdateManyWithoutAgentNestedInput
+    permissions?: AiPermissionUpdateOneWithoutAgentNestedInput
+    trainingData?: AiTrainingDataUpdateManyWithoutAgentNestedInput
+  }
+
+  export type AiAgentUncheckedUpdateWithoutInsightsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    systemName?: EnumAiAgentSystemNameFieldUpdateOperationsInput | $Enums.AiAgentSystemName
+    displayName?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    canMutateData?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actions?: AiActionUncheckedUpdateManyWithoutAgentNestedInput
+    permissions?: AiPermissionUncheckedUpdateOneWithoutAgentNestedInput
+    trainingData?: AiTrainingDataUncheckedUpdateManyWithoutAgentNestedInput
   }
 
   export type OrderCreateWithoutOrderItemsInput = {
@@ -83406,6 +88324,15 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type AiInsightCreateManyAgentInput = {
+    id?: string
+    topic: string
+    insight: string
+    confidence?: number
+    isPublic?: boolean
+    createdAt?: Date | string
+  }
+
   export type AiActionUpdateWithoutAgentInput = {
     id?: StringFieldUpdateOperationsInput | string
     actionType?: StringFieldUpdateOperationsInput | string
@@ -83463,6 +88390,33 @@ export namespace Prisma {
     suggestion?: StringFieldUpdateOperationsInput | string
     adminDecision?: StringFieldUpdateOperationsInput | string
     feedbackScore?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightUncheckedUpdateWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiInsightUncheckedUpdateManyWithoutAgentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    insight?: StringFieldUpdateOperationsInput | string
+    confidence?: FloatFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -83670,6 +88624,42 @@ export namespace Prisma {
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsCreateManySeoPageInput = {
+    id?: string
+    slug: string
+    impressions?: number
+    clicks?: number
+    views?: number
+    date?: Date | string
+  }
+
+  export type SeoAnalyticsUpdateWithoutSeoPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsUncheckedUpdateWithoutSeoPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SeoAnalyticsUncheckedUpdateManyWithoutSeoPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    views?: IntFieldUpdateOperationsInput | number
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

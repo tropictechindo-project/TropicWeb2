@@ -248,6 +248,7 @@ export default async function Home() {
             "sameAs": [
               "https://www.instagram.com/tropictechs",
               "https://wa.me/6282266574860",
+              "https://tropictech.rent",
               "https://tropictechbali.com"
             ],
             "hasOfferCatalog": {

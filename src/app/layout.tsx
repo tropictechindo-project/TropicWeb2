@@ -149,9 +149,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
+        {/* ── LCP Preload: hero image begins loading before body parses ── */}
+        <link
+          rel="preload"
+          href="/images/hero.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+        {/* ── Preconnect critical origins ── */}
         <link rel="preconnect" href="https://uxukdfbqynnlkcykqozu.supabase.co" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://uxukdfbqynnlkcykqozu.supabase.co" />
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+        {/* tropictechbali.com 301 → tropictech.rent: link equity consolidation */}
+        <link rel="dns-prefetch" href="https://tropictechbali.com" />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script

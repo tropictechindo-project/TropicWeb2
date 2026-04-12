@@ -17,9 +17,25 @@ export async function generateMetadata({ params }: SEOPageProps): Promise<Metada
     const { slug } = await params
     if (!slug) return { title: 'Bali Office Equipment Rental' }
 
-    const config = SEO_PAGES[slug]
-    const title = config?.title || `${slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} | Tropic Tech Bali`
-    const description = config?.description || `Rent premium ${slug.replace(/-/g, ' ')} in Bali. Fast 24-hour delivery to Canggu, Ubud, and Seminyak. Enterprise-grade equipment for digital nomads and startup teams.`
+    // 1. Try to fetch from Database
+    const dbPage = await db.seoPage.findUnique({
+        where: { slug, status: 'PUBLISHED' }
+    })
+
+    // 2. Fallback to Static Registry
+    const staticConfig = SEO_PAGES[slug]
+
+    let title = `${slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} | Tropic Tech Bali`
+    let description = `Rent premium ${slug.replace(/-/g, ' ')} in Bali. Fast 24-hour delivery to Canggu, Ubud, and Seminyak. Enterprise-grade equipment for digital nomads and startup teams.`
+
+    if (dbPage) {
+        title = dbPage.title
+        description = dbPage.description || description
+    } else if (staticConfig) {
+        title = staticConfig.title || title
+        description = staticConfig.description || description
+    }
+
     const canonicalUrl = `${BASE_URL}/${slug}`
 
     return {
@@ -284,14 +300,50 @@ export default async function SEOLandingPage({ params }: SEOPageProps) {
     const { slug } = await params
     if (!slug) return null
 
-    const config = SEO_PAGES[slug]
+    // 1. Try to fetch from Database (NEW)
+    const dbPage = await db.seoPage.findUnique({
+        where: { slug, status: 'PUBLISHED' }
+    })
+
+    // 4. Log Analytics View (Fire and Forget)
+    try {
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        await db.seoAnalytics.upsert({
+            where: { slug_date: { slug, date: today } },
+            update: { views: { increment: 1 } },
+            create: { slug, date: today, views: 1, pageId: dbPage?.id }
+        })
+    } catch (e) {
+        console.error('Analytics log failed:', e)
+    }
+
+    // 2. Fallback to Static Registry (OLD)
+    const staticConfig = SEO_PAGES[slug]
+
+    // 3. Resolve configuration
+    let config: any = null
+    if (dbPage) {
+        config = {
+            title: dbPage.title,
+            description: dbPage.description,
+            h1: dbPage.h1,
+            heroSub: dbPage.heroSub,
+            ...(dbPage.content as any)
+        }
+    } else if (staticConfig) {
+        config = staticConfig
+    }
+
+    if (!config) return null
+
     const products = await getProducts()
     const serializedProducts = JSON.parse(JSON.stringify(products))
 
-    const h1 = config?.h1 || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-    const heroSub = config?.heroSub || `Tropic Tech provides the highest quality ${slug.replace(/-/g, ' ')} solutions in Bali. Fast delivery. Premium gear. Zero hassle.`
-    const title = config?.title || `${h1} | Tropic Tech Bali`
-    const description = config?.description || heroSub
+    const h1 = config.h1 || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    const heroSub = config.heroSub || `Tropic Tech provides the highest quality ${slug.replace(/-/g, ' ')} solutions in Bali. Fast delivery. Premium gear. Zero hassle.`
+    const title = config.title || `${h1} | Tropic Tech Bali`
+    const description = config.description || heroSub
 
     return (
         <div className="min-h-screen flex flex-col">

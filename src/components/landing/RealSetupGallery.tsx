@@ -11,7 +11,6 @@ const DEFAULT_SETUP_IMAGES = [
     "/Real-View-WebP/031f79baecbc42cf694bd9cd1d708411.webp",
     "/Real-View-WebP/04e4e2fa4c95f23017e79dc9be6007c4.webp",
     "/Real-View-WebP/0c6ba37f-0da2-4bb4-ba1f-39041ce23792.webp",
-    "/Real-View-WebP/13e319869efd79d6115fc5687b213768.webp",
     "/Real-View-WebP/2351a099f4938a7014509e1453cbd573.webp",
     "/Real-View-WebP/2475c27d3d4d6328f127d1d2fe7db449.webp",
     "/Real-View-WebP/33aabf501484a286fe88624468fc4e50.webp",

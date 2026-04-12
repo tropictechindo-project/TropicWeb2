@@ -1,0 +1,20 @@
+
+> nextjs_tailwind_shadcn_ts@0.1.0 build
+> next build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+
+⚠ Invalid next.config.ts options detected: 
+⚠     Invalid input at "experimental.cssChunking"
+⚠     Expected boolean, received string at "experimental.cssChunking"
+⚠     Invalid literal value, expected "strict" at "experimental.cssChunking"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+Error parsing `/(.*).(:ext(js|css|woff2|woff|ttf|eot))` https://nextjs.org/docs/messages/invalid-route-source
+Reason: Capturing groups are not allowed at 11
+
+  /(.*).(:ext(js|css|woff2|woff|ttf|eot))
+             ^
+
+`source` parse failed for route {"source":"/(.*).(:ext(js|css|woff2|woff|ttf|eot))","headers":[{"key":"Cache-Control","value":"public, max-age=31536000, immutable"}]}
+
+
+Error: Invalid header found
