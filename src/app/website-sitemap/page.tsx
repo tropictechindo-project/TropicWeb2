@@ -42,6 +42,17 @@ export default async function SitemapPage() {
         'renting-it-equipment-vs-buying-2026'
     ]
 
+    const baliRentClusterSlugs = [
+        'rent-monitor-bali',
+        'rent-deks-bali',
+        'rent-chair-bali',
+        'rent-stuff-bali',
+        'rent-setup-work-bali',
+        'bali-monitor',
+        'rent-grear-for-work-bali',
+        'fast-delivery-rent-bali',
+    ]
+
     const categories = {
         'Company & Support': [
             { title: 'Home', href: '/' },
@@ -67,6 +78,10 @@ export default async function SitemapPage() {
         'Our Catalog': products.map(p => ({
             title: p.name,
             href: `/product/${p.id}`
+        })),
+        '🏝️ Bali Rent Cluster': baliRentClusterSlugs.map(slug => ({
+            title: SEO_PAGES[slug]?.h1?.split(' —')[0].split(' |')[0] || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+            href: `/${slug}`
         }))
     }
 

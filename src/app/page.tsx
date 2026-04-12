@@ -261,7 +261,35 @@ export default async function Home() {
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-                  "itemOffered": { "@type": "Service", "name": "Monitor Rental" }
+                  "availability": "https://schema.org/InStock",
+                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Monitor Rental" },
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "ID",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 1,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                      "@type": "MonetaryAmount",
+                      "value": "0",
+                      "currency": "IDR"
+                    },
+                    "shippingDestination": {
+                      "@type": "DefinedRegion",
+                      "addressCountry": "ID",
+                      "addressRegion": "BA"
+                    },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
+                    }
+                  }
                 },
                 {
                   "@type": "Offer",
@@ -270,7 +298,35 @@ export default async function Home() {
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-                  "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental" }
+                  "availability": "https://schema.org/InStock",
+                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental" },
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "ID",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 1,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                      "@type": "MonetaryAmount",
+                      "value": "0",
+                      "currency": "IDR"
+                    },
+                    "shippingDestination": {
+                      "@type": "DefinedRegion",
+                      "addressCountry": "ID",
+                      "addressRegion": "BA"
+                    },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
+                    }
+                  }
                 },
                 {
                   "@type": "Offer",
@@ -279,7 +335,35 @@ export default async function Home() {
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-                  "itemOffered": { "@type": "Service", "name": "Standing Desk Rental" }
+                  "availability": "https://schema.org/InStock",
+                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Standing Desk Rental" },
+                  "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "ID",
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                    "merchantReturnDays": 1,
+                    "returnMethod": "https://schema.org/ReturnByMail",
+                    "returnFees": "https://schema.org/FreeReturn"
+                  },
+                  "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingRate": {
+                      "@type": "MonetaryAmount",
+                      "value": "0",
+                      "currency": "IDR"
+                    },
+                    "shippingDestination": {
+                      "@type": "DefinedRegion",
+                      "addressCountry": "ID",
+                      "addressRegion": "BA"
+                    },
+                    "deliveryTime": {
+                      "@type": "ShippingDeliveryTime",
+                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
+                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
+                    }
+                  }
                 }
               ]
             },

@@ -1,7 +1,13 @@
 /**
- * SEO & Marketing Pages Configuration (Step 9)
- * Maps 15 descriptive slugs to rich section architectures with unique targeted keywords.
+ * SEO & Marketing Pages Configuration (Step 9 + v4.0 Quick Rent Bali Cluster)
+ * Maps 23+ descriptive slugs to rich section architectures with unique targeted keywords.
  */
+
+export interface SEOSection {
+    type: 'stats' | 'steps' | 'areas' | 'benefits' | 'cta' | 'trust' | 'process' | 'checklist' | 'testimonials' | 'pricing-tiers'
+    heading: string
+    items: Array<{ label: string; value?: string; desc?: string; icon?: string }>
+}
 
 export interface SEOPagesConfig {
     title: string
@@ -14,6 +20,7 @@ export interface SEOPagesConfig {
         headers: string[]
         rows: string[][]
     }
+    sections?: SEOSection[]
 }
 
 export const SEO_PAGES: Record<string, SEOPagesConfig> = {
@@ -390,5 +397,479 @@ export const SEO_PAGES: Record<string, SEOPagesConfig> = {
             { q: 'Do you offer layout advice?', a: 'Yes, our technicians are trained in ergonomic workspace design.' }
         ],
         comparison: { headers: ['Service', 'Delivery Only', 'Tropic White-Glove'], rows: [['Setup Time', '1 Hour (Yours)', '15 Mins (Ours)']] }
+    },
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🏝️ 7. BALI RENT CLUSTER — New Fast-Rank Pages (v4.1)
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    'rent-deks-bali': {
+        title: 'Rent Desk Bali | Office Desk Rental Same-Day Delivery | Tropic Tech',
+        h1: 'Rent a Desk in Bali — Same-Day Delivery',
+        description: 'Looking to rent a desk in Bali? Tropic Tech delivers premium office desks, standing desks, and ergonomic workstations to your villa in Canggu, Ubud, or Seminyak within 24 hours.',
+        heroSub: 'Stop working on your kitchen table. We deliver professional office desks — electric standing, solid-wood ergonomic, and adjustable height — straight to your Bali villa door.',
+        features: [
+            { title: 'Same-Day Delivery', desc: 'Order before noon for same-day desk delivery across South Bali.' },
+            { title: 'Standing Desk Options', desc: 'Electric height-adjustable desks for healthier long-session work.' },
+            { title: 'Assembly Included', desc: 'Our team sets up and levels your desk — you just start working.' },
+            { title: 'Flexible Duration', desc: 'Rent by the day, week, or month with zero long-term commitments.' },
+            { title: 'Cable Management', desc: 'Professional cable routing included for a clean workspace aesthetic.' },
+            { title: 'Premium Materials', desc: 'Solid teak and powder-coat steel frames built for Bali\'s humid climate.' }
+        ],
+        faqs: [
+            { q: 'Can I rent a desk for just 3 days?', a: 'Yes, we offer flexible daily rental terms. Minimum rental is 1 day.' },
+            { q: 'Do you deliver to Ubud?', a: 'Yes, we deliver island-wide including all Ubud sub-districts within 24 hours.' },
+            { q: 'Is setup included in the price?', a: 'Yes, all deliveries include full assembly, leveling, and placement in your preferred room.' },
+            { q: 'What desk sizes are available?', a: 'We stock desks from compact 120cm models to full executive 180cm L-shaped setups.' },
+            { q: 'Are standing desks available?', a: 'Yes, electric height-adjustable standing desks are available for both daily and monthly rental.' }
+        ],
+        comparison: {
+            headers: ['Feature', 'Hotel Desk', 'Dining Table', 'Tropic Rent Desk'],
+            rows: [
+                ['Ergonomic Height', '✗ Fixed', '✗ Fixed', '✓ Adjustable'],
+                ['Cable Management', '✗ None', '✗ None', '✓ Included'],
+                ['Standing Option', '✗ None', '✗ None', '✓ Available'],
+                ['Work Surface (cm)', '60×40', '80×60', '120–180'],
+                ['Assembly', '✗ N/A', '✗ N/A', '✓ Included']
+            ]
+        },
+        sections: [
+            {
+                type: 'stats',
+                heading: 'Tropic Desk Rental — By The Numbers',
+                items: [
+                    { label: 'Desks in Fleet', value: '60+', desc: 'Ready for same-day deployment' },
+                    { label: 'Delivery SLA', value: '24h', desc: 'Island-wide guarantee' },
+                    { label: 'Desk Types', value: '5', desc: 'Standing, L-shape, Compact, Executive, Teak' },
+                    { label: 'Client Satisfaction', value: '5.0★', desc: 'Based on 124+ reviews' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Desk Delivery Coverage — Bali',
+                items: [
+                    { label: 'Canggu', desc: 'Berawa, Batu Bolong, Pererenan' },
+                    { label: 'Seminyak', desc: 'Petitenget, Laksmana, Oberoi' },
+                    { label: 'Ubud', desc: 'Penestanan, Sayan, Nyuh Kuning' },
+                    { label: 'Kuta & Legian', desc: 'Central Kuta, Legian, Tuban' },
+                    { label: 'Sanur', desc: 'Renon, Sindhu, Mertasari' },
+                    { label: 'Denpasar', desc: 'Renon, Panjer, Kesiman' },
+                    { label: 'Jimbaran & Bukit', desc: 'Uluwatu, Bingin, Pecatu' },
+                    { label: 'Nusa Dua', desc: 'BTDC Area, Tanjung Benoa' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How to Rent a Desk in Bali — 3 Steps',
+                items: [
+                    { label: 'Browse & Select', desc: 'Choose your desk type and rental duration from our online catalog.' },
+                    { label: 'Confirm & Schedule', desc: 'Pick your delivery time. We\'ll confirm within 30 minutes.' },
+                    { label: 'We Deliver & Set Up', desc: 'Our team arrives, assembles, and positions the desk — you\'re ready to work.' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Why Rent a Desk Instead of Buying?',
+                items: [
+                    { label: 'Zero Customs Tax', desc: 'Skip the 40%+ import duty on furniture in Indonesia.' },
+                    { label: 'No Storage Headache', desc: 'We collect the desk when you leave Bali — no logistics stress.' },
+                    { label: 'Upgrade Anytime', desc: 'Switch from a compact to a standing desk mid-stay at any time.' },
+                    { label: 'All-Inclusive Price', desc: 'Delivery, setup, takedown — all in one flat rental fee.' }
+                ]
+            },
+            {
+                type: 'trust',
+                heading: 'Trusted by Remote Workers Across Bali',
+                items: [
+                    { label: 'Digital Nomads', desc: 'Hundreds of remote workers rent monthly desk setups through us.' },
+                    { label: 'Corporate Retreats', desc: 'We\'ve equipped tech retreat teams of up to 40 people.' },
+                    { label: 'Certified Company', desc: 'PT Tropic Tech International — NIB Registered No. 1712240076832' },
+                    { label: 'Zero Loss Guarantee', desc: 'All furniture is insured. You\'re protected from day one.' }
+                ]
+            }
+        ]
+    },
+
+    'rent-stuff-bali': {
+        title: 'Rent Stuff Bali | Office Equipment, Chairs, Desks, Monitors | Tropic Tech',
+        h1: 'Rent Everything for Work in Bali',
+        description: 'Need to rent stuff for your office or workspace in Bali? Tropic Tech provides monitors, ergonomic chairs, standing desks, keyboards, and complete workstation setups. Fast delivery to Canggu, Ubud, and Seminyak.',
+        heroSub: 'One stop for everything you need to set up a productive workspace in Bali. Monitors, desks, chairs, keyboards, accessories — all available for daily, weekly, or monthly rental with fast island-wide delivery.',
+        features: [
+            { title: 'Everything in One Order', desc: 'Bundle monitors, chairs, desks, and accessories — one delivery, one invoice.' },
+            { title: 'Enterprise-Grade Stock', desc: 'We stock Dell, Herman Miller-style, and Secretlab-grade equipment.' },
+            { title: '24-Hour Swap Guarantee', desc: 'Any faulty item swapped within 24 hours — guaranteed.' },
+            { title: 'Island-Wide Coverage', desc: 'Delivery to all major Bali areas within 24 hours.' },
+            { title: 'Transparent Pricing', desc: 'No hidden fees. Delivery and setup always included.' },
+            { title: 'Flexible Contracts', desc: 'Daily, weekly, or monthly. Extend anytime with no penalty.' }
+        ],
+        faqs: [
+            { q: 'What kind of stuff can I rent?', a: 'You can rent monitors, ergonomic chairs, standing desks, keyboards, mice, webcams, power boards, and complete workstation bundles.' },
+            { q: 'Can I rent for just one event?', a: 'Yes, we offer daily event rentals for conferences, retreats, and team days.' },
+            { q: 'Do you offer bundle discounts?', a: 'Yes, renting 3 or more items in one order qualifies for our bundle pricing.' },
+            { q: 'What happens if something breaks?', a: 'We\'ll swap the item within 24 hours — included in every rental at no extra cost.' },
+            { q: 'Can I pick up from your warehouse?', a: 'Yes, warehouse pickup is available for orders in Denpasar.' }
+        ],
+        comparison: {
+            headers: ['What You Need', 'Buy Locally', 'Import', 'Rent from Tropic'],
+            rows: [
+                ['Time to Get', '1–3 days search', '2–6 weeks shipping', 'Same day'],
+                ['Import Tax', 'N/A', '40%+ duty', 'Zero'],
+                ['Quality', 'Variable', 'Good', 'Guaranteed'],
+                ['What Happens After', 'Sell at loss', 'Ship home', 'We collect it'],
+                ['Total Cost (1 month)', 'Rp 8–15M', 'Rp 12–20M', 'Rp 600k–2M']
+            ]
+        },
+        sections: [
+            {
+                type: 'stats',
+                heading: 'Rental Stats — Tropic Tech Bali',
+                items: [
+                    { label: 'Items in Fleet', value: '100+', desc: 'Premium assets ready to rent' },
+                    { label: 'Active Clients', value: '500+', desc: 'Nomads, startups & corporates' },
+                    { label: 'Categories', value: '8+', desc: 'Desks, chairs, monitors, peripherals & more' },
+                    { label: 'Avg Delivery', value: '4h', desc: 'Average delivery time across South Bali' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How to Rent Work Stuff in Bali',
+                items: [
+                    { label: 'Browse Catalog', desc: 'Shop our online catalog — filter by category, price, or duration.' },
+                    { label: 'Add to Cart', desc: 'Select items and your rental period. Bundle for discounts.' },
+                    { label: 'Schedule Delivery', desc: 'Choose a delivery window. We confirm within 30 minutes.' },
+                    { label: 'We Handle Everything', desc: 'Our team delivers, sets up, and cables everything in your space.' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Why Bali Professionals Choose Tropic Tech',
+                items: [
+                    { label: 'One Vendor, Everything', desc: 'No juggling between multiple suppliers for your office setup.' },
+                    { label: 'Fully Managed', desc: 'We handle delivery, installation, maintenance, and pickup.' },
+                    { label: 'Legally Registered', desc: 'PT Tropic Tech International — auditable company, professional invoices.' },
+                    { label: 'WhatsApp Support', desc: '24/7 support via WhatsApp for quick resolution of any issue.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'We Deliver Rental Stuff Across All of Bali',
+                items: [
+                    { label: 'Canggu', desc: 'Popular among digital nomads and remote workers' },
+                    { label: 'Seminyak', desc: 'Luxury villa workers and corporate teams' },
+                    { label: 'Ubud', desc: 'Creative professionals and long-stay nomads' },
+                    { label: 'Kuta & Legian', desc: 'Short-stay travelers and event teams' },
+                    { label: 'Sanur', desc: 'Families and long-term expats' },
+                    { label: 'Jimbaran', desc: 'High-end villa stays and startup retreats' }
+                ]
+            }
+        ]
+    },
+
+    'rent-setup-work-bali': {
+        title: 'Rent Work Setup Bali | Complete Remote Office in Your Villa | Tropic Tech',
+        h1: 'Rent a Complete Work Setup in Bali',
+        description: 'Rent a complete remote work setup in Bali — monitor, ergonomic chair, standing desk, keyboard, and accessories delivered and installed in your villa. Serving Canggu, Ubud, Seminyak, and beyond.',
+        heroSub: 'Transform any Bali villa into a high-performance remote office in under 2 hours. We design, deliver, and install your complete work setup — so you can focus on shipping, not logistics.',
+        features: [
+            { title: 'Complete Bundle', desc: 'Monitor + ergonomic chair + desk + peripherals in a single order.' },
+            { title: 'Interior-Friendly Design', desc: 'Sleek hardware that complements Bali villa aesthetics perfectly.' },
+            { title: 'Under 2-Hour Setup', desc: 'From delivery to fully operational workspace in under 2 hours.' },
+            { title: 'Ergonomically Calibrated', desc: 'Our technicians calibrate every component to your body dimensions.' },
+            { title: 'UPS Power Backup', desc: 'Optional surge protectors and UPS batteries against Bali power cuts.' },
+            { title: 'Weekly Maintenance', desc: 'We check in weekly on long-term rentals to ensure everything runs perfectly.' }
+        ],
+        faqs: [
+            { q: 'What\'s included in a complete work setup?', a: 'A standard setup includes a professional monitor, ergonomic chair, office desk, keyboard, mouse, and cable management. We can add a microphone, webcam, or standing desk upgrade.' },
+            { q: 'How quickly can you set up a full workstation?', a: 'Most setups are operational within 2 hours of delivery, including cable management and ergonomic calibration.' },
+            { q: 'Can I customize the setup?', a: 'Absolutely — mix and match any combination of our products. We\'ll quote based on your exact list.' },
+            { q: 'Is this suitable for multiple people?', a: 'Yes, we regularly equip startup retreats and co-living spaces with 5–40 individual workstations.' },
+            { q: 'What if the internet is slow at my villa?', a: 'We offer optional 4G/5G pocket WiFi routers as an add-on for backup connectivity.' }
+        ],
+        comparison: {
+            headers: ['Setup Type', 'Coworking Space', 'Buy Equipment', 'Tropic Work Setup'],
+            rows: [
+                ['Location', 'Fixed coworking', 'Your home', 'Your villa'],
+                ['Privacy', '✗ Shared space', '✓ Private', '✓ Private'],
+                ['Monthly Cost (IDR)', '1.5–4M', '15–30M capex', '800k–2.5M'],
+                ['Setup Time', 'Immediate (walk in)', '3–7 days sourcing', '< 2 Hours'],
+                ['Your Gear Left Behind?', '✗ N/A', '✓ You own it', '✗ We collect it']
+            ]
+        },
+        sections: [
+            {
+                type: 'steps',
+                heading: 'Get Your Bali Work Setup in 4 Steps',
+                items: [
+                    { label: 'Choose Your Bundle', desc: 'Select from our Standard, Pro, or Executive work setup bundles.' },
+                    { label: 'Schedule Delivery', desc: 'Pick your preferred date and 2-hour delivery window.' },
+                    { label: 'We Set Everything Up', desc: 'Assembly, cable management, ergonomic calibration — all done by us.' },
+                    { label: 'Start Working', desc: 'Your workspace is ready. Log in, connect, and get productive.' }
+                ]
+            },
+            {
+                type: 'stats',
+                heading: 'Work Setup Numbers That Speak',
+                items: [
+                    { label: 'Setup Time', value: '<2h', desc: 'From delivery to fully operational' },
+                    { label: 'Monthly Rentals', value: '80+', desc: 'Active complete setups across Bali' },
+                    { label: 'Rating', value: '5.0★', desc: 'Average across 124+ customer reviews' },
+                    { label: 'Bali Areas Covered', value: '15+', desc: 'Every major district covered' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Why a Complete Rental Setup Beats Alternatives',
+                items: [
+                    { label: 'No Capital Outlay', desc: 'Preserve your cash for business — not desk furniture.' },
+                    { label: 'Move-In Ready', desc: 'Your villa becomes a fully equipped office the day we arrive.' },
+                    { label: 'All Inclusive', desc: 'One price covers delivery, setup, maintenance, and collection.' },
+                    { label: 'Scale Up or Down', desc: 'Add a second monitor or extra chair mid-rental — no new contract needed.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Work Setup Delivery Zones',
+                items: [
+                    { label: 'Canggu', desc: 'Nomad hub — our #1 delivery area' },
+                    { label: 'Ubud', desc: 'Creative and longstay professionals' },
+                    { label: 'Seminyak', desc: 'Luxury villa clients' },
+                    { label: 'Sanur', desc: 'Expat and family stays' },
+                    { label: 'Kuta', desc: 'Short-term travelers with work needs' },
+                    { label: 'Jimbaran & Bukit', desc: 'High-end retreats and startups' }
+                ]
+            }
+        ]
+    },
+
+    'bali-monitor': {
+        title: 'Bali Monitor Rental | 4K, Ultrawide & Dual-Screen Displays | Tropic Tech',
+        h1: 'Monitor Rental in Bali — 4K, Ultrawide & Dual Screen',
+        description: 'Rent premium monitors in Bali. From 24-inch FHD to 34-inch 4K Ultrawide displays, USB-C enabled, with same-day delivery to Canggu, Ubud, Seminyak, and all major Bali areas.',
+        heroSub: 'Your 13-inch laptop screen isn\'t built for serious work. Upgrade to a professional monitor rental and unlock the full power of your MacBook or PC — with island-wide delivery in Bali.',
+        features: [
+            { title: '4K & Ultrawide Options', desc: '27-inch and 34-inch displays with ultra-sharp panel quality.' },
+            { title: 'USB-C Ready', desc: 'Single-cable solution: power + display + data for MacBook users.' },
+            { title: 'HDMI & DisplayPort', desc: 'Universal compatibility with all laptops and mini PCs.' },
+            { title: 'Pivot & Height Adjust', desc: 'Fully adjustable stands for perfect ergonomic positioning.' },
+            { title: 'Zero Dead Pixels', desc: 'All monitors tested and certified before every delivery.' },
+            { title: 'Color-Accurate Panels', desc: 'sRGB-calibrated screens ideal for designers and video editors.' }
+        ],
+        faqs: [
+            { q: 'What monitor sizes are available in Bali?', a: 'We stock 24-inch FHD, 27-inch QHD, 27-inch 4K, and 34-inch Ultrawide curved displays.' },
+            { q: 'Does the monitor work with a MacBook?', a: 'Yes, all our monitors support USB-C with Power Delivery (65W charging). HDMI and DisplayPort adapters are included.' },
+            { q: 'Can I rent two monitors?', a: 'Yes, dual monitor setups are our most popular configuration for developers and designers.' },
+            { q: 'Is same-day delivery available?', a: 'Yes, order before 12:00 noon for same-day delivery to most South Bali areas.' },
+            { q: 'Do you include a monitor stand?', a: 'Every monitor comes with a height/tilt/swivel adjustable stand and all necessary cables.' }
+        ],
+        comparison: {
+            headers: ['Spec', 'Laptop Screen', '24\" FHD', '27\" 4K', '34\" Ultrawide'],
+            rows: [
+                ['Resolution', '2560×1600', '1920×1080', '3840×2160', '3440×1440'],
+                ['Display Area', 'Tiny', 'Good', 'Great', 'Immersive'],
+                ['Multi-Window', '✗', 'Limited', '✓', '✓✓'],
+                ['Color Accuracy', 'Medium', 'Good', 'Excellent', 'Excellent'],
+                ['USB-C Power', 'Built-in', 'Optional', '✓', '✓']
+            ]
+        },
+        sections: [
+            {
+                type: 'stats',
+                heading: 'Bali Monitor Rental — At a Glance',
+                items: [
+                    { label: 'Monitor Models', value: '6+', desc: 'From 24" FHD to 34" Ultrawide 4K' },
+                    { label: 'Delivery SLA', value: '<24h', desc: 'Island-wide same/next-day delivery' },
+                    { label: 'Client Rating', value: '5.0★', desc: 'Rated by 124+ Bali remote workers' },
+                    { label: 'Peak Rental', value: '3 mos', desc: 'Most popular rental duration' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How to Rent a Monitor in Bali',
+                items: [
+                    { label: 'Select Your Display', desc: 'Choose monitor size, resolution, and connectivity type.' },
+                    { label: 'Pick Rental Duration', desc: 'Daily, weekly, or monthly — with discounts for longer stays.' },
+                    { label: 'Schedule Delivery', desc: 'We deliver and connect your monitor. You unbox nothing.' },
+                    { label: 'Work at Full Resolution', desc: 'Instantly expand your screen real estate and boost output.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Bali Monitor Delivery Zones',
+                items: [
+                    { label: 'Canggu', desc: 'Berawa, Batu Bolong, Pererenan — same-day available' },
+                    { label: 'Seminyak', desc: 'Petitenget, Laksmana — premium same-day zone' },
+                    { label: 'Ubud', desc: 'Penestanan, Sayan — next-day delivery' },
+                    { label: 'Denpasar', desc: 'Renon, Kesiman — fast dispatch' },
+                    { label: 'Sanur', desc: 'Sindhu, Mertasari — same-day available' },
+                    { label: 'Jimbaran', desc: 'Bukit, Bingin — next-day delivery' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Why Rent vs. Buy a Monitor in Bali?',
+                items: [
+                    { label: 'No Import Tax', desc: 'Buying monitors locally means paying 30–40% import duty. Renting: zero extra cost.' },
+                    { label: 'Latest Models', desc: 'Always get current-generation panels — no stuck with yesterday\'s tech.' },
+                    { label: 'Swap Anytime', desc: 'Need ultrawide instead of dual? We\'ll swap mid-rental at no penalty.' },
+                    { label: 'Full Risk Coverage', desc: 'Every monitor is insured. Accidental damage is handled by us.' }
+                ]
+            }
+        ]
+    },
+
+    'rent-grear-for-work-bali': {
+        title: 'Rent Work Gear Bali | Remote Work Equipment | Tropic Tech',
+        h1: 'Rent Work Gear in Bali — Everything You Need to Stay Productive',
+        description: 'Rent professional work gear in Bali — monitors, ergonomic chairs, desks, keyboards, webcams, microphones, and complete workstation setups. Fast delivery to Canggu, Ubud, Seminyak, and all Bali areas.',
+        heroSub: 'Don\'t compromise your work because you\'re working from Bali. Rent the same gear you use at home — from monitors and ergonomic chairs to webcams and keyboards — delivered to your villa door.',
+        features: [
+            { title: 'Full Gear Catalog', desc: 'From keyboards and mice to 4K monitors and UPS power backups.' },
+            { title: 'MacBook & PC Ready', desc: 'All gear is fully compatible with Apple, Windows, and Linux systems.' },
+            { title: 'Accessories Included', desc: 'Cables, adapters, power boards included — no hidden extras.' },
+            { title: 'Webcam & Mic Rental', desc: 'HD webcams and USB condenser microphones for pro video calls.' },
+            { title: 'Fast Swap Guarantee', desc: 'Any malfunctioning gear swapped within 24 hours.' },
+            { title: 'Nomad-Friendly Terms', desc: 'No lock-ins. Rent weekly and extend if you stay longer.' }
+        ],
+        faqs: [
+            { q: 'What work gear can I rent?', a: 'Monitors, ergonomic chairs, desks, mechanical keyboards, mice, webcams, USB microphones, power boards, and complete workstation bundles.' },
+            { q: 'Is the gear compatible with Mac?', a: 'Yes, all rentals include the right cables for MacBook (USB-C, Thunderbolt 3/4). HDMI adapters provided.' },
+            { q: 'Can I rent just a keyboard and mouse?', a: 'Yes, we rent individual peripherals as well as full setups.' },
+            { q: 'Do you have webcams for video calls?', a: 'Yes, we stock 1080p USB webcams ideal for Zoom, Google Meet, and Loom recordings.' },
+            { q: 'What if I damage equipment?', a: 'Minor wear and tear is covered. For major damage, we assess fairly — you\'re not charged manufacturer list price.' }
+        ],
+        comparison: {
+            headers: ['Gear Type', 'Buy in Bali', 'Bring from Home', 'Rent from Tropic'],
+            rows: [
+                ['Keyboards', 'Limited selection', 'Luggage weight', '✓ Mechanical available'],
+                ['4K Monitor', 'Expensive + import tax', 'Too heavy/fragile', '✓ Delivered & set up'],
+                ['Webcam', 'Varies / overpriced', 'Easy to bring', '✓ HD USB webcam'],
+                ['Ergonomic Chair', 'Bulk & expensive', 'Cannot bring', '✓ Best option'],
+                ['After Your Stay', 'Sell at a loss / ship', 'Carry home', '✓ We collect it']
+            ]
+        },
+        sections: [
+            {
+                type: 'stats',
+                heading: 'Tropic Work Gear — By The Numbers',
+                items: [
+                    { label: 'Gear Categories', value: '10+', desc: 'Monitors, chairs, desks, peripherals, accessories' },
+                    { label: 'Fleet Size', value: '100+', desc: 'Professional items available now' },
+                    { label: 'Avg Order', value: '3 items', desc: 'Most renters bundle 3+ gear items' },
+                    { label: 'Swap Rate', value: '<1%', desc: 'Near-zero gear failure on delivery' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How to Rent Work Gear in Bali',
+                items: [
+                    { label: 'List Your Needs', desc: 'Tell us what gear you need or browse our full catalog online.' },
+                    { label: 'Get a Bundle Price', desc: 'Bundle discounts apply automatically on 3+ items.' },
+                    { label: 'We Deliver & Configure', desc: 'Gear arrives pre-tested and ready to plug in.' },
+                    { label: 'Work Without Limits', desc: 'Full productivity setup from day 1 of your Bali stay.' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Work Gear Rental vs. The Alternatives',
+                items: [
+                    { label: 'No Airline Overweight Fee', desc: 'Don\'t pay Rp 500k+ in excess baggage. Rent gear on arrival.' },
+                    { label: 'No Customs Hassle', desc: 'Importing tech gear through Indonesian customs can delay 2–6 weeks.' },
+                    { label: 'Always Latest Gear', desc: 'You get current-gen peripherals — not something 3 years old.' },
+                    { label: 'One WhatsApp Message', desc: 'Order, modify, or extend your rental from a single WhatsApp thread.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Work Gear Delivery Zones in Bali',
+                items: [
+                    { label: 'Canggu', desc: 'Express same-day delivery available' },
+                    { label: 'Seminyak', desc: 'Express same-day delivery available' },
+                    { label: 'Ubud', desc: 'Next-day delivery — all sub-districts' },
+                    { label: 'Kuta & Airport Area', desc: 'Great for just-landed travelers' },
+                    { label: 'Sanur', desc: 'Regular same-day zone' },
+                    { label: 'Nusa Dua', desc: 'Corporate event and conference delivery' }
+                ]
+            }
+        ]
+    },
+
+    'fast-delivery-rent-bali': {
+        title: 'Fast Delivery Rental Bali | Same-Day Office Equipment | Tropic Tech',
+        h1: 'Same-Day & Fast Delivery Rental in Bali',
+        description: 'Need rental equipment fast in Bali? Tropic Tech offers same-day and next-day delivery of monitors, ergonomic chairs, desks, and complete workstation setups across Canggu, Ubud, Seminyak, and all major areas.',
+        heroSub: 'The fastest way to equip your workspace in Bali. Order before noon for same-day delivery, or schedule next-day for a 2-hour delivery window anywhere on the island.',
+        features: [
+            { title: 'Same-Day by Noon', desc: 'Orders placed before 12:00 WIB delivered same evening in South Bali.' },
+            { title: 'Live Delivery Tracking', desc: 'Track your order in real-time on a live GPS map.' },
+            { title: 'WhatsApp ETA Updates', desc: 'Our driver sends your ETA via WhatsApp before they arrive.' },
+            { title: 'Professional Installation', desc: 'Setup included — not just drop-and-run.' },
+            { title: 'Guaranteed Time Windows', desc: 'AM (9–12) or PM (1–6) delivery slots, confirmed in 30 minutes.' },
+            { title: 'Emergency Dispatch', desc: 'Urgent equipment need? Call us for priority same-hour dispatch within central Bali.' }
+        ],
+        faqs: [
+            { q: 'How fast can you deliver in Bali?', a: 'Same-day delivery is available for orders placed before 12:00 noon. Most South Bali areas receive delivery within 4 hours during business hours.' },
+            { q: 'Do you deliver to Ubud?', a: 'Yes. Ubud and surrounding areas (Tegalalang, Tampaksiring, Payangan) receive next-day delivery.' },
+            { q: 'Can I track my delivery?', a: 'Yes, every order generates a live tracking link. You can follow your driver on a real-time map.' },
+            { q: 'What if I need gear urgently?', a: 'Contact us via WhatsApp for priority dispatch. We do our best to accommodate emergency rental orders.' },
+            { q: 'Is there an express delivery fee?', a: 'Standard same-day delivery is included in all rental prices. Priority 2-hour dispatch may incur a small surcharge.' }
+        ],
+        comparison: {
+            headers: ['Delivery Method', 'Tokopedia/Shopee', 'Friend\'s Gear', 'Tropic Tech'],
+            rows: [
+                ['Delivery Speed', '1–7 days', 'If available', 'Same day'],
+                ['Installation', '✗ Self-install', '✗ DIY', '✓ Included'],
+                ['Tracking', 'Basic', '✗ None', '✓ GPS Live'],
+                ['Quality Guarantee', 'Variable', 'Unknown', '✓ Tested & Certified'],
+                ['After Rental', 'Keep/sell', 'Return to friend', '✓ We collect it']
+            ]
+        },
+        sections: [
+            {
+                type: 'stats',
+                heading: 'Fast Delivery — Our Performance Stats',
+                items: [
+                    { label: 'Avg Delivery Time', value: '3.8h', desc: 'Average across all South Bali zones' },
+                    { label: 'On-Time Rate', value: '97%', desc: 'Orders delivered in confirmed window' },
+                    { label: 'Same-Day Orders', value: '60%', desc: 'Of all orders delivered same day' },
+                    { label: 'Live Tracking', value: '100%', desc: 'Every order trackable by GPS' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How Fast Delivery Works at Tropic Tech',
+                items: [
+                    { label: 'Place Your Order', desc: 'Order online or via WhatsApp before 12:00 noon.' },
+                    { label: 'Confirm in 30 Min', desc: 'We confirm your delivery window within 30 minutes.' },
+                    { label: 'Track Live GPS', desc: 'Follow your driver\'s location in real-time via your order link.' },
+                    { label: 'Setup & Done', desc: 'Driver arrives, installs everything, and you start working.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Fast Delivery Coverage Map',
+                items: [
+                    { label: 'Canggu', desc: 'Same-day, usually within 2–4 hours' },
+                    { label: 'Seminyak', desc: 'Same-day, priority zone' },
+                    { label: 'Kuta & Legian', desc: 'Same-day, high frequency route' },
+                    { label: 'Denpasar', desc: 'Same-day delivery zone' },
+                    { label: 'Sanur', desc: 'Same-day delivery zone' },
+                    { label: 'Jimbaran', desc: 'Same-day, PM delivery' },
+                    { label: 'Ubud', desc: 'Next-day delivery, AM slot' },
+                    { label: 'Nusa Dua', desc: 'Same-day for events and corporate' }
+                ]
+            },
+            {
+                type: 'trust',
+                heading: 'Reliability You Can Count On',
+                items: [
+                    { label: 'GPS-Tracked Fleet', desc: 'Every delivery vehicle is tracked. You always know where your gear is.' },
+                    { label: 'Dedicated Driver', desc: 'Your order is assigned to a dedicated driver — not a third-party courier.' },
+                    { label: 'Trained Technicians', desc: 'Our drivers are trained in equipment setup — they don\'t just drop boxes.' },
+                    { label: 'Insured Equipment', desc: 'All gear is covered from warehouse to your door and throughout your rental.' }
+                ]
+            }
+        ]
     }
 }
+

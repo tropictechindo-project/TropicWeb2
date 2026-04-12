@@ -43,8 +43,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'renting-it-equipment-vs-buying-2026'
     ]
 
+    // 🆕 Bali Rent Cluster v4.1 — new fast-rank keyword pages
+    const baliRentCluster = [
+        'rent-deks-bali',
+        'rent-stuff-bali',
+        'rent-setup-work-bali',
+        'bali-monitor',
+        'rent-grear-for-work-bali',
+        'fast-delivery-rent-bali',
+        'rent-monitor-bali',
+        'rent-chair-bali',
+    ]
+
     // Fallback for any newly added keys in SEO_PAGES not explicitly clustered
-    const allExpectedSlugs = [...regionalHubs, ...baliMasterclass, ...productClusters]
+    const allExpectedSlugs = [...regionalHubs, ...baliMasterclass, ...productClusters, ...baliRentCluster]
     const otherSeoSlugs = Object.keys(SEO_PAGES).filter(s => !allExpectedSlugs.includes(s))
 
     const seoPages: MetadataRoute.Sitemap = [
@@ -53,8 +65,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ].map(slug => ({
         url: `${baseUrl}/${slug}`,
         lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.85
+        changeFrequency: 'weekly' as const,
+        priority: baliRentCluster.includes(slug) ? 0.9 : 0.85
     }))
 
     try {
