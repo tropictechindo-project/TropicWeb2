@@ -1,4 +1,4 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# 🌴 TropicTech v4.0: Autonomous AI Rental Platform by IndoDesign.Website
 
 A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with IndoDesign.Website coding assistance.
 
@@ -26,9 +26,11 @@ This scaffold provides a robust foundation built with:
 - **🔄 TanStack Query** - Powerful data synchronization for React
 - **🌐 Fetch** - Promise-based HTTP request
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+### 🤖 AI Ecosystem (Autonomous)
+- **ORACLE Engine** - Programmatic SEO landing page generation
+- **AUDITOR Engine** - Performance-based keyword learning loop
+- **Master AI** - Secure 2-step verification orchestration
+- **Seller/Worker/Operator Agents** - Role-specific intelligence
 
 ### 🎨 Advanced UI Features
 - **📊 TanStack Table** - Headless UI for building tables and datagrids
@@ -72,7 +74,7 @@ bun start
 
 Open [http://localhost:3000](http://localhost:3000) to see your application running.
 
-## 🤖 Powered by Z.ai
+## 🤖 Powered by IndoDesign.Website | Bali.Technology
 
 This scaffold is optimized for use with IndoDesign.Website - your AI assistant for:
 
@@ -82,7 +84,7 @@ This scaffold is optimized for use with IndoDesign.Website - your AI assistant f
 - **📝 Documentation** - Auto-generate comprehensive documentation
 - **🚀 Optimization** - Performance improvements and best practices
 
-Ready to build something amazing? Start chatting with Z.ai at IndoDesign.Website and experience the future of AI-powered development!
+Ready to build something amazing? Start chatting with IndoDesign.Website and experience the future of AI-powered development!
 
 ## 📁 Project Structure
 
@@ -129,7 +131,7 @@ This scaffold includes a comprehensive set of modern web development tools:
 - **Type Safety**: End-to-end TypeScript with Zod validation
 - **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
 
-## 🤝 Get Started with Z.ai
+## 🤝 Get Started IndoDesign.Website | Bali.Technology
 
 1. **Clone this scaffold** to jumpstart your project
 2. **Visit IndoDesign.Website** to access your AI coding assistant
@@ -138,4 +140,4 @@ This scaffold includes a comprehensive set of modern web development tools:
 
 ---
 
-Built with ❤️ for the developer community. Supercharged by IndoDesign.Website 🚀
+Built with ❤️ by **IndoDesign.Website** for the TropicTech Global Rental Network 🚀
