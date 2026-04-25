@@ -41,7 +41,10 @@ export function AiConsole({ agents }: any) {
                 body: JSON.stringify({
                     message: input,
                     agentName: selectedAgent,
-                    history: messages.slice(-5)
+                    history: messages.slice(-5).map(m => ({
+                        role: m.role,
+                        content: typeof m.content === 'object' ? JSON.stringify(m.content) : String(m.content)
+                    }))
                 })
             })
 

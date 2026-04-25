@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
         const { message, agentName, history } = await request.json()
 
-        const systemPrompt = getBaseSystemPrompt(agentName)
+        const systemPrompt = await getBaseSystemPrompt(agentName)
 
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -30,8 +30,15 @@ export async function POST(request: NextRequest) {
         const content = response.choices[0].message.content
         const parsedContent = JSON.parse(content || '{}')
 
+        const reply = parsedContent.message || 
+                      parsedContent.response || 
+                      parsedContent.reply || 
+                      parsedContent.text || 
+                      parsedContent.content || 
+                      content
+        
         return NextResponse.json({
-            reply: parsedContent.message || parsedContent.reply || parsedContent.text || content,
+            reply: typeof reply === 'object' ? JSON.stringify(reply) : String(reply),
             proposal: parsedContent.type === 'PROPOSAL' ? parsedContent : null
         })
 

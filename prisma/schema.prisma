@@ -386,6 +386,8 @@ model ActivityLog {
   userId    String?  @map("user_id") @db.Uuid
   user      User?    @relation(fields: [userId], references: [id])
 
+  @@index([createdAt])
+  @@index([userId])
   @@map("activity_logs")
 }
 
@@ -926,6 +928,9 @@ model OrderItem {
   order           Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product         Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@index([orderId])
+  @@index([inventoryUnitId])
+  @@index([createdAt])
   @@map("order_items")
 }
 
@@ -945,5 +950,7 @@ model InventoryUnit {
   
   product               Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@index([productId])
+  @@index([status])
   @@map("inventory_units")
 }

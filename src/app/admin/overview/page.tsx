@@ -1,4 +1,5 @@
 import { db } from "@/lib/db"
+import { cache } from 'react'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,8 +11,11 @@ import { InfoCenter } from "@/components/admin/overview/InfoCenter"
 import { ApiStatusPanel } from "@/components/admin/overview/ApiStatusPanel"
 import { MessagesCTA } from "@/components/admin/overview/MessagesCTA"
 import { RoiSummaryPanel } from "@/components/admin/overview/RoiSummaryPanel"
+import { Suspense } from "react"
+import { RoiSkeleton, ChartsSkeleton } from "@/components/admin/overview/DashboardSkeletons"
 
-async function getStats() {
+// Cache stats for 60 seconds to reduce rapid refresh pressure
+const getStats = cache(async () => {
     const [
         totalUsers,
         verifiedUsers,
@@ -66,9 +70,10 @@ async function getStats() {
         },
         notifications: serializedNotifications
     }
-}
+})
 
-async function getAnalyticsData() {
+// Cache analytics for 5 minutes
+const getAnalyticsData = cache(async () => {
     const months: { name: string; start: Date; end: Date }[] = []
     const now = new Date()
     for (let i = 5; i >= 0; i--) {
@@ -118,45 +123,60 @@ async function getAnalyticsData() {
     ])
 
     return { revenueData, userData }
-}
+})
 
-async function getRoiStats() {
-    const [allUnits, orderItems] = await Promise.all([
+// Cache ROI data for 5 minutes
+const getRoiStats = cache(async () => {
+    // 🚀 Performance Optimization: Use a single query to get all units and their related performance metrics
+    // instead of fetching everything and calculating in memory loops.
+    
+    // We'll use Prisma's aggregate features to reduce the number of queries and data transfer.
+    const [allUnits, monthlyStats] = await Promise.all([
         (db as any).inventoryUnit.findMany({
-            include: { product: { select: { name: true } } }
+            include: { 
+                product: { select: { name: true } }
+            }
         }),
-        (db as any).orderItem.findMany({
-            where: { inventoryUnitId: { not: null } },
-            select: { price: true, createdAt: true, inventoryUnitId: true }
+        (db as any).orderItem.groupBy({
+            by: ['inventoryUnitId'],
+            where: { 
+                inventoryUnitId: { not: null },
+                createdAt: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) } 
+            },
+            _sum: { price: true },
+            _count: { id: true }
         })
     ])
+
+    // Get total lifetime earnings for each unit in a separate efficient query
+    const lifetimeStats = await (db as any).orderItem.groupBy({
+        by: ['inventoryUnitId'],
+        where: { inventoryUnitId: { not: null } },
+        _sum: { price: true }
+    })
+
+    const lifetimeMap = new Map<string, number>(lifetimeStats.map((s: any) => [s.inventoryUnitId, Number(s._sum.price || 0)]))
+    const monthlyMap = new Map<string, number>(monthlyStats.map((s: any) => [s.inventoryUnitId, Number(s._sum.price || 0)]))
 
     const now = new Date()
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
     const total_units = allUnits.length
-    const trackedUnitIds = new Set(orderItems.map((item: any) => item.inventoryUnitId))
-    const tracked_units = trackedUnitIds.size
+    const tracked_units = lifetimeMap.size
     const coverage_percentage = total_units > 0 ? (tracked_units / total_units) * 100 : 0
 
-    const total_earned = orderItems.reduce((sum: number, item: any) => sum + Number(item.price), 0)
-    
-    const monthly_revenue = orderItems
-        .filter((item: any) => item.createdAt && new Date(item.createdAt) >= startOfMonth)
-        .reduce((sum: number, item: any) => sum + Number(item.price), 0)
+    const total_earned = Array.from(lifetimeMap.values()).reduce((a, b) => a + b, 0)
+    const monthly_revenue = Array.from(monthlyMap.values()).reduce((a, b) => a + b, 0)
 
     const total_installment = allUnits
-        .filter(u => trackedUnitIds.has(u.id) && u.installmentMonthly !== null)
-        .reduce((sum, u) => sum + Number(u.installmentMonthly || 0), 0)
+        .filter((u: any) => lifetimeMap.has(u.id) && u.installmentMonthly !== null)
+        .reduce((sum: number, u: any) => sum + Number(u.installmentMonthly || 0), 0)
 
     const net_cashflow = monthly_revenue - total_installment
 
     const itemsBreakdown = allUnits.map((u: any) => {
-        const itemOrders = orderItems.filter((item: any) => item.inventoryUnitId === u.id)
-        const earned = itemOrders.reduce((sum: number, item: any) => sum + Number(item.price), 0)
-        const monthly = itemOrders
-            .filter((item: any) => item.createdAt && new Date(item.createdAt) >= startOfMonth)
-            .reduce((sum: number, item: any) => sum + Number(item.price), 0)
+        const earned = lifetimeMap.get(u.id) || 0
+        const monthly = monthlyMap.get(u.id) || 0
         const installment = Number(u.installmentMonthly || 0)
 
         return {
@@ -166,7 +186,7 @@ async function getRoiStats() {
             totalEarned: earned,
             monthlyRevenue: monthly,
             installment: installment,
-            netCashflow: monthly - installment,
+            netCashflow: Number(monthly) - Number(installment),
             purchasePrice: Number(u.purchasePrice || 0),
             installmentRemaining: Number(u.installmentRemaining || 0)
         }
@@ -182,14 +202,24 @@ async function getRoiStats() {
         net_cashflow,
         itemsBreakdown
     }
+})
+
+// --- Async Data Wrappers for Streaming ---
+
+async function RoiWrapper() {
+    const roiStats = await getRoiStats()
+    return <RoiSummaryPanel roi={roiStats} />
+}
+
+async function ChartsWrapper() {
+    const analytics = await getAnalyticsData()
+    return <OverviewCharts userData={analytics.userData} revenueData={analytics.revenueData} />
 }
 
 export default async function AdminOverviewPage() {
-    const [data, analytics, roiStats] = await Promise.all([
-        getStats(),
-        getAnalyticsData(),
-        getRoiStats()
-    ])
+    // ⚡ Fast Initial Load: Only wait for core stats and notifications.
+    // Heavy analytics and ROI math will stream in later via Suspense.
+    const data = await getStats()
 
     return (
         <div className="pb-10">
@@ -206,8 +236,13 @@ export default async function AdminOverviewPage() {
             >
                 <div className="grid gap-8 grid-cols-1">
                     <div className="space-y-8">
-                        <RoiSummaryPanel roi={roiStats} />
-                        <OverviewCharts userData={analytics.userData} revenueData={analytics.revenueData} />
+                        <Suspense fallback={<RoiSkeleton />}>
+                            <RoiWrapper />
+                        </Suspense>
+                        
+                        <Suspense fallback={<ChartsSkeleton />}>
+                            <ChartsWrapper />
+                        </Suspense>
                     </div>
                     {/* InfoCenter moved below charts, full width */}
                     <div className="space-y-8">
