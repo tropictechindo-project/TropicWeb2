@@ -30,8 +30,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Plus, Pencil, Trash2, Loader2, X } from "lucide-react"
+import { Plus, Pencil, Trash2, Loader2, X, Box } from "lucide-react"
 import { toast } from "sonner"
+import { useAuth } from "@/contexts/AuthContext"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { ImageUploadTool } from "../ImageUploadTool"
 
 interface PackageItem {
@@ -204,8 +206,43 @@ export function PackagesClient({ initialPackages, availableProducts }: PackagesC
         }
     }
 
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <Box className="w-4 h-4" /> ADMIN COMMAND: BUNDLED DEALS (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>G'day! Here's how you bundle the gear, mate:</p>
+                <p>• <b>Create Packages:</b> You can group different items together (like a desk + chair + monitor) for a better monthly price. It makes it easier for the customers to grab a whole setup.</p>
+                <p>• <b>Item Selection:</b> Make sure you pick the right products for the bundle. The system will handle the stock levels for each item automatically.</p>
+                <p>• <b>Duration:</b> Set how many months the bundle lasts. Usually, the longer they rent, the better the deal, cheers!</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-purple-500 bg-purple-50/30 dark:bg-purple-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <Box className="w-4 h-4" /> PANDUAN OPERATOR: PAKET SEWA (ID)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-purple-800 dark:text-purple-300 font-medium">
+                <p>Halo Operator! Gunakan panel ini untuk mengelola paket bundling:</p>
+                <p>• <b>Kelola Item:</b> Pastikan setiap paket memiliki produk yang tepat di dalamnya. Cek daftar "Package Items" sebelum menyimpan.</p>
+                <p>• <b>Harga Bundling:</b> Pastikan harga paket lebih menarik dibandingkan sewa satuan agar pelanggan lebih tertarik mengambil paket lengkap.</p>
+                <p>• <b>Update Gambar:</b> Gunakan foto yang memperlihatkan semua barang dalam paket agar pelanggan tidak bingung.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <>
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <div className="flex justify-end mb-4">
                 <Button onClick={() => setIsOpen(true)}>
                     <Plus className="mr-2 h-4 w-4" /> Add Package

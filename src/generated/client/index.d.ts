@@ -215,6 +215,16 @@ export type ContactMessage = $Result.DefaultSelection<Prisma.$ContactMessagePayl
  */
 export type ItemRequest = $Result.DefaultSelection<Prisma.$ItemRequestPayload>
 /**
+ * Model AiChatSession
+ * 
+ */
+export type AiChatSession = $Result.DefaultSelection<Prisma.$AiChatSessionPayload>
+/**
+ * Model AiChatMessage
+ * 
+ */
+export type AiChatMessage = $Result.DefaultSelection<Prisma.$AiChatMessagePayload>
+/**
  * Model EmailAudit
  * 
  */
@@ -375,7 +385,8 @@ export type VehicleType = (typeof VehicleType)[keyof typeof VehicleType]
 export const VehicleStatus: {
   AVAILABLE: 'AVAILABLE',
   IN_USE: 'IN_USE',
-  MAINTENANCE: 'MAINTENANCE'
+  MAINTENANCE: 'MAINTENANCE',
+  RETURNING: 'RETURNING'
 };
 
 export type VehicleStatus = (typeof VehicleStatus)[keyof typeof VehicleStatus]
@@ -1005,6 +1016,26 @@ export class PrismaClient<
   get itemRequest(): Prisma.ItemRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.aiChatSession`: Exposes CRUD operations for the **AiChatSession** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiChatSessions
+    * const aiChatSessions = await prisma.aiChatSession.findMany()
+    * ```
+    */
+  get aiChatSession(): Prisma.AiChatSessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiChatMessage`: Exposes CRUD operations for the **AiChatMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiChatMessages
+    * const aiChatMessages = await prisma.aiChatMessage.findMany()
+    * ```
+    */
+  get aiChatMessage(): Prisma.AiChatMessageDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.emailAudit`: Exposes CRUD operations for the **EmailAudit** model.
     * Example usage:
     * ```ts
@@ -1544,6 +1575,8 @@ export namespace Prisma {
     SpecialOffer: 'SpecialOffer',
     ContactMessage: 'ContactMessage',
     ItemRequest: 'ItemRequest',
+    AiChatSession: 'AiChatSession',
+    AiChatMessage: 'AiChatMessage',
     EmailAudit: 'EmailAudit',
     SeoPage: 'SeoPage',
     SeoAnalytics: 'SeoAnalytics',
@@ -1568,7 +1601,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage" | "itemRequest" | "emailAudit" | "seoPage" | "seoAnalytics" | "aiInsight" | "orderItem" | "inventoryUnit"
+      modelProps: "invoice" | "order" | "paymentTransaction" | "productRelation" | "rentalPackageItem" | "rentalPackage" | "product" | "productVariant" | "productUnit" | "unitHistory" | "systemNotification" | "rentalItem" | "user" | "chatGroup" | "chatGroupMember" | "groupMessage" | "siteSetting" | "activityLog" | "workerAttendance" | "inventorySyncLog" | "workerNotification" | "message" | "notificationDismissal" | "systemJobLog" | "idempotencyKey" | "jobQueue" | "cronLock" | "spiNotification" | "aiAgent" | "aiPermission" | "aiAction" | "aiTrainingData" | "vehicle" | "delivery" | "deliveryItem" | "deliveryLog" | "deliveryEditLog" | "specialOffer" | "contactMessage" | "itemRequest" | "aiChatSession" | "aiChatMessage" | "emailAudit" | "seoPage" | "seoAnalytics" | "aiInsight" | "orderItem" | "inventoryUnit"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4532,6 +4565,154 @@ export namespace Prisma {
           }
         }
       }
+      AiChatSession: {
+        payload: Prisma.$AiChatSessionPayload<ExtArgs>
+        fields: Prisma.AiChatSessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiChatSessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiChatSessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          findFirst: {
+            args: Prisma.AiChatSessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiChatSessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          findMany: {
+            args: Prisma.AiChatSessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>[]
+          }
+          create: {
+            args: Prisma.AiChatSessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          createMany: {
+            args: Prisma.AiChatSessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiChatSessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>[]
+          }
+          delete: {
+            args: Prisma.AiChatSessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          update: {
+            args: Prisma.AiChatSessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiChatSessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiChatSessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiChatSessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiChatSessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatSessionPayload>
+          }
+          aggregate: {
+            args: Prisma.AiChatSessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiChatSession>
+          }
+          groupBy: {
+            args: Prisma.AiChatSessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiChatSessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiChatSessionCountArgs<ExtArgs>
+            result: $Utils.Optional<AiChatSessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiChatMessage: {
+        payload: Prisma.$AiChatMessagePayload<ExtArgs>
+        fields: Prisma.AiChatMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiChatMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiChatMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.AiChatMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiChatMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          findMany: {
+            args: Prisma.AiChatMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>[]
+          }
+          create: {
+            args: Prisma.AiChatMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          createMany: {
+            args: Prisma.AiChatMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiChatMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.AiChatMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          update: {
+            args: Prisma.AiChatMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.AiChatMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiChatMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiChatMessageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>[]
+          }
+          upsert: {
+            args: Prisma.AiChatMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiChatMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.AiChatMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiChatMessage>
+          }
+          groupBy: {
+            args: Prisma.AiChatMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiChatMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiChatMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<AiChatMessageCountAggregateOutputType> | number
+          }
+        }
+      }
       EmailAudit: {
         payload: Prisma.$EmailAuditPayload<ExtArgs>
         fields: Prisma.EmailAuditFieldRefs
@@ -5112,6 +5293,8 @@ export namespace Prisma {
     specialOffer?: SpecialOfferOmit
     contactMessage?: ContactMessageOmit
     itemRequest?: ItemRequestOmit
+    aiChatSession?: AiChatSessionOmit
+    aiChatMessage?: AiChatMessageOmit
     emailAudit?: EmailAuditOmit
     seoPage?: SeoPageOmit
     seoAnalytics?: SeoAnalyticsOmit
@@ -5564,6 +5747,7 @@ export namespace Prisma {
     workerAttendance: number
     sentNotifications: number
     receivedNotifications: number
+    aiChatSessions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5590,6 +5774,7 @@ export namespace Prisma {
     workerAttendance?: boolean | UserCountOutputTypeCountWorkerAttendanceArgs
     sentNotifications?: boolean | UserCountOutputTypeCountSentNotificationsArgs
     receivedNotifications?: boolean | UserCountOutputTypeCountReceivedNotificationsArgs
+    aiChatSessions?: boolean | UserCountOutputTypeCountAiChatSessionsArgs
   }
 
   // Custom InputTypes
@@ -5764,6 +5949,13 @@ export namespace Prisma {
     where?: WorkerNotificationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAiChatSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiChatSessionWhereInput
+  }
+
 
   /**
    * Count Type ChatGroupCountOutputType
@@ -5931,6 +6123,37 @@ export namespace Prisma {
    */
   export type DeliveryCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DeliveryLogWhereInput
+  }
+
+
+  /**
+   * Count Type AiChatSessionCountOutputType
+   */
+
+  export type AiChatSessionCountOutputType = {
+    messages: number
+  }
+
+  export type AiChatSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    messages?: boolean | AiChatSessionCountOutputTypeCountMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AiChatSessionCountOutputType without action
+   */
+  export type AiChatSessionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSessionCountOutputType
+     */
+    select?: AiChatSessionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AiChatSessionCountOutputType without action
+   */
+  export type AiChatSessionCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiChatMessageWhereInput
   }
 
 
@@ -21379,6 +21602,7 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    aiChatSessions?: boolean | User$aiChatSessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -21470,6 +21694,7 @@ export namespace Prisma {
     workerAttendance?: boolean | User$workerAttendanceArgs<ExtArgs>
     sentNotifications?: boolean | User$sentNotificationsArgs<ExtArgs>
     receivedNotifications?: boolean | User$receivedNotificationsArgs<ExtArgs>
+    aiChatSessions?: boolean | User$aiChatSessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -21501,6 +21726,7 @@ export namespace Prisma {
       workerAttendance: Prisma.$WorkerAttendancePayload<ExtArgs>[]
       sentNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
       receivedNotifications: Prisma.$WorkerNotificationPayload<ExtArgs>[]
+      aiChatSessions: Prisma.$AiChatSessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21938,6 +22164,7 @@ export namespace Prisma {
     workerAttendance<T extends User$workerAttendanceArgs<ExtArgs> = {}>(args?: Subset<T, User$workerAttendanceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerAttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sentNotifications<T extends User$sentNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$sentNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedNotifications<T extends User$receivedNotificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    aiChatSessions<T extends User$aiChatSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$aiChatSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22922,6 +23149,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkerNotificationScalarFieldEnum | WorkerNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.aiChatSessions
+   */
+  export type User$aiChatSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    where?: AiChatSessionWhereInput
+    orderBy?: AiChatSessionOrderByWithRelationInput | AiChatSessionOrderByWithRelationInput[]
+    cursor?: AiChatSessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiChatSessionScalarFieldEnum | AiChatSessionScalarFieldEnum[]
   }
 
   /**
@@ -52614,6 +52865,2154 @@ export namespace Prisma {
 
 
   /**
+   * Model AiChatSession
+   */
+
+  export type AggregateAiChatSession = {
+    _count: AiChatSessionCountAggregateOutputType | null
+    _min: AiChatSessionMinAggregateOutputType | null
+    _max: AiChatSessionMaxAggregateOutputType | null
+  }
+
+  export type AiChatSessionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type AiChatSessionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type AiChatSessionCountAggregateOutputType = {
+    id: number
+    userId: number
+    metadata: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AiChatSessionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type AiChatSessionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type AiChatSessionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    metadata?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AiChatSessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiChatSession to aggregate.
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatSessions to fetch.
+     */
+    orderBy?: AiChatSessionOrderByWithRelationInput | AiChatSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiChatSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiChatSessions
+    **/
+    _count?: true | AiChatSessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiChatSessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiChatSessionMaxAggregateInputType
+  }
+
+  export type GetAiChatSessionAggregateType<T extends AiChatSessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiChatSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiChatSession[P]>
+      : GetScalarType<T[P], AggregateAiChatSession[P]>
+  }
+
+
+
+
+  export type AiChatSessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiChatSessionWhereInput
+    orderBy?: AiChatSessionOrderByWithAggregationInput | AiChatSessionOrderByWithAggregationInput[]
+    by: AiChatSessionScalarFieldEnum[] | AiChatSessionScalarFieldEnum
+    having?: AiChatSessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiChatSessionCountAggregateInputType | true
+    _min?: AiChatSessionMinAggregateInputType
+    _max?: AiChatSessionMaxAggregateInputType
+  }
+
+  export type AiChatSessionGroupByOutputType = {
+    id: string
+    userId: string | null
+    metadata: JsonValue | null
+    createdAt: Date
+    _count: AiChatSessionCountAggregateOutputType | null
+    _min: AiChatSessionMinAggregateOutputType | null
+    _max: AiChatSessionMaxAggregateOutputType | null
+  }
+
+  type GetAiChatSessionGroupByPayload<T extends AiChatSessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiChatSessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiChatSessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiChatSessionGroupByOutputType[P]>
+            : GetScalarType<T[P], AiChatSessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiChatSessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+    messages?: boolean | AiChatSession$messagesArgs<ExtArgs>
+    _count?: boolean | AiChatSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatSession"]>
+
+  export type AiChatSessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatSession"]>
+
+  export type AiChatSessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatSession"]>
+
+  export type AiChatSessionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+  }
+
+  export type AiChatSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "metadata" | "createdAt", ExtArgs["result"]["aiChatSession"]>
+  export type AiChatSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+    messages?: boolean | AiChatSession$messagesArgs<ExtArgs>
+    _count?: boolean | AiChatSessionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AiChatSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+  }
+  export type AiChatSessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiChatSession$userArgs<ExtArgs>
+  }
+
+  export type $AiChatSessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiChatSession"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+      messages: Prisma.$AiChatMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string | null
+      metadata: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["aiChatSession"]>
+    composites: {}
+  }
+
+  type AiChatSessionGetPayload<S extends boolean | null | undefined | AiChatSessionDefaultArgs> = $Result.GetResult<Prisma.$AiChatSessionPayload, S>
+
+  type AiChatSessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiChatSessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiChatSessionCountAggregateInputType | true
+    }
+
+  export interface AiChatSessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiChatSession'], meta: { name: 'AiChatSession' } }
+    /**
+     * Find zero or one AiChatSession that matches the filter.
+     * @param {AiChatSessionFindUniqueArgs} args - Arguments to find a AiChatSession
+     * @example
+     * // Get one AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiChatSessionFindUniqueArgs>(args: SelectSubset<T, AiChatSessionFindUniqueArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiChatSession that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiChatSessionFindUniqueOrThrowArgs} args - Arguments to find a AiChatSession
+     * @example
+     * // Get one AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiChatSessionFindUniqueOrThrowArgs>(args: SelectSubset<T, AiChatSessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiChatSession that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionFindFirstArgs} args - Arguments to find a AiChatSession
+     * @example
+     * // Get one AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiChatSessionFindFirstArgs>(args?: SelectSubset<T, AiChatSessionFindFirstArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiChatSession that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionFindFirstOrThrowArgs} args - Arguments to find a AiChatSession
+     * @example
+     * // Get one AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiChatSessionFindFirstOrThrowArgs>(args?: SelectSubset<T, AiChatSessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiChatSessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiChatSessions
+     * const aiChatSessions = await prisma.aiChatSession.findMany()
+     * 
+     * // Get first 10 AiChatSessions
+     * const aiChatSessions = await prisma.aiChatSession.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiChatSessionWithIdOnly = await prisma.aiChatSession.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiChatSessionFindManyArgs>(args?: SelectSubset<T, AiChatSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiChatSession.
+     * @param {AiChatSessionCreateArgs} args - Arguments to create a AiChatSession.
+     * @example
+     * // Create one AiChatSession
+     * const AiChatSession = await prisma.aiChatSession.create({
+     *   data: {
+     *     // ... data to create a AiChatSession
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiChatSessionCreateArgs>(args: SelectSubset<T, AiChatSessionCreateArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiChatSessions.
+     * @param {AiChatSessionCreateManyArgs} args - Arguments to create many AiChatSessions.
+     * @example
+     * // Create many AiChatSessions
+     * const aiChatSession = await prisma.aiChatSession.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiChatSessionCreateManyArgs>(args?: SelectSubset<T, AiChatSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiChatSessions and returns the data saved in the database.
+     * @param {AiChatSessionCreateManyAndReturnArgs} args - Arguments to create many AiChatSessions.
+     * @example
+     * // Create many AiChatSessions
+     * const aiChatSession = await prisma.aiChatSession.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiChatSessions and only return the `id`
+     * const aiChatSessionWithIdOnly = await prisma.aiChatSession.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiChatSessionCreateManyAndReturnArgs>(args?: SelectSubset<T, AiChatSessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiChatSession.
+     * @param {AiChatSessionDeleteArgs} args - Arguments to delete one AiChatSession.
+     * @example
+     * // Delete one AiChatSession
+     * const AiChatSession = await prisma.aiChatSession.delete({
+     *   where: {
+     *     // ... filter to delete one AiChatSession
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiChatSessionDeleteArgs>(args: SelectSubset<T, AiChatSessionDeleteArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiChatSession.
+     * @param {AiChatSessionUpdateArgs} args - Arguments to update one AiChatSession.
+     * @example
+     * // Update one AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiChatSessionUpdateArgs>(args: SelectSubset<T, AiChatSessionUpdateArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiChatSessions.
+     * @param {AiChatSessionDeleteManyArgs} args - Arguments to filter AiChatSessions to delete.
+     * @example
+     * // Delete a few AiChatSessions
+     * const { count } = await prisma.aiChatSession.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiChatSessionDeleteManyArgs>(args?: SelectSubset<T, AiChatSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiChatSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiChatSessions
+     * const aiChatSession = await prisma.aiChatSession.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiChatSessionUpdateManyArgs>(args: SelectSubset<T, AiChatSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiChatSessions and returns the data updated in the database.
+     * @param {AiChatSessionUpdateManyAndReturnArgs} args - Arguments to update many AiChatSessions.
+     * @example
+     * // Update many AiChatSessions
+     * const aiChatSession = await prisma.aiChatSession.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiChatSessions and only return the `id`
+     * const aiChatSessionWithIdOnly = await prisma.aiChatSession.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiChatSessionUpdateManyAndReturnArgs>(args: SelectSubset<T, AiChatSessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiChatSession.
+     * @param {AiChatSessionUpsertArgs} args - Arguments to update or create a AiChatSession.
+     * @example
+     * // Update or create a AiChatSession
+     * const aiChatSession = await prisma.aiChatSession.upsert({
+     *   create: {
+     *     // ... data to create a AiChatSession
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiChatSession we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiChatSessionUpsertArgs>(args: SelectSubset<T, AiChatSessionUpsertArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiChatSessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionCountArgs} args - Arguments to filter AiChatSessions to count.
+     * @example
+     * // Count the number of AiChatSessions
+     * const count = await prisma.aiChatSession.count({
+     *   where: {
+     *     // ... the filter for the AiChatSessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiChatSessionCountArgs>(
+      args?: Subset<T, AiChatSessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiChatSessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiChatSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiChatSessionAggregateArgs>(args: Subset<T, AiChatSessionAggregateArgs>): Prisma.PrismaPromise<GetAiChatSessionAggregateType<T>>
+
+    /**
+     * Group by AiChatSession.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatSessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiChatSessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiChatSessionGroupByArgs['orderBy'] }
+        : { orderBy?: AiChatSessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiChatSessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiChatSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiChatSession model
+   */
+  readonly fields: AiChatSessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiChatSession.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiChatSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends AiChatSession$userArgs<ExtArgs> = {}>(args?: Subset<T, AiChatSession$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    messages<T extends AiChatSession$messagesArgs<ExtArgs> = {}>(args?: Subset<T, AiChatSession$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiChatSession model
+   */
+  interface AiChatSessionFieldRefs {
+    readonly id: FieldRef<"AiChatSession", 'String'>
+    readonly userId: FieldRef<"AiChatSession", 'String'>
+    readonly metadata: FieldRef<"AiChatSession", 'Json'>
+    readonly createdAt: FieldRef<"AiChatSession", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiChatSession findUnique
+   */
+  export type AiChatSessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatSession to fetch.
+     */
+    where: AiChatSessionWhereUniqueInput
+  }
+
+  /**
+   * AiChatSession findUniqueOrThrow
+   */
+  export type AiChatSessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatSession to fetch.
+     */
+    where: AiChatSessionWhereUniqueInput
+  }
+
+  /**
+   * AiChatSession findFirst
+   */
+  export type AiChatSessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatSession to fetch.
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatSessions to fetch.
+     */
+    orderBy?: AiChatSessionOrderByWithRelationInput | AiChatSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiChatSessions.
+     */
+    cursor?: AiChatSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiChatSessions.
+     */
+    distinct?: AiChatSessionScalarFieldEnum | AiChatSessionScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatSession findFirstOrThrow
+   */
+  export type AiChatSessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatSession to fetch.
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatSessions to fetch.
+     */
+    orderBy?: AiChatSessionOrderByWithRelationInput | AiChatSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiChatSessions.
+     */
+    cursor?: AiChatSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatSessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiChatSessions.
+     */
+    distinct?: AiChatSessionScalarFieldEnum | AiChatSessionScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatSession findMany
+   */
+  export type AiChatSessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatSessions to fetch.
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatSessions to fetch.
+     */
+    orderBy?: AiChatSessionOrderByWithRelationInput | AiChatSessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiChatSessions.
+     */
+    cursor?: AiChatSessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatSessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatSessions.
+     */
+    skip?: number
+    distinct?: AiChatSessionScalarFieldEnum | AiChatSessionScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatSession create
+   */
+  export type AiChatSessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiChatSession.
+     */
+    data?: XOR<AiChatSessionCreateInput, AiChatSessionUncheckedCreateInput>
+  }
+
+  /**
+   * AiChatSession createMany
+   */
+  export type AiChatSessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiChatSessions.
+     */
+    data: AiChatSessionCreateManyInput | AiChatSessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiChatSession createManyAndReturn
+   */
+  export type AiChatSessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiChatSessions.
+     */
+    data: AiChatSessionCreateManyInput | AiChatSessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiChatSession update
+   */
+  export type AiChatSessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiChatSession.
+     */
+    data: XOR<AiChatSessionUpdateInput, AiChatSessionUncheckedUpdateInput>
+    /**
+     * Choose, which AiChatSession to update.
+     */
+    where: AiChatSessionWhereUniqueInput
+  }
+
+  /**
+   * AiChatSession updateMany
+   */
+  export type AiChatSessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiChatSessions.
+     */
+    data: XOR<AiChatSessionUpdateManyMutationInput, AiChatSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which AiChatSessions to update
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * Limit how many AiChatSessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiChatSession updateManyAndReturn
+   */
+  export type AiChatSessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * The data used to update AiChatSessions.
+     */
+    data: XOR<AiChatSessionUpdateManyMutationInput, AiChatSessionUncheckedUpdateManyInput>
+    /**
+     * Filter which AiChatSessions to update
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * Limit how many AiChatSessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiChatSession upsert
+   */
+  export type AiChatSessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiChatSession to update in case it exists.
+     */
+    where: AiChatSessionWhereUniqueInput
+    /**
+     * In case the AiChatSession found by the `where` argument doesn't exist, create a new AiChatSession with this data.
+     */
+    create: XOR<AiChatSessionCreateInput, AiChatSessionUncheckedCreateInput>
+    /**
+     * In case the AiChatSession was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiChatSessionUpdateInput, AiChatSessionUncheckedUpdateInput>
+  }
+
+  /**
+   * AiChatSession delete
+   */
+  export type AiChatSessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+    /**
+     * Filter which AiChatSession to delete.
+     */
+    where: AiChatSessionWhereUniqueInput
+  }
+
+  /**
+   * AiChatSession deleteMany
+   */
+  export type AiChatSessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiChatSessions to delete
+     */
+    where?: AiChatSessionWhereInput
+    /**
+     * Limit how many AiChatSessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiChatSession.user
+   */
+  export type AiChatSession$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AiChatSession.messages
+   */
+  export type AiChatSession$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    where?: AiChatMessageWhereInput
+    orderBy?: AiChatMessageOrderByWithRelationInput | AiChatMessageOrderByWithRelationInput[]
+    cursor?: AiChatMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiChatMessageScalarFieldEnum | AiChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatSession without action
+   */
+  export type AiChatSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatSession
+     */
+    select?: AiChatSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatSession
+     */
+    omit?: AiChatSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatSessionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiChatMessage
+   */
+
+  export type AggregateAiChatMessage = {
+    _count: AiChatMessageCountAggregateOutputType | null
+    _min: AiChatMessageMinAggregateOutputType | null
+    _max: AiChatMessageMaxAggregateOutputType | null
+  }
+
+  export type AiChatMessageMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    role: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type AiChatMessageMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    role: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type AiChatMessageCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    role: number
+    content: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AiChatMessageMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type AiChatMessageMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type AiChatMessageCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    role?: true
+    content?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AiChatMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiChatMessage to aggregate.
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatMessages to fetch.
+     */
+    orderBy?: AiChatMessageOrderByWithRelationInput | AiChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiChatMessages
+    **/
+    _count?: true | AiChatMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiChatMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiChatMessageMaxAggregateInputType
+  }
+
+  export type GetAiChatMessageAggregateType<T extends AiChatMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiChatMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiChatMessage[P]>
+      : GetScalarType<T[P], AggregateAiChatMessage[P]>
+  }
+
+
+
+
+  export type AiChatMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiChatMessageWhereInput
+    orderBy?: AiChatMessageOrderByWithAggregationInput | AiChatMessageOrderByWithAggregationInput[]
+    by: AiChatMessageScalarFieldEnum[] | AiChatMessageScalarFieldEnum
+    having?: AiChatMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiChatMessageCountAggregateInputType | true
+    _min?: AiChatMessageMinAggregateInputType
+    _max?: AiChatMessageMaxAggregateInputType
+  }
+
+  export type AiChatMessageGroupByOutputType = {
+    id: string
+    sessionId: string
+    role: string
+    content: string
+    createdAt: Date
+    _count: AiChatMessageCountAggregateOutputType | null
+    _min: AiChatMessageMinAggregateOutputType | null
+    _max: AiChatMessageMaxAggregateOutputType | null
+  }
+
+  type GetAiChatMessageGroupByPayload<T extends AiChatMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiChatMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiChatMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiChatMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], AiChatMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiChatMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatMessage"]>
+
+  export type AiChatMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatMessage"]>
+
+  export type AiChatMessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiChatMessage"]>
+
+  export type AiChatMessageSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    role?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }
+
+  export type AiChatMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "role" | "content" | "createdAt", ExtArgs["result"]["aiChatMessage"]>
+  export type AiChatMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }
+  export type AiChatMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }
+  export type AiChatMessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | AiChatSessionDefaultArgs<ExtArgs>
+  }
+
+  export type $AiChatMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiChatMessage"
+    objects: {
+      session: Prisma.$AiChatSessionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      role: string
+      content: string
+      createdAt: Date
+    }, ExtArgs["result"]["aiChatMessage"]>
+    composites: {}
+  }
+
+  type AiChatMessageGetPayload<S extends boolean | null | undefined | AiChatMessageDefaultArgs> = $Result.GetResult<Prisma.$AiChatMessagePayload, S>
+
+  type AiChatMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiChatMessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiChatMessageCountAggregateInputType | true
+    }
+
+  export interface AiChatMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiChatMessage'], meta: { name: 'AiChatMessage' } }
+    /**
+     * Find zero or one AiChatMessage that matches the filter.
+     * @param {AiChatMessageFindUniqueArgs} args - Arguments to find a AiChatMessage
+     * @example
+     * // Get one AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiChatMessageFindUniqueArgs>(args: SelectSubset<T, AiChatMessageFindUniqueArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiChatMessage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiChatMessageFindUniqueOrThrowArgs} args - Arguments to find a AiChatMessage
+     * @example
+     * // Get one AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiChatMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, AiChatMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiChatMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageFindFirstArgs} args - Arguments to find a AiChatMessage
+     * @example
+     * // Get one AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiChatMessageFindFirstArgs>(args?: SelectSubset<T, AiChatMessageFindFirstArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiChatMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageFindFirstOrThrowArgs} args - Arguments to find a AiChatMessage
+     * @example
+     * // Get one AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiChatMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, AiChatMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiChatMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiChatMessages
+     * const aiChatMessages = await prisma.aiChatMessage.findMany()
+     * 
+     * // Get first 10 AiChatMessages
+     * const aiChatMessages = await prisma.aiChatMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiChatMessageWithIdOnly = await prisma.aiChatMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiChatMessageFindManyArgs>(args?: SelectSubset<T, AiChatMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiChatMessage.
+     * @param {AiChatMessageCreateArgs} args - Arguments to create a AiChatMessage.
+     * @example
+     * // Create one AiChatMessage
+     * const AiChatMessage = await prisma.aiChatMessage.create({
+     *   data: {
+     *     // ... data to create a AiChatMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiChatMessageCreateArgs>(args: SelectSubset<T, AiChatMessageCreateArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiChatMessages.
+     * @param {AiChatMessageCreateManyArgs} args - Arguments to create many AiChatMessages.
+     * @example
+     * // Create many AiChatMessages
+     * const aiChatMessage = await prisma.aiChatMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiChatMessageCreateManyArgs>(args?: SelectSubset<T, AiChatMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiChatMessages and returns the data saved in the database.
+     * @param {AiChatMessageCreateManyAndReturnArgs} args - Arguments to create many AiChatMessages.
+     * @example
+     * // Create many AiChatMessages
+     * const aiChatMessage = await prisma.aiChatMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiChatMessages and only return the `id`
+     * const aiChatMessageWithIdOnly = await prisma.aiChatMessage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiChatMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, AiChatMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiChatMessage.
+     * @param {AiChatMessageDeleteArgs} args - Arguments to delete one AiChatMessage.
+     * @example
+     * // Delete one AiChatMessage
+     * const AiChatMessage = await prisma.aiChatMessage.delete({
+     *   where: {
+     *     // ... filter to delete one AiChatMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiChatMessageDeleteArgs>(args: SelectSubset<T, AiChatMessageDeleteArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiChatMessage.
+     * @param {AiChatMessageUpdateArgs} args - Arguments to update one AiChatMessage.
+     * @example
+     * // Update one AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiChatMessageUpdateArgs>(args: SelectSubset<T, AiChatMessageUpdateArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiChatMessages.
+     * @param {AiChatMessageDeleteManyArgs} args - Arguments to filter AiChatMessages to delete.
+     * @example
+     * // Delete a few AiChatMessages
+     * const { count } = await prisma.aiChatMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiChatMessageDeleteManyArgs>(args?: SelectSubset<T, AiChatMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiChatMessages
+     * const aiChatMessage = await prisma.aiChatMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiChatMessageUpdateManyArgs>(args: SelectSubset<T, AiChatMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiChatMessages and returns the data updated in the database.
+     * @param {AiChatMessageUpdateManyAndReturnArgs} args - Arguments to update many AiChatMessages.
+     * @example
+     * // Update many AiChatMessages
+     * const aiChatMessage = await prisma.aiChatMessage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiChatMessages and only return the `id`
+     * const aiChatMessageWithIdOnly = await prisma.aiChatMessage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiChatMessageUpdateManyAndReturnArgs>(args: SelectSubset<T, AiChatMessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiChatMessage.
+     * @param {AiChatMessageUpsertArgs} args - Arguments to update or create a AiChatMessage.
+     * @example
+     * // Update or create a AiChatMessage
+     * const aiChatMessage = await prisma.aiChatMessage.upsert({
+     *   create: {
+     *     // ... data to create a AiChatMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiChatMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiChatMessageUpsertArgs>(args: SelectSubset<T, AiChatMessageUpsertArgs<ExtArgs>>): Prisma__AiChatMessageClient<$Result.GetResult<Prisma.$AiChatMessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiChatMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageCountArgs} args - Arguments to filter AiChatMessages to count.
+     * @example
+     * // Count the number of AiChatMessages
+     * const count = await prisma.aiChatMessage.count({
+     *   where: {
+     *     // ... the filter for the AiChatMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiChatMessageCountArgs>(
+      args?: Subset<T, AiChatMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiChatMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiChatMessageAggregateArgs>(args: Subset<T, AiChatMessageAggregateArgs>): Prisma.PrismaPromise<GetAiChatMessageAggregateType<T>>
+
+    /**
+     * Group by AiChatMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiChatMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiChatMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiChatMessageGroupByArgs['orderBy'] }
+        : { orderBy?: AiChatMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiChatMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiChatMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiChatMessage model
+   */
+  readonly fields: AiChatMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiChatMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiChatMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends AiChatSessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AiChatSessionDefaultArgs<ExtArgs>>): Prisma__AiChatSessionClient<$Result.GetResult<Prisma.$AiChatSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiChatMessage model
+   */
+  interface AiChatMessageFieldRefs {
+    readonly id: FieldRef<"AiChatMessage", 'String'>
+    readonly sessionId: FieldRef<"AiChatMessage", 'String'>
+    readonly role: FieldRef<"AiChatMessage", 'String'>
+    readonly content: FieldRef<"AiChatMessage", 'String'>
+    readonly createdAt: FieldRef<"AiChatMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiChatMessage findUnique
+   */
+  export type AiChatMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatMessage to fetch.
+     */
+    where: AiChatMessageWhereUniqueInput
+  }
+
+  /**
+   * AiChatMessage findUniqueOrThrow
+   */
+  export type AiChatMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatMessage to fetch.
+     */
+    where: AiChatMessageWhereUniqueInput
+  }
+
+  /**
+   * AiChatMessage findFirst
+   */
+  export type AiChatMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatMessage to fetch.
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatMessages to fetch.
+     */
+    orderBy?: AiChatMessageOrderByWithRelationInput | AiChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiChatMessages.
+     */
+    cursor?: AiChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiChatMessages.
+     */
+    distinct?: AiChatMessageScalarFieldEnum | AiChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatMessage findFirstOrThrow
+   */
+  export type AiChatMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatMessage to fetch.
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatMessages to fetch.
+     */
+    orderBy?: AiChatMessageOrderByWithRelationInput | AiChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiChatMessages.
+     */
+    cursor?: AiChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiChatMessages.
+     */
+    distinct?: AiChatMessageScalarFieldEnum | AiChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatMessage findMany
+   */
+  export type AiChatMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which AiChatMessages to fetch.
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiChatMessages to fetch.
+     */
+    orderBy?: AiChatMessageOrderByWithRelationInput | AiChatMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiChatMessages.
+     */
+    cursor?: AiChatMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiChatMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiChatMessages.
+     */
+    skip?: number
+    distinct?: AiChatMessageScalarFieldEnum | AiChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * AiChatMessage create
+   */
+  export type AiChatMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiChatMessage.
+     */
+    data: XOR<AiChatMessageCreateInput, AiChatMessageUncheckedCreateInput>
+  }
+
+  /**
+   * AiChatMessage createMany
+   */
+  export type AiChatMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiChatMessages.
+     */
+    data: AiChatMessageCreateManyInput | AiChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiChatMessage createManyAndReturn
+   */
+  export type AiChatMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiChatMessages.
+     */
+    data: AiChatMessageCreateManyInput | AiChatMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiChatMessage update
+   */
+  export type AiChatMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiChatMessage.
+     */
+    data: XOR<AiChatMessageUpdateInput, AiChatMessageUncheckedUpdateInput>
+    /**
+     * Choose, which AiChatMessage to update.
+     */
+    where: AiChatMessageWhereUniqueInput
+  }
+
+  /**
+   * AiChatMessage updateMany
+   */
+  export type AiChatMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiChatMessages.
+     */
+    data: XOR<AiChatMessageUpdateManyMutationInput, AiChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which AiChatMessages to update
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * Limit how many AiChatMessages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiChatMessage updateManyAndReturn
+   */
+  export type AiChatMessageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * The data used to update AiChatMessages.
+     */
+    data: XOR<AiChatMessageUpdateManyMutationInput, AiChatMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which AiChatMessages to update
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * Limit how many AiChatMessages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiChatMessage upsert
+   */
+  export type AiChatMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiChatMessage to update in case it exists.
+     */
+    where: AiChatMessageWhereUniqueInput
+    /**
+     * In case the AiChatMessage found by the `where` argument doesn't exist, create a new AiChatMessage with this data.
+     */
+    create: XOR<AiChatMessageCreateInput, AiChatMessageUncheckedCreateInput>
+    /**
+     * In case the AiChatMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiChatMessageUpdateInput, AiChatMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * AiChatMessage delete
+   */
+  export type AiChatMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+    /**
+     * Filter which AiChatMessage to delete.
+     */
+    where: AiChatMessageWhereUniqueInput
+  }
+
+  /**
+   * AiChatMessage deleteMany
+   */
+  export type AiChatMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiChatMessages to delete
+     */
+    where?: AiChatMessageWhereInput
+    /**
+     * Limit how many AiChatMessages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiChatMessage without action
+   */
+  export type AiChatMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiChatMessage
+     */
+    select?: AiChatMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiChatMessage
+     */
+    omit?: AiChatMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiChatMessageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model EmailAudit
    */
 
@@ -60095,6 +62494,27 @@ export namespace Prisma {
   export type ItemRequestScalarFieldEnum = (typeof ItemRequestScalarFieldEnum)[keyof typeof ItemRequestScalarFieldEnum]
 
 
+  export const AiChatSessionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    metadata: 'metadata',
+    createdAt: 'createdAt'
+  };
+
+  export type AiChatSessionScalarFieldEnum = (typeof AiChatSessionScalarFieldEnum)[keyof typeof AiChatSessionScalarFieldEnum]
+
+
+  export const AiChatMessageScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    role: 'role',
+    content: 'content',
+    createdAt: 'createdAt'
+  };
+
+  export type AiChatMessageScalarFieldEnum = (typeof AiChatMessageScalarFieldEnum)[keyof typeof AiChatMessageScalarFieldEnum]
+
+
   export const EmailAuditScalarFieldEnum: {
     id: 'id',
     to: 'to',
@@ -61796,6 +64216,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
+    aiChatSessions?: AiChatSessionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -61840,6 +64261,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceOrderByRelationAggregateInput
     sentNotifications?: WorkerNotificationOrderByRelationAggregateInput
     receivedNotifications?: WorkerNotificationOrderByRelationAggregateInput
+    aiChatSessions?: AiChatSessionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -61887,6 +64309,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceListRelationFilter
     sentNotifications?: WorkerNotificationListRelationFilter
     receivedNotifications?: WorkerNotificationListRelationFilter
+    aiChatSessions?: AiChatSessionListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -63802,6 +66225,114 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ItemRequest"> | Date | string
   }
 
+  export type AiChatSessionWhereInput = {
+    AND?: AiChatSessionWhereInput | AiChatSessionWhereInput[]
+    OR?: AiChatSessionWhereInput[]
+    NOT?: AiChatSessionWhereInput | AiChatSessionWhereInput[]
+    id?: UuidFilter<"AiChatSession"> | string
+    userId?: UuidNullableFilter<"AiChatSession"> | string | null
+    metadata?: JsonNullableFilter<"AiChatSession">
+    createdAt?: DateTimeFilter<"AiChatSession"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    messages?: AiChatMessageListRelationFilter
+  }
+
+  export type AiChatSessionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    messages?: AiChatMessageOrderByRelationAggregateInput
+  }
+
+  export type AiChatSessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiChatSessionWhereInput | AiChatSessionWhereInput[]
+    OR?: AiChatSessionWhereInput[]
+    NOT?: AiChatSessionWhereInput | AiChatSessionWhereInput[]
+    userId?: UuidNullableFilter<"AiChatSession"> | string | null
+    metadata?: JsonNullableFilter<"AiChatSession">
+    createdAt?: DateTimeFilter<"AiChatSession"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    messages?: AiChatMessageListRelationFilter
+  }, "id">
+
+  export type AiChatSessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AiChatSessionCountOrderByAggregateInput
+    _max?: AiChatSessionMaxOrderByAggregateInput
+    _min?: AiChatSessionMinOrderByAggregateInput
+  }
+
+  export type AiChatSessionScalarWhereWithAggregatesInput = {
+    AND?: AiChatSessionScalarWhereWithAggregatesInput | AiChatSessionScalarWhereWithAggregatesInput[]
+    OR?: AiChatSessionScalarWhereWithAggregatesInput[]
+    NOT?: AiChatSessionScalarWhereWithAggregatesInput | AiChatSessionScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"AiChatSession"> | string
+    userId?: UuidNullableWithAggregatesFilter<"AiChatSession"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"AiChatSession">
+    createdAt?: DateTimeWithAggregatesFilter<"AiChatSession"> | Date | string
+  }
+
+  export type AiChatMessageWhereInput = {
+    AND?: AiChatMessageWhereInput | AiChatMessageWhereInput[]
+    OR?: AiChatMessageWhereInput[]
+    NOT?: AiChatMessageWhereInput | AiChatMessageWhereInput[]
+    id?: UuidFilter<"AiChatMessage"> | string
+    sessionId?: UuidFilter<"AiChatMessage"> | string
+    role?: StringFilter<"AiChatMessage"> | string
+    content?: StringFilter<"AiChatMessage"> | string
+    createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
+    session?: XOR<AiChatSessionScalarRelationFilter, AiChatSessionWhereInput>
+  }
+
+  export type AiChatMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    session?: AiChatSessionOrderByWithRelationInput
+  }
+
+  export type AiChatMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiChatMessageWhereInput | AiChatMessageWhereInput[]
+    OR?: AiChatMessageWhereInput[]
+    NOT?: AiChatMessageWhereInput | AiChatMessageWhereInput[]
+    sessionId?: UuidFilter<"AiChatMessage"> | string
+    role?: StringFilter<"AiChatMessage"> | string
+    content?: StringFilter<"AiChatMessage"> | string
+    createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
+    session?: XOR<AiChatSessionScalarRelationFilter, AiChatSessionWhereInput>
+  }, "id">
+
+  export type AiChatMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    _count?: AiChatMessageCountOrderByAggregateInput
+    _max?: AiChatMessageMaxOrderByAggregateInput
+    _min?: AiChatMessageMinOrderByAggregateInput
+  }
+
+  export type AiChatMessageScalarWhereWithAggregatesInput = {
+    AND?: AiChatMessageScalarWhereWithAggregatesInput | AiChatMessageScalarWhereWithAggregatesInput[]
+    OR?: AiChatMessageScalarWhereWithAggregatesInput[]
+    NOT?: AiChatMessageScalarWhereWithAggregatesInput | AiChatMessageScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"AiChatMessage"> | string
+    sessionId?: UuidWithAggregatesFilter<"AiChatMessage"> | string
+    role?: StringWithAggregatesFilter<"AiChatMessage"> | string
+    content?: StringWithAggregatesFilter<"AiChatMessage"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AiChatMessage"> | Date | string
+  }
+
   export type EmailAuditWhereInput = {
     AND?: EmailAuditWhereInput | EmailAuditWhereInput[]
     OR?: EmailAuditWhereInput[]
@@ -65662,6 +68193,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -65706,6 +68238,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -65750,6 +68283,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -65794,6 +68328,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -67836,6 +70371,113 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiChatSessionCreateInput = {
+    id?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutAiChatSessionsInput
+    messages?: AiChatMessageCreateNestedManyWithoutSessionInput
+  }
+
+  export type AiChatSessionUncheckedCreateInput = {
+    id?: string
+    userId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    messages?: AiChatMessageUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type AiChatSessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutAiChatSessionsNestedInput
+    messages?: AiChatMessageUpdateManyWithoutSessionNestedInput
+  }
+
+  export type AiChatSessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: AiChatMessageUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type AiChatSessionCreateManyInput = {
+    id?: string
+    userId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AiChatSessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatSessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageCreateInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+    session: AiChatSessionCreateNestedOneWithoutMessagesInput
+  }
+
+  export type AiChatMessageUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type AiChatMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: AiChatSessionUpdateOneRequiredWithoutMessagesNestedInput
+  }
+
+  export type AiChatMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageCreateManyInput = {
+    id?: string
+    sessionId: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type AiChatMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EmailAuditCreateInput = {
     id?: string
     to: string
@@ -69771,6 +72413,12 @@ export namespace Prisma {
     none?: WorkerNotificationWhereInput
   }
 
+  export type AiChatSessionListRelationFilter = {
+    every?: AiChatSessionWhereInput
+    some?: AiChatSessionWhereInput
+    none?: AiChatSessionWhereInput
+  }
+
   export type ActivityLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -69820,6 +72468,10 @@ export namespace Prisma {
   }
 
   export type WorkerNotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiChatSessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -71071,6 +73723,64 @@ export namespace Prisma {
     reason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AiChatMessageListRelationFilter = {
+    every?: AiChatMessageWhereInput
+    some?: AiChatMessageWhereInput
+    none?: AiChatMessageWhereInput
+  }
+
+  export type AiChatMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiChatSessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiChatSessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiChatSessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiChatSessionScalarRelationFilter = {
+    is?: AiChatSessionWhereInput
+    isNot?: AiChatSessionWhereInput
+  }
+
+  export type AiChatMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiChatMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiChatMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    role?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type EmailAuditCountOrderByAggregateInput = {
@@ -72843,6 +75553,13 @@ export namespace Prisma {
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
   }
 
+  export type AiChatSessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput> | AiChatSessionCreateWithoutUserInput[] | AiChatSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutUserInput | AiChatSessionCreateOrConnectWithoutUserInput[]
+    createMany?: AiChatSessionCreateManyUserInputEnvelope
+    connect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+  }
+
   export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -73002,6 +75719,13 @@ export namespace Prisma {
     connectOrCreate?: WorkerNotificationCreateOrConnectWithoutWorkerInput | WorkerNotificationCreateOrConnectWithoutWorkerInput[]
     createMany?: WorkerNotificationCreateManyWorkerInputEnvelope
     connect?: WorkerNotificationWhereUniqueInput | WorkerNotificationWhereUniqueInput[]
+  }
+
+  export type AiChatSessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput> | AiChatSessionCreateWithoutUserInput[] | AiChatSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutUserInput | AiChatSessionCreateOrConnectWithoutUserInput[]
+    createMany?: AiChatSessionCreateManyUserInputEnvelope
+    connect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
   }
 
   export type ActivityLogUpdateManyWithoutUserNestedInput = {
@@ -73326,6 +76050,20 @@ export namespace Prisma {
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
   }
 
+  export type AiChatSessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput> | AiChatSessionCreateWithoutUserInput[] | AiChatSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutUserInput | AiChatSessionCreateOrConnectWithoutUserInput[]
+    upsert?: AiChatSessionUpsertWithWhereUniqueWithoutUserInput | AiChatSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiChatSessionCreateManyUserInputEnvelope
+    set?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    disconnect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    delete?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    connect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    update?: AiChatSessionUpdateWithWhereUniqueWithoutUserInput | AiChatSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiChatSessionUpdateManyWithWhereWithoutUserInput | AiChatSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiChatSessionScalarWhereInput | AiChatSessionScalarWhereInput[]
+  }
+
   export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -73646,6 +76384,20 @@ export namespace Prisma {
     update?: WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput | WorkerNotificationUpdateWithWhereUniqueWithoutWorkerInput[]
     updateMany?: WorkerNotificationUpdateManyWithWhereWithoutWorkerInput | WorkerNotificationUpdateManyWithWhereWithoutWorkerInput[]
     deleteMany?: WorkerNotificationScalarWhereInput | WorkerNotificationScalarWhereInput[]
+  }
+
+  export type AiChatSessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput> | AiChatSessionCreateWithoutUserInput[] | AiChatSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutUserInput | AiChatSessionCreateOrConnectWithoutUserInput[]
+    upsert?: AiChatSessionUpsertWithWhereUniqueWithoutUserInput | AiChatSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiChatSessionCreateManyUserInputEnvelope
+    set?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    disconnect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    delete?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    connect?: AiChatSessionWhereUniqueInput | AiChatSessionWhereUniqueInput[]
+    update?: AiChatSessionUpdateWithWhereUniqueWithoutUserInput | AiChatSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiChatSessionUpdateManyWithWhereWithoutUserInput | AiChatSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiChatSessionScalarWhereInput | AiChatSessionScalarWhereInput[]
   }
 
   export type ChatGroupMemberCreateNestedManyWithoutGroupInput = {
@@ -74543,6 +77295,78 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutItemRequestsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutItemRequestsInput, UserUpdateWithoutItemRequestsInput>, UserUncheckedUpdateWithoutItemRequestsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAiChatSessionsInput = {
+    create?: XOR<UserCreateWithoutAiChatSessionsInput, UserUncheckedCreateWithoutAiChatSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAiChatSessionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AiChatMessageCreateNestedManyWithoutSessionInput = {
+    create?: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput> | AiChatMessageCreateWithoutSessionInput[] | AiChatMessageUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: AiChatMessageCreateOrConnectWithoutSessionInput | AiChatMessageCreateOrConnectWithoutSessionInput[]
+    createMany?: AiChatMessageCreateManySessionInputEnvelope
+    connect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+  }
+
+  export type AiChatMessageUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput> | AiChatMessageCreateWithoutSessionInput[] | AiChatMessageUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: AiChatMessageCreateOrConnectWithoutSessionInput | AiChatMessageCreateOrConnectWithoutSessionInput[]
+    createMany?: AiChatMessageCreateManySessionInputEnvelope
+    connect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutAiChatSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutAiChatSessionsInput, UserUncheckedCreateWithoutAiChatSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAiChatSessionsInput
+    upsert?: UserUpsertWithoutAiChatSessionsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAiChatSessionsInput, UserUpdateWithoutAiChatSessionsInput>, UserUncheckedUpdateWithoutAiChatSessionsInput>
+  }
+
+  export type AiChatMessageUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput> | AiChatMessageCreateWithoutSessionInput[] | AiChatMessageUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: AiChatMessageCreateOrConnectWithoutSessionInput | AiChatMessageCreateOrConnectWithoutSessionInput[]
+    upsert?: AiChatMessageUpsertWithWhereUniqueWithoutSessionInput | AiChatMessageUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: AiChatMessageCreateManySessionInputEnvelope
+    set?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    disconnect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    delete?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    connect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    update?: AiChatMessageUpdateWithWhereUniqueWithoutSessionInput | AiChatMessageUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: AiChatMessageUpdateManyWithWhereWithoutSessionInput | AiChatMessageUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: AiChatMessageScalarWhereInput | AiChatMessageScalarWhereInput[]
+  }
+
+  export type AiChatMessageUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput> | AiChatMessageCreateWithoutSessionInput[] | AiChatMessageUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: AiChatMessageCreateOrConnectWithoutSessionInput | AiChatMessageCreateOrConnectWithoutSessionInput[]
+    upsert?: AiChatMessageUpsertWithWhereUniqueWithoutSessionInput | AiChatMessageUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: AiChatMessageCreateManySessionInputEnvelope
+    set?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    disconnect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    delete?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    connect?: AiChatMessageWhereUniqueInput | AiChatMessageWhereUniqueInput[]
+    update?: AiChatMessageUpdateWithWhereUniqueWithoutSessionInput | AiChatMessageUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: AiChatMessageUpdateManyWithWhereWithoutSessionInput | AiChatMessageUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: AiChatMessageScalarWhereInput | AiChatMessageScalarWhereInput[]
+  }
+
+  export type AiChatSessionCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<AiChatSessionCreateWithoutMessagesInput, AiChatSessionUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutMessagesInput
+    connect?: AiChatSessionWhereUniqueInput
+  }
+
+  export type AiChatSessionUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<AiChatSessionCreateWithoutMessagesInput, AiChatSessionUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: AiChatSessionCreateOrConnectWithoutMessagesInput
+    upsert?: AiChatSessionUpsertWithoutMessagesInput
+    connect?: AiChatSessionWhereUniqueInput
+    update?: XOR<XOR<AiChatSessionUpdateToOneWithWhereWithoutMessagesInput, AiChatSessionUpdateWithoutMessagesInput>, AiChatSessionUncheckedUpdateWithoutMessagesInput>
   }
 
   export type SeoAnalyticsCreateNestedManyWithoutSeoPageInput = {
@@ -75490,6 +78314,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvoicesInput = {
@@ -75533,6 +78358,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvoicesInput = {
@@ -75708,6 +78534,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvoicesInput = {
@@ -75751,6 +78578,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceCreateWithoutOrderInput = {
@@ -75868,6 +78696,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -75911,6 +78740,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -75959,6 +78789,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -76002,6 +78833,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -76268,6 +79100,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrders_orders_payment_confirmed_byTousersInput = {
@@ -76311,6 +79144,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -76365,6 +79199,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -76408,6 +79243,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PaymentTransactionUpsertWithWhereUniqueWithoutOrderInput = {
@@ -76652,6 +79488,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVerifiedTransactionsInput = {
@@ -76695,6 +79532,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVerifiedTransactionsInput = {
@@ -76827,6 +79665,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVerifiedTransactionsInput = {
@@ -76870,6 +79709,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutProductRelationsInput = {
@@ -78335,6 +81175,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUnitActionsInput = {
@@ -78378,6 +81219,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUnitActionsInput = {
@@ -78490,6 +81332,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUnitActionsInput = {
@@ -78533,6 +81376,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSystemNotificationsInput = {
@@ -78576,6 +81420,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSystemNotificationsInput = {
@@ -78619,6 +81464,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSystemNotificationsInput = {
@@ -78678,6 +81524,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSystemNotificationsInput = {
@@ -78721,6 +81568,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryItemCreateWithoutRentalItemInput = {
@@ -80061,6 +82909,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AiChatSessionCreateWithoutUserInput = {
+    id?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    messages?: AiChatMessageCreateNestedManyWithoutSessionInput
+  }
+
+  export type AiChatSessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    messages?: AiChatMessageUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type AiChatSessionCreateOrConnectWithoutUserInput = {
+    where: AiChatSessionWhereUniqueInput
+    create: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiChatSessionCreateManyUserInputEnvelope = {
+    data: AiChatSessionCreateManyUserInput | AiChatSessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -80622,6 +83494,32 @@ export namespace Prisma {
     data: XOR<WorkerNotificationUpdateManyMutationInput, WorkerNotificationUncheckedUpdateManyWithoutWorkerInput>
   }
 
+  export type AiChatSessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: AiChatSessionWhereUniqueInput
+    update: XOR<AiChatSessionUpdateWithoutUserInput, AiChatSessionUncheckedUpdateWithoutUserInput>
+    create: XOR<AiChatSessionCreateWithoutUserInput, AiChatSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiChatSessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: AiChatSessionWhereUniqueInput
+    data: XOR<AiChatSessionUpdateWithoutUserInput, AiChatSessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AiChatSessionUpdateManyWithWhereWithoutUserInput = {
+    where: AiChatSessionScalarWhereInput
+    data: XOR<AiChatSessionUpdateManyMutationInput, AiChatSessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AiChatSessionScalarWhereInput = {
+    AND?: AiChatSessionScalarWhereInput | AiChatSessionScalarWhereInput[]
+    OR?: AiChatSessionScalarWhereInput[]
+    NOT?: AiChatSessionScalarWhereInput | AiChatSessionScalarWhereInput[]
+    id?: UuidFilter<"AiChatSession"> | string
+    userId?: UuidNullableFilter<"AiChatSession"> | string | null
+    metadata?: JsonNullableFilter<"AiChatSession">
+    createdAt?: DateTimeFilter<"AiChatSession"> | Date | string
+  }
+
   export type ChatGroupMemberCreateWithoutGroupInput = {
     id?: string
     role?: string
@@ -80768,6 +83666,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatGroupMembershipsInput = {
@@ -80811,6 +83710,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatGroupMembershipsInput = {
@@ -80899,6 +83799,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatGroupMembershipsInput = {
@@ -80942,6 +83843,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ChatGroupCreateWithoutMessagesInput = {
@@ -81008,6 +83910,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGroupMessagesInput = {
@@ -81051,6 +83954,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGroupMessagesInput = {
@@ -81139,6 +84043,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGroupMessagesInput = {
@@ -81182,6 +84087,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -81225,6 +84131,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogsInput = {
@@ -81268,6 +84175,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogsInput = {
@@ -81327,6 +84235,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogsInput = {
@@ -81370,6 +84279,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWorkerAttendanceInput = {
@@ -81413,6 +84323,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkerAttendanceInput = {
@@ -81456,6 +84367,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkerAttendanceInput = {
@@ -81515,6 +84427,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkerAttendanceInput = {
@@ -81558,6 +84471,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutInventorySyncLogsInput = {
@@ -81646,6 +84560,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryResolutionsInput = {
@@ -81689,6 +84604,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryResolutionsInput = {
@@ -81737,6 +84653,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInventoryUpdatesInput = {
@@ -81780,6 +84697,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInventoryUpdatesInput = {
@@ -81890,6 +84808,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryResolutionsInput = {
@@ -81933,6 +84852,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutInventoryUpdatesInput = {
@@ -81987,6 +84907,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInventoryUpdatesInput = {
@@ -82030,6 +84951,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSentNotificationsInput = {
@@ -82073,6 +84995,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentNotificationsInput = {
@@ -82116,6 +85039,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentNotificationsInput = {
@@ -82164,6 +85088,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedNotificationsInput = {
@@ -82207,6 +85132,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedNotificationsInput = {
@@ -82266,6 +85192,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentNotificationsInput = {
@@ -82309,6 +85236,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedNotificationsInput = {
@@ -82363,6 +85291,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedNotificationsInput = {
@@ -82406,6 +85335,7 @@ export namespace Prisma {
     unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReceivedMessagesInput = {
@@ -82449,6 +85379,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -82492,6 +85423,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -82540,6 +85472,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -82583,6 +85516,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -82642,6 +85576,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -82685,6 +85620,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutSentMessagesInput = {
@@ -82739,6 +85675,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -82782,6 +85719,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationDismissalsInput = {
@@ -82825,6 +85763,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationDismissalsInput = {
@@ -82868,6 +85807,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationDismissalsInput = {
@@ -82927,6 +85867,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationDismissalsInput = {
@@ -82970,6 +85911,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSpiNotificationsInput = {
@@ -83013,6 +85955,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSpiNotificationsInput = {
@@ -83056,6 +85999,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSpiNotificationsInput = {
@@ -83115,6 +86059,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSpiNotificationsInput = {
@@ -83158,6 +86103,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiActionCreateWithoutAgentInput = {
@@ -83509,6 +86455,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAiActionApprovalsInput = {
@@ -83552,6 +86499,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAiActionApprovalsInput = {
@@ -83648,6 +86596,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAiActionApprovalsInput = {
@@ -83691,6 +86640,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AiAgentCreateWithoutTrainingDataInput = {
@@ -83880,6 +86830,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutClaimedDeliveriesInput = {
@@ -83923,6 +86874,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutClaimedDeliveriesInput = {
@@ -84160,6 +87112,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutClaimedDeliveriesInput = {
@@ -84203,6 +87156,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type InvoiceUpsertWithoutDeliveriesInput = {
@@ -84580,6 +87534,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryLogsInput = {
@@ -84623,6 +87578,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryLogsInput = {
@@ -84739,6 +87695,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryLogsInput = {
@@ -84782,6 +87739,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DeliveryUpsertWithoutLogsInput = {
@@ -84945,6 +87903,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeliveryEditLogsInput = {
@@ -84988,6 +87947,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeliveryEditLogsInput = {
@@ -85110,6 +88070,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeliveryEditLogsInput = {
@@ -85153,6 +88114,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RentalItemCreateWithoutItemRequestsInput = {
@@ -85223,6 +88185,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutItemRequestsInput = {
@@ -85266,6 +88229,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
     sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
     receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+    aiChatSessions?: AiChatSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutItemRequestsInput = {
@@ -85358,6 +88322,7 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutItemRequestsInput = {
@@ -85401,6 +88366,294 @@ export namespace Prisma {
     workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
     sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
     receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+    aiChatSessions?: AiChatSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAiChatSessionsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    plainPassword?: string | null
+    activityLogs?: ActivityLogCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionCreateNestedManyWithoutApproverInput
+    chatGroupMemberships?: ChatGroupMemberCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogCreateNestedManyWithoutEditedByUserInput
+    deliveryLogs?: DeliveryLogCreateNestedManyWithoutCreatedByUserInput
+    sentGroupMessages?: GroupMessageCreateNestedManyWithoutSenderInput
+    inventoryResolutions?: InventorySyncLogCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestCreateNestedManyWithoutUserInput
+    receivedMessages?: MessageCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionCreateNestedManyWithoutVerifiedByInput
+    spiNotifications?: SpiNotificationCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationCreateNestedManyWithoutUserInput
+    unitActions?: UnitHistoryCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceCreateNestedManyWithoutWorkerInput
+    sentNotifications?: WorkerNotificationCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationCreateNestedManyWithoutWorkerInput
+  }
+
+  export type UserUncheckedCreateWithoutAiChatSessionsInput = {
+    id?: string
+    username: string
+    password: string
+    email: string
+    fullName: string
+    whatsapp: string
+    baliAddress?: string | null
+    mapsAddressLink?: string | null
+    role?: string
+    createdAt?: Date | string | null
+    isVerified?: boolean
+    resetPasswordExpires?: Date | string | null
+    resetPasswordToken?: string | null
+    isActive?: boolean
+    profileImage?: string | null
+    identityFile?: string | null
+    identityType?: string | null
+    plainPassword?: string | null
+    activityLogs?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    aiActionApprovals?: AiActionUncheckedCreateNestedManyWithoutApproverInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedCreateNestedManyWithoutUserInput
+    claimedDeliveries?: DeliveryUncheckedCreateNestedManyWithoutClaimedByWorkerInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedCreateNestedManyWithoutEditedByUserInput
+    deliveryLogs?: DeliveryLogUncheckedCreateNestedManyWithoutCreatedByUserInput
+    sentGroupMessages?: GroupMessageUncheckedCreateNestedManyWithoutSenderInput
+    inventoryResolutions?: InventorySyncLogUncheckedCreateNestedManyWithoutResolvedByUserInput
+    inventoryUpdates?: InventorySyncLogUncheckedCreateNestedManyWithoutUpdatedByUserInput
+    invoices?: InvoiceUncheckedCreateNestedManyWithoutUserInput
+    itemRequests?: ItemRequestUncheckedCreateNestedManyWithoutUserInput
+    receivedMessages?: MessageUncheckedCreateNestedManyWithoutReceiverInput
+    sentMessages?: MessageUncheckedCreateNestedManyWithoutSenderInput
+    notificationDismissals?: NotificationDismissalUncheckedCreateNestedManyWithoutUserInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedCreateNestedManyWithoutUsers_orders_payment_confirmed_byTousersInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    verifiedTransactions?: PaymentTransactionUncheckedCreateNestedManyWithoutVerifiedByInput
+    spiNotifications?: SpiNotificationUncheckedCreateNestedManyWithoutUserInput
+    systemNotifications?: SystemNotificationUncheckedCreateNestedManyWithoutUserInput
+    unitActions?: UnitHistoryUncheckedCreateNestedManyWithoutUserInput
+    workerAttendance?: WorkerAttendanceUncheckedCreateNestedManyWithoutWorkerInput
+    sentNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutFromAdminInput
+    receivedNotifications?: WorkerNotificationUncheckedCreateNestedManyWithoutWorkerInput
+  }
+
+  export type UserCreateOrConnectWithoutAiChatSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAiChatSessionsInput, UserUncheckedCreateWithoutAiChatSessionsInput>
+  }
+
+  export type AiChatMessageCreateWithoutSessionInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type AiChatMessageUncheckedCreateWithoutSessionInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type AiChatMessageCreateOrConnectWithoutSessionInput = {
+    where: AiChatMessageWhereUniqueInput
+    create: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput>
+  }
+
+  export type AiChatMessageCreateManySessionInputEnvelope = {
+    data: AiChatMessageCreateManySessionInput | AiChatMessageCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutAiChatSessionsInput = {
+    update: XOR<UserUpdateWithoutAiChatSessionsInput, UserUncheckedUpdateWithoutAiChatSessionsInput>
+    create: XOR<UserCreateWithoutAiChatSessionsInput, UserUncheckedCreateWithoutAiChatSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAiChatSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAiChatSessionsInput, UserUncheckedUpdateWithoutAiChatSessionsInput>
+  }
+
+  export type UserUpdateWithoutAiChatSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUpdateManyWithoutApproverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUpdateManyWithoutEditedByUserNestedInput
+    deliveryLogs?: DeliveryLogUpdateManyWithoutCreatedByUserNestedInput
+    sentGroupMessages?: GroupMessageUpdateManyWithoutSenderNestedInput
+    inventoryResolutions?: InventorySyncLogUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUpdateManyWithoutUserNestedInput
+    receivedMessages?: MessageUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUpdateManyWithoutVerifiedByNestedInput
+    spiNotifications?: SpiNotificationUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUpdateManyWithoutUserNestedInput
+    unitActions?: UnitHistoryUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUpdateManyWithoutWorkerNestedInput
+    sentNotifications?: WorkerNotificationUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUpdateManyWithoutWorkerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAiChatSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    whatsapp?: StringFieldUpdateOperationsInput | string
+    baliAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    mapsAddressLink?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    resetPasswordExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    identityFile?: NullableStringFieldUpdateOperationsInput | string | null
+    identityType?: NullableStringFieldUpdateOperationsInput | string | null
+    plainPassword?: NullableStringFieldUpdateOperationsInput | string | null
+    activityLogs?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    aiActionApprovals?: AiActionUncheckedUpdateManyWithoutApproverNestedInput
+    chatGroupMemberships?: ChatGroupMemberUncheckedUpdateManyWithoutUserNestedInput
+    claimedDeliveries?: DeliveryUncheckedUpdateManyWithoutClaimedByWorkerNestedInput
+    deliveryEditLogs?: DeliveryEditLogUncheckedUpdateManyWithoutEditedByUserNestedInput
+    deliveryLogs?: DeliveryLogUncheckedUpdateManyWithoutCreatedByUserNestedInput
+    sentGroupMessages?: GroupMessageUncheckedUpdateManyWithoutSenderNestedInput
+    inventoryResolutions?: InventorySyncLogUncheckedUpdateManyWithoutResolvedByUserNestedInput
+    inventoryUpdates?: InventorySyncLogUncheckedUpdateManyWithoutUpdatedByUserNestedInput
+    invoices?: InvoiceUncheckedUpdateManyWithoutUserNestedInput
+    itemRequests?: ItemRequestUncheckedUpdateManyWithoutUserNestedInput
+    receivedMessages?: MessageUncheckedUpdateManyWithoutReceiverNestedInput
+    sentMessages?: MessageUncheckedUpdateManyWithoutSenderNestedInput
+    notificationDismissals?: NotificationDismissalUncheckedUpdateManyWithoutUserNestedInput
+    orders_orders_payment_confirmed_byTousers?: OrderUncheckedUpdateManyWithoutUsers_orders_payment_confirmed_byTousersNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    verifiedTransactions?: PaymentTransactionUncheckedUpdateManyWithoutVerifiedByNestedInput
+    spiNotifications?: SpiNotificationUncheckedUpdateManyWithoutUserNestedInput
+    systemNotifications?: SystemNotificationUncheckedUpdateManyWithoutUserNestedInput
+    unitActions?: UnitHistoryUncheckedUpdateManyWithoutUserNestedInput
+    workerAttendance?: WorkerAttendanceUncheckedUpdateManyWithoutWorkerNestedInput
+    sentNotifications?: WorkerNotificationUncheckedUpdateManyWithoutFromAdminNestedInput
+    receivedNotifications?: WorkerNotificationUncheckedUpdateManyWithoutWorkerNestedInput
+  }
+
+  export type AiChatMessageUpsertWithWhereUniqueWithoutSessionInput = {
+    where: AiChatMessageWhereUniqueInput
+    update: XOR<AiChatMessageUpdateWithoutSessionInput, AiChatMessageUncheckedUpdateWithoutSessionInput>
+    create: XOR<AiChatMessageCreateWithoutSessionInput, AiChatMessageUncheckedCreateWithoutSessionInput>
+  }
+
+  export type AiChatMessageUpdateWithWhereUniqueWithoutSessionInput = {
+    where: AiChatMessageWhereUniqueInput
+    data: XOR<AiChatMessageUpdateWithoutSessionInput, AiChatMessageUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type AiChatMessageUpdateManyWithWhereWithoutSessionInput = {
+    where: AiChatMessageScalarWhereInput
+    data: XOR<AiChatMessageUpdateManyMutationInput, AiChatMessageUncheckedUpdateManyWithoutSessionInput>
+  }
+
+  export type AiChatMessageScalarWhereInput = {
+    AND?: AiChatMessageScalarWhereInput | AiChatMessageScalarWhereInput[]
+    OR?: AiChatMessageScalarWhereInput[]
+    NOT?: AiChatMessageScalarWhereInput | AiChatMessageScalarWhereInput[]
+    id?: UuidFilter<"AiChatMessage"> | string
+    sessionId?: UuidFilter<"AiChatMessage"> | string
+    role?: StringFilter<"AiChatMessage"> | string
+    content?: StringFilter<"AiChatMessage"> | string
+    createdAt?: DateTimeFilter<"AiChatMessage"> | Date | string
+  }
+
+  export type AiChatSessionCreateWithoutMessagesInput = {
+    id?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutAiChatSessionsInput
+  }
+
+  export type AiChatSessionUncheckedCreateWithoutMessagesInput = {
+    id?: string
+    userId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AiChatSessionCreateOrConnectWithoutMessagesInput = {
+    where: AiChatSessionWhereUniqueInput
+    create: XOR<AiChatSessionCreateWithoutMessagesInput, AiChatSessionUncheckedCreateWithoutMessagesInput>
+  }
+
+  export type AiChatSessionUpsertWithoutMessagesInput = {
+    update: XOR<AiChatSessionUpdateWithoutMessagesInput, AiChatSessionUncheckedUpdateWithoutMessagesInput>
+    create: XOR<AiChatSessionCreateWithoutMessagesInput, AiChatSessionUncheckedCreateWithoutMessagesInput>
+    where?: AiChatSessionWhereInput
+  }
+
+  export type AiChatSessionUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: AiChatSessionWhereInput
+    data: XOR<AiChatSessionUpdateWithoutMessagesInput, AiChatSessionUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type AiChatSessionUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutAiChatSessionsNestedInput
+  }
+
+  export type AiChatSessionUncheckedUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SeoAnalyticsCreateWithoutSeoPageInput = {
@@ -87316,6 +90569,12 @@ export namespace Prisma {
     createdAt?: Date | string | null
   }
 
+  export type AiChatSessionCreateManyUserInput = {
+    id?: string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
   export type ActivityLogUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     action?: StringFieldUpdateOperationsInput | string
@@ -88244,6 +91503,26 @@ export namespace Prisma {
     createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type AiChatSessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: AiChatMessageUpdateManyWithoutSessionNestedInput
+  }
+
+  export type AiChatSessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: AiChatMessageUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type AiChatSessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ChatGroupMemberCreateManyGroupInput = {
     id?: string
     userId: string
@@ -88623,6 +91902,34 @@ export namespace Prisma {
     newValue?: NullableJsonNullValueInput | InputJsonValue
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumDeliveryRoleFieldUpdateOperationsInput | $Enums.DeliveryRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageCreateManySessionInput = {
+    id?: string
+    role: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type AiChatMessageUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiChatMessageUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
 import { toast } from "sonner"
 import {
     Navigation as NavigationIcon,
@@ -431,6 +432,7 @@ export function DeliveriesClient({
 
     return (
         <div className="space-y-4">
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <Tabs defaultValue="dropoffs" className="w-full">
                 <TabsList className="mb-4 bg-muted/30 p-1 rounded-lg">
                     <TabsTrigger value="dropoffs" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-md">Outbound Dropoffs <Badge variant="secondary" className="ml-2 bg-white/20 hover:bg-white/20 text-blue-100">{dropoffs.length}</Badge></TabsTrigger>

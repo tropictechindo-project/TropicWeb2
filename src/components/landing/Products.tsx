@@ -241,7 +241,7 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
             asChild
             className="bg-[#55595a] hover:bg-[#55595a]/90 text-white font-bold uppercase tracking-widest px-6 py-2 h-auto rounded-md transition-all duration-300 shadow-sm"
           >
-            <Link href="/products">
+            <Link href="/products" prefetch={true}>
               See All Products
             </Link>
           </Button>

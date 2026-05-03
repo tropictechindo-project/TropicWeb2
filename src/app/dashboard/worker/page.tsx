@@ -676,6 +676,20 @@ export default function WorkerDashboard() {
 
             {activeTab === 'pool' && (
               <div className="space-y-4 animate-in fade-in duration-500">
+                {/* PANDUAN WORKER */}
+                <Card className="border-l-4 border-l-blue-600 bg-blue-50/30 dark:bg-blue-900/10">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold flex items-center gap-2 text-blue-700 dark:text-blue-400">
+                      <BotMessageSquare className="w-4 h-4" /> PANDUAN WORKER (INDONESIA)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-xs space-y-2 text-blue-800 dark:text-blue-300">
+                    <p>• <b>Ambil Misi:</b> Cari pengiriman yang tersedia di bawah. Klik "Claim" dan pilih kendaraan Anda.</p>
+                    <p>• <b>Multi-Claim:</b> Satu pengiriman bisa diklaim hingga 5 orang. Pastikan koordinasi dengan rekan tim.</p>
+                    <p>• <b>Mulai Misi:</b> Setelah diklaim, buka tab "Active Missions" untuk mulai perjalanan.</p>
+                  </CardContent>
+                </Card>
+
                 <Card className="border-blue-200">
                   <CardHeader className="bg-blue-50/50">
                     <CardTitle className="flex items-center gap-2 text-blue-800">
@@ -694,12 +708,25 @@ export default function WorkerDashboard() {
                               <div className="flex justify-between items-start mb-4">
                                 <div>
                                   <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    Customer: {delivery.invoice?.order?.user?.fullName}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground font-mono mt-1">
-                                    Items: {delivery.items?.length || 0}
-                                  </p>
+                                  <div className="text-sm text-muted-foreground">
+                                    <p className="text-sm font-bold text-foreground">
+                                      {delivery.invoice?.order?.user?.fullName || delivery.invoice?.guestName || 'Pelanggan'}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      WA: {delivery.invoice?.order?.user?.whatsapp || delivery.invoice?.guestWhatsapp || '-'}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                      Alamat: {delivery.invoice?.deliveryAddress || delivery.invoice?.guestAddress || 'Alamat tidak tersedia'}
+                                    </p>
+                                    <div className="mt-2 space-y-1">
+                                      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Manifest:</p>
+                                      {delivery.items?.map((item: any, idx: number) => (
+                                        <p key={idx} className="text-[11px] font-medium leading-tight">
+                                          • {item.rentalItem?.variant?.product?.name || item.nameSnapshot || 'Item'} (x{item.quantity})
+                                        </p>
+                                      ))}
+                                    </div>
+                                  </div>
                                   <div className="mt-2">
                                     {(delivery.latitude && delivery.longitude) ? (
                                       <Button
@@ -713,17 +740,22 @@ export default function WorkerDashboard() {
                                       >
                                         <MapPin className="w-3 h-3" /> GPS PIN
                                       </Button>
-                                    ) : delivery.invoice?.guestAddress?.includes('google.com/maps') && (
+                                    ) : (
                                       <Button
                                         variant="outline"
                                         size="sm"
                                         className="h-7 text-xs gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
                                         onClick={(e) => {
                                           e.stopPropagation();
-                                          window.open(delivery.invoice.guestAddress, '_blank')
+                                          const address = delivery.invoice?.deliveryAddress || delivery.invoice?.guestAddress || '';
+                                          if (address.includes('google.com/maps')) {
+                                            window.open(address, '_blank')
+                                          } else {
+                                            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank')
+                                          }
                                         }}
                                       >
-                                        <NavigationIcon className="w-3 h-3" /> MAP LINK
+                                        <NavigationIcon className="w-3 h-3" /> SEARCH MAP
                                       </Button>
                                     )}
                                   </div>
@@ -761,7 +793,12 @@ export default function WorkerDashboard() {
                                         </SelectContent>
                                       </Select>
                                     </div>
-                                    <Button className="w-full" onClick={handleClaim} disabled={!selectedVehicleId || selectedVehicleId === 'none'}>
+                                    <Button 
+                                      className="w-full font-bold h-11" 
+                                      onClick={handleClaim} 
+                                      disabled={!selectedVehicleId || selectedVehicleId === 'none' || isLoading}
+                                    >
+                                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <ClipboardCheck className="w-4 h-4 mr-2" />}
                                       Confirm Claim & Lock Vehicle
                                     </Button>
                                   </div>
@@ -779,6 +816,20 @@ export default function WorkerDashboard() {
 
             {activeTab === 'active' && (
               <div className="space-y-4 animate-in fade-in duration-500">
+                {/* PANDUAN PENGIRIMAN */}
+                <Card className="border-l-4 border-l-green-600 bg-green-50/30 dark:bg-green-900/10">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold flex items-center gap-2 text-green-700 dark:text-green-400">
+                      <NavigationIcon className="w-4 h-4" /> PANDUAN OPERASIONAL (INDONESIA)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-xs space-y-2 text-green-800 dark:text-green-300">
+                    <p>• <b>Navigasi:</b> Klik "Search Map" untuk melihat rute ke alamat pelanggan atau "GPS Pin" jika tersedia.</p>
+                    <p>• <b>Selesaikan Misi:</b> Tekan "Selesaikan Pengiriman" saat sampai. Anda wajib mengunggah foto bukti (item terpasang/diterima) dan catatan singkat.</p>
+                    <p>• <b>Kendaraan:</b> Setelah selesai, kendaraan akan otomatis berstatus "RETURNING" (Dalam perjalanan kembali).</p>
+                  </CardContent>
+                </Card>
+
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -797,9 +848,34 @@ export default function WorkerDashboard() {
                               <div className="flex justify-between items-start mb-4">
                                 <div>
                                   <h3 className="font-bold text-lg">INV: {delivery.invoice?.invoiceNumber}</h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    Customer: {delivery.invoice?.order?.user?.fullName}
-                                  </p>
+                                    <div className="space-y-1">
+                                      <p className="font-bold text-lg text-primary">
+                                        {delivery.invoice?.order?.user?.fullName || delivery.invoice?.guestName || 'Pelanggan'}
+                                      </p>
+                                      <a 
+                                        href={`https://wa.me/${(delivery.invoice?.order?.user?.whatsapp || delivery.invoice?.guestWhatsapp || '').replace(/[^0-9]/g, '')}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-sm font-bold text-green-600 flex items-center gap-1 hover:underline cursor-pointer"
+                                      >
+                                        <MessageCircle className="w-3 h-3" /> {delivery.invoice?.order?.user?.whatsapp || delivery.invoice?.guestWhatsapp || '-'}
+                                      </a>
+                                      <p className="text-xs text-muted-foreground mt-1 border-l-2 border-primary/20 pl-2 italic">
+                                        {delivery.invoice?.deliveryAddress || delivery.invoice?.guestAddress || 'Alamat tidak tersedia'}
+                                      </p>
+                                    </div>
+
+                                    <div className="mt-3 p-3 bg-muted/50 rounded-xl space-y-2">
+                                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Isi Muatan / Manifest:</p>
+                                      <div className="grid grid-cols-1 gap-1">
+                                        {delivery.items?.map((item: any, idx: number) => (
+                                          <div key={idx} className="flex justify-between items-center text-xs font-bold bg-background/50 p-1.5 rounded-lg border">
+                                            <span>{item.rentalItem?.variant?.product?.name || item.nameSnapshot || 'Equipment'}</span>
+                                            <Badge variant="secondary" className="h-5 px-1.5 text-[10px]">x{item.quantity}</Badge>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
                                   <div className="mt-2 mb-3">
                                     {(delivery.latitude && delivery.longitude) ? (
                                       <Button
@@ -842,8 +918,36 @@ export default function WorkerDashboard() {
                               </div>
 
                               {delivery.vehicle && (
-                                <div className="bg-muted p-2 rounded-md mb-4 text-xs font-mono">
-                                  Using: {delivery.vehicle.name}
+                                <div className="flex items-center justify-between bg-muted p-2 rounded-md mb-4">
+                                  <div className="text-xs font-mono">
+                                    Using: {delivery.vehicle.name}
+                                  </div>
+                                  {delivery.vehicle.status === 'RETURNING' && (
+                                    <Button 
+                                      size="sm" 
+                                      variant="ghost" 
+                                      className="h-6 text-[10px] font-bold uppercase bg-primary/10 text-primary hover:bg-primary/20"
+                                      onClick={async () => {
+                                        try {
+                                          const token = localStorage.getItem('token')
+                                          const res = await fetch(`/api/admin/vehicles/${delivery.vehicle.id}`, {
+                                            method: 'PATCH',
+                                            headers: { 
+                                              'Content-Type': 'application/json',
+                                              'Authorization': `Bearer ${token}` 
+                                            },
+                                            body: JSON.stringify({ status: 'AVAILABLE' })
+                                          })
+                                          if (res.ok) {
+                                            toast.success("Kendaraan kembali Tersedia!")
+                                            fetchData(true)
+                                          }
+                                        } catch (e) { toast.error("Gagal reset kendaraan") }
+                                      }}
+                                    >
+                                      Kembalikan ke Kantor (HQ)
+                                    </Button>
+                                  )}
                                 </div>
                               )}
 

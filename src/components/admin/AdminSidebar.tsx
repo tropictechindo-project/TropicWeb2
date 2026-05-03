@@ -50,96 +50,115 @@ import { Badge } from "@/components/ui/badge"
 const items = [
     {
         title: "Overview",
+        localizedTitle: "Ringkasan",
         url: "/admin/overview",
         icon: LayoutDashboard,
     },
     {
         title: "Messages",
+        localizedTitle: "Pesan",
         url: "/admin/messages",
         icon: MessageSquare,
     },
     {
         title: "User Management",
+        localizedTitle: "Manajemen Pengguna",
         url: "/admin/users",
         icon: Users,
     },
     {
         title: "Workers Panel",
+        localizedTitle: "Panel Pekerja",
         url: "/admin/workers",
         icon: Users,
     },
     {
         title: "Deliveries Queue",
+        localizedTitle: "Antrean Kiriman",
         url: "/admin/deliveries",
         icon: NavigationIcon,
     },
     {
         title: "Fleet & Vehicles",
+        localizedTitle: "Armada & Kendaraan",
         url: "/admin/vehicles",
         icon: Truck,
     },
     {
         title: "Products",
+        localizedTitle: "Produk",
         url: "/admin/products",
         icon: Box,
     },
     {
         title: "Packages",
+        localizedTitle: "Paket Sewa",
         url: "/admin/packages",
         icon: Package,
     },
     {
         title: "Special Offers",
+        localizedTitle: "Penawaran Khusus",
         url: "/admin/special-offers",
         icon: Package,
     },
     {
         title: "Inventory (Units)",
+        localizedTitle: "Stok Barang",
         url: "/admin/inventory",
         icon: Warehouse,
     },
     {
         title: "Orders / Rentals",
+        localizedTitle: "Pesanan / Sewa",
         url: "/admin/orders",
         icon: ShoppingCart,
     },
     {
         title: "Service Requests",
+        localizedTitle: "Permintaan Layanan",
         url: "/admin/requests",
         icon: ClipboardCheck,
     },
     {
         title: "Invoices",
+        localizedTitle: "Tagihan / Invoice",
         url: "/admin/invoices",
         icon: FileText,
     },
     {
         title: "Email Audit",
+        localizedTitle: "Audit Email",
         url: "/admin/emails",
         icon: Mail,
     },
     {
         title: "Reports",
+        localizedTitle: "Laporan",
         url: "/admin/reports",
         icon: BarChart3,
     },
     {
         title: "Website",
+        localizedTitle: "Situs Web",
         url: "/admin/website",
         icon: Globe,
     },
     {
         title: "AI Control",
+        localizedTitle: "Kontrol AI",
         url: "/admin/ai",
         icon: Bot,
     },
     {
         title: "SEO Intelligence",
+        localizedTitle: "Intelijen SEO",
         url: "/admin/seo",
         icon: BarChart3,
     },
     {
         title: "System Control",
+        localizedTitle: "Kontrol Sistem",
         url: "/admin/system",
         icon: Settings,
     },
@@ -159,12 +178,16 @@ export function AdminSidebar() {
         <Sidebar collapsible="icon">
             <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center justify-center">
                 <div className="flex items-center gap-2 font-bold text-xl px-4 w-full">
-                    <span className="text-primary truncate">System Panel</span>
+                    <span className="text-primary truncate">
+                        {user?.role === 'OPERATOR' ? 'Panel Sistem' : 'System Panel'}
+                    </span>
                 </div>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Menu</SidebarGroupLabel>
+                    <SidebarGroupLabel>
+                        {user?.role === 'OPERATOR' ? 'Menu Utama' : 'Menu'}
+                    </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items
@@ -185,7 +208,9 @@ export function AdminSidebar() {
                                             <Link href={item.url} className="flex items-center justify-between w-full">
                                                 <div className="flex items-center gap-2">
                                                     <item.icon />
-                                                    <span>{item.title}</span>
+                                                    <span>
+                                                        {user?.role === 'OPERATOR' ? item.localizedTitle : item.title}
+                                                    </span>
                                                 </div>
                                                 {item.title === "Messages" && unreadMessagesCount > 0 && (
                                                     <Badge variant="destructive" className="h-5 min-w-[20px] px-1 ml-auto flex items-center justify-center text-[10px] rounded-full">
@@ -210,23 +235,29 @@ export function AdminSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+                    <SidebarGroupLabel>
+                        {user?.role === 'OPERATOR' ? 'Navigasi' : 'Navigation'}
+                    </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <GlobalTrackerModal />
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild tooltip="Global Tracker Map">
+                                <SidebarMenuButton asChild tooltip={user?.role === 'OPERATOR' ? 'Peta Pelacak Global' : 'Global Tracker Map'}>
                                     <Link href="/tracking" className="bg-primary/5 hover:bg-primary/10 text-primary transition-colors">
                                         <MapIcon className="h-4 w-4" />
-                                        <span className="font-bold">GLOBAL TRACKER</span>
+                                        <span className="font-bold">
+                                            {user?.role === 'OPERATOR' ? 'PELACAK GLOBAL' : 'GLOBAL TRACKER'}
+                                        </span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild tooltip="Back to Home">
+                                <SidebarMenuButton asChild tooltip={user?.role === 'OPERATOR' ? 'Kembali ke Beranda' : 'Back to Home'}>
                                     <Link href="/">
                                         <Home className="text-primary font-bold" />
-                                        <span className="font-bold">BACK TO HOME</span>
+                                        <span className="font-bold">
+                                            {user?.role === 'OPERATOR' ? 'BERANDA' : 'BACK TO HOME'}
+                                        </span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
@@ -238,22 +269,26 @@ export function AdminSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton
-                            tooltip="Toggle Theme"
+                            tooltip={user?.role === 'OPERATOR' ? 'Ganti Tema' : 'Toggle Theme'}
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                         >
                             {mounted && (theme === 'dark' ? <Sun className="text-yellow-500" /> : <Moon className="text-blue-500" />)}
                             {!mounted && <Sun className="text-muted-foreground" />}
-                            <span>Toggle Theme</span>
+                            <span>
+                                {user?.role === 'OPERATOR' ? 'Ganti Tema' : 'Toggle Theme'}
+                            </span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild tooltip="Log Out">
+                        <SidebarMenuButton asChild tooltip={user?.role === 'OPERATOR' ? 'Keluar Sesi' : 'Log Out'}>
                             <button
                                 onClick={() => logout()}
                                 className="flex items-center gap-2 w-full"
                             >
                                 <LogOut className="text-destructive" />
-                                <span className="font-semibold text-destructive">LOG OUT</span>
+                                <span className="font-semibold text-destructive">
+                                    {user?.role === 'OPERATOR' ? 'KELUAR' : 'LOG OUT'}
+                                </span>
                             </button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -261,11 +296,13 @@ export function AdminSidebar() {
                         <SidebarMenuButton size="lg" asChild>
                             <div className="flex items-center gap-2">
                                 <Avatar className="h-8 w-8 rounded-lg">
-                                    <AvatarFallback className="rounded-lg">AD</AvatarFallback>
+                                    <AvatarFallback className="rounded-lg bg-primary text-white font-black">
+                                        {user?.fullName?.substring(0, 2).toUpperCase() || 'AD'}
+                                    </AvatarFallback>
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">Admin User</span>
-                                    <span className="truncate text-xs">admin@tropictech.com</span>
+                                    <span className="truncate font-black uppercase tracking-tight">{user?.fullName || 'Admin User'}</span>
+                                    <span className="truncate text-[10px] text-muted-foreground font-medium">{user?.email || 'admin@tropictech.com'}</span>
                                 </div>
                             </div>
                         </SidebarMenuButton>

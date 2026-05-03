@@ -40,37 +40,37 @@ import { Badge } from "@/components/ui/badge"
 
 const items = [
     {
-        title: "Mission Brief (Overview)",
+        title: "Ringkasan Tugas",
         id: "overview",
         icon: LayoutDashboard,
     },
     {
-        title: "Delivery Pool",
+        title: "Daftar Tugas",
         id: "pool",
         icon: NavigationIcon,
     },
     {
-        title: "Active Jobs",
+        title: "Tugas Berjalan",
         id: "active",
         icon: Package,
     },
     {
-        title: "Delivery Tracker (Global)",
+        title: "Pelacakan Global",
         id: "tracking",
         icon: NavigationIcon,
     },
     {
-        title: "Team Comms",
+        title: "Chat Tim",
         id: "chat",
         icon: Users,
     },
     {
-        title: "Daily Attendance",
+        title: "Absensi Harian",
         id: "attendance",
         icon: ClipboardCheck,
     },
     {
-        title: "T-Tech.Ai",
+        title: "T-Tech AI",
         id: "ai",
         icon: Bot,
     }
@@ -91,7 +91,7 @@ export function WorkerSidebar({ currentTab, onTabChange, userName }: { currentTa
         <Sidebar collapsible="icon">
             <SidebarHeader className="h-16 border-b border-sidebar-border flex items-center justify-center">
                 <div className="flex items-center gap-2 font-bold text-xl px-4 w-full">
-                    <span className="text-primary truncate">Worker Hub</span>
+                    <span className="text-primary truncate">Pusat Pekerja</span>
                 </div>
             </SidebarHeader>
             <SidebarContent>
@@ -127,15 +127,15 @@ export function WorkerSidebar({ currentTab, onTabChange, userName }: { currentTa
                     </SidebarGroupContent>
                 </SidebarGroup>
                 <SidebarGroup>
-                    <SidebarGroupLabel>System</SidebarGroupLabel>
+                    <SidebarGroupLabel>Sistem</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <GlobalTrackerModal />
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild tooltip="Back to Home">
+                                <SidebarMenuButton asChild tooltip="Kembali ke Beranda">
                                     <Link href="/">
                                         <Home className="text-primary font-bold h-4 w-4" />
-                                        <span className="font-bold">BACK TO HOME</span>
+                                        <span className="font-bold uppercase">Beranda</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
@@ -148,22 +148,22 @@ export function WorkerSidebar({ currentTab, onTabChange, userName }: { currentTa
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton
-                            tooltip="Toggle Theme"
+                            tooltip="Ganti Tema"
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                         >
                             {mounted && (theme === 'dark' ? <Sun className="text-yellow-500 h-4 w-4" /> : <Moon className="text-blue-500 h-4 w-4" />)}
                             {!mounted && <Sun className="text-muted-foreground h-4 w-4" />}
-                            <span>Toggle Theme</span>
+                            <span>Ganti Tema</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild tooltip="Log Out">
+                        <SidebarMenuButton asChild tooltip="Keluar Sesi">
                             <button
                                 onClick={() => logout()}
                                 className="flex items-center gap-2 w-full"
                             >
                                 <LogOut className="text-destructive h-4 w-4" />
-                                <span className="font-semibold text-destructive">LOG OUT</span>
+                                <span className="font-semibold text-destructive">KELUAR</span>
                             </button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -175,7 +175,7 @@ export function WorkerSidebar({ currentTab, onTabChange, userName }: { currentTa
                                 </Avatar>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold text-primary">{userName}</span>
-                                    <span className="truncate text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Field Worker</span>
+                                    <span className="truncate text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Pekerja Lapangan</span>
                                 </div>
                             </div>
                         </SidebarMenuButton>

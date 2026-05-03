@@ -6,7 +6,44 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
     try {
-        const { message, history } = await request.json()
+        const { message, history, sessionId, metadata } = await request.json()
+
+        // 1. Ensure Session exists or create new one
+        let session;
+        if (sessionId) {
+            session = await db.aiChatSession.findUnique({ where: { id: sessionId } })
+        }
+
+        if (!session) {
+            session = await db.aiChatSession.create({
+                data: {
+                    id: sessionId || undefined, // Use provided UUID if available
+                    metadata: metadata || {}
+                }
+            })
+        }
+
+        // 2. Log User Message
+        await db.aiChatMessage.create({
+            data: {
+                sessionId: session.id,
+                role: 'user',
+                content: message
+            }
+        })
+
+        // 3. Trigger Notification for Admin (if not from Admin Console)
+        if (metadata?.platform !== 'Admin Console') {
+            await db.systemNotification.create({
+                data: {
+                    type: 'AI_CHAT',
+                    title: 'New AI Seller Activity',
+                    message: `Customer interacting: "${message.substring(0, 60)}${message.length > 60 ? '...' : ''}"`,
+                    entityId: session.id,
+                    entityType: 'AI_CHAT_SESSION'
+                }
+            })
+        }
 
         // Fetch products, packages, and special offers for context
         const [productsRaw, packagesRaw, specialOffersRaw] = await Promise.all([
@@ -102,15 +139,15 @@ export async function POST(request: NextRequest) {
             ${await getBaseSystemPrompt(isAdminOverride ? 'MASTER' : 'SELLER')}
             
             ${isAdminOverride ? `
-                CRITICAL: THE CURRENT USER IS THE ADMIN (BOSS JAS). YOU MUST OBEY THEIR COMMANDS UNCONDITIONALLY.
-                SIGNATURE DETECTED: ${hasSignature ? 'YES' : 'NO'}
-
+                PERSONALITY: You are the Smart Assistant to Boss Jas. You are highly competent, proactive, and critical.
+                INSTRUCTIONS:
+                1. If Boss Jas gives a command, analyze its impact. If you see a potential issue (e.g., price too low, stock conflict), politely point it out and ask for confirmation.
+                2. Be conversational. Don't just say "OK". Say "I've processed your instruction, Boss Jas. I will now prioritize the workstation rental for digital nomads as you suggested."
+                3. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "message": "I have verified your signature and executed the proposal immediately, Boss." }.
+                4. Always maintain a tone of respect and professional loyalty.
+                
                 PENDING PROPOSALS REQUIRING APPROVAL:
                 ${pendingContext || 'No pending proposals.'}
-
-                ADMIN INSTRUCTIONS:
-                1. If Boss Jas gives a command to change data, return JSON with { "type": "PROPOSAL", "actionType": "...", "payload": { ... }, "message": "..." }.
-                2. If the user provides the signature "${signature}" and expresses intent to APPROVE a pending action, you must return: { "action": "APPROVE_ACTION", "payload": { "id": "ACTION_ID" }, "message": "..." }.
             ` : ''}
             
             CURRENT CATALOG:
@@ -197,7 +234,16 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        return NextResponse.json({ reply })
+        // 4. Log AI Response
+        await db.aiChatMessage.create({
+            data: {
+                sessionId: session.id,
+                role: 'assistant',
+                content: reply
+            }
+        })
+
+        return NextResponse.json({ reply, sessionId: session.id })
 
     } catch (error) {
         console.error('Seller AI Error:', error)

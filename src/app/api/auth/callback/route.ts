@@ -110,6 +110,7 @@ export async function GET(request: NextRequest) {
         const token = await generateToken({
             userId: user.id,
             username: user.username,
+            fullName: user.fullName || '',
             email: user.email,
             role: sessionRole,
         })

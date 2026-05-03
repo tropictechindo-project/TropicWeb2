@@ -12,8 +12,10 @@ import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Edit2, Plus } from "lucide-react"
+import { Loader2, Edit2, Plus, Box } from "lucide-react"
 import { toast } from "sonner"
+import { useAuth } from "@/contexts/AuthContext"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
     Select,
     SelectContent,
@@ -97,8 +99,43 @@ export function InventoryClient({ productAssets, products, inventoryUnits = [] }
         }
     }
 
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <Edit2 className="w-4 h-4" /> ADMIN COMMAND: INVENTORY & ASSETS (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>G'day! Here's how you track the gear, mate:</p>
+                <p>• <b>Asset Units:</b> Every piece of gear is a discrete unit. You can track exactly how much coin each chair or tent has made for the business (ROI).</p>
+                <p>• <b>Management:</b> Hit "Manage" to add new units, set serial numbers, and update condition (Good, Damaged, etc.).</p>
+                <p>• <b>Recouping:</b> The "ROI" column shows how close a unit is to paying for itself. Once it hits 100%, it's pure profit, cheers!</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-purple-500 bg-purple-50/30 dark:bg-purple-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <Edit2 className="w-4 h-4" /> PANDUAN OPERATOR: MANAJEMEN ASET (ID)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-purple-800 dark:text-purple-300 font-medium">
+                <p>Halo Operator! Gunakan panel ini untuk memantau stok fisik di gudang:</p>
+                <p>• <b>Update Status:</b> Jika barang kembali dalam keadaan rusak, segera ubah status menjadi "MAINTENANCE" agar tidak disewa orang lain.</p>
+                <p>• <b>Stok Tersedia:</b> Angka "Available" adalah unit yang siap dikirim hari ini. Pastikan sinkron dengan fisik di gudang.</p>
+                <p>• <b>Audit Unit:</b> Gunakan tombol "Manage" untuk melihat detail serial number setiap barang saat pengecekan stok bulanan.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <div className="space-y-6">
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <Dialog open={isEditAssetOpen} onOpenChange={setIsEditAssetOpen}>
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>

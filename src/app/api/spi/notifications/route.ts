@@ -23,14 +23,16 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        // Clean up expired notifications first 
-        await db.spiNotification.deleteMany({
-            where: {
-                expiresAt: {
-                    lt: new Date()
+        // Clean up expired notifications - Hardened: Only run 1% of the time to avoid DB locks on every request
+        if (Math.random() < 0.01) {
+            db.spiNotification.deleteMany({
+                where: {
+                    expiresAt: {
+                        lt: new Date()
+                    }
                 }
-            }
-        })
+            }).catch(e => console.error('SPI_CLEANUP_SILENT_FAIL', e))
+        }
 
         // Fetch up to 3 unread notifications for this user or their role
         const notifications = await db.spiNotification.findMany({

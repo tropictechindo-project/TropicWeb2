@@ -12,7 +12,8 @@ import {
     CheckCircle2,
     XCircle,
     Wrench,
-    Bike
+    Bike,
+    Navigation as NavigationIcon
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -159,13 +160,49 @@ export function VehiclesClient({ initialVehicles }: { initialVehicles: any[] }) 
         switch (status) {
             case 'AVAILABLE': return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200"><CheckCircle2 className="w-3 h-3 mr-1" /> Available</Badge>
             case 'IN_USE': return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200"><Truck className="w-3 h-3 mr-1" /> In Use</Badge>
+            case 'RETURNING': return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200"><NavigationIcon className="w-3 h-3 mr-1" /> Returning to HQ</Badge>
             case 'MAINTENANCE': return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200"><Wrench className="w-3 h-3 mr-1" /> Maintenance</Badge>
             default: return <Badge variant="outline">{status}</Badge>
         }
     }
 
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-blue-500 bg-blue-50/30 dark:bg-blue-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-blue-700 dark:text-blue-400">
+                    <Truck className="w-4 h-4" /> ADMIN COMMAND: FLEET CONTROL (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-blue-800 dark:text-blue-300 font-medium">
+                <p>G'day! Here's how to keep the fleet in top shape, mate:</p>
+                <p>• <b>Vehicle Status:</b> Keep an eye on "RETURNING" units. Once they're back at the shed, set 'em to "AVAILABLE".</p>
+                <p>• <b>Maintenance:</b> If a bike's acting up, chuck it on "MAINTENANCE" so the boys don't try to claim it.</p>
+                <p>• <b>Tracking:</b> Each vehicle shows its current mission. Don't let 'em slack off, cheers.</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-purple-600 bg-purple-50/30 dark:bg-purple-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <NavigationIcon className="w-4 h-4" /> PANDUAN OPERATOR: MANAJEMEN ARMADA
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-purple-800 dark:text-purple-300">
+                <p>Halo Operator! Pastikan armada selalu siap untuk pengiriman:</p>
+                <p>• <b>Status Returning:</b> Jika kendaraan berstatus "Returning to HQ", artinya worker sedang jalan balik ke kantor.</p>
+                <p>• <b>Reset Ketersediaan:</b> Klik "Edit" dan ubah status ke "AVAILABLE" jika unit sudah sampai di kantor.</p>
+                <p>• <b>Pantau Unit:</b> Cek ketersediaan motor/mobil sebelum mengarahkan pengiriman baru.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <div className="space-y-4">
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <div className="flex justify-end">
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                     <DialogTrigger asChild>
@@ -327,6 +364,7 @@ export function VehiclesClient({ initialVehicles }: { initialVehicles: any[] }) 
                                 <SelectContent>
                                     <SelectItem value="AVAILABLE">AVAILABLE</SelectItem>
                                     <SelectItem value="IN_USE">IN USE</SelectItem>
+                                    <SelectItem value="RETURNING">RETURNING</SelectItem>
                                     <SelectItem value="MAINTENANCE">MAINTENANCE</SelectItem>
                                 </SelectContent>
                             </Select>

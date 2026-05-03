@@ -46,8 +46,8 @@ export default function EmailAuditPage() {
             toast.error("Invalid email address")
             return
         }
-        if (forwardEmails.length >= 5) {
-            toast.error("Maximum 5 emails allowed")
+        if (forwardEmails.length >= 10) {
+            toast.error("Maximum 10 emails allowed")
             return
         }
         if (forwardEmails.includes(trimmed)) {
@@ -125,12 +125,27 @@ export default function EmailAuditPage() {
                     {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Refresh'}
                 </Button>
             </div>
+            
+            {/* ADMIN GUIDE (AU) */}
+            <Card className="border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                        <Mail className="w-4 h-4" /> ADMIN COMMAND: EMAIL AUDIT (AU)
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                    <p>No worries mate! Here's how to manage the comms:</p>
+                    <p>• <b>Auto-Forward:</b> You can set up to 10 emails to receive copies of all invoices. Perfect for keeping the bookkeeper happy, cheers.</p>
+                    <p>• <b>Audit Logs:</b> Every single email sent by the system is logged below. If a customer says they didn't get their bill, check here first.</p>
+                    <p>• <b>Preview:</b> Click any email in the list to see exactly what went out. No more guessing games, mate.</p>
+                </CardContent>
+            </Card>
 
             {/* Email Forward Management Card Node flawless safely */}
             <Card className="shadow-lg border-border/40 bg-accent/5">
                 <CardHeader className="pb-3 border-b">
                     <CardTitle className="text-sm font-bold uppercase tracking-wider text-primary flex items-center gap-2">
-                        <ShieldCheck className="h-4 w-4" /> AUTO INVOICE EMAIL FORWARDING (Max 5)
+                        <ShieldCheck className="h-4 w-4" /> AUTO INVOICE EMAIL FORWARDING (Max 10)
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 pt-4">

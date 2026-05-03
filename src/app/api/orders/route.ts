@@ -77,18 +77,39 @@ export async function POST(request: Request) {
 
         const { tax, deliveryFee, total: baseTotal } = calculateInvoiceTotals(nonAddonSubtotal, distanceKm)
 
-        // Calculate EDC Fee if applicable
-        const isEdc = paymentMethod === 'EDC'
-        const edcFee = isEdc ? subtotalValue * 0.02 : 0
-        const finalTotal = baseTotal + addonSubtotal + edcFee
+        // Calculate Surcharges (Must match Frontend logic)
+        let surchargeValue = 0
+        let surchargeName = ""
+        
+        if (paymentMethod === 'BANK_TRANSFER') {
+            surchargeValue = Math.round((subtotalValue) * 0.025)
+            surchargeName = "Bank Transfer Fee (2.5%)"
+        } else if (paymentMethod === 'EDC') {
+            surchargeValue = Math.round((subtotalValue) * 0.025)
+            surchargeName = "EDC Machine Surcharge (2.5%)"
+        } else if (paymentMethod === 'PAYPAL') {
+            surchargeValue = Math.round((subtotalValue) * 0.05)
+            surchargeName = "PayPal Surcharge (5%)"
+        } else if (paymentMethod === 'WISE') {
+            surchargeValue = 85000 // Fixed handling fee
+            surchargeName = "Wise International Fee"
+        } else if (paymentMethod === 'STRIPE' || paymentMethod === 'VISA_MASTERCARD') {
+            surchargeValue = Math.round((subtotalValue) * 0.035)
+            surchargeName = "Card / Apple Pay Fee (3.5%)"
+        } else if (paymentMethod === 'CRYPTO') {
+            surchargeValue = Math.round((subtotalValue) * 0.01)
+            surchargeName = "Crypto Processing Fee (1%)"
+        }
 
-        // Inject EDC_FEE line item so it mirrors in list PDFs
+        const finalTotal = baseTotal + addonSubtotal + surchargeValue
+
+        // Inject Surcharge line item
         const finalLineItems = [
             ...cartItems,
-            ...(isEdc ? [{
-                id: 'EDC_FEE',
-                name: 'EDC Machine Fee (2%)',
-                price: edcFee,
+            ...(surchargeValue > 0 ? [{
+                id: 'PAYMENT_SURCHARGE',
+                name: surchargeName,
+                price: surchargeValue,
                 quantity: 1,
                 type: 'ADDON'
             }] : [])

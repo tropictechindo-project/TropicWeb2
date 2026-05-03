@@ -59,11 +59,11 @@ export default function ProductCard({ product, isMounted = true }: ProductCardPr
   // Base price prefers selected variant, otherwise product
   const price = selectedVariant?.monthlyPrice || product.monthlyPrice || product.monthly_price || 0
   const discountPercentage = product.discountPercentage || 0
-  const discountedPrice = discountPercentage > 0 ? price * (1 - discountPercentage / 100) : price
-
-  // Unified Pricing Logic: Round up to nearest 2,000 IDR
-  const dailyPrice = Math.ceil(discountedPrice / 30 / 2000) * 2000
-  const originalDailyPrice = Math.ceil(price / 30 / 2000) * 2000
+  const discountedPrice = Math.round((discountPercentage > 0 ? price * (1 - discountPercentage / 100) : price) / 1000) * 1000
+  
+  // Unified Pricing Logic: Round up to nearest 1,000 IDR for daily rates
+  const dailyPrice = Math.round((discountedPrice / 30) / 1000) * 1000
+  const originalDailyPrice = Math.round((price / 30) / 1000) * 1000
 
   const totalPrice = dailyPrice * duration
   const displayImage = product.imageUrl || product.image_url || (product.images && product.images[0]) || '/MyAi.webp'

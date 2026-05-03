@@ -53,14 +53,24 @@ export default async function AboutPage() {
         '@context': 'https://schema.org',
         '@type': ["LocalBusiness", "RentalBusiness", "ProfessionalService"],
         '@id': 'https://tropictech.rent/#organization',
-        'name': 'PT Tropic Tech International',
-        'alternateName': ['Tropic Tech', 'PT TTI'],
+        'name': 'PT Tropic Tech International™',
+        'alternateName': ['Tropic Tech', 'PT TTI', 'Bali Help Organization'],
+        'foundingDate': '2021',
         'url': 'https://tropictech.rent',
         'logo': 'https://tropictech.rent/images/Logo.webp',
         'taxID': '287935548901000',
         'identifier': [
             { '@type': 'PropertyValue', 'name': 'NIB', 'value': '1712240076832' },
             { '@type': 'PropertyValue', 'name': 'AHU', 'value': 'AHU-0100025.AH.01.01.TAHUN 2024' }
+        ],
+        'sameAs': [
+            'https://www.instagram.com/tropictech',
+            'https://www.instagram.com/tropictechs',
+            'https://wa.me/6282266574860',
+            'https://maps.app.goo.gl/2kVDL5NdqGjh8qBG8',
+            'https://tropic-tech.odoo.com',
+            'https://balihelp.id',
+            'https://indonesianvisas.com'
         ],
         'contactPoint': {
             '@type': 'ContactPoint',
@@ -109,7 +119,7 @@ export default async function AboutPage() {
             <section className="bg-gray-900 text-white py-24 px-6 relative overflow-hidden">
                 <div className="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700 via-gray-900 to-black" />
                 <div className="max-w-4xl mx-auto relative z-10 text-center">
-                    <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-4 block">PT Tropic Tech International</span>
+                    <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-4 block">PT Tropic Tech International™</span>
                     <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
                         {aboutData.title}
                     </h1>

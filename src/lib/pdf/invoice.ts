@@ -16,6 +16,7 @@ export interface InvoiceData {
   subtotal: number
   tax: number
   deliveryFee: number
+  discountAmount: number
   total: number
   currency: string
   orderNumber: string
@@ -24,6 +25,7 @@ export interface InvoiceData {
   isRegistered?: boolean
   status?: string
   invoiceId: string
+  paymentMethod?: string
 }
 
 export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
@@ -158,9 +160,9 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
     x += colWidths[1]
     doc.text(item.quantity.toString(), x, y)
     x += colWidths[2]
-    doc.text(`${data.currency} ${item.unitPrice.toLocaleString()}`, x, y)
+    doc.text(`${data.currency} ${item.unitPrice.toLocaleString('en-US')}`, x, y)
     x += colWidths[3]
-    doc.text(`${data.currency} ${item.totalPrice.toLocaleString()}`, x, y)
+    doc.text(`${data.currency} ${item.totalPrice.toLocaleString('en-US')}`, x, y)
     y += 8
   })
 
@@ -182,26 +184,42 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
   const totalsX = pageWidth - 80
 
   doc.text(`Subtotal:`, totalsX, y)
-  doc.text(`${data.currency} ${data.subtotal.toLocaleString()}`, pageWidth - 30, y)
+  doc.text(`${data.currency} ${data.subtotal.toLocaleString('en-US')}`, pageWidth - 30, y)
   y += 9
 
+  if (data.discountAmount > 0) {
+    doc.text(`Discount:`, totalsX, y)
+    doc.text(`- ${data.currency} ${data.discountAmount.toLocaleString('en-US')}`, pageWidth - 30, y)
+    y += 9
+  }
+
   if (data.tax > 0) {
-    doc.text(`Tax (${((data.tax / data.subtotal) * 100).toFixed(1)}%):`, totalsX, y)
-    doc.text(`${data.currency} ${data.tax.toLocaleString()}`, pageWidth - 30, y)
+    doc.text(`Tax (2%):`, totalsX, y)
+    doc.text(`${data.currency} ${data.tax.toLocaleString('en-US')}`, pageWidth - 30, y)
     y += 9
   }
 
   if (data.deliveryFee > 0) {
     doc.text(`Delivery Fee:`, totalsX, y)
-    doc.text(`${data.currency} ${data.deliveryFee.toLocaleString()}`, pageWidth - 30, y)
+    doc.text(`${data.currency} ${data.deliveryFee.toLocaleString('en-US')}`, pageWidth - 30, y)
     y += 9
   }
 
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(12)
   doc.text('TOTAL:', totalsX, y)
-  doc.text(`${data.currency} ${data.total.toLocaleString()}`, pageWidth - 30, y)
-  y += 20
+  doc.text(`${data.currency} ${data.total.toLocaleString('en-US')}`, pageWidth - 30, y)
+  
+  // USD Equivalent in PDF
+  y += 7
+  doc.setFontSize(9)
+  doc.setFont('helvetica', 'italic')
+  doc.setTextColor(...grayColor)
+  const usdRate = 0.000063 // Default fallback rate (approx)
+  const usdEquivalent = (data.total * usdRate).toFixed(2)
+  doc.text(`(Approx. $ ${usdEquivalent} USD)`, pageWidth - 30, y, { align: 'right' })
+  
+  y += 15
 
   // Confirmation & Approval Section
   if (y > pageHeight - 80) {
@@ -249,16 +267,53 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<jsPDF> {
     doc.text('(Waiting for Payment)', picX, y + 8)
   }
 
-  y += 20
+  // Payment Instructions
+  if (data.paymentMethod === 'BANK_TRANSFER') {
+    doc.setTextColor(...primaryColor)
+    doc.setFont('helvetica', 'bold')
+    doc.text('PAYMENT INSTRUCTIONS (BRI BANK):', 20, y)
+    y += 5
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Bank: BRI (Bank Rakyat Indonesia)`, 20, y)
+    y += 4
+    doc.text(`Account Name: PT TROPIC TECH INTERNATIONAL`, 20, y)
+    y += 4
+    doc.setFont('helvetica', 'bold')
+    doc.text(`Account Number: 2253-01-000561-30-0`, 20, y)
+    y += 5
+    doc.setFont('helvetica', 'italic')
+    doc.text('Please send proof of payment via WhatsApp or Email.', 20, y)
+  } else if (data.paymentMethod === 'WISE') {
+    doc.setTextColor(...primaryColor)
+    doc.setFont('helvetica', 'bold')
+    doc.text('PAYMENT INSTRUCTIONS (WISE):', 20, y)
+    y += 5
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Please transfer to Wise Tag: @jasperphoenixp`, 20, y)
+    y += 5
+    doc.setFont('helvetica', 'italic')
+    doc.text('Please send proof of payment via WhatsApp or Email.', 20, y)
+  } else {
+    doc.setTextColor(...primaryColor)
+    doc.setFont('helvetica', 'bold')
+    doc.text('PAYMENT INSTRUCTIONS:', 20, y)
+    y += 5
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(0, 0, 0)
+    doc.text('Please send proof of payment via WhatsApp or Email for verification.', 20, y)
+  }
+
+  // PIC Name
   doc.setTextColor(0, 0, 0)
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(10)
-  doc.text('Wahyudin Damopolii', picX, y)
+  doc.text('Wahyudin Damopolii', picX, y + 20)
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(8)
-  doc.text('(PIC Approval)', picX, y + 4)
+  doc.text('(PIC Approval)', picX, y + 24)
 
-  // Footer - Payment Info
   y = pageHeight - 45
   doc.setTextColor(...primaryColor)
   doc.setFont('helvetica', 'bold')

@@ -28,6 +28,7 @@ export async function POST(req: Request) {
         const {
             type, userId, guestName, guestEmail, guestWhatsapp, guestAddress,
             amount, subtotal, tax, deliveryFee, items, status,
+            discountAmount, discountPercentage,
             sendToCustomer, sendToWorkers, sendToCompany,
             activateOrderFlow, sendSpiNotifications,
             startDate: startDateStr, endDate: endDateStr
@@ -91,6 +92,8 @@ export async function POST(req: Request) {
                     subtotal: subtotal || amount,
                     tax: tax || 0,
                     deliveryFee: deliveryFee || 0,
+                    discountAmount: discountAmount || 0,
+                    discountPercentage: discountPercentage || 0,
                     status: status || 'PAID',
                     currency: 'IDR',
                     lineItems: items as any, // Save dynamic items list so PDFs read accurately

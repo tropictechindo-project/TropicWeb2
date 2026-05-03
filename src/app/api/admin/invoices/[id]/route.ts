@@ -26,7 +26,7 @@ export async function PATCH(
 
         const { id } = await params
         const body = await req.json()
-        const { status, total, subtotal, tax, deliveryFee, guestName, guestEmail, guestWhatsapp, address, startDate, endDate, items } = body
+        const { status, total, subtotal, tax, deliveryFee, discountAmount, discountPercentage, guestName, guestEmail, guestWhatsapp, address, startDate, endDate, items } = body
 
         const invoice = await db.invoice.update({
             where: { id },
@@ -36,6 +36,8 @@ export async function PATCH(
                 subtotal: subtotal !== undefined ? subtotal : (total !== undefined ? total : undefined),
                 tax: tax !== undefined ? tax : undefined,
                 deliveryFee: deliveryFee !== undefined ? deliveryFee : undefined,
+                discountAmount: discountAmount !== undefined ? discountAmount : undefined,
+                discountPercentage: discountPercentage !== undefined ? discountPercentage : undefined,
                 guestName,
                 guestEmail,
                 guestWhatsapp,

@@ -607,6 +607,21 @@ exports.Prisma.ItemRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AiChatSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiChatMessageScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  role: 'role',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.EmailAuditScalarFieldEnum = {
   id: 'id',
   to: 'to',
@@ -790,7 +805,8 @@ exports.VehicleType = exports.$Enums.VehicleType = {
 exports.VehicleStatus = exports.$Enums.VehicleStatus = {
   AVAILABLE: 'AVAILABLE',
   IN_USE: 'IN_USE',
-  MAINTENANCE: 'MAINTENANCE'
+  MAINTENANCE: 'MAINTENANCE',
+  RETURNING: 'RETURNING'
 };
 
 exports.DeliveryMethod = exports.$Enums.DeliveryMethod = {
@@ -862,6 +878,8 @@ exports.Prisma.ModelName = {
   SpecialOffer: 'SpecialOffer',
   ContactMessage: 'ContactMessage',
   ItemRequest: 'ItemRequest',
+  AiChatSession: 'AiChatSession',
+  AiChatMessage: 'AiChatMessage',
   EmailAudit: 'EmailAudit',
   SeoPage: 'SeoPage',
   SeoAnalytics: 'SeoAnalytics',

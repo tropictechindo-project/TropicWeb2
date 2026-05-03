@@ -14,7 +14,18 @@ export function SellerChatBubble() {
     ])
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [sessionId, setSessionId] = useState<string | null>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        // Initialize or retrieve Session ID
+        let sid = sessionStorage.getItem('ai_seller_session_id')
+        if (!sid) {
+            sid = crypto.randomUUID()
+            sessionStorage.setItem('ai_seller_session_id', sid)
+        }
+        setSessionId(sid)
+    }, [])
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -34,7 +45,16 @@ export function SellerChatBubble() {
             const response = await fetch('/api/ai/seller', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: input, history: messages.slice(-4) })
+                body: JSON.stringify({ 
+                    message: input, 
+                    history: messages.slice(-4),
+                    sessionId: sessionId,
+                    metadata: {
+                        url: window.location.href,
+                        userAgent: navigator.userAgent,
+                        platform: navigator.platform
+                    }
+                })
             })
 
             const data = await response.json()

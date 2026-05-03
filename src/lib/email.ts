@@ -56,85 +56,90 @@ export async function sendInvoiceEmail(data: {
   const statusColor = data.isPaid ? '#34D399' : '#6666FF'
   const statusText = data.isPaid ? 'Payment Confirmed' : 'Invoice Ready'
 
-  const mailOptions = {
-    from: `"Tropic Tech" <${process.env.SMTP_FROM || 'contact@tropictech.online'}>`,
-    to: customerEmail,
-    bcc: bcc,
-    subject: `${statusText}: ${data.invoiceNumber} - Tropic Tech International`,
-    html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; background-color: white;">
-        <div style="background-color: ${statusColor}; padding: 48px 24px; text-align: center; color: white;">
-          <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; opacity: 0.8;">Tropic Tech International</div>
-          <h1 style="margin: 0; font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">${statusText}</h1>
-          <p style="margin: 12px 0 0 0; font-size: 16px; font-weight: 500; opacity: 0.9;">Order #${data.invoiceNumber}</p>
-        </div>
-        
-        <div style="padding: 40px; color: #1E293B; line-height: 1.6;">
-          <p style="font-size: 18px; margin-top: 0;">Hello <strong>${data.customerName}</strong>,</p>
-          
-          ${data.isPaid ? `
-            <p style="font-size: 16px;">Great news! Your payment has been confirmed. Our team is now preparing your workstation for delivery. You can track your order status in real-time below.</p>
-          ` : `
-            <p style="font-size: 16px;">Your invoice for workstation rental is now available. Please complete the payment to confirm your delivery schedule.</p>
-          `}
-          
-          <div style="background-color: #F8FAFC; border-radius: 12px; padding: 24px; margin: 32px 0; border: 1px solid #E2E8F0;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 14px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Amount Total</span>
-            </div>
-            <div style="font-size: 28px; font-weight: 900; color: #1E293B;">Rp ${data.amount.toLocaleString('id-ID')}</div>
-          </div>
+  const recipients = Array.isArray(data.to) ? Array.from(new Set(data.to)) : [data.to]
+  let allSuccess = true
 
-          <div style="margin: 32px 0;">
+  for (const email of recipients) {
+    const mailOptions = {
+      from: `"Tropic Tech" <${process.env.SMTP_FROM || 'contact@tropictech.online'}>`,
+      to: email,
+      subject: `${statusText}: ${data.invoiceNumber} - Tropic Tech International`,
+      headers: {
+        'X-Priority': '1 (Highest)',
+        'X-MSMail-Priority': 'High',
+        'Importance': 'high',
+      },
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; background-color: white;">
+          <div style="background-color: ${statusColor}; padding: 48px 24px; text-align: center; color: white;">
+            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; opacity: 0.8;">Tropic Tech International</div>
+            <h1 style="margin: 0; font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">${statusText}</h1>
+            <p style="margin: 12px 0 0 0; font-size: 16px; font-weight: 500; opacity: 0.9;">Order #${data.invoiceNumber}</p>
+          </div>
+          
+          <div style="padding: 40px; color: #1E293B; line-height: 1.6;">
+            <p style="font-size: 18px; margin-top: 0;">Hello <strong>${data.customerName}</strong>,</p>
+            
             ${data.isPaid ? `
-              <a href="${trackingUrl}" style="background-color: #0F172A; color: white; padding: 18px 32px; text-decoration: none; border-radius: 10px; font-weight: 800; display: block; text-align: center; font-size: 16px; letter-spacing: 1px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">🚀 TRACK YOUR ORDER LIVE</a>
-              <div style="text-align: center; margin-top: 16px;">
-                <a href="${data.invoiceLink}" style="color: #64748B; font-size: 14px; font-weight: 600; text-decoration: underline;">View Invoice PDF</a>
-              </div>
+              <p style="font-size: 16px;">Great news! Your payment has been confirmed. Our team is now preparing your workstation for delivery. You can track your order status in real-time below.</p>
             ` : `
-              <a href="${data.invoiceLink}" style="background-color: #6666FF; color: white; padding: 18px 32px; text-decoration: none; border-radius: 10px; font-weight: 800; display: block; text-align: center; font-size: 16px; letter-spacing: 1px; box-shadow: 0 10px 15px -3px rgba(102, 102, 255, 0.3);">VIEW & PAY INVOICE</a>
+              <p style="font-size: 16px;">Your invoice for workstation rental is now available. Please complete the payment to confirm your delivery schedule.</p>
             `}
-          </div>
-          
-          <hr style="border: none; border-top: 1px solid #F1F5F9; margin: 40px 0;">
-          
-          <div style="font-size: 14px; color: #64748B;">
-            <p style="margin-bottom: 10px;"><strong>Tropic Tech International Network</strong></p>
-            <div style="display: grid; grid-template-cols: 1fr; gap: 8px;">
-              <a href="https://tropic-tech.odoo.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• tropic-tech.odoo.com</a>
-              <a href="https://indonesianvisas.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• indonesianvisas.com</a>
+            
+            <div style="background-color: #F8FAFC; border-radius: 12px; padding: 24px; margin: 32px 0; border: 1px solid #E2E8F0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Amount Total</span>
+              </div>
+              <div style="font-size: 28px; font-weight: 900; color: #1E293B;">Rp ${data.amount.toLocaleString('id-ID')}</div>
+            </div>
+
+            <div style="margin: 32px 0;">
+              ${data.isPaid ? `
+                <a href="${trackingUrl}" style="background-color: #0F172A; color: white; padding: 18px 32px; text-decoration: none; border-radius: 10px; font-weight: 800; display: block; text-align: center; font-size: 16px; letter-spacing: 1px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">🚀 TRACK YOUR ORDER LIVE</a>
+                <div style="text-align: center; margin-top: 16px;">
+                  <a href="${data.invoiceLink}" style="color: #64748B; font-size: 14px; font-weight: 600; text-decoration: underline;">View Invoice PDF</a>
+                </div>
+              ` : `
+                <a href="${data.invoiceLink}" style="background-color: #6666FF; color: white; padding: 18px 32px; text-decoration: none; border-radius: 10px; font-weight: 800; display: block; text-align: center; font-size: 16px; letter-spacing: 1px; box-shadow: 0 10px 15px -3px rgba(102, 102, 255, 0.3);">VIEW & PAY INVOICE</a>
+              `}
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #F1F5F9; margin: 40px 0;">
+            
+            <div style="font-size: 14px; color: #64748B;">
+              <p style="margin-bottom: 10px;"><strong>Tropic Tech International Network</strong></p>
+              <div style="display: grid; grid-template-cols: 1fr; gap: 8px;">
+                <a href="https://tropic-tech.odoo.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• tropic-tech.odoo.com</a>
+                <a href="https://indonesianvisas.com/" target="_blank" style="font-size: 12px; color: #64748B; text-decoration: none;">• indonesianvisas.com</a>
+              </div>
             </div>
           </div>
+          
+          <div style="background-color: #F8FAFC; padding: 24px; text-align: center; font-size: 12px; color: #94A3B8; border-top: 1px solid #F1F5F9;">
+            &copy; 2026 PT Tropic Tech International. All rights reserved.<br>
+            Jl. Tunjungsari No.8, Denpasar, Bali.
+          </div>
         </div>
-        
-        <div style="background-color: #F8FAFC; padding: 24px; text-align: center; font-size: 12px; color: #94A3B8; border-top: 1px solid #F1F5F9;">
-          &copy; 2026 PT Tropic Tech International. All rights reserved.<br>
-          Jl. Tunjungsari No.8, Denpasar, Bali.
-        </div>
-      </div>
-    `,
-  }
-
-  try {
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.log(`--- DEVELOPMENT MOCK EMAIL (${statusText}) ---`)
-      console.log(`To: ${customerEmail}`)
-      console.log(`Tracking: ${trackingUrl}`)
-      console.log(`Invoice: ${data.invoiceLink}`)
-      console.log('--------------------------------------')
-      return true
+      `,
     }
 
-    await transporter.sendMail(mailOptions)
-    console.log(`Email (${statusText}) sent to ${customerEmail}`)
-    
-    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, 'SENT', data.invoiceId)
-    return true
-  } catch (error: any) {
-    console.error('Error sending email:', error)
-    await logEmail(customerEmail, mailOptions.subject, mailOptions.html, `FAILED: ${error.message?.slice(0, 40) || 'Unknown'}`, data.invoiceId)
-    return false
+    try {
+      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        console.log(`--- DEVELOPMENT MOCK EMAIL (${statusText}) TO: ${email} ---`)
+        continue
+      }
+
+      await transporter.sendMail(mailOptions)
+      console.log(`Email (${statusText}) sent to ${email}`)
+      await logEmail(email, mailOptions.subject, mailOptions.html, 'SENT', data.invoiceId)
+    } catch (error: any) {
+      console.error(`Error sending email to ${email}:`, error)
+      await logEmail(email, mailOptions.subject, mailOptions.html, `FAILED: ${error.message?.slice(0, 40) || 'Unknown'}`, data.invoiceId)
+      allSuccess = false
+    }
   }
+
+  return allSuccess
 }
 
 export async function sendResetPasswordEmail(to: string, resetLink: string) {

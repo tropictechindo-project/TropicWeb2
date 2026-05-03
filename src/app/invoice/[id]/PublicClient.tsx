@@ -25,10 +25,28 @@ interface InvoicePublicClientProps {
 export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
     const [qrUrl, setQrUrl] = useState("")
 
+    const [usdTotal, setUsdTotal] = useState<string | null>(null)
+
     useEffect(() => {
         const trackingUrl = `${window.location.origin}/tracking/${invoice.invoiceNumber}`
         toDataURL(trackingUrl).then(setQrUrl).catch(console.error)
-    }, [invoice.invoiceNumber])
+
+        // Fetch USD Conversion
+        const fetchUSD = async () => {
+            try {
+                const res = await fetch(`https://api.exchangerate-api.com/v4/latest/IDR`)
+                const data = await res.json()
+                const rate = data.rates['USD']
+                if (rate) {
+                    setUsdTotal((invoice.total * rate).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }))
+                }
+            } catch (e) { console.error(e) }
+        }
+        fetchUSD()
+    }, [invoice.invoiceNumber, invoice.total])
 
     const handleDownload = async () => {
         try {
@@ -46,6 +64,7 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                 subtotal: invoice.subtotal || invoice.total,
                 tax: invoice.tax || 0,
                 deliveryFee: invoice.deliveryFee || 0,
+                discountAmount: Number(invoice.discountAmount || 0),
                 total: invoice.total,
                 items: invoice.items,
                 isRegistered: !!invoice.userId
@@ -180,11 +199,46 @@ export function InvoicePublicClient({ invoice }: InvoicePublicClientProps) {
                                 )}
                                 <div className="flex justify-between w-full max-w-xs text-2xl font-black py-4 border-t border-muted">
                                     <span className="uppercase">Total Amount</span>
-                                    <span className="text-primary">Rp {invoice.total.toLocaleString('id-ID')}</span>
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-primary">Rp {invoice.total.toLocaleString('id-ID')}</span>
+                                        {usdTotal && <span className="text-sm font-black text-emerald-600">≈ $ {usdTotal} USD</span>}
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
+                        {invoice.paymentMethod === 'WISE' && (
+                            <div className="mx-8 mb-8 p-6 bg-primary/5 border border-primary/20 rounded-2xl border-dashed">
+                                <div className="flex items-center gap-3 mb-4 text-primary font-black uppercase tracking-widest text-sm">
+                                    <Globe className="h-5 w-5" />
+                                    Wise Transfer Instructions
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-white rounded-xl border">
+                                        <div>
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Wise Tag</p>
+                                            <p className="text-xl font-black text-primary">@jasperphoenixp</p>
+                                        </div>
+                                        <div className="md:text-right">
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Verification Status</p>
+                                            <p className="text-sm font-black text-emerald-600">AUTHORIZED ACCOUNT</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-xs font-bold text-muted-foreground italic">
+                                            "Please send proof of payment via WhatsApp or Email after your transfer is complete."
+                                        </p>
+                                        <div className="flex gap-4 pt-2">
+                                            <Link href={`https://wa.me/6282266574860?text=${encodeURIComponent(`Proof of Payment for Invoice ${invoice.invoiceNumber}`)}`} target="_blank">
+                                                <Button size="sm" variant="outline" className="h-8 text-[10px] font-black gap-2">
+                                                    WHATSAPP PROOF
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
 

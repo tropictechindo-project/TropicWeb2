@@ -320,6 +320,7 @@ model User {
   workerAttendance                          WorkerAttendance[]
   sentNotifications                         WorkerNotification[]    @relation("SentNotifications")
   receivedNotifications                     WorkerNotification[]    @relation("ReceivedNotifications")
+  aiChatSessions                            AiChatSession[]
 
   @@map("users")
 }
@@ -803,6 +804,28 @@ enum AiAgentSystemName {
   AUDITOR
 }
 
+model AiChatSession {
+  id        String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?         @map("user_id") @db.Uuid
+  user      User?           @relation(fields: [userId], references: [id])
+  metadata  Json? // For IP, User Agent, Location
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  messages  AiChatMessage[]
+
+  @@map("ai_chat_sessions")
+}
+
+model AiChatMessage {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId String        @map("session_id") @db.Uuid
+  session   AiChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String // "user" or "assistant"
+  content   String
+  createdAt DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("ai_chat_messages")
+}
+
 enum AiActionStatus {
   PENDING
   APPROVED
@@ -820,6 +843,7 @@ enum VehicleStatus {
   AVAILABLE
   IN_USE
   MAINTENANCE
+  RETURNING
 }
 
 enum DeliveryMethod {

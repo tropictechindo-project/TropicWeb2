@@ -53,6 +53,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'fast-delivery-rent-bali',
         'rent-monitor-bali',
         'rent-chair-bali',
+        'scam-rent-company-in-bali',
+        'is-rent-desk-monitor-in-bali-a-scam',
+        'can-travelers-rent-work-equipment-bali',
+        'rent-workstation-bali-2026-2027',
     ]
 
     // Fallback for any newly added keys in SEO_PAGES not explicitly clustered

@@ -95,312 +95,103 @@ const DATA_LIMITATIONS_CONTENT = (
 const GUIDES: Record<Role, GuideSection[]> = {
     ADMIN: [
         {
-            title: "🔴 1. System Truth (How it Works / Cara Kerja)",
-            content: SYSTEM_TRUTH_CONTENT
-        },
-        {
-            title: "🟡 2. Data Limitations (Batasan Data)",
-            content: DATA_LIMITATIONS_CONTENT
-        },
-        {
-            title: "3. Action Consequences (Konsekuensi Tindakan)",
+            title: "🔴 1. System Engine Room (How it Works)",
             content: (
-                <div className="space-y-4 text-xs">
-                    <div>
-                        <p className="font-bold text-primary">A. Confirming Payment (Konfirmasi Pembayaran):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> Creates historical Order state, Snapshot OrderItems, & schedules Delivery.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Membuat status Pesanan sejarah, Snapshot Item, & jadwal Pengiriman.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Action cannot be safely reversed.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Tindakan tidak dapat dibatalkan dengan aman.</p>
-                    </div>
-                    <div>
-                        <p className="font-bold text-primary">B. Assigning Inventory Unit (Menugaskan Unit Inventaris):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> Adds item triggers into passive ROI summaries.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Menambahkan pemicu item ke ringkasan ROI pasif.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Affects financial reports and asset tracking sums.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Mempengaruhi laporan keuangan dan jumlah pelacakan aset.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "4. Role Definition (Tupoksi Admin)",
-            content: (
-                <div className="space-y-2 text-xs">
-                    <div>
-                        <p><strong>EN: Responsibilities:</strong> Absolute master control of financial validation, orders integrity, tracking overview, and asset ROI yields.</p>
-                        <p><strong>ID: Tanggung Jawab:</strong> Kontrol master absolut atas validasi keuangan, integritas pesanan, ikhtisar pelacakan, dan hasil ROI aset.</p>
-                    </div>
-                    <div>
-                        <p><strong>EN: Allowed:</strong> Confirm manual / online payments, assign units, adjust designs configs, manage operators/workers.</p>
-                        <p><strong>ID: Di-izinkan:</strong> Mengkonfirmasi pembayaran manual/online, menugaskan unit, mengatur konfigurasi, mengelola operator/kurir.</p>
-                    </div>
-                    <div className="text-red-600 font-bold border-l-2 border-red-500 pl-2">
-                        <p><strong>EN: MUST NOT DO:</strong> Confirm payments with un-audited receipts cascades; force-modify structural order templates.</p>
-                        <p><strong>ID: JANGAN LAKUKAN:</strong> Mengkonfirmasi pembayaran tanpa audit tanda terima; mengubah paksa templat pesanan struktural.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "5. Real Workflow (Step-by-Step / Alur Kerja)",
-            content: (
-                <ol className="list-decimal pl-4 space-y-2 text-xs">
-                    <li>
-                        <p><strong>EN:</strong> Admin receives Stripe or uploaded receipt webhook requests.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Admin menerima permintaan konfirmasi manual dari Stripe atau bukti transfer.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Inside Invoices table, validate amounts corresponds with snapshot lineItems.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Di tabel Invoice, validasi jumlah sesuai dengan item snapshot.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Click <strong>"Confirm Payment"</strong> → Atomically creates Order, schedules Courier dispatching.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Klik <strong>"Confirm Payment"</strong> → Membuat Pesanan otomatis, menjadwalkan Kurir.</p>
-                    </li>
-                </ol>
-            )
-        },
-        {
-            title: "6. Inventory & Lifecycle Management (Pengelolaan Inventaris)",
-            content: (
-                <div className="space-y-2 text-xs">
-                    <p><strong>EN:</strong> Every physical asset in your warehouse is tracked individually for maximum financial accuracy.</p>
-                    <p><strong>ID:</strong> Setiap aset fisik di gudang Anda dilacak secara individu untuk akurasi finansial maksimum.</p>
+                <div className="space-y-2 text-xs border-l-4 border-amber-600 bg-amber-500/5 p-2 rounded">
+                    <p className="font-bold text-amber-600 flex items-center gap-1"><AlertTriangle className="h-3.5 w-3.5" /> THE RULES OF THE RIG:</p>
                     <ul className="list-disc pl-4 space-y-1">
-                        <li><strong>HEALTHY / SEHAT:</strong> Available for rent / Tersedia untuk disewa.</li>
-                        <li><strong>OUT_OF_STOCK / KOSONG:</strong> No available units / Tidak ada unit tersedia.</li>
-                        <li><strong>MAINTENANCE / PERBAIKAN:</strong> Unit is being repaired (removes from stock) / Sedang diperbaiki.</li>
-                        <li><strong>LOST / HILANG:</strong> Unit is gone permanently / Unit hilang permanen.</li>
+                        <li><strong>Invoice First:</strong> The bill is the source of truth, mate. No payment, no play.</li>
+                        <li><strong>Order Lifecycle:</strong> We only start the clock once the money is in the bank and verified.</li>
+                        <li><strong>Asset Tracking:</strong> Every piece of gear has its own tag. We know exactly where the rig is at all times.</li>
                     </ul>
                 </div>
             )
         },
         {
-            title: "7. Warnings & Critical Mistakes (Peringatan)",
+            title: "2. G'day Mate! Admin Command (AU)",
             content: (
-                <div className="space-y-2 text-xs border-l-4 border-red-500 bg-red-500/5 p-2 rounded">
-                    <p className="font-bold text-red-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> CRITICAL WARNING / PERINGATAN KRITIS:</p>
-                    <div>
-                        <p><strong>EN:</strong> Incorrect invoice confirmation can create invalid orders. Admin actions affect real finances.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Konfirmasi invoice yang salah dapat membuat pesanan tidak valid. Tindakan admin berdampak keuangan nyata.</p>
-                    </div>
+                <div className="space-y-2 text-xs">
+                    <p>Listen up, legend! Here's how you run this show:</p>
+                    <p>• <b>Verify the Loot:</b> When a customer sends a receipt, check it twice before hitting confirm. No free rides!</p>
+                    <p>• <b>Dispatch the Boys:</b> Once the payment's sweet, the system kicks off the delivery. Keep an eye on the tracker to make sure they're not slackin'.</p>
+                    <p>• <b>Keep 'em Happy:</b> Use the Email Audit to make sure the customers get their invoices. No one likes a missing bill, cheers.</p>
                 </div>
             )
         },
         {
-            title: "8. Terminology (Istilah)",
-            content: COMMON_TERMINOLOGY
+            title: "3. Action Consequences (The Sharp End)",
+            content: (
+                <div className="space-y-4 text-xs">
+                    <div>
+                        <p className="font-bold text-primary">Confirming Payment:</p>
+                        <p className="pl-3 text-muted-foreground">This kicks off the whole delivery chain. Once you click it, the gear starts movin'.</p>
+                        <p className="pl-3 text-red-600 font-bold ml-3 italic">Don't muck it up, mate. It's hard to roll back once the boys are on the road.</p>
+                    </div>
+                </div>
+            )
         }
     ],
     OPERATOR: [
         {
-            title: "🔴 1. System Truth (How it Works / Cara Kerja)",
-            content: SYSTEM_TRUTH_CONTENT
-        },
-        {
-            title: "🟡 2. Data Limitations (Batasan Data)",
-            content: DATA_LIMITATIONS_CONTENT
-        },
-        {
-            title: "3. Action Consequences (Konsekuensi Tindakan)",
+            title: "🔴 1. Alur Operasional (Panduan Indonesia)",
             content: (
-                <div className="space-y-4 text-xs">
-                    <div>
-                        <p className="font-bold text-primary">A. Assigning Delivery (Menugaskan Pengiriman):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> The worker becomes legally and operationally responsible for execution.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Kurir menjadi bertanggung jawab secara hukum dan operasional atas eksekusi.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Incorrect assignment may delay or fail delivery queue items.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Kesalahan penugasan dapat memperlambat atau menggagalkan pengiriman.</p>
-                    </div>
+                <div className="space-y-2 text-xs border-l-4 border-emerald-600 bg-emerald-500/5 p-2 rounded">
+                    <p className="font-bold text-emerald-600 flex items-center gap-1"><Info className="h-3.5 w-3.5" /> ATURAN MAIN OPERATOR:</p>
+                    <ul className="list-disc pl-4 space-y-1">
+                        <li><b>Prioritas Invoice:</b> Pantau invoice yang baru masuk dan bantu Admin verifikasi jika perlu.</li>
+                        <li><b>Antrean Pengiriman:</b> Pastikan semua pesanan yang sudah lunas (PAID) segera mendapatkan kurir/worker.</li>
+                        <li><b>Manajemen Armada:</b> Selalu cek ketersediaan unit di gudang sebelum menjanjikan pengiriman cepat.</li>
+                    </ul>
                 </div>
             )
         },
         {
-            title: "4. Role Definition (Tupoksi Operator)",
+            title: "2. Tugas & Tanggung Jawab",
             content: (
                 <div className="space-y-2 text-xs">
-                    <div>
-                        <p><strong>EN: Responsibilities:</strong> Managing dispatch queues, preparing logistics, assigning workers to orders.</p>
-                        <p><strong>ID: Tanggung Jawab:</strong> Mengelola antrean pengiriman, menyiapkan logistik, menugaskan kurir.</p>
-                    </div>
-                    <div>
-                        <p><strong>EN: Allowed:</strong> Re-route dispatch, assign workers, monitor live telemetry positions.</p>
-                        <p><strong>ID: Di-izinkan:</strong> Mengatur rute, menugaskan kurir, memantau posisi telemetri live.</p>
-                    </div>
-                    <div className="text-red-600 font-bold border-l-2 border-red-500 pl-2">
-                        <p><strong>EN: MUST NOT DO:</strong> Mark delivery completed before worker uploads visual proof.</p>
-                        <p><strong>ID: JANGAN LAKUKAN:</strong> Menandai selesai sebelum kurir mengunggah bukti foto.</p>
-                    </div>
+                    <p>Halo Operator! Tugas utama Anda adalah menjaga kelancaran lapangan:</p>
+                    <p>• <b>Penugasan Kurir:</b> Pilih worker yang paling dekat atau yang sedang kosong untuk menghemat waktu.</p>
+                    <p>• <b>Verifikasi Selesai:</b> Pastikan worker mengunggah foto bukti yang jelas sebelum Anda menutup tugas tersebut.</p>
+                    <p>• <b>Komunikasi:</b> Gunakan fitur chat untuk koordinasi cepat jika ada alamat yang susah ditemukan.</p>
                 </div>
             )
-        },
-        {
-            title: "5. Real Workflow (Step-by-Step / Alur Kerja)",
-            content: (
-                <ol className="list-decimal pl-4 space-y-2 text-xs">
-                    <li>
-                        <p><strong>EN:</strong> Check Delivery pool for items marked "Pending Assign".</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Periksa daftar pengiriman untuk item "Menunggu Penugasan".</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Select row → Trigger Worker Assign dropdown.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Pilih baris → Gunakan dropdown pilih kurir.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Dispatch triggers push live notification to worker.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Penugasan mengirim notifikasi live ke kurir.</p>
-                    </li>
-                </ol>
-            )
-        },
-        {
-            title: "6. Warnings & Critical Mistakes (Peringatan)",
-            content: (
-                <div className="space-y-2 text-xs border-l-4 border-red-500 bg-red-500/5 p-2 rounded">
-                    <p className="font-bold text-red-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> CRITICAL WARNING / PERINGATAN KRITIS:</p>
-                    <div>
-                        <p><strong>EN:</strong> Mis-dispatching creates overlap conflicts. Monitor grids early.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Kesalahan rute membuat bentrok jadwal. Pantau ketersediaan lebih awal.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "7. Terminology (Istilah)",
-            content: COMMON_TERMINOLOGY
         }
     ],
     WORKER: [
         {
-            title: "🔵 1. Sistem Utama (System Truth)",
+            title: "🔵 1. Panduan Misi Lapangan (Indonesia)",
+            content: (
+                <div className="space-y-2 text-xs border-l-4 border-blue-600 bg-blue-500/5 p-2 rounded">
+                    <p className="font-bold text-blue-600 flex items-center gap-1"><AlertCircle className="h-3.5 w-3.5" /> PROTOKOL WORKER:</p>
+                    <ul className="list-disc pl-4 space-y-1">
+                        <li><b>Klaim Tugas:</b> Ambil tugas di 'Delivery Pool'. Satu mobil bisa bawa sampai 5 pesanan sekaligus.</li>
+                        <li><b>Start Mission:</b> Wajib tekan tombol mulai saat berangkat agar GPS aktif dan pelanggan bisa melacak Anda.</li>
+                        <li><b>Upload Bukti:</b> Jangan lupa foto barang di lokasi! Tanpa foto, tugas tidak bisa dianggap selesai.</li>
+                    </ul>
+                </div>
+            )
+        },
+        {
+            title: "2. Tips Navigasi & Keamanan",
             content: (
                 <div className="space-y-2 text-xs">
-                    {SYSTEM_TRUTH_CONTENT}
-                    <div className="mt-2 p-2 bg-emerald-500/5 border-l-4 border-emerald-500 rounded">
-                        <p className="font-bold text-emerald-600">PENTING: Alat Pelacakan / Tracking Device</p>
-                        <p className="text-muted-foreground italic">Pastikan 'Sambungkan Perangkat' di header berwarna hijau. Ini mengaktifkan GPS dan notifikasi live agar pelanggan bisa melihat posisi Anda secara akurat di Global Tracker.</p>
-                    </div>
+                    <p>• Gunakan tombol <b>"Search Map"</b> untuk bantuan rute Google Maps secara otomatis.</p>
+                    <p>• Jika status kendaraan <b>"RETURNING"</b>, artinya Anda sedang dalam perjalanan kembali ke kantor untuk tugas berikutnya.</p>
+                    <p>• Jaga komunikasi dengan Operator via chat jika ada kendala di jalan (macet/ban bocor).</p>
                 </div>
             )
-        },
-        {
-            title: "🟡 2. Batasan Data (Data Limitations)",
-            content: DATA_LIMITATIONS_CONTENT
-        },
-        {
-            title: "3. Konsekuensi Tindakan (Action Consequences)",
-            content: (
-                <div className="space-y-4 text-xs">
-                    <div>
-                        <p className="font-bold text-primary">A. Menerima Pekerjaan (Accepting a Job):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> You are responsible for completion. GPS updates power live tracking.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Anda bertanggung jawab penuh atas penyelesaian tugas. Pembaruan GPS Anda adalah nyawa dari fitur pelacakan live pelanggan.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Missing updates breaks tracking visibility.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Jika GPS mati atau browser ditutup, pelanggan tidak bisa melihat posisi Anda dan akan menganggap pengiriman bermasalah.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "4. Definisi Peran (Role Definition - Tupoksi Kurir)",
-            content: (
-                <div className="space-y-2 text-xs">
-                    <p><strong>EN:</strong> Responsible for visual physical execution of delivery drops. GPS directly affects customer tracking.</p>
-                    <p><strong>ID:</strong> Bertanggung jawab atas eksekusi fisik penyerahan barang di lapangan. Koordinasi GPS Anda sangat krusial bagi kepuasan pelanggan.</p>
-                </div>
-            )
-        },
-        {
-            title: "5. Tanggung Jawab Utama (Responsibilities)",
-            content: (
-                <ul className="list-disc pl-4 space-y-2 text-xs">
-                    <li>
-                        <p><strong>EN:</strong> Accept delivery jobs from the pool.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Klaim tugas pengiriman dari 'Available Pool' segera setelah tersedia.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Update GPS location consistently.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Jaga status 'Sambungkan Perangkat' tetap AKTIF (Hijau) selama perjalanan.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Upload proof (photo) on arrival.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Ambil foto bukti penyerahan barang yang jelas saat tiba di lokasi pelanggan.</p>
-                    </li>
-                </ul>
-            )
-        },
-        {
-            title: "6. Peringatan Kritis (Warnings & Critical Mistakes)",
-            content: (
-                <div className="space-y-2 text-xs border-l-4 border-red-500 bg-red-500/5 p-2 rounded">
-                    <p className="font-bold text-red-600 flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> PERINGATAN KRITIS:</p>
-                    <div>
-                        <p><strong>EN:</strong> Not uploading proof leaves job incomplete indefinitely.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Lupa mengunggah bukti foto akan membuat tugas dianggap 'Gantung' dan pembayaran Anda mungkin terhambat.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "7. Istilah Sistem (Terminology)",
-            content: COMMON_TERMINOLOGY
         }
     ],
     USER: [
         {
-            title: "🔴 1. System Truth (How it Works / Cara Kerja)",
-            content: SYSTEM_TRUTH_CONTENT
-        },
-        {
-            title: "🟡 2. Data Limitations (Batasan Data)",
-            content: DATA_LIMITATIONS_CONTENT
-        },
-        {
-            title: "3. Action Consequences (Konsekuensi Tindakan)",
-            content: (
-                <div className="space-y-4 text-xs">
-                    <div>
-                        <p className="font-bold text-primary">When you submit payment (Saat Anda membayar):</p>
-                        <p className="pl-3 text-muted-foreground"><strong>EN:</strong> Order is processed AFTER confirmation.</p>
-                        <p className="pl-3 text-muted-foreground"><strong>ID:</strong> Pesanan diproses SETELAH konfirmasi.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>EN:</strong> Delivery starts ONLY AFTER verification.</p>
-                        <p className="pl-3 text-red-600 font-bold ml-3"><strong>ID:</strong> Pengiriman dimulai HANYA SETELAH verifikasi.</p>
-                    </div>
-                </div>
-            )
-        },
-        {
-            title: "4. Role Definition (Tupoksi Pelanggan)",
+            title: "🔴 1. How to Rent",
             content: (
                 <div className="space-y-2 text-xs">
-                    <p><strong>EN:</strong> Browse catalog, create bookings, upload receipt evidence accurately.</p>
-                    <p><strong>ID:</strong> Telusuri katalog, buat pesanan sewa, unggah bukti transfer akurat.</p>
+                    <p>1. Choose your gear and duration.</p>
+                    <p>2. Complete the invoice payment.</p>
+                    <p>3. Wait for our team to verify and dispatch your items.</p>
                 </div>
             )
-        },
-        {
-            title: "5. Real Workflow (Step-by-Step / Alur Kerja)",
-            content: (
-                <ol className="list-decimal pl-4 space-y-2 text-xs">
-                    <li>
-                        <p><strong>EN:</strong> Browse products → Checkout creates Invoice.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Cari produk → Checkout membuat Invoice.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Provide transfer evidence to speed up audits.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Unggah bukti transfer untuk audit cepat.</p>
-                    </li>
-                    <li>
-                        <p><strong>EN:</strong> Wait for verification → Access live courier map.</p>
-                        <p className="text-muted-foreground"><strong>ID:</strong> Tunggu verifikasi → Pantau peta kurir live.</p>
-                    </li>
-                </ol>
-            )
-        },
-        {
-            title: "6. Terminology (Istilah)",
-            content: COMMON_TERMINOLOGY
         }
     ]
 }
@@ -411,39 +202,45 @@ export function DashboardGuide({ role }: { role: Role }) {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 text-[10px] font-black uppercase tracking-widest gap-2 opacity-80 hover:opacity-100">
-                    <HelpCircle className="h-3.5 w-3.5" />
-                    System Guide
+                <Button variant="outline" size="sm" className="h-9 text-[10px] font-black uppercase tracking-widest gap-2 bg-white/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all shadow-sm">
+                    <HelpCircle className="h-4 w-4 text-primary" />
+                    {role === 'ADMIN' ? "System Guide (AU)" : "Panduan Sistem (ID)"}
                 </Button>
             </SheetTrigger>
-            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto bg-card backdrop-blur-md">
-                <SheetHeader className="pb-4 border-b">
-                    <SheetTitle className="text-xl font-black uppercase tracking-tight text-primary flex items-center gap-2">
-                        <Info className="h-5 w-5" />
-                        {role} Control Guide
+            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l-primary/10">
+                <SheetHeader className="pb-6 border-b border-primary/10">
+                    <SheetTitle className="text-2xl font-black uppercase tracking-tight text-primary flex items-center gap-2">
+                        <Info className="h-6 w-6" />
+                        {role === 'ADMIN' ? "Rig Command Guide" : "Panduan Kendali Sistem"}
                     </SheetTitle>
-                    <SheetDescription className="text-xs italic">
-                        Comprehensive operational guide based on real system architecture
+                    <SheetDescription className="text-sm font-medium italic opacity-70">
+                        {role === 'ADMIN' 
+                            ? "Operational manual for the engine room, cheers mate!" 
+                            : "Manual operasional untuk tim lapangan dan operator."}
                     </SheetDescription>
                 </SheetHeader>
 
-                <div className="mt-4 space-y-4">
-                    <Accordion type="single" collapsible className="w-full">
+                <div className="mt-6 space-y-6">
+                    <Accordion type="single" collapsible className="w-full space-y-2">
                         {sections.map((sec, i) => (
-                            <AccordionItem key={i} value={`sec-${i}`}>
-                                <AccordionTrigger className="text-xs font-black uppercase tracking-wider py-3">
+                            <AccordionItem key={i} value={`sec-${i}`} className="border rounded-xl px-4 bg-muted/20 border-primary/5">
+                                <AccordionTrigger className="text-xs font-black uppercase tracking-wider py-4 hover:no-underline hover:text-primary transition-colors">
                                     {sec.title}
                                 </AccordionTrigger>
-                                <AccordionContent className="pb-4 text-muted-foreground leading-relaxed">
+                                <AccordionContent className="pb-6 text-sm text-muted-foreground leading-relaxed">
                                     {sec.content}
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
                     </Accordion>
 
-                    <div className="p-3 bg-muted/40 rounded-xl border border-dashed text-[10px] text-muted-foreground flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-primary shrink-0" />
-                        <p>This document guides real-time state machines aggregates. Rules enforced strictly above transactional safeguards natively.</p>
+                    <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 text-[11px] font-medium text-primary/80 flex items-start gap-3">
+                        <AlertCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <p>
+                            {role === 'ADMIN'
+                                ? "This guide reflects the live system state. Follow the rules and the whole rig runs smooth as silk. Good on ya!"
+                                : "Panduan ini mencerminkan kondisi sistem saat ini. Ikuti aturan agar operasional berjalan lancar dan aman."}
+                        </p>
                     </div>
                 </div>
             </SheetContent>

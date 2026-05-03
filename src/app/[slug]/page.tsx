@@ -198,6 +198,37 @@ function TrustSection({ section }: { section: SEOSection }) {
     )
 }
 
+function ChartSection({ section }: { section: SEOSection }) {
+    return (
+        <section className="py-16 px-4 bg-primary/5">
+            <div className="max-w-5xl mx-auto">
+                <h2 className="text-2xl md:text-3xl font-black mb-10 text-center uppercase tracking-tight">{section.heading}</h2>
+                <div className="grid md:grid-cols-1 gap-8">
+                    <div className="bg-card border border-border rounded-3xl p-8 shadow-sm overflow-hidden">
+                        <div className="flex flex-col gap-4">
+                            {section.items.map((item, i) => (
+                                <div key={i} className="space-y-2">
+                                    <div className="flex justify-between text-sm font-bold uppercase tracking-wider">
+                                        <span>{item.label}</span>
+                                        <span className="text-primary">{item.value}</span>
+                                    </div>
+                                    <div className="w-full bg-muted rounded-full h-4 overflow-hidden">
+                                        <div 
+                                            className="bg-primary h-full rounded-full transition-all duration-1000" 
+                                            style={{ width: item.value?.includes('%') ? item.value : '100%' }}
+                                        />
+                                    </div>
+                                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
 function GenericSection({ section }: { section: SEOSection }) {
     return (
         <section className="py-16 px-4 bg-muted/20">
@@ -224,6 +255,7 @@ function renderSection(section: SEOSection, index: number) {
         case 'areas': return <AreasSection key={index} section={section} />
         case 'benefits': return <BenefitsSection key={index} section={section} />
         case 'trust': return <TrustSection key={index} section={section} />
+        case 'chart': return <ChartSection key={index} section={section} />
         default: return <GenericSection key={index} section={section} />
     }
 }
@@ -530,6 +562,8 @@ export async function generateStaticParams() {
     const newSlugs = [
         'rent-deks-bali', 'rent-stuff-bali', 'rent-setup-work-bali',
         'bali-monitor', 'rent-grear-for-work-bali', 'fast-delivery-rent-bali',
+        'scam-rent-company-in-bali', 'is-rent-desk-monitor-in-bali-a-scam',
+        'can-travelers-rent-work-equipment-bali', 'rent-workstation-bali-2026-2027',
     ]
     const seoPageSlugs = Object.keys(SEO_PAGES)
 

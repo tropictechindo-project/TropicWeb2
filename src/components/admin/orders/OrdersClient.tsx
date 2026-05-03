@@ -20,6 +20,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { toast } from "sonner"
+import { useAuth } from "@/contexts/AuthContext"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 
 interface Order {
@@ -224,8 +226,43 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
     })
 
 
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <Package className="w-4 h-4" /> ADMIN COMMAND: ORDER ENGINE (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>No worries mate! Here's the play for the orders:</p>
+                <p>• <b>Confirm Payment:</b> When the loot hits the bank, click this to turn the request into a real order. It'll send the invoice and alert the boys.</p>
+                <p>• <b>Link Assets:</b> Click the eye button and look for "Link Assets". You gotta tell the system exactly which serialized gear is going out, cheers.</p>
+                <p>• <b>Active Rentals:</b> Use the tabs to see who's got our gear right now and when it's due back in the shed.</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-purple-500 bg-purple-50/30 dark:bg-purple-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <Package className="w-4 h-4" /> PANDUAN OPERATOR: MANAJEMEN PESANAN (ID)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-purple-800 dark:text-purple-300 font-medium">
+                <p>Halo Operator! Gunakan panel ini untuk mengelola siklus hidup pesanan:</p>
+                <p>• <b>Konfirmasi Bayar:</b> Pastikan Admin sudah mengecek bukti transfer sebelum pesanan ini diproses ke tahap pengiriman.</p>
+                <p>• <b>Hubungkan Aset:</b> Setiap barang keluar wajib dihubungkan ke Serial Number atau ID Aset yang ada di gudang agar stok tidak berantakan.</p>
+                <p>• <b>Pantau Rental:</b> Cek tab "Active Rentals" untuk melihat siapa saja yang masih membawa barang kita dan kapan harus kembali.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <div className="space-y-4">
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
                 <TabsList className="bg-muted/50 p-1 mb-2 flex flex-wrap h-auto gap-1">
                     <TabsTrigger value="ALL" className="text-xs font-bold px-4 py-2 data-[state=active]:bg-background">All Orders</TabsTrigger>

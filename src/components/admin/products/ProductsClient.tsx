@@ -26,6 +26,8 @@ import {
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/contexts/AuthContext"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import {
     Select,
     SelectContent,
@@ -207,8 +209,43 @@ export function ProductsClient({ initialProducts }: ProductsClientProps) {
         }
     }
 
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <Plus className="w-4 h-4" /> ADMIN COMMAND: SHOWROOM & CATALOG (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>G'day! Here's how you manage the gear on display, mate:</p>
+                <p>• <b>Product Info:</b> You can add new gear or tweak the descriptions and prices. Keep it lookin' sharp for the customers.</p>
+                <p>• <b>Variants:</b> Every product can have different colors or models. Make sure you set the purchase price so the system can track the ROI automatically.</p>
+                <p>• <b>Catalogs:</b> Use the buttons at the top to upload the latest PDF brochures. It keeps the whole site up to date, cheers!</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-purple-500 bg-purple-50/30 dark:bg-purple-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-purple-700 dark:text-purple-400">
+                    <Plus className="w-4 h-4" /> PANDUAN OPERATOR: KATALOG PRODUK (ID)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-purple-800 dark:text-purple-300 font-medium">
+                <p>Halo Operator! Gunakan panel ini untuk memantau apa yang tampil di website:</p>
+                <p>• <b>Cek Harga:</b> Pastikan harga sewa bulanan sudah sesuai dengan kebijakan terbaru perusahaan.</p>
+                <p>• <b>Varian & Stok:</b> Perhatikan jumlah stok di setiap varian warna. Jika barang habis, sistem akan otomatis memberi label "Out of Stock".</p>
+                <p>• <b>Edit Cepat:</b> Gunakan tombol pensil untuk mengubah deskripsi jika ada spesifikasi barang yang baru diperbarui.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <>
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <div className="flex flex-col md:flex-row justify-between mb-4 items-center bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 md:mb-0">
                     <h2 className="font-bold text-gray-700 mr-2 text-sm uppercase tracking-wider">Global Catalogs (PDF)</h2>

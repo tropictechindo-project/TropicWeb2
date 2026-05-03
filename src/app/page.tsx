@@ -203,9 +203,10 @@ export default async function Home() {
             "@type": ["LocalBusiness", "RentalBusiness", "ProfessionalService"],
             "@id": `${SITE_URL}/#organization`,
             "name": "Tropic Tech",
-            "alternateName": ["PT TTI", "Tropic Tech Rental", "Remote Work Setup Bali"],
-            "legalName": "PT Tropic Tech International",
-            "description": "Bali's leading remote work infrastructure service. Rent a setup for work, digital nomad setups, ergonomic chairs, standing desks, and monitors with 24-hour delivery. Trusted by digital nomads and remote teams in Canggu, Ubud, and Seminyak.",
+            "alternateName": ["PT TTI", "Tropic Tech Rental", "Bali Help Organization", "Remote Work Setup Bali"],
+            "legalName": "PT Tropic Tech International™",
+            "foundingDate": "2021",
+            "description": "Bali's leading remote work infrastructure service since 2021. Originally founded under Bali Help Organization, we formalized as PT Tropic Tech International in 2024. Rent ergonomic chairs, standing desks, and monitors with 24-hour delivery in Canggu, Ubud, and Seminyak.",
             "url": SITE_URL,
             "telephone": "+6282266574860",
             "email": [
@@ -278,6 +279,8 @@ export default async function Home() {
               "https://wa.me/6282266574860",
               "https://maps.app.goo.gl/2kVDL5NdqGjh8qBG8",
               "https://tropictech.rent",
+              "https://tropic-tech.odoo.com",
+              "https://balihelp.id",
               "https://indonesianvisas.com"
             ],
             "parentOrganization": {

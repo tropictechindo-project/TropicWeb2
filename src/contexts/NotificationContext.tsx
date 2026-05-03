@@ -111,10 +111,31 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
 
     useEffect(() => {
+        if (!user) return
+
+        let timeoutId: NodeJS.Timeout
+
+        const scheduleNextFetch = () => {
+            const now = new Date()
+            const hour = now.getHours()
+            
+            // Productive hours: 09:00 AM (9) to 09:00 PM (21)
+            const isProductive = hour >= 9 && hour < 21
+            const nextInterval = isProductive ? 60000 : 300000 // 1 min vs 5 mins
+
+            timeoutId = setTimeout(async () => {
+                await fetchUnreadCounts()
+                scheduleNextFetch()
+            }, nextInterval)
+        }
+
+        // Initial fetch
         fetchUnreadCounts()
-        // Poll every 15 seconds for snappier feedback
-        const interval = setInterval(fetchUnreadCounts, 15000)
-        return () => clearInterval(interval)
+        scheduleNextFetch()
+
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId)
+        }
     }, [user])
 
     return (

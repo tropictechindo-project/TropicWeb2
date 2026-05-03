@@ -23,8 +23,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Invalid emails array' }, { status: 400 })
         }
 
-        if (emails.length > 5) {
-            return NextResponse.json({ error: 'Maximum 5 emails allowed' }, { status: 400 })
+        if (emails.length > 10) {
+            return NextResponse.json({ error: 'Maximum 10 emails allowed' }, { status: 400 })
         }
 
         const setting = await db.siteSetting.upsert({

@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loader2, Navigation as NavigationIcon } from "lucide-react"
+import { toast } from "sonner"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user, isLoading, isAuthenticated } = useAuth()
@@ -17,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         if (!isLoading) {
             if (!isAuthenticated) {
                 router.push('/auth/login')
-            } else if (user?.role !== 'ADMIN') {
+            } else if (user?.role !== 'ADMIN' && user?.role !== 'OPERATOR') {
                 router.push('/')
             }
         }
@@ -31,7 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )
     }
 
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || (user.role !== 'ADMIN' && user.role !== 'OPERATOR')) {
         return null // Return null while redirecting
     }
 

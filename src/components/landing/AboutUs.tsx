@@ -38,13 +38,13 @@ export default function AboutUs() {
   const defaultStats = [
     {
       icon: 'Calendar',
-      value: '5+',
-      label: 'Years in Bali',
+      value: '2021',
+      label: 'Established',
       title: 'Our Journey',
-      description: 'Founded in 2019, Tropic Tech International started with a single container and a dream to support the growing nomad community.',
+      description: 'Founded in 2021 as Bali Help, we navigated the pandemic years to become the trusted name in remote work infrastructure.',
       details: [
-        { icon: 'Building2', text: 'We have grown from a small side-project to a full-scale legal entity (PT) with a dedicated warehouse in Denpasar.' },
-        { icon: 'TrendingUp', text: 'Over the years, we have survived and thrived through Bali\'s tourism cycles by focusing on one thing: uncompromising quality.' }
+        { icon: 'Building2', text: 'Formalized as PT Tropic Tech International™ in 2024 to provide corporate-grade legal compliance and asset security.' },
+        { icon: 'TrendingUp', text: 'Resilience is in our DNA—surviving the tourism freeze of 2022 by focusing on the needs of long-term digital nomads.' }
       ]
     },
     {
@@ -101,9 +101,10 @@ export default function AboutUs() {
             ) : (
               <>
                 <p className="text-lg text-muted-foreground">
-                  PT Tropic Tech International is Bali's premier workstation and office equipment rental company.
-                  For over 5 years, we have been serving digital nomads, remote workers, and businesses across Bali
-                  with high-quality, reliable equipment.
+                  Founded in 2021 as a mission-driven project known as Bali Help (PT Indonesian Visas Agency), 
+                  Tropic Tech was created to solve hardware bottlenecks for digital professionals during 
+                  the pre-pandemic era. Despite the global challenges of 2022, we maintained our commitment 
+                  to the community and formalized as PT Tropic Tech International™ in 2024.
                 </p>
                 <p className="text-lg text-muted-foreground">
                   Our mission is to provide flexible, affordable, and top-quality workspace solutions that help you

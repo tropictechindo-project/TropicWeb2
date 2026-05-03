@@ -43,7 +43,15 @@ export async function GET(request: NextRequest) {
             groupCount = counts.reduce((sum, c) => sum + c, 0)
         }
 
-        return NextResponse.json({ success: true, count: directCount + groupCount })
+        // 3. Count AI Chat Activity (SystemNotifications)
+        const aiCount = await db.systemNotification.count({
+            where: {
+                type: 'AI_CHAT',
+                isRead: false
+            }
+        })
+
+        return NextResponse.json({ success: true, count: directCount + groupCount + aiCount })
     } catch (error) {
         console.error('Fetch unread count error:', error)
         return NextResponse.json({ error: 'Failed' }, { status: 500 })

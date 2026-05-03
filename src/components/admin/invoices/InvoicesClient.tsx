@@ -23,7 +23,8 @@ import {
     Mail,
     Trash2,
     Truck,
-    Eye
+    Eye,
+    ClipboardCheck
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -47,6 +48,8 @@ import { generateInvoicePDF } from "@/lib/pdf/invoice"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useAuth } from "@/contexts/AuthContext"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface InvoiceItem {
     name: string
@@ -109,6 +112,8 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         subtotal: "",
         tax: "0",
         deliveryFee: "100000",
+        discountAmount: "0",
+        discountPercentage: "0",
         items: "Standard Rental Package",
         status: "PAID",
         startDate: new Date().toISOString().split('T')[0],
@@ -117,18 +122,30 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         sendToWorkers: false,
         sendToCompany: true,
         activateOrderFlow: true,
-        sendSpiNotifications: true
+        sendSpiNotifications: true,
+        paymentMethod: "CASH"
     })
 
     const [itemsList, setItemsList] = useState<Array<{ id: string, name: string, price: number, quantity: number }>>([
         { id: '', name: '', price: 0, quantity: 1 }
     ])
 
-    const calculateTotalsFromItems = (list: typeof itemsList, dFeeStr = formData.deliveryFee) => {
+    const calculateTotalsFromItems = (list: typeof itemsList, dFeeStr = formData.deliveryFee, discAmtStr = formData.discountAmount, pMethod = formData.paymentMethod) => {
         const sub = list.reduce((acc, item) => acc + (item.price * item.quantity), 0)
         const dFee = parseFloat(dFeeStr || "0")
-        const taxVal = sub * 0.02
-        const tot = sub + taxVal + dFee
+        const disc = parseFloat(discAmtStr || "0")
+        
+        // Dynamic Surcharge Calculation
+        let surcharge = 0
+        if (pMethod === 'BANK_TRANSFER') surcharge = Math.round((sub - disc) * 0.025)
+        else if (pMethod === 'EDC') surcharge = Math.round((sub - disc) * 0.025)
+        else if (pMethod === 'PAYPAL') surcharge = Math.round((sub - disc) * 0.05)
+        else if (pMethod === 'WISE') surcharge = 85000
+        else if (pMethod === 'STRIPE' || pMethod === 'VISA_MASTERCARD') surcharge = Math.round((sub - disc) * 0.035)
+        else if (pMethod === 'CRYPTO') surcharge = Math.round((sub - disc) * 0.01)
+
+        const taxVal = Math.max(0, (sub - disc)) * 0.02
+        const tot = Math.max(0, sub - disc + taxVal + dFee + surcharge)
         setFormData(prev => ({
             ...prev,
             subtotal: sub.toString(),
@@ -137,9 +154,54 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         }))
     }
 
+    const formatNumber = (val: string | number) => {
+        if (!val) return ""
+        const num = val.toString().replace(/[^0-9.]/g, "")
+        if (!num) return ""
+        return new Intl.NumberFormat('en-US').format(parseFloat(num))
+    }
+
+    const parseNumber = (val: string) => {
+        return val.replace(/,/g, "")
+    }
+
     const filteredInvoices = initialInvoices.filter(inv =>
         inv.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
         inv.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    const { user } = useAuth()
+
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <FileText className="w-4 h-4" /> ADMIN COMMAND: INVOICE CONTROL (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>G'day! Here's the drill for managing the bills, mate:</p>
+                <p>• <b>Manual Invoices:</b> Hit "Create Invoice" to whip up a new bill. You can even trigger the delivery flow from here.</p>
+                <p>• <b>PDF Generation:</b> Grab the invoice by clicking the download icon. Perfect for printing or sending a copy, cheers.</p>
+                <p>• <b>Order Sync:</b> If "Activate Order Flow" is on, it'll automatically set up a delivery job for the boys in the field.</p>
+            </CardContent>
+        </Card>
+    )
+
+    const OperatorGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-emerald-600 bg-emerald-50/30 dark:bg-emerald-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
+                    <ClipboardCheck className="w-4 h-4" /> PANDUAN OPERATOR: KONTROL INVOICE
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-emerald-800 dark:text-emerald-300">
+                <p>Halo Operator! Gunakan panel ini untuk mengelola pembayaran:</p>
+                <p>• <b>Buat Invoice:</b> Klik "Create Invoice" untuk pelanggan baru. Masukkan detail barang dan pilih metode bayar.</p>
+                <p>• <b>Alur Pengiriman:</b> Aktifkan "Activate Order Flow" agar tim gudang/worker langsung menerima notifikasi tugas.</p>
+                <p>• <b>Pantau Status:</b> Pastikan status "PAID" sudah benar sebelum barang dikeluarkan dari gudang.</p>
+            </CardContent>
+        </Card>
     )
 
     const handleDownload = async (invoice: Invoice) => {
@@ -155,10 +217,11 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                 startDate: new Date(invoice.startDate).toLocaleDateString(),
                 endDate: new Date(invoice.endDate).toLocaleDateString(),
                 currency: 'Rp',
-                subtotal: invoice.subtotal || invoice.total,
-                tax: invoice.tax || 0,
-                deliveryFee: invoice.deliveryFee || 0,
-                total: invoice.total,
+                subtotal: Number(invoice.subtotal || invoice.total),
+                tax: Number(invoice.tax || 0),
+                deliveryFee: Number(invoice.deliveryFee || 0),
+                discountAmount: Number((invoice as any).discountAmount || 0),
+                total: Number(invoice.total),
                 items: invoice.items,
                 isRegistered: !!invoice.userId
             } as any)
@@ -188,6 +251,8 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
             subtotal: (invoice as any).subtotal?.toString() || invoice.total.toString(),
             tax: (invoice as any).tax?.toString() || "0",
             deliveryFee: (invoice as any).deliveryFee?.toString() || "100000",
+            discountAmount: (invoice as any).discountAmount?.toString() || "0",
+            discountPercentage: (invoice as any).discountPercentage?.toString() || "0",
             items: invoice.items[0]?.name || "Standard Rental Package",
             status: invoice.status,
             startDate: new Date(invoice.startDate).toISOString().split('T')[0],
@@ -195,18 +260,23 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
             sendToCustomer: false,
             sendToWorkers: false,
             sendToCompany: false,
-            activateOrderFlow: false,
-            sendSpiNotifications: false
+            activateOrderFlow: true,
+            sendSpiNotifications: true,
+            paymentMethod: invoice.paymentMethod || "CASH"
         })
 
         // Prefill items with itemsList from invoice.items
         if (invoice.items && invoice.items.length > 0) {
-            setItemsList(invoice.items.map(item => ({
-                id: '', // Blank if mapping from static item list
-                name: item.name,
-                price: Number(item.unitPrice),
-                quantity: item.quantity
-            })))
+            setItemsList(invoice.items.map(item => {
+                // Try to find the matching product ID from our product list by name
+                const matchedProduct = products?.find(p => p.name === item.name)
+                return {
+                    id: matchedProduct?.id || '',
+                    name: item.name,
+                    price: Number(item.unitPrice),
+                    quantity: item.quantity
+                }
+            }))
         } else {
             setItemsList([{ id: '', name: 'Manual Service / Rental', price: invoice.total, quantity: 1 }])
         }
@@ -218,7 +288,13 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this invoice?")) return
         try {
-            const res = await fetch(`/api/admin/invoices/${id}`, { method: 'DELETE' })
+            const token = localStorage.getItem('token')
+            const res = await fetch(`/api/admin/invoices/${id}`, { 
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             if (!res.ok) throw new Error("Failed")
             toast.success("Invoice deleted")
             router.refresh()
@@ -262,9 +338,13 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         setIsLoading(true)
 
         try {
+            const token = localStorage.getItem('token')
             const res = await fetch('/api/admin/invoices', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     type: invoiceType,
                     ...formData,
@@ -272,6 +352,8 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                     subtotal: parseFloat(formData.subtotal || formData.amount),
                     tax: parseFloat(formData.tax),
                     deliveryFee: parseFloat(formData.deliveryFee),
+                    discountAmount: parseFloat(formData.discountAmount),
+                    discountPercentage: parseInt(formData.discountPercentage),
                     items: itemsList // Pass dynamic items list
                 })
             })
@@ -294,15 +376,21 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
         setIsLoading(true)
 
         try {
+            const token = localStorage.getItem('token')
             const res = await fetch(`/api/admin/invoices/${selectedInvoice.id}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     status: formData.status,
                     total: parseFloat(formData.amount),
                     subtotal: parseFloat(formData.subtotal || formData.amount),
                     tax: parseFloat(formData.tax),
                     deliveryFee: parseFloat(formData.deliveryFee),
+                    discountAmount: parseFloat(formData.discountAmount),
+                    discountPercentage: parseInt(formData.discountPercentage),
                     guestName: formData.guestName,
                     guestEmail: formData.guestEmail,
                     guestWhatsapp: formData.guestWhatsapp,
@@ -327,6 +415,7 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
 
     return (
         <div className="space-y-4">
+            {user?.role === 'ADMIN' ? <AdminGuide /> : <OperatorGuide />}
             <div className="flex items-center justify-between gap-4">
                 <div className="relative flex-1 max-w-sm">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -514,11 +603,21 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                                                     calculateTotalsFromItems(newList)
                                                 }
                                             }}>
-                                                <SelectTrigger className="h-8 text-xs"><SelectValue placeholder="Select Product" /></SelectTrigger>
+                                                <SelectTrigger className="h-8 text-xs">
+                                                    <SelectValue placeholder={item.name || "Select Product"} />
+                                                </SelectTrigger>
                                                 <SelectContent>
                                                     {products?.map(p => <SelectItem key={p.id} value={p.id} className="text-xs">{p.name}</SelectItem>)}
                                                 </SelectContent>
                                             </Select>
+                                        </div>
+                                        <div className="w-24">
+                                            <Input type="text" className="h-8 text-xs px-1" value={formatNumber(item.price)} onChange={e => {
+                                                const newList = [...itemsList]
+                                                newList[idx].price = parseFloat(parseNumber(e.target.value)) || 0
+                                                setItemsList(newList)
+                                                calculateTotalsFromItems(newList)
+                                            }} placeholder="Price"/>
                                         </div>
                                         <div className="w-14">
                                             <Input type="number" className="h-8 text-xs px-1 text-center" value={item.quantity} onChange={e => {
@@ -542,22 +641,57 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Subtotal (IDR)</Label>
-                                <Input type="number" value={formData.subtotal || formData.amount} onChange={e => setFormData({ ...formData, subtotal: e.target.value })} required />
+                                <Input type="text" value={formatNumber(formData.subtotal || formData.amount)} onChange={e => setFormData({ ...formData, subtotal: parseNumber(e.target.value) })} required />
                             </div>
                             <div className="space-y-2">
                                 <Label>Tax (IDR)</Label>
-                                <Input type="number" value={formData.tax} onChange={e => setFormData({ ...formData, tax: e.target.value })} required />
+                                <Input type="text" value={formatNumber(formData.tax)} onChange={e => setFormData({ ...formData, tax: parseNumber(e.target.value) })} required />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label className="text-primary font-bold">Discount Amount (IDR)</Label>
+                                <Input type="text" value={formatNumber(formData.discountAmount)} onChange={e => {
+                                    const val = parseNumber(e.target.value)
+                                    setFormData({ ...formData, discountAmount: val })
+                                    calculateTotalsFromItems(itemsList, formData.deliveryFee, val)
+                                }} className="border-primary/20 bg-primary/5 font-bold" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Payment Method</Label>
+                                <Select value={formData.paymentMethod} onValueChange={v => {
+                                    setFormData({ ...formData, paymentMethod: v })
+                                    calculateTotalsFromItems(itemsList, formData.deliveryFee, formData.discountAmount, v)
+                                }}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Method" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="CASH">Cash</SelectItem>
+                                        <SelectItem value="BANK_TRANSFER">Bank Transfer</SelectItem>
+                                        <SelectItem value="QRIS">QRIS</SelectItem>
+                                        <SelectItem value="WISE">Wise</SelectItem>
+                                        <SelectItem value="PAYPAL">PayPal</SelectItem>
+                                        <SelectItem value="EDC">EDC Machine</SelectItem>
+                                        <SelectItem value="STRIPE">Stripe/Card</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Delivery Fee (IDR)</Label>
-                                <Input type="number" value={formData.deliveryFee} onChange={e => setFormData({ ...formData, deliveryFee: e.target.value })} required />
+                                <Input type="text" value={formatNumber(formData.deliveryFee)} onChange={e => {
+                                    const val = parseNumber(e.target.value)
+                                    setFormData({ ...formData, deliveryFee: val })
+                                    calculateTotalsFromItems(itemsList, val)
+                                }} />
                             </div>
                             <div className="space-y-2">
                                 <Label>Total Amount (IDR)</Label>
-                                <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} required />
+                                <Input type="text" value={formatNumber(formData.amount)} onChange={e => setFormData({ ...formData, amount: parseNumber(e.target.value) })} required className="font-black text-primary" />
                             </div>
                         </div>
 
@@ -662,11 +796,21 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                                                     calculateTotalsFromItems(newList)
                                                 }
                                             }}>
-                                                <SelectTrigger className="h-8 text-xs"><SelectValue placeholder="Select Product" /></SelectTrigger>
+                                                <SelectTrigger className="h-8 text-xs">
+                                                    <SelectValue placeholder={item.name || "Select Product"} />
+                                                </SelectTrigger>
                                                 <SelectContent>
                                                     {products?.map(p => <SelectItem key={p.id} value={p.id} className="text-xs">{p.name}</SelectItem>)}
                                                 </SelectContent>
                                             </Select>
+                                        </div>
+                                        <div className="w-24">
+                                            <Input type="text" className="h-8 text-xs px-1" value={formatNumber(item.price)} onChange={e => {
+                                                const newList = [...itemsList]
+                                                newList[idx].price = parseFloat(parseNumber(e.target.value)) || 0
+                                                setItemsList(newList)
+                                                calculateTotalsFromItems(newList)
+                                            }} placeholder="Price"/>
                                         </div>
                                         <div className="w-14">
                                             <Input type="number" className="h-8 text-xs px-1 text-center" value={item.quantity} onChange={e => {
@@ -704,24 +848,46 @@ export function InvoicesClient({ initialInvoices, users, products }: InvoicesCli
                             </div>
                             <div className="space-y-2">
                                 <Label>Subtotal</Label>
-                                <Input type="number" value={formData.subtotal || formData.amount} onChange={e => setFormData({ ...formData, subtotal: e.target.value })} />
+                                <Input type="text" value={formatNumber(formData.subtotal || formData.amount)} onChange={e => setFormData({ ...formData, subtotal: parseNumber(e.target.value) })} />
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label>Tax</Label>
-                                <Input type="number" value={formData.tax} onChange={e => setFormData({ ...formData, tax: e.target.value })} />
+                                <Label className="text-primary font-bold">Discount Amount</Label>
+                                <Input type="text" value={formatNumber(formData.discountAmount)} onChange={e => {
+                                    const val = parseNumber(e.target.value)
+                                    setFormData({ ...formData, discountAmount: val })
+                                    calculateTotalsFromItems(itemsList, formData.deliveryFee, val)
+                                }} className="border-primary/20 bg-primary/5 font-bold" />
                             </div>
                             <div className="space-y-2">
-                                <Label>Delivery Fee</Label>
-                                <Input type="number" value={formData.deliveryFee} onChange={e => setFormData({ ...formData, deliveryFee: e.target.value })} />
+                                <Label>Payment Method</Label>
+                                <Select value={formData.paymentMethod} onValueChange={v => {
+                                    setFormData({ ...formData, paymentMethod: v })
+                                    calculateTotalsFromItems(itemsList, formData.deliveryFee, formData.discountAmount, v)
+                                }}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Method" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="CASH">Cash</SelectItem>
+                                        <SelectItem value="BANK_TRANSFER">Bank Transfer</SelectItem>
+                                        <SelectItem value="QRIS">QRIS</SelectItem>
+                                        <SelectItem value="WISE">Wise</SelectItem>
+                                        <SelectItem value="PAYPAL">PayPal</SelectItem>
+                                        <SelectItem value="EDC">EDC Machine</SelectItem>
+                                        <SelectItem value="STRIPE">Stripe/Card</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label>Total Amount</Label>
-                            <Input type="number" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Total Amount</Label>
+                                <Input type="text" value={formatNumber(formData.amount)} onChange={e => setFormData({ ...formData, amount: parseNumber(e.target.value) })} className="font-black text-primary" />
+                            </div>
                         </div>
 
                         <DialogFooter>

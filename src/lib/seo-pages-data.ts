@@ -4,7 +4,7 @@
  */
 
 export interface SEOSection {
-    type: 'stats' | 'steps' | 'areas' | 'benefits' | 'cta' | 'trust' | 'process' | 'checklist' | 'testimonials' | 'pricing-tiers'
+    type: 'stats' | 'steps' | 'areas' | 'benefits' | 'cta' | 'trust' | 'process' | 'checklist' | 'testimonials' | 'pricing-tiers' | 'chart'
     heading: string
     items: Array<{ label: string; value?: string; desc?: string; icon?: string }>
 }
@@ -867,6 +867,205 @@ export const SEO_PAGES: Record<string, SEOPagesConfig> = {
                     { label: 'Dedicated Driver', desc: 'Your order is assigned to a dedicated driver — not a third-party courier.' },
                     { label: 'Trained Technicians', desc: 'Our drivers are trained in equipment setup — they don\'t just drop boxes.' },
                     { label: 'Insured Equipment', desc: 'All gear is covered from warehouse to your door and throughout your rental.' }
+                ]
+            }
+        ]
+    },
+    'scam-rent-company-in-bali': {
+        title: 'Avoid Bali Rental Scams | How to Detect Fraudulent Companies | Tropic Tech',
+        description: 'Protect yourself from rental scams in Bali. Learn common tactics used by fraudulent desk and monitor rental "ghost" companies and why legal registration matters.',
+        h1: 'The Definitive Guide to Avoiding Bali Rental Scams',
+        heroSub: 'Don\'t lose your deposit to a ghost company. We expose the common tactics used by scammers in Bali and show you how to verify a legitimate rental business before you pay.',
+        features: [
+            { title: 'Scam Detection', desc: 'Identify red flags in communications and payment requests.' },
+            { title: 'Verification Guide', desc: 'Step-by-step instructions to check NIB and corporate legality.' },
+            { title: 'The "Ghost Warehouse"', desc: 'How to verify if a company actually has a physical location in Bali.' },
+            { title: 'Secure Payments', desc: 'Why you should never transfer to a personal bank account.' }
+        ],
+        faqs: [
+            { q: 'What is the most common Bali rental scam?', a: 'The "Deposit Ghost" — scammers take a deposit via personal bank transfer then disappear or block you on WhatsApp.' },
+            { q: 'Is it safe to pay with a credit card?', a: 'Yes, legitimate companies like Tropic Tech use secure payment gateways or QRIS, which offer better protection than personal transfers.' },
+            { q: 'Can I visit your warehouse?', a: 'Absolutely. We encourage clients to visit our physical headquarters in Denpasar to verify our stock and team.' }
+        ],
+        comparison: {
+            headers: ['Feature', 'Scam/Ghost Company', 'Tropic Tech'],
+            rows: [
+                ['Legality', '✗ None / Fake NIB', '✓ Registered PT TTI'],
+                ['Payment', '✗ Personal Bank Acc', '✓ Corporate VA / QRIS'],
+                ['Warehouse', '✗ No physical address', '✓ Visit anytime'],
+                ['Reviews', '✗ Bot-generated', '✓ Verified Clients'],
+                ['Support', '✗ Disappears after pay', '✓ 24/7 SLA']
+            ]
+        },
+        sections: [
+            {
+                type: 'chart',
+                heading: 'Rising Rental Scams in Bali (2023-2025)',
+                items: [
+                    { label: 'Ghost Company Reports', value: '45%', desc: 'Increase in reported deposit theft in digital nomad hubs.' },
+                    { label: 'Fake Google Reviews', value: '30%', desc: 'New "businesses" using AI-generated social proof.' },
+                    { label: 'Successful Recoveries', value: '5%', desc: 'Sadly, most funds sent to personal accounts are never recovered.' }
+                ]
+            },
+            {
+                type: 'checklist',
+                heading: 'The 5-Point Safety Checklist',
+                items: [
+                    { label: 'Check the NIB', desc: 'Ask for their NIB number and verify it on the OSS.go.id portal.' },
+                    { label: 'Corporate Bank Account', desc: 'Legitimate PT companies use corporate accounts, not names like "Wayan S."' },
+                    { label: 'Physical Photos', desc: 'Ask for a video of the actual unit with today\'s date on a piece of paper.' },
+                    { label: 'Real Address', desc: 'Check if the address exists on Google Maps with real street-view photos.' },
+                    { label: 'Responsive Support', desc: 'Scammers often use bots; real companies have human agents on WhatsApp.' }
+                ]
+            },
+            {
+                type: 'trust',
+                heading: 'Why Tropic Tech is 100% Safe',
+                items: [
+                    { label: 'NIB Registered', desc: 'PT Tropic Tech International is a fully compliant Indonesian corporation.' },
+                    { label: 'Secure Payments', desc: 'We use Midtrans/Xendit for secure, encrypted corporate transactions.' },
+                    { label: 'Live Showroom', desc: 'Visit our Denpasar hub to see the gear before you rent.' },
+                    { label: 'Public Identity', desc: 'Our leadership and history are transparent and documented since 2021.' }
+                ]
+            }
+        ]
+    },
+    'is-rent-desk-monitor-in-bali-a-scam': {
+        title: 'Is Bali Desk & Monitor Rental a Scam? | Educational Guide | Tropic Tech',
+        description: 'Educate yourself on the Bali rental market. Learn how to verify desk, monitor, and chair rental companies to ensure you get what you pay for.',
+        h1: 'Is Renting Desk & Monitor in Bali a Scam? (How to Tell)',
+        heroSub: 'The short answer is no, but the market is full of pitfalls. We provide the technical protocol to verify any rental company in Bali so you can work with confidence.',
+        features: [
+            { title: 'Visual Verification', desc: 'How to distinguish between stock photos and real warehouse inventory.' },
+            { title: 'SLA Analysis', desc: 'Why the service level agreement is more important than the price tag.' },
+            { title: 'Technical Standards', desc: 'Ensuring you get 4K monitors and ergonomic chairs, not cheap knockoffs.' }
+        ],
+        faqs: [
+            { q: 'How can I tell if the monitor is really 4K?', a: 'Ask for the model number and check the manufacturer specs. Scammers often list "HD" meaning 720p or 1080p as "Pro Monitor".' },
+            { q: 'Are all cheap rentals scams?', a: 'Not necessarily, but "too good to be true" prices usually mean zero support or stolen hardware.' }
+        ],
+        comparison: {
+            headers: ['Service', 'Budget Rent', 'Tropic Tech'],
+            rows: [
+                ['Monitor Res', '1080p (Basic)', '4K / Ultrawide (Pro)'],
+                ['Chair Health', 'Fixed (No support)', 'Ergonomic (Lumbar)'],
+                ['Replacement', '✗ None/Slow', '✓ 24-Hour Guarantee']
+            ]
+        },
+        sections: [
+            {
+                type: 'chart',
+                heading: 'The Cost of Low-Quality Rentals',
+                items: [
+                    { label: 'Hardware Failure Rate', value: '25%', desc: 'Cheap, unmaintained monitors often fail within 1 week.' },
+                    { label: 'Work Disruption', value: '12h', desc: 'Average downtime when a budget vendor fails to respond.' },
+                    { label: 'Health Impact', value: 'High', desc: 'Poor ergonomics leads to neck/back pain in 48 hours.' }
+                ]
+            },
+            {
+                type: 'steps',
+                heading: 'How to Verify Your Vendor in 10 Minutes',
+                items: [
+                    { label: 'Request the NIB', desc: 'A legal company must have an NIB. No NIB = No Legal Recourse.' },
+                    { label: 'Video Call Check', desc: 'Ask for a quick 1-minute video call to see the warehouse.' },
+                    { label: 'Payment Gateway', desc: 'Ensure they use a professional checkout (Stripe, Midtrans, etc).' },
+                    { label: 'Social Proof', desc: 'Check for non-generic Google reviews with photos from customers.' }
+                ]
+            }
+        ]
+    },
+    'can-travelers-rent-work-equipment-bali': {
+        title: 'Can Travelers Rent Work Gear in Bali? | Legal & Compliance Guide | Tropic Tech',
+        description: 'Legal guide for travelers and digital nomads. Learn why renting workstation gear is the 100% compliant path for tourist visa holders in Bali.',
+        h1: 'The Legal Path: Why Travelers Should Rent (Not Buy) in Bali',
+        heroSub: 'Navigating Indonesian law as a digital nomad. For travelers without a KITAS, renting from a registered PT is the only fully compliant way to access high-end work infrastructure.',
+        features: [
+            { title: 'Visa Compliance', desc: 'How renting avoids "business activity" traps for tourist visa holders.' },
+            { title: 'Tax & Import Law', desc: 'Why importing hardware can lead to 40% taxes and customs seizures.' },
+            { title: 'Asset Rights', desc: 'Understand your rights as a temporary resident in Indonesia.' }
+        ],
+        faqs: [
+            { q: 'Is it illegal to buy a monitor as a tourist?', a: 'No, but it is complicated. Selling it when you leave (Grey Market) without a business license is technically illegal trade.' },
+            { q: 'How does renting help with compliance?', a: 'Renting from a PT means you are a consumer of a local service, which is perfectly allowed on all visa types.' },
+            { q: 'Can I consult a visa expert?', a: 'Yes, we recommend our partners at Indonesian Visas (indonesianvisas.com) for professional advice.' }
+        ],
+        comparison: {
+            headers: ['Action', 'Buying (Informal)', 'Renting (Tropic Tech)'],
+            rows: [
+                ['Legality', 'Grey Market Risk', '100% Compliant'],
+                ['Exit Strategy', 'Resell at 60% loss', 'Easy Collection'],
+                ['Maintenance', 'You pay repairs', 'We swap for free'],
+                ['Legal Status', 'Individual Owner', 'Verified Corporate User']
+            ]
+        },
+        sections: [
+            {
+                type: 'chart',
+                heading: 'The "Tourist Tech" Financial Model',
+                items: [
+                    { label: 'Initial Investment', value: 'Rp 20M+', desc: 'Cost to buy pro-grade desk, monitor, and chair.' },
+                    { label: 'Resale Loss', value: '50-70%', desc: 'Market depreciation for used gear in Bali.' },
+                    { label: 'Renting Efficiency', value: '95%', desc: 'Preserving capital while getting better gear.' }
+                ]
+            },
+            {
+                type: 'cta',
+                heading: 'Need Professional Legal or Visa Advice?',
+                items: [
+                    { label: 'Indonesian Visas', desc: 'Consult with the experts at indonesianvisas.com to ensure your stay in Bali is fully compliant with all local laws.' }
+                ]
+            },
+            {
+                type: 'benefits',
+                heading: 'Why Renting Protects Your Status',
+                items: [
+                    { label: 'Clean Paper Trail', desc: 'You have a professional invoice from a local PT, proving you are a legitimate customer.' },
+                    { label: 'No Import Risks', desc: 'Don\'t risk customs stopping you at the airport with bulk hardware.' },
+                    { label: 'Professional Support', desc: 'Renting from us means you have a corporate partner on the ground.' }
+                ]
+            }
+        ]
+    },
+    'rent-workstation-bali-2026-2027': {
+        title: 'Workstation Rental Bali 2026-2027 | Trends & Infrastructure | Tropic Tech',
+        description: 'Future-proof your Bali remote work setup. Exploring infrastructure trends, fiber expansion, and ergonomics for 2026 and 2027.',
+        h1: 'The Future of Remote Work: Bali 2026-2027',
+        heroSub: 'Stay ahead of the curve. As Bali evolves into the world\'s premiere remote work hub, Tropic Tech is leading the way with next-generation infrastructure and ergonomics.',
+        features: [
+            { title: '2027 Infrastructure', desc: 'Predicting fiber optic and 5G expansion zones in Bali.' },
+            { title: 'Next-Gen Ergonomics', desc: 'Introduction of AI-assisted posture and health-tracking furniture.' },
+            { title: 'Regional Expansion', desc: 'Tropic Tech\'s roadmap for Lombok and Jakarta branches in 2027.' }
+        ],
+        faqs: [
+            { q: 'Will prices increase in 2026?', a: 'Tropic Tech is committed to price stability through 2027 despite rising utility costs.' },
+            { q: 'Are you expanding to other islands?', a: 'Yes, we are planning a Lombok hub for early 2027.' }
+        ],
+        comparison: {
+            headers: ['Trend', '2021 (Startup)', '2026-2027 (Scale)'],
+            rows: [
+                ['Network', 'Basic Fiber', '5G / Starlink Mesh'],
+                ['Work Mode', 'Solo Nomad', 'Corporate Retreats'],
+                ['Gear Specs', '1080p/4K', '8K / Ultrawide / AI-Ergo']
+            ]
+        },
+        sections: [
+            {
+                type: 'chart',
+                heading: 'Bali Nomad Growth Projection',
+                items: [
+                    { label: '2024 Current', value: '100%', desc: 'Current baseline of remote professionals.' },
+                    { label: '2026 Projection', value: '165%', desc: 'Anticipated growth due to infrastructure upgrades.' },
+                    { label: '2027 Forecast', value: '210%', desc: 'Bali as a global digital-first economy hub.' }
+                ]
+            },
+            {
+                type: 'areas',
+                heading: 'Expansion Zones for 2026-2027',
+                items: [
+                    { label: 'North Uluwatu', desc: 'Next-gen startup hub expansion.' },
+                    { label: 'Kuta Mandalika', desc: 'Lombok\'s first professional tech rental zone.' },
+                    { label: 'East Sanur', desc: 'Infrastructure upgrades for tech-savvy families.' },
+                    { label: 'Central Jakarta', desc: 'Corporate node for nomadic executives.' }
                 ]
             }
         ]

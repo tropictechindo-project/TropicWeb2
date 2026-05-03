@@ -313,8 +313,25 @@ export function UsersClient({ users }: UsersClientProps) {
         }
     }
 
+    const AdminGuide = () => (
+        <Card className="mb-6 border-l-4 border-l-amber-500 bg-amber-50/30 dark:bg-amber-900/10">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-black flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                    <UserCircle className="w-4 h-4" /> ADMIN COMMAND: USER CONTROL (AU)
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs space-y-1 text-amber-800 dark:text-amber-300 font-medium">
+                <p>G'day! Here's the play for keeping the crew in line, mate:</p>
+                <p>• <b>User Database:</b> Every legend registered on the site shows up here. You can check their rentals and contact info.</p>
+                <p>• <b>Roles:</b> You can appoint someone as a "Worker" if they're joining the field crew, or even an "Operator" if they're helpin' with the admin.</p>
+                <p>• <b>Verification:</b> Hit the "FILES" button to check their ID. Once they're verified, they're good to go, cheers.</p>
+            </CardContent>
+        </Card>
+    )
+
     return (
         <div className="space-y-4">
+            <AdminGuide />
             <div className="flex items-center justify-between gap-4 py-2">
                 <div className="relative flex-1 max-w-sm">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

@@ -51,6 +51,10 @@ export async function GET(request: NextRequest) {
                 invoice: {
                     select: {
                         invoiceNumber: true,
+                        guestName: true,
+                        guestAddress: true,
+                        locationLatitude: true,
+                        locationLongitude: true,
                         order: {
                             include: {
                                 user: { select: { fullName: true, whatsapp: true } }

@@ -49,7 +49,7 @@ export async function POST(
                 throw new Error('Delivery is no longer available in the queue')
             }
 
-            // --- Multi-Worker Claim Logic (Max 3) ---
+            // --- Multi-Worker Claim Logic (Max 5) ---
             const existingClaims = await tx.delivery.findMany({
                 where: {
                     invoiceId: delivery.invoiceId,
@@ -58,10 +58,12 @@ export async function POST(
                 }
             })
 
-            if (existingClaims.length >= 3) {
+            const MAX_CLAIMS = 5;
+
+            if (existingClaims.length >= MAX_CLAIMS) {
                 // Failsafe: if max is hit, destroy the Pool Master so it disappears from queue
                 await tx.delivery.delete({ where: { id } })
-                throw new Error('Maximum of 3 workers have already claimed this order')
+                throw new Error(`Maximum of ${MAX_CLAIMS} workers have already claimed this order`)
             }
 
             const alreadyClaimed = existingClaims.some(d => d.claimedByWorkerId === workerId)
@@ -69,13 +71,25 @@ export async function POST(
                 throw new Error('You have already claimed this delivery')
             }
 
-            // 2. Lock the vehicle
+            // 2. Lock the vehicle (Limit to 5 active deliveries per vehicle)
             const vehicle = await tx.vehicle.findUnique({
                 where: { id: vehicleId }
             })
 
             if (!vehicle) throw new Error('Vehicle not found')
-            if (vehicle.status !== 'AVAILABLE') throw new Error('Vehicle is currently in use')
+            if (vehicle.status === 'MAINTENANCE') throw new Error('Vehicle is under maintenance')
+            if (vehicle.status === 'RETURNING') throw new Error('Vehicle is currently returning to HQ')
+
+            const activeVehicleDeliveries = await tx.delivery.count({
+                where: {
+                    vehicleId,
+                    status: { in: ['CLAIMED', 'OUT_FOR_DELIVERY', 'PAUSED', 'DELAYED'] }
+                }
+            })
+
+            if (activeVehicleDeliveries >= MAX_CLAIMS) {
+                throw new Error(`Vehicle has reached maximum capacity (${MAX_CLAIMS} active deliveries)`)
+            }
 
             // 3. Create a Clone of the Delivery for this Worker (Leave the master QUEUED)
             const clonedDelivery = await tx.delivery.create({
@@ -91,8 +105,8 @@ export async function POST(
                 }
             })
 
-            // If this was the 3rd worker (so now there are 3 claims), destroy the Pool Master
-            if (existingClaims.length + 1 >= 3) {
+            // If this was the 5th worker (so now there are 5 claims), destroy the Pool Master
+            if (existingClaims.length + 1 >= MAX_CLAIMS) {
                 await tx.delivery.delete({ where: { id } })
             }
 
@@ -101,7 +115,7 @@ export async function POST(
                 where: { id: vehicleId },
                 data: {
                     status: 'IN_USE',
-                    currentDeliveryId: clonedDelivery.id
+                    currentDeliveryId: clonedDelivery.id // This keeps track of the LATEST delivery, but we handle multi-use via count
                 }
             })
 
@@ -112,7 +126,7 @@ export async function POST(
                     createdByUserId: workerId,
                     role: 'WORKER',
                     eventType: 'CLAIMED',
-                    newValue: JSON.parse(JSON.stringify({ notes: `Claimed with vehicle: ${vehicle.name} (Worker ${existingClaims.length + 1} of 3)` }))
+                    newValue: JSON.parse(JSON.stringify({ notes: `Claimed with vehicle: ${vehicle.name} (Worker ${existingClaims.length + 1} of ${MAX_CLAIMS})` }))
                 }
             })
 
@@ -144,7 +158,7 @@ export async function POST(
 
     } catch (error: any) {
         console.error('Claim delivery error:', error)
-        if (['Delivery is no longer available in the queue', 'Vehicle is currently in use'].includes(error.message)) {
+        if (['Delivery is no longer available in the queue', 'Vehicle is currently in use', 'Vehicle is currently returning to HQ'].includes(error.message)) {
             return NextResponse.json({ error: error.message }, { status: 409 })
         }
         return NextResponse.json({ error: error.message || 'Failed to claim delivery' }, { status: 500 })

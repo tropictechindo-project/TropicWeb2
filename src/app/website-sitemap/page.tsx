@@ -51,6 +51,10 @@ export default async function SitemapPage() {
         'bali-monitor',
         'rent-grear-for-work-bali',
         'fast-delivery-rent-bali',
+        'scam-rent-company-in-bali',
+        'is-rent-desk-monitor-in-bali-a-scam',
+        'can-travelers-rent-work-equipment-bali',
+        'rent-workstation-bali-2026-2027',
     ]
 
     const categories = {

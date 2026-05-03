@@ -73,6 +73,41 @@ export default function CheckoutPage() {
     const [convertedTotal, setConvertedTotal] = useState<string | null>(null)
     const [isPriority, setIsPriority] = useState(false)
 
+    // Auto-update USD conversion (Moved to top to follow Rules of Hooks)
+    useEffect(() => {
+        const updateUSD = async () => {
+            try {
+                // Determine base total for calculation
+                const sub = breakdown ? Number(breakdown.subtotal) : totalPrice
+                const pFee = isPriority ? 100000 : 0
+                const tRate = 0.02
+                const tVal = Math.round((sub + pFee) * tRate)
+                const dFee = breakdown ? Number(breakdown.deliveryFee) : 100000
+                
+                let sVal = 0
+                if (paymentMethod === 'EDC') sVal = Math.round((sub + pFee) * 0.025)
+                else if (paymentMethod === 'PAYPAL') sVal = Math.round((sub + pFee) * 0.05)
+                else if (paymentMethod === 'WISE') sVal = 85000
+                else if (paymentMethod === 'STRIPE' || paymentMethod === 'VISA_MASTERCARD') sVal = Math.round((sub + pFee) * 0.03)
+                
+                const totalIDR = sub + pFee + tVal + dFee + sVal
+
+                const res = await fetch(`https://api.exchangerate-api.com/v4/latest/IDR`)
+                const data = await res.json()
+                const rate = data.rates['USD']
+                if (rate) {
+                    const converted = (totalIDR * rate).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })
+                    setConvertedTotal(converted)
+                    setSelectedCurrency('USD')
+                }
+            } catch (e) { console.error(e) }
+        }
+        updateUSD()
+    }, [items, paymentMethod, isPriority, breakdown, totalPrice])
+
 
     const handleCurrencyCheck = async (currency: string) => {
         setIsCheckingPrice(true)
@@ -248,9 +283,31 @@ export default function CheckoutPage() {
     const taxRate = 0.02
     const taxValue = Math.round((subtotal + priorityFee) * taxRate)
     const deliveryFee = breakdown ? Number(breakdown.deliveryFee) : 100000
-    const edcSurchargeValue = paymentMethod === 'EDC' ? Math.round((subtotal + priorityFee) * 0.02) : 0
     
-    const finalTotalValue = subtotal + priorityFee + taxValue + deliveryFee + edcSurchargeValue
+    // Surcharges Logic
+    let surchargeValue = 0
+    let surchargeName = ""
+    if (paymentMethod === 'BANK_TRANSFER') {
+        surchargeValue = Math.round((subtotal + priorityFee) * 0.025)
+        surchargeName = "Bank Transfer Fee (2.5%)"
+    } else if (paymentMethod === 'EDC') {
+        surchargeValue = Math.round((subtotal + priorityFee) * 0.025)
+        surchargeName = "EDC Machine Surcharge (2.5%)"
+    } else if (paymentMethod === 'PAYPAL') {
+        surchargeValue = Math.round((subtotal + priorityFee) * 0.05)
+        surchargeName = "PayPal Surcharge (5%)"
+    } else if (paymentMethod === 'WISE') {
+        surchargeValue = 85000 // Fixed handling fee
+        surchargeName = "Wise International Fee"
+    } else if (paymentMethod === 'STRIPE' || paymentMethod === 'VISA_MASTERCARD') {
+        surchargeValue = Math.round((subtotal + priorityFee) * 0.035)
+        surchargeName = "Card / Apple Pay Fee (3.5%)"
+    } else if (paymentMethod === 'CRYPTO') {
+        surchargeValue = Math.round((subtotal + priorityFee) * 0.01)
+        surchargeName = "Crypto Processing Fee (1%)"
+    }
+    
+    const finalTotalValue = subtotal + priorityFee + taxValue + deliveryFee + surchargeValue
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
@@ -389,49 +446,55 @@ export default function CheckoutPage() {
                             <Separator className="my-6" />
 
 
-                            {/* Currency Converter Section */}
-                            <div className="mb-6 p-4 rounded-xl border bg-primary/5 border-primary/10">
+                            {/* Currency Converter Section - Combined Auto & Manual */}
+                            <div className="mb-6 p-4 rounded-xl border bg-emerald-50/50 border-emerald-100 border-dashed">
                                 <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                                    <h4 className="text-xs font-black uppercase tracking-widest text-primary shrink-0">Price Preview</h4>
-                                    <div className="flex flex-wrap gap-2 justify-end">
-                                        {['USD', 'EUR', 'AUD', 'SGD'].map((curr) => (
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-emerald-700 shrink-0 flex items-center gap-2">
+                                        <Globe className="h-3 w-3" /> Price Comparison
+                                    </h4>
+                                    <div className="flex flex-wrap gap-1 justify-end">
+                                        {['USD', 'EUR', 'AUD', 'SGD', 'INR', 'CNY', 'AED'].map((curr) => (
                                             <Button
                                                 key={curr}
                                                 variant="outline"
                                                 size="sm"
                                                 className={cn(
-                                                    "h-7 px-2 text-[10px] font-bold border-primary/20",
-                                                    selectedCurrency === curr ? "bg-primary text-white" : "bg-white"
+                                                    "h-6 px-1.5 text-[9px] font-black border-emerald-200",
+                                                    selectedCurrency === curr && curr !== 'USD' ? "bg-emerald-600 text-white" : "bg-white text-emerald-700"
                                                 )}
                                                 onClick={() => handleCurrencyCheck(curr)}
                                                 disabled={isCheckingPrice}
                                             >
                                                 {isCheckingPrice && selectedCurrency === curr ? (
-                                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                                    <Loader2 className="h-2 w-2 animate-spin" />
                                                 ) : (
-                                                    `Check in ${curr === 'USD' ? '$' : curr === 'EUR' ? '€' : curr === 'AUD' ? 'A$' : 'S$'}`
+                                                    `${curr === 'USD' ? '$' : curr === 'EUR' ? '€' : curr === 'AUD' ? 'A$' : curr === 'SGD' ? 'S$' : curr === 'INR' ? '₹' : curr === 'CNY' ? '¥' : 'د.إ'}`
                                                 )}
                                             </Button>
                                         ))}
                                     </div>
                                 </div>
-                                {convertedTotal && (
-                                    <div className="flex items-center gap-2 animate-in fade-in slide-in-from-top-1">
-                                        <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                                        <p className="text-sm font-black text-emerald-600">
-                                            Approx. {selectedCurrency} {convertedTotal}
-                                        </p>
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="h-4 p-0 text-[10px] text-muted-foreground underline ml-auto"
-                                            onClick={() => {
-                                                setConvertedTotal(null)
-                                                setSelectedCurrency('IDR')
-                                            }}
-                                        >
-                                            Reset to IDR
-                                        </Button>
+
+                                {convertedTotal ? (
+                                    <div className="flex items-baseline gap-1.5 animate-in fade-in slide-in-from-top-1">
+                                        <span className="text-2xl font-black text-emerald-600">
+                                            {selectedCurrency === 'USD' ? '$' : selectedCurrency === 'EUR' ? '€' : selectedCurrency === 'AUD' ? 'A$' : selectedCurrency === 'SGD' ? 'S$' : selectedCurrency === 'INR' ? '₹' : selectedCurrency === 'CNY' ? '¥' : selectedCurrency === 'AED' ? 'د.إ' : '$'} {convertedTotal}
+                                        </span>
+                                        <span className="text-[10px] font-bold text-emerald-500 uppercase">{selectedCurrency} Equivalent</span>
+                                        {selectedCurrency !== 'USD' && (
+                                            <Button 
+                                                variant="ghost" 
+                                                className="h-4 p-0 text-[9px] underline ml-auto text-muted-foreground"
+                                                onClick={() => setSelectedCurrency('USD')}
+                                            >
+                                                Back to USD
+                                            </Button>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center gap-2 text-muted-foreground animate-pulse">
+                                        <Loader2 className="h-3 w-3 animate-spin" />
+                                        <span className="text-xs font-bold italic">Fetching latest rates...</span>
                                     </div>
                                 )}
                             </div>
@@ -467,10 +530,10 @@ export default function CheckoutPage() {
                                     </div>
                                     <span>Rp {taxValue.toLocaleString('id-ID')}</span>
                                 </div>
-                                {paymentMethod === 'EDC' && (
+                                {surchargeValue > 0 && (
                                     <div className="flex justify-between text-muted-foreground text-sm font-semibold text-emerald-600">
-                                        <span>EDC Machine Surcharge (2%)</span>
-                                        <span>Rp {edcSurchargeValue.toLocaleString('id-ID')}</span>
+                                        <span>{surchargeName}</span>
+                                        <span>Rp {surchargeValue.toLocaleString('id-ID')}</span>
                                     </div>
                                 )}
                                 {deliveryFee > 0 && (
@@ -497,6 +560,47 @@ export default function CheckoutPage() {
                                     </p>
                                 )}
                             </div>
+
+                             {paymentMethod === 'BANK_TRANSFER' && (
+                                <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl space-y-3 border-dashed">
+                                    <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest">
+                                        <CreditCard className="h-4 w-4" />
+                                        Official BRI Bank Account
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="p-3 bg-white rounded-lg border">
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase">Bank Name</p>
+                                            <p className="text-sm font-black">BRI (BANK RAKYAT INDONESIA)</p>
+                                            
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase mt-2">Account Name</p>
+                                            <p className="text-sm font-black">PT TROPIC TECH INTERNATIONAL</p>
+                                            
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase mt-2">Account Number</p>
+                                            <p className="text-lg font-black text-primary tracking-tighter">2253-01-000561-30-0</p>
+                                        </div>
+                                        <p className="text-[10px] text-muted-foreground leading-relaxed italic font-bold">
+                                            * Please send the <b>Proof of Payment</b> via WhatsApp or Email after your transfer is complete.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                             {paymentMethod === 'WISE' && (
+                                <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl space-y-3 border-dashed">
+                                    <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-widest">
+                                        <Globe className="h-4 w-4" />
+                                        Wise Payment Info
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-xs font-bold text-primary italic">
+                                            Please send payment to Wise Tag: <span className="text-sm font-black not-italic bg-primary text-white px-2 py-0.5 rounded">@jasperphoenixp</span>
+                                        </p>
+                                        <p className="text-[10px] text-muted-foreground leading-relaxed">
+                                            After transferring, please send the <b>Proof of Payment</b> via WhatsApp or Email for instant verification.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
 
                             {hasOutOfStockItems && (
                                 <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-xl space-y-3">

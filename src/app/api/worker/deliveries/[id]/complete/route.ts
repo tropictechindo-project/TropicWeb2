@@ -77,13 +77,24 @@ export async function POST(
 
             // B. Release Vehicle if assigned
             if (delivery.vehicleId) {
-                await tx.vehicle.update({
-                    where: { id: delivery.vehicleId },
-                    data: {
-                        status: 'AVAILABLE',
-                        currentDeliveryId: null
+                // Check if this vehicle has any other active deliveries assigned
+                const otherActiveDeliveries = await tx.delivery.count({
+                    where: {
+                        vehicleId: delivery.vehicleId,
+                        id: { not: id },
+                        status: { in: ['CLAIMED', 'OUT_FOR_DELIVERY', 'PAUSED', 'DELAYED', 'ARRIVED'] }
                     }
                 })
+
+                if (otherActiveDeliveries === 0) {
+                    await tx.vehicle.update({
+                        where: { id: delivery.vehicleId },
+                        data: {
+                            status: 'RETURNING', // Transition to RETURNING instead of AVAILABLE
+                            currentDeliveryId: null
+                        }
+                    })
+                }
             }
 
             // C. Insert Delivery Log with photo/note proofs

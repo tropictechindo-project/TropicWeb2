@@ -96,22 +96,22 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold">Corporate</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block font-bold" aria-label="Visit Indonesian Visas website">
-                indonesianvisas.com
+              <a href="https://tropic-tech.odoo.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block font-bold" aria-label="Visit Old Odoo website">
+                tropic-tech.odoo.com
               </a>
-              <a href="https://bali.enterprises" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block text-xs" aria-label="Visit Bali Enterprises website">
-                bali.enterprises
+              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block text-xs" aria-label="Visit Indonesian Visas website">
+                indonesianvisas.com
               </a>
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-[11px] text-muted-foreground opacity-80">
               <div className="flex flex-col">
-                <span className="font-bold uppercase text-[9px] text-primary">Corporate Node</span>
-                <a href="mailto:ceo@tropictech.online" className="hover:text-primary transition-colors">
-                  CEO: ceo@tropictech.online
+                <span className="font-bold uppercase text-[9px] text-primary">Credits</span>
+                <a href="mailto:tropictechindo@gmail.com" className="hover:text-primary transition-colors">
+                  tropictechindo@gmail.com
                 </a>
-                <a href="mailto:cfo@tropictech.online" className="hover:text-primary transition-colors">
-                  CFO: cfo@tropictech.online
+                <a href="mailto:support@tropictech.online" className="hover:text-primary transition-colors">
+                  support@tropictech.online
                 </a>
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function Footer() {
 
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            &copy; 2026 PT Bali Enterprises Group. Managed by PT Tropic Tech International. All Rights Reserved.
+            &copy; Tropic Tech 2026 by PT Tropic Tech International™. All Rights Reserved.
           </p>
         </div>
       </div>

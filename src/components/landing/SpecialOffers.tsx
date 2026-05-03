@@ -84,7 +84,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                     </p>
                 </div>
 
-                <div className="relative w-full max-w-6xl mx-auto px-12 mt-8">
+                <div className="relative w-full mt-12">
                     <Carousel
                         setApi={setApi}
                         opts={{
@@ -99,7 +99,7 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                             {offers.map((offer) => (
                                 <CarouselItem
                                     key={offer.id}
-                                    className={`pl-2 md:pl-4 basis-[92%] sm:basis-[60%] md:basis-[50%] lg:basis-[40%] xl:basis-[35%] max-w-2xl ${offers.length === 1 ? 'mx-auto' : ''}`}
+                                    className={`pl-2 md:pl-4 basis-[92%] sm:basis-[45%] lg:basis-1/3 max-w-2xl ${offers.length === 1 ? 'mx-auto' : ''}`}
                                 >
                                     <div className="h-full pt-4 pb-8">
                                         <div
@@ -136,10 +136,10 @@ export default function SpecialOffers({ initialSettings }: SpecialOffersProps) {
                                                 )}
                                                 <div className="absolute bottom-4 right-4 bg-background/95 backdrop-blur-sm p-2 rounded-lg shadow-xl border border-primary/10 flex flex-col items-center">
                                                     <span className="text-[10px] font-black uppercase text-muted-foreground line-through">
-                                                        Rp {offer.originalPrice.toLocaleString('id-ID')}
+                                                        Rp {(Math.round(offer.originalPrice / 1000) * 1000).toLocaleString('id-ID')}
                                                     </span>
                                                     <span className="text-lg font-black text-primary leading-none mt-1">
-                                                        Rp {offer.finalPrice.toLocaleString('id-ID')}
+                                                        Rp {(Math.round(offer.finalPrice / 1000) * 1000).toLocaleString('id-ID')}
                                                     </span>
                                                 </div>
                                             </div>
