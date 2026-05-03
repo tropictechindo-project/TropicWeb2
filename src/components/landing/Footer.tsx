@@ -18,6 +18,9 @@ export default function Footer() {
             <div className="text-sm text-muted-foreground">
               <span className="text-xs block">Operated By</span>
               PT Tropic Tech International
+              <span className="text-[10px] block opacity-70 mt-1 uppercase tracking-tighter font-mono">
+                NIB: 1712240076832 | AHU: 2024
+              </span>
             </div>
 
             <p className="text-sm text-muted-foreground">
@@ -35,9 +38,9 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold">{t('getInTouch')}</h4>
             <div className="space-y-3">
-              <a href="mailto:contact@tropictech.online" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Send us an email">
-                <Mail className="h-4 w-4" />
-                contact@tropictech.online
+              <a href="mailto:tropictechindo@gmail.com" className="flex items-center gap-2 text-sm hover:text-primary transition-colors font-bold" aria-label="Send us an email">
+                <Mail className="h-4 w-4 text-primary" />
+                tropictechindo@gmail.com
               </a>
               <a href="https://wa.me/6282266574860" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Chat with us on WhatsApp">
                 <Phone className="h-4 w-4" />
@@ -47,9 +50,9 @@ export default function Footer() {
                 <MapPin className="h-4 w-4" />
                 Jl. Tunjungsari No.8, Bali 80117
               </a>
-              <a href="https://www.instagram.com/tropictechs" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Follow us on Instagram">
+              <a href="https://www.instagram.com/tropictech" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm hover:text-primary transition-colors" aria-label="Follow us on Instagram">
                 <Instagram className="h-4 w-4" />
-                @tropictechs
+                @tropictech
               </a>
               <a href="https://tr.ee/4hyKBmebuD" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors" aria-label="Visit our Linktree">
                 Linktree
@@ -91,27 +94,26 @@ export default function Footer() {
 
           {/* Credits */}
           <div className="space-y-4">
-            <h4 className="font-semibold">Credits</h4>
+            <h4 className="font-semibold">Corporate</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <a href="https://tropic-tech.odoo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Indonesian Visas website">
-                tropic-tech.odoo.com
-              </a>
-              {' | '}
-              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors" aria-label="Visit Bali Help website">
+              <a href="https://indonesianvisas.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block font-bold" aria-label="Visit Indonesian Visas website">
                 indonesianvisas.com
+              </a>
+              <a href="https://bali.enterprises" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors block text-xs" aria-label="Visit Bali Enterprises website">
+                bali.enterprises
               </a>
             </div>
 
-            <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
-              <a href="mailto:tropictechindo@gmail.com" className="hover:text-primary hover:underline transition-colors" aria-label="Email our primary inbox">
-                tropictechindo@gmail.com
-              </a>
-              <a href="mailto:contact@tropictech.online" className="hover:text-primary hover:underline transition-colors" aria-label="Email our support team">
-                contact@tropictech.online
-              </a>
-              <a href="mailto:support@tropictech.online" className="hover:text-primary hover:underline transition-colors" aria-label="Email our support team">
-                support@tropictech.online
-              </a>
+            <div className="pt-2 flex flex-col space-y-1 text-[11px] text-muted-foreground opacity-80">
+              <div className="flex flex-col">
+                <span className="font-bold uppercase text-[9px] text-primary">Corporate Node</span>
+                <a href="mailto:ceo@tropictech.online" className="hover:text-primary transition-colors">
+                  CEO: ceo@tropictech.online
+                </a>
+                <a href="mailto:cfo@tropictech.online" className="hover:text-primary transition-colors">
+                  CFO: cfo@tropictech.online
+                </a>
+              </div>
             </div>
 
             <div className="pt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
@@ -124,7 +126,7 @@ export default function Footer() {
 
         <div className="mt-8 pt-8 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            &copy; 2026 PT Tropic Tech International<sup>TM</sup>. {t('allRightsReserved')}
+            &copy; 2026 PT Bali Enterprises Group. Managed by PT Tropic Tech International. All Rights Reserved.
           </p>
         </div>
       </div>

@@ -97,44 +97,66 @@ export default async function ServicesPage() {
     const { products, packages, specialOffers, catalogUrl } = await getServicesData();
 
     // Create JSON-LD schema
-    const structuredData = {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        'itemListElement': [
-            ...products.map((p, index) => ({
-                '@type': 'ListItem',
-                'position': index + 1,
-                'item': {
-                    '@type': 'Product',
-                    'name': p.name,
-                    'description': p.description,
-                    'image': p.imageUrl || '',
-                    'category': p.category,
-                    'offers': {
-                        '@type': 'Offer',
-                        'price': p.monthlyPrice.toString(),
-                        'priceCurrency': 'IDR',
-                        'availability': 'https://schema.org/InStock'
+    const structuredData = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            'itemListElement': [
+                ...products.map((p, index) => ({
+                    '@type': 'ListItem',
+                    'position': index + 1,
+                    'item': {
+                        '@type': 'Product',
+                        'name': p.name,
+                        'description': p.description,
+                        'image': p.imageUrl || '',
+                        'category': p.category,
+                        'brand': { '@type': 'Brand', 'name': 'Tropic Tech' },
+                        'offers': {
+                            '@type': 'Offer',
+                            'price': p.monthlyPrice.toString(),
+                            'priceCurrency': 'IDR',
+                            'availability': 'https://schema.org/InStock',
+                            'seller': {
+                                '@type': 'Organization',
+                                '@id': 'https://tropictech.rent/#organization',
+                                'name': 'PT Tropic Tech International'
+                            }
+                        }
                     }
-                }
-            })),
-            ...packages.map((p, index) => ({
-                '@type': 'ListItem',
-                'position': products.length + index + 1,
-                'item': {
-                    '@type': 'Product',
-                    'name': p.name,
-                    'description': p.description,
-                    'image': p.imageUrl || '',
-                    'offers': {
-                        '@type': 'Offer',
-                        'price': p.price.toString(),
-                        'priceCurrency': 'IDR'
+                })),
+                ...packages.map((p, index) => ({
+                    '@type': 'ListItem',
+                    'position': products.length + index + 1,
+                    'item': {
+                        '@type': 'Product',
+                        'name': p.name,
+                        'description': p.description,
+                        'image': p.imageUrl || '',
+                        'brand': { '@type': 'Brand', 'name': 'Tropic Tech' },
+                        'offers': {
+                            '@type': 'Offer',
+                            'price': p.price.toString(),
+                            'priceCurrency': 'IDR',
+                            'seller': {
+                                '@type': 'Organization',
+                                '@id': 'https://tropictech.rent/#organization',
+                                'name': 'PT Tropic Tech International'
+                            }
+                        }
                     }
-                }
-            }))
-        ]
-    };
+                }))
+            ]
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://tropictech.rent' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'Services', 'item': 'https://tropictech.rent/services' }
+            ]
+        }
+    ];
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">

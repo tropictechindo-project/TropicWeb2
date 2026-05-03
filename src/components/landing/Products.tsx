@@ -182,11 +182,11 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                         "category": product.category,
                         "brand": {
                           "@type": "Brand",
-                          "name": "Tropic Tech Bali"
+                          "name": "Tropic Tech"
                         },
                         "aggregateRating": {
                           "@type": "AggregateRating",
-                          "ratingValue": "5.0",
+                          "ratingValue": "4.9",
                           "reviewCount": "124"
                         },
                         "offers": {
@@ -198,7 +198,8 @@ export default function Products({ initialProducts = [] }: ProductsProps) {
                           "url": `https://tropictech.rent/product/${product.id}`,
                           "seller": {
                             "@type": "Organization",
-                            "name": "Tropic Tech Bali"
+                            "@id": "https://tropictech.rent/#organization",
+                            "name": "PT Tropic Tech International"
                           }
                         }
                       })

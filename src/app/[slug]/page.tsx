@@ -232,63 +232,45 @@ function renderSection(section: SEOSection, index: number) {
 
 function buildJsonLd(slug: string, title: string, description: string) {
     const nextYear = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]
-    const returnPolicy = {
-        '@type': 'MerchantReturnPolicy',
-        'applicableCountry': 'ID',
-        'returnPolicyCategory': 'https://schema.org/MerchantReturnFiniteReturnWindow',
-        'merchantReturnDays': 1,
-        'returnMethod': 'https://schema.org/ReturnByMail',
-        'returnFees': 'https://schema.org/FreeReturn'
-    }
-    const shippingDetails = {
-        '@type': 'OfferShippingDetails',
-        'shippingRate': { '@type': 'MonetaryAmount', 'value': '0', 'currency': 'IDR' },
-        'shippingDestination': {
-            '@type': 'DefinedRegion',
-            'addressCountry': 'ID',
-            'addressRegion': 'BA'
-        },
-        'deliveryTime': {
-            '@type': 'ShippingDeliveryTime',
-            'handlingTime': { '@type': 'QuantitativeValue', 'minValue': 0, 'maxValue': 1, 'unitCode': 'DAY' },
-            'transitTime': { '@type': 'QuantitativeValue', 'minValue': 0, 'maxValue': 1, 'unitCode': 'DAY' }
-        }
-    }
-
+    const SITE_URL = 'https://tropictech.rent'
+    
     return {
         '@context': 'https://schema.org',
         '@type': 'Product',
+        '@id': `${SITE_URL}/${slug}#product`,
         'name': title,
         'description': description,
-        'brand': { '@type': 'Brand', 'name': 'Tropic Tech Bali' },
-        'url': `${BASE_URL}/${slug}`,
-        'image': `${BASE_URL}${OG_IMAGE}`,
+        'image': `${SITE_URL}${OG_IMAGE}`,
+        'brand': { 
+            '@type': 'Brand', 
+            'name': 'Tropic Tech',
+            'alternateName': 'PT TTI'
+        },
+        'url': `${SITE_URL}/${slug}`,
         'offers': {
             '@type': 'Offer',
-            'name': title,
-            'description': description,
+            'url': `${SITE_URL}/${slug}`,
             'priceCurrency': 'IDR',
             'price': '100000',
             'priceValidUntil': nextYear,
             'availability': 'https://schema.org/InStock',
-            'itemCondition': 'https://schema.org/NewCondition',
+            'itemCondition': 'https://schema.org/UsedCondition',
             'seller': {
-                '@type': 'Organization',
-                'name': 'Tropic Tech Bali',
-                'url': BASE_URL,
-                'address': {
-                    '@type': 'PostalAddress',
-                    'addressLocality': 'Badung',
-                    'addressRegion': 'Bali',
-                    'addressCountry': 'ID'
+                '@type': ["LocalBusiness", "RentalBusiness"],
+                "@id": `${SITE_URL}/#organization`,
+                "name": "Tropic Tech",
+                "legalName": "PT Tropic Tech International",
+                "taxID": "287935548901000",
+                "parentOrganization": {
+                    "@type": "Corporation",
+                    "@id": "https://indonesianvisas.com/#organization",
+                    "name": "PT Indonesian Visas Agency"
                 }
-            },
-            'hasMerchantReturnPolicy': returnPolicy,
-            'shippingDetails': shippingDetails
+            }
         },
         'aggregateRating': {
             '@type': 'AggregateRating',
-            'ratingValue': '5.0',
+            'ratingValue': '4.9',
             'reviewCount': '124'
         }
     }
@@ -355,23 +337,30 @@ export default async function SEOLandingPage({ params }: SEOPageProps) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(slug, title, description)) }}
             />
 
-            {/* FAQ JSON-LD */}
-            {config?.faqs && config.faqs.length > 0 && (
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'FAQPage',
-                            'mainEntity': config.faqs.map(faq => ({
-                                '@type': 'Question',
-                                'name': faq.q,
-                                'acceptedAnswer': { '@type': 'Answer', 'text': faq.a }
-                            }))
-                        })
-                    }}
-                />
-            )}
+            {/* Breadcrumb JSON-LD */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'BreadcrumbList',
+                        'itemListElement': [
+                            {
+                                '@type': 'ListItem',
+                                'position': 1,
+                                'name': 'Home',
+                                'item': BASE_URL
+                            },
+                            {
+                                '@type': 'ListItem',
+                                'position': 2,
+                                'name': slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+                                'item': `${BASE_URL}/${slug}`
+                            }
+                        ]
+                    })
+                }}
+            />
 
             <main className="flex-1 pt-24">
 

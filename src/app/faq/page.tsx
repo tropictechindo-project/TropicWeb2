@@ -90,21 +90,30 @@ async function getFaqData() {
 
 export default async function FAQPage() {
     const { title, description, faqs } = await getFaqData();
-    // Generate FAQPage JSON-LD
-    const structuredData = {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        'mainEntity': faqs.flatMap(category =>
-            category.questions.map(q => ({
-                '@type': 'Question',
-                'name': q.question,
-                'acceptedAnswer': {
-                    '@type': 'Answer',
-                    'text': q.answer
-                }
-            }))
-        )
-    };
+    const structuredData = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': faqs.flatMap(category =>
+                category.questions.map(q => ({
+                    '@type': 'Question',
+                    'name': q.question,
+                    'acceptedAnswer': {
+                        '@type': 'Answer',
+                        'text': q.answer
+                    }
+                }))
+            )
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://tropictech.rent' },
+                { '@type': 'ListItem', 'position': 2, 'name': 'FAQ', 'item': 'https://tropictech.rent/faq' }
+            ]
+        }
+    ];
 
     return (
         <div className="min-h-screen bg-muted/30 flex flex-col pt-10">

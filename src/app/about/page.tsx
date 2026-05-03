@@ -51,25 +51,50 @@ export default async function AboutPage() {
 
     const structuredData = {
         '@context': 'https://schema.org',
-        '@type': 'Organization',
+        '@type': ["LocalBusiness", "RentalBusiness", "ProfessionalService"],
+        '@id': 'https://tropictech.rent/#organization',
         'name': 'PT Tropic Tech International',
-        'alternateName': 'Tropic Tech Bali',
+        'alternateName': ['Tropic Tech', 'PT TTI'],
         'url': 'https://tropictech.rent',
-        'logo': 'https://tropictech.rent/logo.png', // Fallback URL, assuming typical structure
+        'logo': 'https://tropictech.rent/images/Logo.webp',
+        'taxID': '287935548901000',
+        'identifier': [
+            { '@type': 'PropertyValue', 'name': 'NIB', 'value': '1712240076832' },
+            { '@type': 'PropertyValue', 'name': 'AHU', 'value': 'AHU-0100025.AH.01.01.TAHUN 2024' }
+        ],
         'contactPoint': {
             '@type': 'ContactPoint',
-            'telephone': '+62-800-000-0000', // Placeholder as exact wasn't in COMPREHANSIVE_DATA
+            'telephone': '+6282266574860',
             'contactType': 'customer service',
-            'email': 'contact@tropictech.online',
+            'email': 'support@tropictech.online',
             'areaServed': 'ID',
             'availableLanguage': ['English', 'Indonesian']
         },
         'address': {
             '@type': 'PostalAddress',
-            'addressLocality': 'Bali',
+            'streetAddress': 'Jl. Tunjungsari No.8',
+            'addressLocality': 'Badung',
+            'addressRegion': 'Bali',
+            'postalCode': '80361',
             'addressCountry': 'ID'
         },
-        'description': 'Bali based enterprise IT and office equipment rental service.',
+        'description': 'Bali based enterprise IT and office equipment rental service. Operating under PT Bali Enterprises Group.',
+        'parentOrganization': {
+            '@type': 'Corporation',
+            '@id': 'https://indonesianvisas.com/#organization',
+            'name': 'PT Indonesian Visas Agency',
+            'parentOrganization': {
+                '@type': 'Corporation',
+                '@id': 'https://bali.enterprises/#organization',
+                'name': 'PT Bali Enterprises Group'
+            }
+        },
+        'founder': {
+            '@type': 'Person',
+            'name': 'Bayu Damopolii-Manoppo',
+            'jobTitle': 'Co-Founder & Commissioner',
+            'email': 'cfo@tropictech.online'
+        }
     };
 
     return (

@@ -194,20 +194,32 @@ export default async function Home() {
 
       <Footer />
 
-      {/* ── Structured Data: RentalBusiness (SEO Gold) ── */}
+      {/* ── Structured Data: Comprehensive RentalBusiness (SEO Gold) ── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": ["LocalBusiness", "RentalBusiness"],
-            "name": "Tropic Tech - Remote Work Infrastructure Service",
-            "description": "Bali's leading remote work infrastructure service. Rent high-performance monitors, ergonomic chairs, and standing desks with island-wide delivery. Trusted by digital nomads and remote teams in Canggu, Ubud, and Seminyak.",
+            "@type": ["LocalBusiness", "RentalBusiness", "ProfessionalService"],
+            "@id": `${SITE_URL}/#organization`,
+            "name": "Tropic Tech",
+            "alternateName": ["PT TTI", "Tropic Tech Rental", "Remote Work Setup Bali"],
+            "legalName": "PT Tropic Tech International",
+            "description": "Bali's leading remote work infrastructure service. Rent a setup for work, digital nomad setups, ergonomic chairs, standing desks, and monitors with 24-hour delivery. Trusted by digital nomads and remote teams in Canggu, Ubud, and Seminyak.",
             "url": SITE_URL,
             "telephone": "+6282266574860",
-            "email": "contact@tropictech.online",
+            "email": [
+              "contact@tropictech.online",
+              "tropictechindo@gmail.com",
+              "support@tropictech.online"
+            ],
             "logo": `${SITE_URL}/images/Logo.webp`,
             "image": `${SITE_URL}/images/og-image.webp`,
+            "taxID": "287935548901000",
+            "identifier": [
+              { "@type": "PropertyValue", "name": "NIB", "value": "1712240076832" },
+              { "@type": "PropertyValue", "name": "AHU", "value": "AHU-0100025.AH.01.01.TAHUN 2024" }
+            ],
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "Jl. Tunjungsari No.8",
@@ -220,6 +232,15 @@ export default async function Home() {
               "@type": "GeoCoordinates",
               "latitude": -8.6539,
               "longitude": 115.1469
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+6282266574860",
+              "email": "support@tropictech.online",
+              "contactType": "customer service",
+              "contactOption": "HearingImpairedSupported",
+              "areaServed": "ID",
+              "availableLanguage": ["Indonesian", "English"]
             },
             "openingHoursSpecification": [
               {
@@ -237,147 +258,102 @@ export default async function Home() {
             ],
             "priceRange": "Rp 50,000 - Rp 2,000,000",
             "currenciesAccepted": "IDR",
-            "paymentAccepted": "Cash, Bank Transfer",
+            "paymentAccepted": "Cash, Bank Transfer, QRIS, Credit Card",
             "areaServed": [
-              { "@type": "City", "name": "Canggu" },
-              { "@type": "City", "name": "Seminyak" },
-              { "@type": "City", "name": "Ubud" },
-              { "@type": "City", "name": "Denpasar" },
-              { "@type": "City", "name": "Kuta" }
+              { "@type": "City", "name": "Canggu", "description": "Active Coverage" },
+              { "@type": "City", "name": "Seminyak", "description": "Active Coverage" },
+              { "@type": "City", "name": "Ubud", "description": "Active Coverage" },
+              { "@type": "City", "name": "Denpasar", "description": "Active Coverage" },
+              { "@type": "City", "name": "Kuta", "description": "Active Coverage" },
+              { "@type": "City", "name": "Uluwatu", "description": "Active Coverage" },
+              { "@type": "City", "name": "Sanur", "description": "Active Coverage" },
+              { "@type": "City", "name": "Lombok", "description": "Planned Expansion (2027)" },
+              { "@type": "City", "name": "Jakarta", "description": "Planned Branch Office (2027)" },
+              { "@type": "Country", "name": "Thailand", "description": "Planned Regional Expansion (2028)" },
+              { "@type": "Country", "name": "Vietnam", "description": "Planned Regional Expansion (2029)" }
             ],
             "sameAs": [
-              "https://www.instagram.com/tropictechs",
+              "https://www.instagram.com/tropictech",
+              "https://www.instagram.com/tropictecs",
               "https://wa.me/6282266574860",
+              "https://maps.app.goo.gl/2kVDL5NdqGjh8qBG8",
               "https://tropictech.rent",
-              "https://tropictechbali.com"
+              "https://indonesianvisas.com"
             ],
+            "parentOrganization": {
+              "@type": "Corporation",
+              "@id": "https://indonesianvisas.com/#organization",
+              "name": "Indonesian Visas",
+              "alternateName": ["MYVISA", "PT MYVISA"],
+              "legalName": "PT Indonesian Visas Agency",
+              "taxID": "0100000008117681",
+              "url": "https://indonesianvisas.com",
+              "parentOrganization": {
+                "@type": "Corporation",
+                "@id": "https://bali.enterprises/#organization",
+                "name": "Bali Enterprises",
+                "alternateName": ["EBALI", "PT EBALI"],
+                "legalName": "PT Bali Enterprises Group",
+                "url": "https://bali.enterprises"
+              }
+            },
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
-              "name": "Workstation & Office Equipment Rental",
+              "name": "Remote Work Setup & Digital Nomad Equipment Rental Bali",
               "itemListElement": [
                 {
                   "@type": "Offer",
-                  "name": "Monitor Rental Bali",
+                  "name": "Rent a Monitor in Bali",
                   "description": "Standard HD to 4K Ultrawide monitors for rent in Bali. Ideal for digital nomads and remote workers.",
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
                   "availability": "https://schema.org/InStock",
-                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
-                  "itemOffered": { "@type": "Service", "name": "Monitor Rental" },
-                  "hasMerchantReturnPolicy": {
-                    "@type": "MerchantReturnPolicy",
-                    "applicableCountry": "ID",
-                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                    "merchantReturnDays": 1,
-                    "returnMethod": "https://schema.org/ReturnByMail",
-                    "returnFees": "https://schema.org/FreeReturn"
-                  },
-                  "shippingDetails": {
-                    "@type": "OfferShippingDetails",
-                    "shippingRate": {
-                      "@type": "MonetaryAmount",
-                      "value": "0",
-                      "currency": "IDR"
-                    },
-                    "shippingDestination": {
-                      "@type": "DefinedRegion",
-                      "addressCountry": "ID",
-                      "addressRegion": "BA"
-                    },
-                    "deliveryTime": {
-                      "@type": "ShippingDeliveryTime",
-                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
-                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
-                    }
-                  }
+                  "seller": { "@type": "Organization", "name": "Tropic Tech", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Monitor Rental Bali" }
                 },
                 {
                   "@type": "Offer",
-                  "name": "Ergonomic Chair Rental Bali",
+                  "name": "Rent a Chair in Bali (Ergonomic)",
                   "description": "Premium ergonomic office chairs for rent. Perfect for long remote work sessions in Bali.",
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
                   "availability": "https://schema.org/InStock",
-                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
-                  "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental" },
-                  "hasMerchantReturnPolicy": {
-                    "@type": "MerchantReturnPolicy",
-                    "applicableCountry": "ID",
-                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                    "merchantReturnDays": 1,
-                    "returnMethod": "https://schema.org/ReturnByMail",
-                    "returnFees": "https://schema.org/FreeReturn"
-                  },
-                  "shippingDetails": {
-                    "@type": "OfferShippingDetails",
-                    "shippingRate": {
-                      "@type": "MonetaryAmount",
-                      "value": "0",
-                      "currency": "IDR"
-                    },
-                    "shippingDestination": {
-                      "@type": "DefinedRegion",
-                      "addressCountry": "ID",
-                      "addressRegion": "BA"
-                    },
-                    "deliveryTime": {
-                      "@type": "ShippingDeliveryTime",
-                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
-                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
-                    }
-                  }
+                  "seller": { "@type": "Organization", "name": "Tropic Tech", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Ergonomic Office Chair Rental Bali" }
                 },
                 {
                   "@type": "Offer",
-                  "name": "Standing Desk Rental Bali",
+                  "name": "Rent a Desk in Bali (Standing Desk)",
                   "description": "Electric standing desks and office tables for rent. Available for daily, weekly, or monthly rental.",
                   "priceCurrency": "IDR",
                   "price": "100000",
                   "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
                   "availability": "https://schema.org/InStock",
-                  "seller": { "@type": "Organization", "name": "Tropic Tech Bali", "url": "https://tropictech.rent" },
-                  "itemOffered": { "@type": "Service", "name": "Standing Desk Rental" },
-                  "hasMerchantReturnPolicy": {
-                    "@type": "MerchantReturnPolicy",
-                    "applicableCountry": "ID",
-                    "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                    "merchantReturnDays": 1,
-                    "returnMethod": "https://schema.org/ReturnByMail",
-                    "returnFees": "https://schema.org/FreeReturn"
-                  },
-                  "shippingDetails": {
-                    "@type": "OfferShippingDetails",
-                    "shippingRate": {
-                      "@type": "MonetaryAmount",
-                      "value": "0",
-                      "currency": "IDR"
-                    },
-                    "shippingDestination": {
-                      "@type": "DefinedRegion",
-                      "addressCountry": "ID",
-                      "addressRegion": "BA"
-                    },
-                    "deliveryTime": {
-                      "@type": "ShippingDeliveryTime",
-                      "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" },
-                      "transitTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY" }
-                    }
-                  }
+                  "seller": { "@type": "Organization", "name": "Tropic Tech", "url": "https://tropictech.rent" },
+                  "itemOffered": { "@type": "Service", "name": "Standing Desk Rental Bali" }
                 }
               ]
             },
             "aggregateRating": {
               "@type": "AggregateRating",
-              "ratingValue": "5.0",
+              "ratingValue": "4.9",
               "reviewCount": "124"
+            },
+            "founder": {
+              "@type": "Person",
+              "name": "Bayu Damopolii-Manoppo",
+              "jobTitle": "Co-Founder & Commissioner",
+              "email": "cfo@tropictech.online",
+              "url": "https://www.linkedin.com/in/balihelp/",
+              "sameAs": ["https://www.linkedin.com/in/bayu-damopolii-887ab883/"]
             }
           })
         }}
       />
 
-      {/* ── Structured Data: FAQPage ── */}
+      {/* ── Structured Data: FAQPage (Keyword Optimized) ── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -387,35 +363,60 @@ export default async function Home() {
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "How do I rent workstation equipment in Bali?",
+                "name": "How to rent a setup for work in Bali?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Browse our products on tropictech.rent, select your rental duration (daily, weekly, or monthly), and place an order. We offer fast delivery across Bali including Canggu, Ubud, Seminyak, and Denpasar."
+                  "text": "To rent a setup for work in Bali, browse our products on tropictech.rent, select your equipment (monitors, chairs, or standing desks), and place an order. We offer 24-hour delivery across Bali."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Do you offer ergonomic chairs for rent in Bali?",
+                "name": "Can I rent a digital nomad setup in Bali?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, we provide premium ergonomic office chairs specifically designed for long hours of remote work. Available for daily, weekly, or monthly rental with free delivery in Bali."
+                  "text": "Yes, Tropic Tech specializes in digital nomad setup rentals in Bali. You can rent a desk, chair, and monitor as a package for your remote work needs."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What areas in Bali do you deliver to?",
+                "name": "Is it possible to rent a remote workspace in Bali at my villa?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We deliver workstation equipment across all of Bali, including Canggu, Seminyak, Ubud, Denpasar, Kuta, Legian, Sanur, and Jimbaran."
+                  "text": "Absolutely. Tropic Tech delivers high-performance office equipment directly to your villa or hotel, helping you rent a remote workspace in Bali without any hassle."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Can I rent a complete workstation setup in Bali?",
+                "name": "Where can I rent a monitor in Bali with fast delivery?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes! We offer complete workstation packages that include a monitor, ergonomic chair, and standing desk. Packages are available for digital nomads, remote workers, and businesses needing temporary office setups in Bali."
+                  "text": "You can rent a monitor in Bali with 24-hour delivery from Tropic Tech. We serve Canggu, Ubud, Seminyak, Uluwatu, and other major areas."
                 }
+              }
+            ]
+          })
+        }}
+      />
+
+      {/* ── Structured Data: BreadcrumbList (Rich Snippets) ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": SITE_URL
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Products",
+                "item": `${SITE_URL}/products`
               }
             ]
           })
