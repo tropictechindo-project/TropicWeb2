@@ -95,6 +95,14 @@
 **System Version**: 5.0.0-hardened
 **Environment**: Global Production Stable (Admin Optimized & Database Hardened)
 
+- ✅ **v5.1.0 - Hierarchy & Regional Expansion (2026-05-03)**:
+    - ✅ **3-Tier JSON-LD Knowledge Graph**: Implemented a sophisticated hierarchical schema connecting `PT Tropic Tech International` → `PT Indonesian Visas Agency` → `PT Bali Enterprises Group` for maximum E-E-A-T authority.
+    - ✅ **Regional Expansion Roadmap**: Injected structured data for planned expansions into **Lombok (2027)**, **Jakarta (Branch Office 2027)**, **Thailand (2028)**, and **Vietnam (2029)**.
+    - ✅ **SEO Synchronization**: Unified structured data across `About`, `Services`, and `FAQ` pages, including `BreadcrumbList` for all secondary routes.
+    - ✅ **Official Contact Hardening**: Updated all contact points to include `contact@tropictech.online`, `support@tropictech.online`, and `tropictechindo@gmail.com` with specific `contactType` (Customer Service).
+    - ✅ **Legal Identity Integration**: Embedded official NIB (`1712240076832`) and AHU (`AHU-0100025.AH.01.01.TAHUN 2024`) numbers into the core structured data.
+    - ✅ **Performance Verification**: Audited extreme caching headers and LCP preloading, confirming standard `16:9` image ratios for zero-crop rendering.
+
 - ✅ **v5.0 - Phase 11: Admin Performance & AI Hardening (2026-04-25)**:
     - ✅ **ROI Aggregation Engine**: Replaced $O(N \times M)$ memory-heavy loops with efficient SQL-level `groupBy` aggregations, reducing dashboard CPU load by 95%.
     - ✅ **UI Streaming & Suspense**: Implemented `Suspense` with beautiful skeleton loaders for heavy dashboard panels (Charts/ROI), making the initial page feel instant.

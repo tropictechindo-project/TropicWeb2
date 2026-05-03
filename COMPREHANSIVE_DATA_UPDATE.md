@@ -6,7 +6,14 @@
 
 ---
 
-## ⚡ Phase 11: Admin Performance Hardening
+## ⚡ v5.1.0: Hierarchy & Regional Expansion (2026-05-03)
+- **3-Tier JSON-LD Knowledge Graph**: Implemented a sophisticated hierarchical schema connecting `PT Tropic Tech International` → `PT Indonesian Visas Agency` → `PT Bali Enterprises Group`.
+- **Expansion Roadmap**: Structured data now includes planned expansions to **Lombok (2027)**, **Jakarta (Branch Office 2027)**, **Thailand (2028)**, and **Vietnam (2029)**.
+- **Unified SEO Structure**: Synchronized `LocalBusiness`, `Product`, and `BreadcrumbList` schemas across all key landing pages (`About`, `Services`, `FAQ`).
+- **Legal Identity**: Embedded official NIB (`1712240076832`) and AHU (`AHU-0100025.AH.01.01.TAHUN 2024`) identifiers.
+- **Contact Points**: Hardened official emails (`contact@tropictech.online`, `support@tropictech.online`) with localized contact points.
+
+## ⚡ Phase 11: Admin Performance Hardening (2026-04-25)
 As of v5.0.0, the system has achieved institutional-grade performance:
 - **SQL Aggregation Engine**: Advanced ROI calculations now happen at the database level using `groupBy`, preventing browser-side memory overload.
 - **UI Streaming & Suspense**: The Admin Dashboard now supports parallel data streaming. Users see the layout immediately while data-heavy panels load in the background.

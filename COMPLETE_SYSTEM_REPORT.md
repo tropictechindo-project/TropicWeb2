@@ -1,10 +1,18 @@
 # 🏆 TropicTech Complete System Report - April 2026 (v5.0.0-hardened)
 
 ## 📌 Executive Summary
-The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Admin Performance & AI Hardening (v5.0.0)** milestone. The system is now significantly faster for large-scale data sets, features instant-loading "Streaming" dashboards, and has a more reliable AI orchestration console.
+The TropicTech ecosystem has matured into a professional, high-performance workstation rental platform. We have recently completed the **Hierarchy & Regional Expansion (v5.1.0)** and **Admin Performance & AI Hardening (v5.0.0)** milestones. The system is now fully localized for international markets with a robust corporate knowledge graph, institutional-grade performance, and automated AI orchestration.
+- **v5.1.0 (2026-05-03)**: Hierarchy & Regional Expansion (3-Tier JSON-LD, Jakarta Branch Roadmap, Legal ID Integration).
 - **Phase 11 (2026-04-25)**: Admin Performance Hardening (SQL ROI, UI Streaming, Database Indexing).
 - **Phase 10 (2026-04-13)**: Autonomous AI SEO Engine ("ORACLE") & Learning Loop ("AUDITOR").
 - **Phase 9 (2026-03-26)**: Hybrid Domain Migration. Website and SEO transitioned to `tropictech.rent`.
+
+## ⚡ 0. Hierarchy & Regional Expansion: v5.1.0 (NEW 2026-05-03)
+- **3-Tier JSON-LD Knowledge Graph**: Implemented a sophisticated hierarchical schema connecting `PT Tropic Tech International` → `PT Indonesian Visas Agency` → `PT Bali Enterprises Group` for maximum E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness) authority.
+- **Regional Expansion Roadmap**: Injected structured data for planned expansions into **Lombok (2027)**, **Jakarta (Branch Office 2027)**, **Thailand (2028)**, and **Vietnam (2029)**.
+- **SEO Synchronization**: Unified structured data across `About`, `Services`, and `FAQ` pages, including `BreadcrumbList` for all secondary routes.
+- **Official Contact Hardening**: Updated all contact points to include `contact@tropictech.online`, `support@tropictech.online`, and `tropictechindo@gmail.com` with specific `contactType` (Customer Service).
+- **Legal Identity**: Integrated NIB (`1712240076832`) and AHU (`AHU-0100025.AH.01.01.TAHUN 2024`) identifiers into the corporate Knowledge Graph.
 
 ## ⚡ 0. Admin Performance & AI Hardening: Phase 11 (NEW v5.0.0)
 - **SQL Aggregation Engine**: Replaced legacy $O(N \times M)$ memory-heavy loops with direct SQL `groupBy` aggregations for ROI and analytics. This reduced server processing time for the Admin Dashboard by ~95%, allowing it to handle thousands of rental units effortlessly.
