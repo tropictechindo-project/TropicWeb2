@@ -52,8 +52,9 @@ export function useSiteSettings() {
         fetchSettings()
 
         // Subscribe to changes
+        const channelName = `site_settings_changes_${Math.random().toString(36).substring(2, 9)}`
         const channel = supabase
-            .channel('site_settings_changes')
+            .channel(channelName)
             .on(
                 'postgres_changes',
                 {

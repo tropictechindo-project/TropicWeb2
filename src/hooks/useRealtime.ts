@@ -15,7 +15,7 @@ export function useRealtime() {
 
         // 1. Subscribe to Messages
         const messageChannel = supabase
-            .channel('messages-realtime')
+            .channel(`messages-realtime-${Math.random().toString(36).substring(2, 9)}`)
             .on(
                 'postgres_changes',
                 { event: 'INSERT', schema: 'public', table: 'messages' },
@@ -28,7 +28,7 @@ export function useRealtime() {
 
         // 2. Subscribe to Group Messages
         const groupMessageChannel = supabase
-            .channel('group-messages-realtime')
+            .channel(`group-messages-realtime-${Math.random().toString(36).substring(2, 9)}`)
             .on(
                 'postgres_changes',
                 { event: 'INSERT', schema: 'public', table: 'group_messages' },
@@ -41,7 +41,7 @@ export function useRealtime() {
 
         // 3. Subscribe to System Notifications
         const notificationChannel = supabase
-            .channel('notifications-realtime')
+            .channel(`notifications-realtime-${Math.random().toString(36).substring(2, 9)}`)
             .on(
                 'postgres_changes',
                 { event: 'INSERT', schema: 'public', table: 'system_notifications' },

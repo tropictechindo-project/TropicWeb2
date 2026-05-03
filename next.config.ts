@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
     // Tighter breakpoints — fewer image variants generated, faster CDN
     deviceSizes: [640, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 64, 128, 256],
-    qualities: [50, 60, 75],
+    qualities: [45, 50, 60, 75, 80],
     remotePatterns: [
       { protocol: "https", hostname: "i.ibb.co.com" },
       { protocol: "https", hostname: "**.i.ibb.co.com" },
