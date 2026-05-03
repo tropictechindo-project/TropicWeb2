@@ -95,6 +95,20 @@
 **System Version**: 5.0.0-hardened
 **Environment**: Global Production Stable (Admin Optimized & Database Hardened)
 
+- ✅ **v6.0.0 - Production-Grade Hardening & Localization (2026-05-04)**:
+    - ✅ **Comprehensive Localization (ID)**: Fully translated the **Worker** and **Operator** sidebar navigation and system labels into simplified Indonesian for local field staff.
+    - ✅ **Role-Based Instructional Guidance**: Integrated context-aware "Panduan" (ID) and "System Guide" (AU) into all dashboard panels. Admins see professional Australian English, while Workers/Operators see actionable Indonesian instructions.
+    - ✅ **Operational Hardening (Worker Dashboard)**:
+        - Added **Direct Click-to-WhatsApp** links for instant customer contact.
+        - Implemented **Manual Vehicle Reset** ("Kembalikan ke Kantor") for workers to reset fleet status upon HQ return.
+        - Refined **Mission Claim Logic** with 5-claim limits and transaction-safe master queue cleanup.
+    - ✅ **Performance Maximization**:
+        - Implemented **Proactive Prefetching** for all main product/service categories.
+        - Optimized **LCP (Largest Contentful Paint)** with high-priority hero preloading and resource hints (Supabase/Google).
+    - ✅ **System Limits Hardening**: Increased email forwarding capacity from 5 to 10 recipients for better administrative audit trails.
+    - ✅ **Error Resiliency**: Refined API error reporting for `RETURNING` vehicle status and queue conflicts.
+    - ✅ **Production Build Success**: Verified 100% compilation and static page generation for 108+ routes.
+
 - ✅ **v5.1.0 - Hierarchy & Regional Expansion (2026-05-03)**:
     - ✅ **3-Tier JSON-LD Knowledge Graph**: Implemented a sophisticated hierarchical schema connecting `PT Tropic Tech International` → `PT Indonesian Visas Agency` → `PT Bali Enterprises Group` for maximum E-E-A-T authority.
     - ✅ **Regional Expansion Roadmap**: Injected structured data for planned expansions into **Lombok (2027)**, **Jakarta (Branch Office 2027)**, **Thailand (2028)**, and **Vietnam (2029)**.

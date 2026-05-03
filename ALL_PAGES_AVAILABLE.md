@@ -1,7 +1,7 @@
 # 🗺️ TropicTech: ALL_PAGES_AVAILABLE
 
 ## 📊 Sitemap Summary
-As of **April 2026**, the TropicTech ecosystem consists of a massive search engine footprint designed for Bali dominance. All 103+ routes are now production-hardened (v5.0.0) with optimized loading and server-side aggregation for maximum speed.
+As of **May 2026**, the TropicTech ecosystem consists of a massive search engine footprint designed for Bali dominance. All 108+ routes are now production-hardened (v6.0.0) with optimized loading and server-side aggregation for maximum speed.
 
 | Category | Pages | Avg. Priority |
 |----------|-------|---------------|

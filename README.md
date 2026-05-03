@@ -1,4 +1,4 @@
-# 🌴 TropicTech v5.0: Production-Hardened AI Rental Platform by IndoDesign.Website
+# 🌴 TropicTech v6.0: Production-Hardened, Localized & AI-Powered Rental Platform by IndoDesign.Website
 
 A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with IndoDesign.Website coding assistance.
 
